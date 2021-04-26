@@ -3,6 +3,7 @@ const sideBar = document.querySelector(".side_bar");
 const loginBtn = document.querySelector(".login");
 const loginShape = document.querySelector(".login_shape");
 const closeBtn = document.querySelector(".login_close");
+const loginBG = document.querySelector(".login_bg");
 
 // 사이드바 열기
 function clickMenu(){
@@ -12,6 +13,7 @@ function clickMenu(){
 // 사이드바 닫기
 function clickSideBar(){
   sideBar.classList.remove("showing_menu");
+  console.log('ds');
 }
 
 // 로그인 창 열기
@@ -29,5 +31,7 @@ function init(){
   sideBar.addEventListener("click", clickSideBar);
   loginBtn.addEventListener("click", clickLoginBtn);
   closeBtn.addEventListener("click", closeLoginScreen);
+  
+  loginBG.addEventListener('click', closeLoginScreen);
 }
 init();

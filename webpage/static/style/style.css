@@ -15,16 +15,34 @@ nav{
 }
 
 .login_shape{
+  position: fixed;
   display:none;
+  width: 100vw;
+  height: 100vh;  
+  top: 0;
+  z-index: 0;
+}
+
+.login_bg{
+  position: fixed;
+  display:block;
+  background-color: rgba(0, 0, 0, 0.418);
+  width: 100vw;
+  height: 100vh;  
+  top: 0;
+  z-index: 1;
 }
 
 .login_screen{
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50%;
-  height: 500px;
-  background-color: antiquewhite;
+  background-color: #fff;
+  width: 500px;
+  height: 400px;
+  margin-top: 13%;
+  z-index: 10;
 }
 
 .login_close{
@@ -36,9 +54,13 @@ nav{
   align-items: center;
 }
 
+.login_screen > form > input{
+  background-color: rgb(233, 233, 233);
+}
+
 .side_bar{
   display:none;
-  background-color: antiquewhite;
+  background-color: rgb(218, 218, 218);
   position: absolute;
   top:0;
   width: 30%;
