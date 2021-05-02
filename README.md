@@ -19,3 +19,6 @@
 - `django==3.1.3`
 - `pandas`
 ---
+
+## CONTRIBUTOR
+> `조현우` `박시형` `허상원`
