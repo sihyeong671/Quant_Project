@@ -16,9 +16,9 @@ def find_state(request):
         fs_date = com.fs.quarter.stock_date
         # if fs_date >= start_date and fs_date <= end_date:
         # q_set = com.fs.quarter_set.all()
-        for q in q_set:
-            b_list.append(q.benefit)
-            com_name_list.append(com.company_name)
+        # for q in q_set:
+        b_list.append(com.fs.quarter.benefit)
+        com_name_list.append(com.company_name)
     
     data_list = [b_list, com_name_list]
     
