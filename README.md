@@ -9,7 +9,7 @@
 - webpage : Front-End 파일이 있는 폴더
 ---
 
-## pip list\
+## pip list
 > `django==3.1.3`
 > `pandas`
 ---
