@@ -1,0 +1,30 @@
+{% extends 'index.html' %}
+{% block content %}
+    <div>
+        <p> hello dbtest </p>
+        {% comment %} <form method="POST">
+            {% csrf_token %}
+            <label>주식 이름 : </label>
+            <input type="date" name="stockname" value="{{ form.stockname.value|default_if_none:'' }}">
+            <label>주식 가격 : </label>
+            <input type="text" name="price" value="{{ form.price.value|default_if_none:'' }}">
+            <input type="submit" value="입력">
+        </form> {% endcomment %}
+    </div>
+    <div>
+        <table>
+            <tr>
+            </tr>
+            {% for fs in b_list %}
+                <td> {{fs}} </td> 
+            </tr>
+            {% endfor %}
+            {% for cn in com_name_list %}
+            <tr>
+                <td>{{cn}} </td>
+            </tr>
+            {% endfor %}
+            
+        </table>
+    </div>
+{% endblock %}
