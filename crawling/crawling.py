@@ -77,7 +77,8 @@ def financial_data(api_key, corp_code):
 # thstrm_nm	당기명	Y	ex) 제 13 기
 # thstrm_amount	당기금액	Y	9,999,999,999
 # ※ 분/반기 보고서이면서 (포괄)손익계산서 일 경우 [3개월] 금액
-    
+    items = ["rcept_no","reprt_code","bsns_year","sj_div","sj_nm","account_nm","account_detail","thstrm_nm","thstrm_amount"]
+    item_names = ["접수번호","보고서코드","사업연도","재무제표구분","재무제표명","계정명","계정상세","당기명","당기금액"]
     data_fi= []
     if json_dict['status'] == "000": # 정상적으로 데이터 가져옴
         for line in json_dict['list']: # 회사 한개씩 가져오기
