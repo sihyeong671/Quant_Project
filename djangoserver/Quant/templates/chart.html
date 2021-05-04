@@ -62,15 +62,6 @@
 
 </div>
 <script>
-    var chartSet = JSON.parse("{{ chartJson|escapejs }}");
-    const chartJsonSet = [chartSet['1'], chartSet['2'], chartSet['3'], chartSet['4'], chartSet['5']];
-    const chartBaseSet = [1, 2, 3, 4, 5];
-    var jsonDataSet = chartBaseSet;
-    var chartChanger = document.querySelector('.chartChanger');
-    chartChanger.addEventListener('click', ()=>{
-        jsonDataSet = chartJsonSet;
-        $(".csr").load(location.href + " .csr");
-    });
-
+    var chartSet = JSON.parse("{{ chartJson|escapejs }}");  
 </script>
 {% endblock %}

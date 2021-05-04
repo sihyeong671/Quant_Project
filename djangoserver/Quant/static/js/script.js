@@ -1,4 +1,9 @@
-const data = {
+
+var chartJsonSet = [chartSet['1'], chartSet['2'], chartSet['3'], chartSet['4'], chartSet['5']];
+var chartBaseSet = [1, 2, 3, 4, 5];
+var jsonDataSet = chartJsonSet;
+
+var data = {
     labels: [
       'Red',
       'Green',
@@ -20,28 +25,19 @@ const data = {
     }]
 };
 
-
 // LINE
-const line_C_config = {
+var line_C_config = {
     type: 'line',
     data,
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    fontSize: 150
-                }
-            }]
-        }
-    }
+    options: {}
 };
-const line_C = new Chart(
+var line_C = new Chart(
     document.querySelector('#line_chart'),
     line_C_config
 ); 
 
 // RADER
-const rader_C_config = {
+var rader_C_config = {
     type: 'radar',
     data,
     options: {
@@ -52,30 +48,41 @@ const rader_C_config = {
         }
     }
 };
-const rader_C = new Chart(
+var rader_C = new Chart(
     document.querySelector('#rader_chart'),
     rader_C_config
 ); 
 
 // DOUGHNUT
-const doughnut_C_config = {
+var doughnut_C_config = {
     type: 'doughnut',
     data,
     options: {}
 };
-const doughnut_C = new Chart(
+var doughnut_C = new Chart(
     document.querySelector('#doughnut_chart'),
     doughnut_C_config
 ); 
 
 // POLAR
-const polar_C_config = {
+var polar_C_config = {
     type: 'polarArea',
     data,
     options: {}
 };
-const polar_C = new Chart(
+var polar_C = new Chart(
     document.querySelector('#polar_chart'),
     polar_C_config
 ); 
 
+var $chartCanvas = $('<canvas id="line_chart"></canvas>');
+var chartChanger = document.querySelector('.chartChanger');
+chartChanger.addEventListener('click', ()=>{
+    $('#line_chart').remove()
+    $('.line_chart-wrapper').append($chartCanvas);
+    jsonDataSet = chartJsonSet;
+    line_C = new Chart(
+        document.querySelector('#line_chart'),
+        line_C_config
+    ); 
+});
