@@ -41,6 +41,19 @@ def make_financial_state(request):
         company.save()
         
         for fs_list in json_dict['list']:
-            
-            
-            
+
+
+import json
+def show_chart(request):
+    chart_dataset = { 
+        '1': 10, 
+        '2': 30,
+        '3': 45,
+        '4': 70,
+        '5': 20,
+    } 
+    chartJson = json.dumps(chart_dataset)
+    context = {
+        'chartJson' : chartJson,
+    }
+    return render(request, 'chart.html', context)
