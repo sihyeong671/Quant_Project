@@ -10,8 +10,8 @@ body, ul, li, a, p, td, tr, table, h1{
     width: 100vw;
     height: 100vh;
     grid-gap: 0px;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 8fr;
+    grid-template-columns: 100%;
+    grid-template-rows: 10% 90%;
     grid-template-areas:
     "header"
     "main";
@@ -36,7 +36,7 @@ body, ul, li, a, p, td, tr, table, h1{
 .main{
     grid-area: main;
     display: grid;
-    grid-template-columns: 1fr 5fr;
+    grid-template-columns: 10% 90%;
     grid-template-rows: 1fr;
     grid-template-areas:
     "sideBar main_container";
@@ -77,6 +77,9 @@ body, ul, li, a, p, td, tr, table, h1{
 }
 
 /* main main_container CHART */
+.chart_view{
+}
+
 .chart_view .csr{
     width: 700px;
     vertical-align: top;
@@ -84,5 +87,7 @@ body, ul, li, a, p, td, tr, table, h1{
 }
 
 
-.line_chart-wrapper{
+.chart_view .csr.line_chart-wrapper{
+    display: block;
+    width: 55%;
 }

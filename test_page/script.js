@@ -26,7 +26,13 @@ const line_C_config = {
     type: 'line',
     data,
     options: {
-        fontSize : 100
+        scales: {
+            yAxes: [{
+                ticks: {
+                    fontSize: 150
+                }
+            }]
+        }
     }
 };
 const line_C = new Chart(
