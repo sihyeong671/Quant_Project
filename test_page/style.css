@@ -1,0 +1,104 @@
+@font-face {
+    font-family: '국립박물관문화재단클래식B';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/국립박물관문화재단클래식B.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+*{
+    font-family: '국립박물관문화재단클래식B';
+}
+
+body, ul, li, a, p, td, tr, table, h1{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
+}
+
+.container{
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    grid-gap: 0px;
+    grid-template-columns: 100%;
+    grid-template-rows: 10% 90%;
+    grid-template-areas:
+    "header"
+    "main";
+}
+
+
+/* HEADER */
+.header{
+    background-color: rgb(42, 42, 42);
+    grid-area: header;
+    padding: 0px 50px;
+}
+
+.header .LOGO{
+    color: #fff;
+    line-height: 200px;
+    font-size: 80px;
+    cursor: pointer;
+}
+
+/* MAIN */
+.main{
+    grid-area: main;
+    display: grid;
+    grid-template-columns: 10% 90%;
+    grid-template-rows: 1fr;
+    grid-template-areas:
+    "sideBar main_container";
+}
+
+/* main SIDE-BAR */
+.main .sideBar{
+    position: relative;
+    z-index: 1;
+    grid-area: sideBar;
+    background-color: rgb(255, 255, 255);
+    box-shadow: -10px -20px 40px rgba(78, 78, 78, 0.383);
+}
+
+.main .sideBar .category{
+    width: 100%;
+}
+
+.main .sideBar .category .category_item{
+    padding-left: 30px;
+    height: 150px;
+    font-size: 50px;
+    line-height: 150px;
+    border-bottom: 1px solid #000;
+    color: #000;
+    transition: all .3s;
+}
+.category_item:hover{
+    background-color: rgb(199, 199, 199);
+}
+
+
+/* main MAIN_CONTAINER */
+.main .main_container{
+    grid-area: main_container;
+    background-color: rgb(255, 255, 255);
+    padding: 50px;
+}
+
+/* main main_container CHART */
+.chart_view{
+}
+
+.chart_view .csr{
+    width: 20%;
+    vertical-align: top;
+    display: inline-block;
+}
+
+
+.chart_view .csr.line_chart-wrapper{
+    display: block;
+    width: 55%;
+}
