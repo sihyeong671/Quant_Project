@@ -57,16 +57,13 @@ def dart_unique_key(api_key):
 # 재무제표 가져오기
 def financial_data(api_key, corp_code):
     url = "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json?"
-    ##########chang point!##########
     # 연도별 for
     # 분기별 for
     # OFS 연결 재무제표, CFS 일반 재무제표
-    params = {'crtfc_key': api_key, 'corp_code': corp_code, 'bsns_year': "2019", 'reprt_code': "11011",
-              'fs_div': "CFS"}
+    params = {'crtfc_key': api_key, 'corp_code': corp_code, 'bsns_year': "2019", 'reprt_code': "11011", 'fs_div': "CFS"}
     # 연결재무제표없는 기업은 일반 재무제표를 가져와야 한다.
     res = rq.get(url, params)
     json_dict = json.loads(res.text)
-    ##########chang point!##########
 # 키	명칭	List 여부	출력설명
 # rcept_no	접수번호	Y	접수번호(14자리)
 # reprt_code	보고서 코드	Y	1분기보고서 : 11013
