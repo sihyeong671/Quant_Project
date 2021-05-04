@@ -1,3 +1,14 @@
+@font-face {
+    font-family: '국립박물관문화재단클래식B';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/국립박물관문화재단클래식B.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+*{
+    font-family: '국립박물관문화재단클래식B';
+}
+
 body, ul, li, a, p, td, tr, table, h1{
     margin: 0;
     padding: 0;
@@ -81,7 +92,7 @@ body, ul, li, a, p, td, tr, table, h1{
 }
 
 .chart_view .csr{
-    width: 700px;
+    width: 20%;
     vertical-align: top;
     display: inline-block;
 }
