@@ -25,3 +25,89 @@ def find_state(request):
     context = {'b_list' : b_list, 'com_name_list' : com_name_list}
     
     return render(request, 'main.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import json
+def show_chart(request):
+    chart_dataset = { 
+        '1': 10, 
+        '2': 30,
+        '3': 45,
+        '4': 70,
+        '5': 20,
+    } 
+    chartJson = json.dumps(chart_dataset)
+    context = {
+        'chartJson' : chartJson,
+    }
+    return render(request, 'chart.html', context)

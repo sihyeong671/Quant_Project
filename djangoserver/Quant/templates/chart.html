@@ -1,0 +1,76 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<script defer src="{% static '/js/script.js' %}"></script>
+<link rel="stylesheet" href="{% static '/css/style.css' %}">
+<div class="container">
+
+    <header class="header">
+        <h1 class="LOGO">퀀트 기획</h1>
+    </header>
+
+    <main class="main">
+
+        <div class="sideBar">
+            <ul class="category">
+
+                <a href="">
+                    <li class="category_item">
+                        첫번째
+                    </li>
+                </a>
+
+                <a href="">
+                    <li class="category_item">
+                        두번째
+                    </li>
+                </a>
+
+                <a href="">
+                    <li class="category_item">
+                        세번째
+                    </li>
+                </a>
+
+            </ul>
+        </div>
+
+        <div class="main_container">
+            
+            <article class="chart_view">
+                <div class="csr line_chart-wrapper">
+                    <canvas id="line_chart"></canvas>
+                </div>
+
+                <div class="csr rader_chart-wrapper">
+                    <canvas id="rader_chart"></canvas>
+                </div>
+
+                <div class="csr doughnut_chart-wrapper">
+                    <canvas id="doughnut_chart"></canvas>
+                </div>
+
+                <div class="csr polar_chart-wrapper">
+                    <canvas id="polar_chart"></canvas>
+                </div>
+            </article>
+            <button class="chartChanger">CLICK</button>
+
+        </div>
+
+    </main>
+
+</div>
+<script>
+    var chartSet = JSON.parse("{{ chartJson|escapejs }}");
+    const chartJsonSet = [chartSet['1'], chartSet['2'], chartSet['3'], chartSet['4'], chartSet['5']];
+    const chartBaseSet = [1, 2, 3, 4, 5];
+    var jsonDataSet = chartBaseSet;
+    var chartChanger = document.querySelector('.chartChanger');
+    chartChanger.addEventListener('click', ()=>{
+        jsonDataSet = chartJsonSet;
+        $(".csr").load(location.href + " .csr");
+    });
+
+</script>
+{% endblock %}
