@@ -28,7 +28,6 @@ class Quarter(models.Model):
     
     class Meta:
         verbose_name = "분기별 데이터"
-        # ordering = ["account_name"]
 
 # 객체 2개 (linked or basic)
 class Financial_Statements_LinkOrBasic(models.Model):
