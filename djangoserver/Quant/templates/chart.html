@@ -1,7 +1,8 @@
 {% extends 'index.html' %}
 {% load static %}
 {% block content %}
-<script defer src="{% static '/js/script.js' %}"></script>
+<!-- <script defer src="{% static '/js/script.js' %}"></script> -->
+<link rel="stylesheet" href="{% static '/css/chart.css' %}">
 <link rel="stylesheet" href="{% static '/css/style.css' %}">
 <div class="container">
 
@@ -37,7 +38,7 @@
 
         <div class="main_container">
             
-            <article class="chart_view">
+            <!-- <article class="chart_view">
                 <div class="csr line_chart-wrapper">
                     <canvas id="line_chart"></canvas>
                 </div>
@@ -54,7 +55,55 @@
                     <canvas id="polar_chart"></canvas>
                 </div>
             </article>
-            <button class="chartChanger">CLICK</button>
+            <button class="chartChanger">CLICK</button> -->
+
+            <div class="statement_table-wrapper">
+                <table class="statement_table">
+                    <thead class="statement_head">  
+                        <tr>
+                            <th>회사명</th>
+                            <th>연도</th>
+                            <th>분기</th>
+                            <th>재무재표 연결, 일반</th>
+                            <th>재무재표 분류</th>
+                            <th>계정명</th>
+                            <th>자산</th>
+                        </tr>
+                    </thead>
+                    <tbody class="statement_body">
+
+                        {% for com in company_list %}
+                        <tr>
+                            <td> {{com.company_name}} </td> 
+                            {% for y in com.year_set.all %}
+                                <td> {{y.bsns_year}} </td>
+
+                                {% for q in y.quarter_set.all %}
+                                    <td> {{q.quarter_name}} </td>
+
+                                    {% for lo in q.financial_statements_linkorbasic_set.all %}
+                                        <td> {{lo.linkOrbasic}} </td>
+
+                                        {% for fd in lo.financial_statements_div_set.all %}
+                                            <td> {{fd.sj_div}} </td>
+
+                                            {% for fsa in fd.fs_account_set.all %}
+                                                <td> {{fsa.account_name}} </td><td> {{fsa.a}} </td>
+                                            {% endfor %}
+
+                                        {% endfor %}
+
+                                    {% endfor %}
+
+                                {% endfor %}
+
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    
+                    </tbody>
+                </table>
+            </div>
 
         </div>
 
@@ -62,6 +111,11 @@
 
 </div>
 <script>
-    var chartSet = JSON.parse("{{ chartJson|escapejs }}");  
+    // var chartSet = JSON.parse("{{ chartJson|escapejs }}");  
+    const companySelect = document.getElementById('comSel');
+
+    companySelect.addEventListener('click', (e)=>{
+        console.log(companySelect.value);
+    });
 </script>
 {% endblock %}
