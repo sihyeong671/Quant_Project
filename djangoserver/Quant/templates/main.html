@@ -15,15 +15,33 @@
         <table>
             <tr>
             </tr>
-            {% for fs in b_list %}
-                <td> {{fs}} </td> 
+            {% for com in company_list %}
+            <td> {{com.company_name}} </td> 
+                {% for y in com.year_set.all %}
+                    <td> {{y.bsns_year}} </td>
+                    {% for q in y.quarter_set.all %}
+                        <td> {{q.quarter_name}} </td>
+                        {% for lo in q.financial_statements_linkorbasic_set.all %}
+                            <td> {{lo.linkOrbasic}} </td>
+                            {% for fd in lo.financial_statements_div_set.all %}
+                                <td> {{fd.sj_div}} </td>
+                                {% for fsa in fd.fs_account_set.all %}
+                                    <td> {{fsa.account_name}} </td><td> {{fsa.a}} </td>
+                                {% endfor %}
+                            {% endfor %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+                
+                 
+                <td> {{com.Year.Quarter.quarter_name}} </td> 
             </tr>
             {% endfor %}
-            {% for cn in com_name_list %}
+            {% comment %} {% for cn in com_name_list %}
             <tr>
                 <td>{{cn}} </td>
             </tr>
-            {% endfor %}
+            {% endfor %} {% endcomment %}
             
         </table>
     </div>

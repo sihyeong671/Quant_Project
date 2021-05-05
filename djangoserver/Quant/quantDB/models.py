@@ -19,6 +19,7 @@ class Year(models.Model):
     
     class Meta:
         verbose_name = "연도별 데이터"
+        ordering = ["bsns_year"]
 
 # 객체 4개 (1/4, 2/4, 3/4, 4/4)
 class Quarter(models.Model):
