@@ -72,7 +72,8 @@ def financial_data(api_key, corp_code):
     item_names = ["접수번호","보고서코드","사업연도","재무제표구분","재무제표명","계정명","계정상세","당기금액"]
     data_fi= []
     if json_dict['status'] == "000": # 정상적으로 데이터 가져옴
-        for line in json_dict['list']: 
+        for line in json_dict['list']: # 한 행씩 가져오기
+
             data_fi.append([])
             for itm in items:
                 if itm in line.keys(): # itm append

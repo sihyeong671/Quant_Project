@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 <script defer src="{% static '/js/script.js' %}"></script>
+<link rel="stylesheet" href="{% static '/css/chart.css' %}">
 <link rel="stylesheet" href="{% static '/css/style.css' %}">
 <div class="container">
 
@@ -37,7 +38,7 @@
 
         <div class="main_container">
             
-            <article class="chart_view">
+            <!-- <article class="chart_view">
                 <div class="csr line_chart-wrapper">
                     <canvas id="line_chart"></canvas>
                 </div>
@@ -54,7 +55,29 @@
                     <canvas id="polar_chart"></canvas>
                 </div>
             </article>
-            <button class="chartChanger">CLICK</button>
+            <button class="chartChanger">CLICK</button> -->
+
+            <div class="statement_table-wrapper">
+                <table class="statement_table">
+                    <thead class="statement_head">  
+                        <tr>
+                            <th>고유번호</th>
+                            <th>회사명</th>
+                            <th>종목코드</th>
+                            <th>최종 변경 일자</th>
+                        </tr>
+                    </thead>
+                    <tbody class="statement_body">
+                        <tr>
+                            <td>32132490</td>
+                            <td>삼성전자</td>
+                            <td>02132</td>
+                            <td>20170928</td>
+                        </tr>
+                    
+                    </tbody>
+                </table>
+            </div>
 
         </div>
 
