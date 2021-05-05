@@ -48,7 +48,7 @@ def make_financial_state(request):
             year.bsns_year = fs_list["bsns_year"]   # int로 변환해주기
             if fs_list["reprt_code"] == "11013":
                 quarter.quarter_name = "1/4"
-            elif
+            # elif
             
             
             if(is_linked == "CFS"):
