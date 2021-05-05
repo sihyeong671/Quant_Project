@@ -6,5 +6,5 @@ app_name = "quantDB"
 
 urlpatterns = [
     path('', views.find_state, name='find_state'),
-    path('chart/', views.show_chart, name='show_chart')
+    # path('chart/', views.show_chart, name='show_chart')
 ]
