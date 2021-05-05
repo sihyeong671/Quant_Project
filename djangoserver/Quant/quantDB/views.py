@@ -66,7 +66,7 @@ def make_financial_state(request):
                 fs_div.sj_div = "IS"
             
             fs_a.account_name = fs_list["account_nm"]
-            fs_a.a = fs_list["thstrm_amount"]
+            fs_a.a = fs_list["thstrm_amount"]   # int변환 필요
             
             
             fs_a.financial_statements_div = fs_div
