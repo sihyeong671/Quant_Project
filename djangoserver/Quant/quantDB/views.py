@@ -53,7 +53,8 @@ def make_financial_state(request):
             
             if(is_linked == "CFS"):
                 is_link.linkOrbasic = "linked"
-            else is_link.linkOrbasic = "basic"
+            else:
+                is_link.linkOrbasic = "basic"
             
             if fs_list["sj_div"] == "BS":
                 fs_div.sj_div = "BS"
