@@ -79,8 +79,7 @@ def make_financial_state(request):
             quarter.save()
             year.company = company
             year.save()
-            
-            
+
 def show_chart(request):
     chart_dataset = { 
         '1': 10, 
@@ -94,3 +93,8 @@ def show_chart(request):
         'chartJson' : chartJson,
     }
     return render(request, 'chart.html', context)
+
+
+
+
+

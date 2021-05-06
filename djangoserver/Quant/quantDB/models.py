@@ -28,7 +28,6 @@ class Year(models.Model):
     
     class Meta:
         verbose_name = "연도별 데이터"
-        ordering = ["bsns_year"]
 
 # 객체 4개 (1/4, 2/4, 3/4, 4/4)
 class Quarter(models.Model):
@@ -63,9 +62,12 @@ class FS_Account(models.Model):
 
 class unique_code(models.Model):
     dart_code = models.IntegerField(help_text="고유번호", blank=True, null=True)
-    company_name_u = models.CharField(help_text="회사명",blank=True, null=True)
-    short_code = models.CharField(help_text="종목코드",blank=True, null=True)
-    lastest_change = models.CharField(help_text="최종변경일자",blank=True, null=True)
+    company_name_u = models.CharField(help_text="회사명",max_length=50,blank=True, null=True)
+    short_code = models.CharField(help_text="종목코드",max_length=30,blank=True, null=True)
+    lastest_change = models.CharField(help_text="최종변경일자", max_length=30,blank=True, null=True)
     
+    def __str__(self):
+        return self.company_name_u
+
     class Meta:
         verbose_name = "고유번호"
