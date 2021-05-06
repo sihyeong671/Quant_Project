@@ -51,3 +51,9 @@ class FS_Account(models.Model):
     financial_statements_div = models.ForeignKey(Financial_Statements_Div, on_delete=models.CASCADE)
     account_name = models.CharField(help_text="계정명", max_length=255, blank=False, null=False)
     a = models.IntegerField(help_text="계정명에 대한 자산", blank=True, null=True)
+    
+    class Meta:
+        verbose_name = "계정명"
+    
+    def __str__(self):
+        return self.account_name + " " + self.financial_statements_div.sj_div
