@@ -12,14 +12,6 @@ class Company(models.Model):
         verbose_name = "기업"
         ordering = ["company_name"]
 
-class Financial_Statements(models.Model):
-    sj_name = models.CharField(help_text="제무제표명", max_length=255, blank=False, null=False)
-    company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
-    # OFS, CFS
-    
-    class Meta:
-        verbose_name = "재무재표명"
-
 # 객체 7개 (2015 ~ 2017)
 
 class Year(models.Model):
@@ -61,7 +53,7 @@ class FS_Account(models.Model):
     a = models.IntegerField(help_text="계정명에 대한 자산", blank=True, null=True)
 
 class unique_code(models.Model):
-    dart_code = models.IntegerField(help_text="고유번호", blank=True, null=True)
+    dart_code = models.CharField(help_text="고유번호",max_length=10, blank=True, null=True)
     company_name_u = models.CharField(help_text="회사명",max_length=50,blank=True, null=True)
     short_code = models.CharField(help_text="종목코드",max_length=30,blank=True, null=True)
     lastest_change = models.CharField(help_text="최종변경일자", max_length=30,blank=True, null=True)
