@@ -243,5 +243,5 @@ pip-selfcheck.json
 *.code-workspace
 
 ##API_KEY##
-/crawling/API_KEY.py
+/djangoserver/Quant/API_KEY.py
 # End of https://www.toptal.com/developers/gitignore/api/c++,python,c,vscode,venv

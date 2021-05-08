@@ -26,6 +26,7 @@ def find_state(request):
     
     return render(request, 'chart.html', context)
     
+
 def make_financial_state(request):
     items = ["rcept_no","reprt_code","bsns_year","sj_div","sj_nm","account_nm","account_detail","thstrm_nm","thstrm_amount"]
     item_names = ["접수번호","보고서코드","사업연도","재무제표구분","재무제표명","계정명","계정상세","당기명","당기금액"]

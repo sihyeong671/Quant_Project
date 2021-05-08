@@ -66,8 +66,9 @@ class FS_Account(models.Model):
     def __str__(self):
         return self.account_name + " " + self.financial_statements_div.sj_div
 
+
 class unique_code(models.Model):
-    dart_code = models.IntegerField(help_text="고유번호", blank=True, null=True)
+    dart_code = models.CharField(help_text="고유번호",max_length=10, blank=True, null=True)
     company_name_u = models.CharField(help_text="회사명",max_length=50,blank=True, null=True)
     short_code = models.CharField(help_text="종목코드",max_length=30,blank=True, null=True)
     lastest_change = models.CharField(help_text="최종변경일자", max_length=30,blank=True, null=True)
