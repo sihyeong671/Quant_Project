@@ -26,7 +26,7 @@
 ## 함수명 작성 규칙
 1. 첫글자는 무조건 대문자
 2. 띄어쓰기 = 언더바 + 대문자 
-ex) Func_Test_AreYouUnderstand
+> `ex) Func_Test_AreYouUnderstand`
 
 
 수정 또 수정.
