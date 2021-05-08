@@ -11,11 +11,8 @@ import django
 api_key = API_KEY.APIKEY
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', "config.settings")
 django.setup()
-<<<<<<< HEAD
 
 from quantDB.models import unique_code
-=======
->>>>>>> 5ba97082b94dd9ff2ed892d9af7386833c32c7ce
 from quantDB.models import Company, Financial_Statements_LinkOrBasic,\
     Financial_Statements_Div, Quarter, Year, FS_Account, unique_code
 
@@ -43,7 +40,7 @@ def dart_unique_key(api_key):
     return data
     
 
-def Get_Data(api_key,corp_code_,year_,quarter_,link, company):
+def Get_Data(api_key,corp_code_,year_,quarter_,link, linkorBasic):
     url = "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json?"
     params = {'crtfc_key': api_key, 'corp_code': corp_code_, 'bsns_year': year_, 'reprt_code': quarter_, 'fs_div': link}
     res = rq.get(url, params)
@@ -69,8 +66,8 @@ def Get_Data(api_key,corp_code_,year_,quarter_,link, company):
                 money.account_name = fs_lst["account_nm"]
                 money.a = fs_lst["thstrm_amount"]
                 money.financial_statements_div = BS
-
                 money.save()
+                
             elif fs_lst["sj_div"] == "IS":
                 money = FS_Account()
                 money.account_name = fs_lst["account_nm"]
@@ -98,7 +95,12 @@ def Get_Data(api_key,corp_code_,year_,quarter_,link, company):
                 money.a = fs_lst["thstrm_amount"]
                 money.financial_statements_div = SCE
                 money.save()
-        BS.lb = company.year.quarter.link
+        
+        BS.lb = linkorBasic
+        IS.lb = linkorBasic
+        CIS.lb = linkorBasic
+        CF.lb = linkorBasic
+        SCE.lb = linkorBasic
         BS.save()
         IS.save()
         CIS.save()
@@ -125,20 +127,21 @@ if __name__ == "__main__":
             for y in years:
                 year = Year()
                 year.bsns_year = y
+                year.company = company
+                year.save()
                 for q in quarters:
                     quarter = Quarter()
                     quarter.quarter_name = q
+                    quarter.year = year
+                    quarter.save()
                     for l in linklst:
                         link = Financial_Statements_LinkOrBasic()
                         link.linkOrbasic = l
                         link.quarter = quarter
                         link.save()
-                        quarter.year = year
-                        quarter.save()
-                        year.company = company
-                        year.save()
+                        
                         # company.save()
-                        Get_Data(api_key, code.dart_code, y, q, l, company)
+                        Get_Data(api_key, code.dart_code, y, q, l, link)
                     
 
 
