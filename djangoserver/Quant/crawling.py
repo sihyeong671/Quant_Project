@@ -7,6 +7,7 @@ import json
 import API_KEY
 import os
 import django
+import time
 
 api_key = API_KEY.APIKEY
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', "config.settings")
@@ -39,7 +40,6 @@ def dart_unique_key(api_key):
                 data[-1].append(child.find(item).text)
     return data
 
-
 def Get_Data(api_key,corp_code_,year_,quarter_,link_, link):
     url = "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json?"
     params = {'crtfc_key': api_key, 'corp_code': corp_code_, 'bsns_year': year_, 'reprt_code': quarter_, 'fs_div': link_}
@@ -59,91 +59,84 @@ def Get_Data(api_key,corp_code_,year_,quarter_,link_, link):
         SCE = FS_Div()
         SCE.sj_div = "SCE"
 
-        for fs_lst in json_dict['list']: # 한 행씩 가져오기
-
-            if fs_lst["sj_div"] == "BS":
-                money = FS_Account()
-                money.account_name = fs_lst["account_nm"]
-                money.a = fs_lst["thstrm_amount"]
-                money.fs_div = BS
-
-                money.save()
-            elif fs_lst["sj_div"] == "IS":
-                money = FS_Account()
-                money.account_name = fs_lst["account_nm"]
-                money.a = fs_lst["thstrm_amount"]
-                money.fs_div = IS
-                money.save()
-
-            elif fs_lst["sj_div"] == "CIS":
-                money = FS_Account()
-                money.account_name = fs_lst["account_nm"]
-                money.a = fs_lst["thstrm_amount"]
-                money.fs_div = CIS
-                money.save()
-
-            elif fs_lst["sj_div"] == "CF":
-                money = FS_Account()
-                money.account_name = fs_lst["account_nm"]
-                money.a = fs_lst["thstrm_amount"]
-                money.fs_div = CF
-                money.save()
-
-            elif fs_lst["sj_div"] == "SCE":
-                money = FS_Account()
-                money.account_name = fs_lst["account_nm"]
-                money.a = fs_lst["thstrm_amount"]
-                money.fs_div = SCE
-                money.save()
-        
         BS.lob = link
-        BS.save()
         IS.lob = link
-        IS.save()
         CIS.lob = link
-        CIS.save()
         CF.lob = link
-        CF.save()
         SCE.lob = link
+
+        BS.save()
+        IS.save()
+        CIS.save()
+        CF.save()
         SCE.save()
 
-    
+        for fs_lst in json_dict['list']: # 한 행씩 가져오기
+            money = FS_Account()
+            money.account_name = fs_lst["account_nm"]
+            if fs_lst["thstrm_amount"] == '':
+                money.account_amount = 0
+            else:
+                money.account_amount = fs_lst["thstrm_amount"]
+
+            if fs_lst["sj_div"] == "BS":
+                money.fs_div = BS
+
+            elif fs_lst["sj_div"] == "IS":
+                money.fs_div = IS
+
+            elif fs_lst["sj_div"] == "CIS":
+                money.fs_div = CIS
+
+            elif fs_lst["sj_div"] == "CF":
+                money.fs_div = CF
+
+            elif fs_lst["sj_div"] == "SCE":
+                money.fs_div = SCE
+
+            money.save()
+
+
 # financial_data(api_key,"00126380")
 
 if __name__ == "__main__":
-    # first
-    # DART_data = dart_unique_key(api_key)
-    # for data in DART_data:
-    #     Dart(dart_code=data[0],company_name_u=data[1],short_code=data[2],lastest_change=data[3]).save()
-    #second
-    linklst = ["CFS", "OFS"] # link, basic
-    years = ["2015", "2016", "2017","2018","2019","2020"]
-    quarters = ["11013", "11014", "11012", "11011"]
-    dart_codes = Dart.objects.all()
+    # k = "first"
+    k = "second"
 
-    for code in dart_codes:
-        if code.dart_code == "00274933":
-            company = Company()
-            company.company_name = code.company_name_dart
-            company.save()
-            for y in years:
-                year = Year()
-                year.bs_year = y
-                year.company = company
-                year.save()
-                for q in quarters:
-                    quarter = Quarter()
-                    quarter.qt_name = q
-                    quarter.year = year
-                    quarter.save()
-                    for l in linklst:
-                        link = FS_LoB()
-                        link.lob = l
-                        link.quarter = quarter
-                        link.save()
-                        Get_Data(api_key, code.dart_code, y, q, l, link)
-                  
-                    
+    if k == "first":
+        DART_data = dart_unique_key(api_key)
+        for data in DART_data:
+            Dart(dart_code=data[0],company_name_dart=data[1],short_code=data[2],recent_modify =data[3]).save()
+    elif k == "second":
+        linklst = ["CFS", "OFS"] # link, basic
+        years = ["2019","2020"]
+        # years = ["2015", "2016", "2017","2018","2019","2020"]
 
-
-
+        quarters = ["11013", "11014", "11012", "11011"]
+        dart_codes = Dart.objects.all()
+        count = 0
+        for code in dart_codes:
+            if code.dart_code == "00274933":
+                company = Company()
+                company.company_name = code.company_name_dart
+                company.save()
+                for y in years:
+                    year = Year()
+                    year.bs_year = int(y)
+                    year.company = company
+                    year.save()
+                    for q in quarters:
+                        quarter = Quarter()
+                        quarter.qt_name = q
+                        quarter.year = year
+                        quarter.save()
+                        for l in linklst:
+                            link = FS_LoB()
+                            link.lob = l
+                            link.quarter = quarter
+                            link.save()
+                            count += 1 
+                            Get_Data(api_key, code.dart_code, y, q, l, link)
+                            if count == 2:
+                                print('success')
+                                exit()
