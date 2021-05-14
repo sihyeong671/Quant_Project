@@ -114,7 +114,7 @@ if __name__ == "__main__":
     # first
     # DART_data = dart_unique_key(api_key)
     # for data in DART_data:
-    #     unique_code(dart_code=data[0],company_name_u=data[1],short_code=data[2],lastest_change=data[3]).save()
+    #     Dart(dart_code=data[0],company_name_u=data[1],short_code=data[2],lastest_change=data[3]).save()
     #second
     linklst = ["CFS", "OFS"] # link, basic
     years = ["2015", "2016", "2017","2018","2019","2020"]
@@ -124,16 +124,16 @@ if __name__ == "__main__":
     for code in dart_codes:
         if code.dart_code == "00274933":
             company = Company()
-            company.company_name = code.company_name_u
+            company.company_name = code.company_name_dart
             company.save()
             for y in years:
                 year = Year()
-                year.bsns_year = y
+                year.bs_year = y
                 year.company = company
                 year.save()
                 for q in quarters:
                     quarter = Quarter()
-                    quarter.quarter_name = q
+                    quarter.qt_name = q
                     quarter.year = year
                     quarter.save()
                     for l in linklst:
