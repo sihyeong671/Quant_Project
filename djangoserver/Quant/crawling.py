@@ -38,14 +38,14 @@ def dart_unique_key(api_key):
             for item in items:
                 data[-1].append(child.find(item).text)
     return data
-    
 
-def Get_Data(api_key,corp_code_,year_,quarter_,link, linkorBasic):
+
+def Get_Data(api_key,corp_code_,year_,quarter_,link_, link):
     url = "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json?"
-    params = {'crtfc_key': api_key, 'corp_code': corp_code_, 'bs_year': year_, 'reprt_code': quarter_, 'fs_div': link}
+    params = {'crtfc_key': api_key, 'corp_code': corp_code_, 'bsns_year': year_, 'reprt_code': quarter_, 'fs_div': link_}
     res = rq.get(url, params)
     json_dict = json.loads(res.text)
-    # items = ["rcept_no","reprt_code","bs_year","sj_div","sj_nm","account_nm","account_detail","thstrm_amount"]
+    # items = ["rcept_no","reprt_code","bsns_year","sj_div","sj_nm","account_nm","account_detail","thstrm_amount"]
     # item_names = ["접수번호","보고서코드","사업연도","재무제표구분","재무제표명","계정명","계정상세","당기금액"]
     if json_dict['status'] == "000": # 정상적으로 데이터 가져옴
         BS = FS_Div()
@@ -65,47 +65,48 @@ def Get_Data(api_key,corp_code_,year_,quarter_,link, linkorBasic):
                 money = FS_Account()
                 money.account_name = fs_lst["account_nm"]
                 money.a = fs_lst["thstrm_amount"]
-                money.FS_Div = BS
+                money.fs_div = BS
+
                 money.save()
-                
             elif fs_lst["sj_div"] == "IS":
                 money = FS_Account()
                 money.account_name = fs_lst["account_nm"]
                 money.a = fs_lst["thstrm_amount"]
-                money.FS_Div = IS
+                money.fs_div = IS
                 money.save()
 
             elif fs_lst["sj_div"] == "CIS":
                 money = FS_Account()
                 money.account_name = fs_lst["account_nm"]
                 money.a = fs_lst["thstrm_amount"]
-                money.FS_Div = CIS
+                money.fs_div = CIS
                 money.save()
 
             elif fs_lst["sj_div"] == "CF":
                 money = FS_Account()
                 money.account_name = fs_lst["account_nm"]
                 money.a = fs_lst["thstrm_amount"]
-                money.FS_Div = CF
+                money.fs_div = CF
                 money.save()
 
             elif fs_lst["sj_div"] == "SCE":
                 money = FS_Account()
                 money.account_name = fs_lst["account_nm"]
                 money.a = fs_lst["thstrm_amount"]
-                money.FS_Div = SCE
+                money.fs_div = SCE
                 money.save()
         
-        BS.lb = linkorBasic
-        IS.lb = linkorBasic
-        CIS.lb = linkorBasic
-        CF.lb = linkorBasic
-        SCE.lb = linkorBasic
+        BS.lob = link
         BS.save()
+        IS.lob = link
         IS.save()
+        CIS.lob = link
         CIS.save()
+        CF.lob = link
         CF.save()
+        SCE.lob = link
         SCE.save()
+
     
 # financial_data(api_key,"00126380")
 
@@ -124,6 +125,7 @@ if __name__ == "__main__":
         if code.dart_code == "00274933":
             company = Company()
             company.company_name = code.company_name_dart
+            company.save()
             for y in years:
                 year = Year()
                 year.bs_year = y
@@ -139,9 +141,8 @@ if __name__ == "__main__":
                         link.lob = l
                         link.quarter = quarter
                         link.save()
-                        
-                        # company.save()
                         Get_Data(api_key, code.dart_code, y, q, l, link)
+                  
                     
 
 

@@ -67,7 +67,7 @@ class FS_LoB(models.Model):
 class FS_Div(models.Model):
     # sj_name = models.CharField(help_text="재무제표명(재무상태표 손익계산서...)", max_length=255, blank=False, null=False)
     sj_div = models.CharField(help_text="재무제표구분(BS IS ...)", max_length=255, blank=False, null=False)
-    lb = models.ForeignKey(FS_LoB, on_delete=models.CASCADE)
+    lob = models.ForeignKey(FS_LoB, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.sj_div
