@@ -22,11 +22,17 @@
 
 ## CONTRIBUTOR
 > `조현우` `박시형` `허상원`
+---
 
-## 함수명 작성 규칙
+## 함수 && 클래스 명 작성 규칙
 1. 첫글자는 무조건 대문자
-2. 띄어쓰기 = 언더바 + 대문자 
-> `ex) Func_Test_AreYouUnderstand`
+2. 띄어쓰기 =  대문자 + 언더바(_)
+> `ex) Func_Test_Are_You_Understand`
+
+## 변수명 작성 규칙
+1. 모두 소문자로
+2. 띄어쓰기 = 언더바(_) 
+> `ex) this_is_variables`
 
 
 수정 또 수정.
