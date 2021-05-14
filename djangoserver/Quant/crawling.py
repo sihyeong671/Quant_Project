@@ -12,9 +12,9 @@ api_key = API_KEY.APIKEY
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', "config.settings")
 django.setup()
 
-from quantDB.models import unique_code
-from quantDB.models import Company, Financial_Statements_LinkOrBasic,\
-    Financial_Statements_Div, Quarter, Year, FS_Account, unique_code
+from quantDB.models import Dart
+from quantDB.models import Company, FS_LoB,\
+    FS_Div, Quarter, Year, FS_Account, Dart
 
 # pd.set_option('display.max_row', 300) # 행 갯수 늘려서 보는 옵션
 # pd.set_option('display.max_column', 100) # 열 갯수 늘려서 보는 옵션 
@@ -42,21 +42,21 @@ def dart_unique_key(api_key):
 
 def Get_Data(api_key,corp_code_,year_,quarter_,link, linkorBasic):
     url = "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json?"
-    params = {'crtfc_key': api_key, 'corp_code': corp_code_, 'bsns_year': year_, 'reprt_code': quarter_, 'fs_div': link}
+    params = {'crtfc_key': api_key, 'corp_code': corp_code_, 'bs_year': year_, 'reprt_code': quarter_, 'fs_div': link}
     res = rq.get(url, params)
     json_dict = json.loads(res.text)
-    # items = ["rcept_no","reprt_code","bsns_year","sj_div","sj_nm","account_nm","account_detail","thstrm_amount"]
+    # items = ["rcept_no","reprt_code","bs_year","sj_div","sj_nm","account_nm","account_detail","thstrm_amount"]
     # item_names = ["접수번호","보고서코드","사업연도","재무제표구분","재무제표명","계정명","계정상세","당기금액"]
     if json_dict['status'] == "000": # 정상적으로 데이터 가져옴
-        BS = Financial_Statements_Div()
+        BS = FS_Div()
         BS.sj_div = "BS"
-        IS = Financial_Statements_Div()
+        IS = FS_Div()
         IS.sj_div = "IS"
-        CIS = Financial_Statements_Div()
+        CIS = FS_Div()
         CIS.sj_div = "CIS"
-        CF = Financial_Statements_Div()
+        CF = FS_Div()
         CF.sj_div = "CF"
-        SCE = Financial_Statements_Div()
+        SCE = FS_Div()
         SCE.sj_div = "SCE"
 
         for fs_lst in json_dict['list']: # 한 행씩 가져오기
@@ -65,35 +65,35 @@ def Get_Data(api_key,corp_code_,year_,quarter_,link, linkorBasic):
                 money = FS_Account()
                 money.account_name = fs_lst["account_nm"]
                 money.a = fs_lst["thstrm_amount"]
-                money.financial_statements_div = BS
+                money.FS_Div = BS
                 money.save()
                 
             elif fs_lst["sj_div"] == "IS":
                 money = FS_Account()
                 money.account_name = fs_lst["account_nm"]
                 money.a = fs_lst["thstrm_amount"]
-                money.financial_statements_div = IS
+                money.FS_Div = IS
                 money.save()
 
             elif fs_lst["sj_div"] == "CIS":
                 money = FS_Account()
                 money.account_name = fs_lst["account_nm"]
                 money.a = fs_lst["thstrm_amount"]
-                money.financial_statements_div = CIS
+                money.FS_Div = CIS
                 money.save()
 
             elif fs_lst["sj_div"] == "CF":
                 money = FS_Account()
                 money.account_name = fs_lst["account_nm"]
                 money.a = fs_lst["thstrm_amount"]
-                money.financial_statements_div = CF
+                money.FS_Div = CF
                 money.save()
 
             elif fs_lst["sj_div"] == "SCE":
                 money = FS_Account()
                 money.account_name = fs_lst["account_nm"]
                 money.a = fs_lst["thstrm_amount"]
-                money.financial_statements_div = SCE
+                money.FS_Div = SCE
                 money.save()
         
         BS.lb = linkorBasic
@@ -113,30 +113,30 @@ if __name__ == "__main__":
     # first
     # DART_data = dart_unique_key(api_key)
     # for data in DART_data:
-    #     unique_code(dart_code=data[0],company_name_u=data[1],short_code=data[2],lastest_change=data[3]).save()
+    #     Dart(dart_code=data[0],company_name_u=data[1],short_code=data[2],lastest_change=data[3]).save()
     #second
     linklst = ["CFS", "OFS"] # link, basic
     years = ["2015", "2016", "2017","2018","2019","2020"]
     quarters = ["11013", "11014", "11012", "11011"]
-    dart_codes = unique_code.objects.all()
+    dart_codes = Dart.objects.all()
 
     for code in dart_codes:
         if code.dart_code == "00274933":
             company = Company()
-            company.company_name = code.company_name_u
+            company.company_name = code.company_name_dart
             for y in years:
                 year = Year()
-                year.bsns_year = y
+                year.bs_year = y
                 year.company = company
                 year.save()
                 for q in quarters:
                     quarter = Quarter()
-                    quarter.quarter_name = q
+                    quarter.qt_name = q
                     quarter.year = year
                     quarter.save()
                     for l in linklst:
-                        link = Financial_Statements_LinkOrBasic()
-                        link.linkOrbasic = l
+                        link = FS_LoB()
+                        link.lob = l
                         link.quarter = quarter
                         link.save()
                         

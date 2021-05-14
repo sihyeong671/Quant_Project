@@ -1,8 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Company, Year, Quarter, Financial_Statements_Div, \
-    Financial_Statements_LinkOrBasic, FS_Account, unique_code
+from .models import Company, Year, Quarter, FS_Div, \
+    FS_LoB, FS_Account, Dart
 
 # class CompanyAdmin(admin.ModelAdmin):
 #     search_fields = ['company_name']
@@ -11,7 +11,7 @@ from .models import Company, Year, Quarter, Financial_Statements_Div, \
 admin.site.register(Company)
 admin.site.register(Year)
 admin.site.register(Quarter)
-admin.site.register(Financial_Statements_LinkOrBasic)
-admin.site.register(Financial_Statements_Div)
+admin.site.register(FS_LoB)
+admin.site.register(FS_Div)
 admin.site.register(FS_Account)
-admin.site.register(unique_code)
+admin.site.register(Dart)
