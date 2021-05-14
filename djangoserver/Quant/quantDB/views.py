@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Company, Financial_Statements_LinkOrBasic,\
-    Financial_Statements_Div, Quarter, Year, FS_Account
+from .models import Company, FS_LoB,\
+    FS_Div, Quarter, Year, FS_Account
 import json
 # Create your views here.
 

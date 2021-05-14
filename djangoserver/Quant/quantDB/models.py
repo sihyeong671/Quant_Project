@@ -34,7 +34,7 @@ class Year(models.Model):
     company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.bs_year
+        return str(self.bs_year)
     
     class Meta:
         verbose_name = "연도별 데이터"
@@ -82,6 +82,9 @@ class FS_Account(models.Model):
     
     def __str__(self):
         return self.account_name
+        
+    class Meta:
+        verbose_name = "계정명"
 
 class Dart(models.Model):
     dart_code = models.CharField(help_text="고유번호",max_length=10, blank=True, null=True)
