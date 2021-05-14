@@ -50,6 +50,9 @@ def Get_Data(api_key,corp_code_,year_,quarter_,link_, link):
     if json_dict['status'] == "000": # 정상적으로 데이터 가져옴
         BS = FS_Div()
         BS.sj_div = "BS"
+        BS.lob = link
+        BS.save()
+        
         IS = FS_Div()
         IS.sj_div = "IS"
         CIS = FS_Div()
@@ -58,7 +61,16 @@ def Get_Data(api_key,corp_code_,year_,quarter_,link_, link):
         CF.sj_div = "CF"
         SCE = FS_Div()
         SCE.sj_div = "SCE"
-
+        
+        IS.lob = link
+        IS.save()
+        CIS.lob = link
+        CIS.save()
+        CF.lob = link
+        CF.save()
+        SCE.lob = link
+        SCE.save()
+        
         for fs_lst in json_dict['list']: # 한 행씩 가져오기
 
             if fs_lst["sj_div"] == "BS":
@@ -96,16 +108,7 @@ def Get_Data(api_key,corp_code_,year_,quarter_,link_, link):
                 money.fs_div = SCE
                 money.save()
         
-        BS.lob = link
-        BS.save()
-        IS.lob = link
-        IS.save()
-        CIS.lob = link
-        CIS.save()
-        CF.lob = link
-        CF.save()
-        SCE.lob = link
-        SCE.save()
+        
 
     
 # financial_data(api_key,"00126380")
