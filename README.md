@@ -23,10 +23,10 @@
 ## CONTRIBUTOR
 > `조현우` `박시형` `허상원`
 
-## 함수명 작성 규칙
+## 함수 && 클래스 명 작성 규칙
 1. 첫글자는 무조건 대문자
-2. 띄어쓰기 =  대문자 
-> `ex) FuncTestAreYouUnderstand`
+2. 띄어쓰기 =  대문자 + 언더바(_)
+> `ex) Func_Test_Are_You_Understand`
 
 ## 변수명 작성 규칙
 1. 모두 소문자로
