@@ -60,7 +60,6 @@ class Migration(migrations.Migration):
         ),
         migrations.CreateModel(
             name='FS_LoB',
-<<<<<<< HEAD
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('lob', models.CharField(blank=True, help_text='연결/일반', max_length=30, null=True)),
@@ -71,47 +70,6 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='FS_Div',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('sj_div', models.CharField(help_text='재무제표구분(BS IS ...)', max_length=255)),
-                ('lob', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='quantDB.fs_lob')),
-            ],
-            options={
-                'verbose_name': '재무제표구분',
-            },
-        ),
-        migrations.CreateModel(
-            name='FS_Account',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('account_name', models.CharField(help_text='계정명', max_length=255)),
-                ('account_amount', models.IntegerField(blank=True, help_text='계정명에 대한 자산', null=True)),
-                ('fs_div', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='quantDB.fs_div')),
-=======
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('lob', models.CharField(blank=True, help_text='연결/일반', max_length=30, null=True)),
-                ('quarter', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='quantDB.quarter')),
->>>>>>> 3a955b0fdeee6f68ff2a0e78e978aae7d8ab0a5f
-            ],
-            options={
-                'verbose_name': '연결/일반',
-            },
-        ),
-        migrations.CreateModel(
-<<<<<<< HEAD
-            name='FinancialStatements',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('fs_name', models.CharField(help_text='재무제표명', max_length=255)),
-                ('company', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='quantDB.company')),
-            ],
-            options={
-                'verbose_name': '재무재표명',
-            },
-        ),
-=======
             name='FS_Div',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -131,5 +89,4 @@ class Migration(migrations.Migration):
                 ('fs_div', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='quantDB.fs_div')),
             ],
         ),
->>>>>>> 3a955b0fdeee6f68ff2a0e78e978aae7d8ab0a5f
     ]
