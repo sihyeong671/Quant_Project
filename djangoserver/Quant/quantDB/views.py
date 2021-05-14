@@ -25,7 +25,7 @@ def find_state(request):
     context = {'company_list' : company_list}
     
     return render(request, 'chart.html', context)
-    
+
 def show_chart(request):
     chart_dataset = { 
         '1': 10, 

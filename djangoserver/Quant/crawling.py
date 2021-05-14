@@ -50,6 +50,9 @@ def Get_Data(api_key,corp_code_,year_,quarter_,link_, link):
     if json_dict['status'] == "000": # 정상적으로 데이터 가져옴
         BS = FS_Div()
         BS.sj_div = "BS"
+        BS.lob = link
+        BS.save()
+        
         IS = FS_Div()
         IS.sj_div = "IS"
         CIS = FS_Div()

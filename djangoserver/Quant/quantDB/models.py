@@ -13,10 +13,10 @@ class Company(models.Model):
     class Meta:
         # admin 페이지에서 조회할 때, 클래스명 대신 알아보기 쉬운 단어로 지정하는 것
         verbose_name = "기업"
+        verbose_name_plural = "기업"
         ordering = ["company_name"]
 
 # 객체 7개 (2015 ~ 2017)
-
 class Year(models.Model):
     bs_year = models.IntegerField(help_text="사업연도", blank=True, null=True)
     company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
@@ -26,11 +26,13 @@ class Year(models.Model):
     
     class Meta:
         verbose_name = "연도별 데이터"
+        verbose_name_plural = "연도별 데이터"
 
 # 객체 4개 (1/4, 2/4, 3/4, 4/4)
 class Quarter(models.Model):
     # report_code = models.IntegerField(help_text="보고서코드(분기 구분)", blank=False, null=False)  # 분기를 판단
-    qt_name = models.CharField(help_text="분기", max_length=30, blank=True, null=True)
+    qt_name = models.CharField(help_text="1분기:11013 2분기:11012 3분기보고서:11014 사업보고서:11011",\
+         max_length=30, blank=True, null=True)
     year = models.ForeignKey(Year, null=True, blank=True, on_delete=models.CASCADE)
     
     def __str__(self):
@@ -38,6 +40,7 @@ class Quarter(models.Model):
     
     class Meta:
         verbose_name = "분기별 데이터"
+        verbose_name_plural = "분기별 데이터"
 
 # 객체 2개 (linked or basic)
 # 연결/일반 재무제표 구분
@@ -50,11 +53,12 @@ class FS_LoB(models.Model):
     
     class Meta:
         verbose_name = "연결/일반"
+        verbose_name_plural = "연결/일반"
 
 # 객체 5개 (BS:재무상태표, IS:손익계산서, CIS:포괄손익계산서, CF:현금흐름표, SCE:자본변동표)
 class FS_Div(models.Model):
-    # sj_name = models.CharField(help_text="재무제표명(재무상태표 손익계산서...)", max_length=255, blank=False, null=False)
-    sj_div = models.CharField(help_text="재무제표구분(BS IS ...)", max_length=255, blank=True, null=True)
+    sj_div = models.CharField(help_text="재무제표구분(BS:재무상태표, IS:손익계산서, CIS:포괄손익계산서, CF:현금흐름표, SCE:자본변동표)",\
+         max_length=255, blank=True, null=True)
     lob = models.ForeignKey(FS_LoB, on_delete=models.CASCADE)
     
     def __str__(self):
@@ -62,6 +66,7 @@ class FS_Div(models.Model):
         
     class Meta:
         verbose_name = "재무제표구분"
+        verbose_name_plural = "재무제표구분"
 
 class FS_Account(models.Model):
     fs_div = models.ForeignKey(FS_Div, on_delete=models.CASCADE)
@@ -70,6 +75,10 @@ class FS_Account(models.Model):
     
     def __str__(self):
         return self.account_name
+
+    class Meta:
+        verbose_name = "계정명"
+        verbose_name_plural = "계정명"
 
 class Dart(models.Model):
     dart_code = models.CharField(help_text="고유번호",max_length=10, blank=True, null=True)
@@ -82,3 +91,4 @@ class Dart(models.Model):
 
     class Meta:
         verbose_name = "dart 정보"
+        verbose_name_plural = "dart 정보"
