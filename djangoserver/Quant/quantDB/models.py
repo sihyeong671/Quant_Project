@@ -15,18 +15,6 @@ class Company(models.Model):
         verbose_name = "기업"
         ordering = ["company_name"]
 
-# 재무제표
-class FinancialStatements(models.Model):
-    fs_name = models.CharField(help_text="재무제표명", max_length=255, blank=False, null=False)
-    company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
-    # OFS, CFS
-    
-    def __str__(self):
-        return self.fs_name
-    
-    class Meta:
-        verbose_name = "재무재표명"
-
 # 객체 7개 (2015 ~ 2017)
 
 class Year(models.Model):
@@ -34,7 +22,7 @@ class Year(models.Model):
     company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.bs_year
+        return str(self.bs_year)
     
     class Meta:
         verbose_name = "연도별 데이터"
@@ -66,8 +54,8 @@ class FS_LoB(models.Model):
 # 객체 5개 (BS:재무상태표, IS:손익계산서, CIS:포괄손익계산서, CF:현금흐름표, SCE:자본변동표)
 class FS_Div(models.Model):
     # sj_name = models.CharField(help_text="재무제표명(재무상태표 손익계산서...)", max_length=255, blank=False, null=False)
-    sj_div = models.CharField(help_text="재무제표구분(BS IS ...)", max_length=255, blank=False, null=False)
-    lb = models.ForeignKey(FS_LoB, on_delete=models.CASCADE)
+    sj_div = models.CharField(help_text="재무제표구분(BS IS ...)", max_length=255, blank=True, null=True)
+    lob = models.ForeignKey(FS_LoB, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.sj_div
@@ -77,7 +65,7 @@ class FS_Div(models.Model):
 
 class FS_Account(models.Model):
     fs_div = models.ForeignKey(FS_Div, on_delete=models.CASCADE)
-    account_name = models.CharField(help_text="계정명", max_length=255, blank=False, null=False)
+    account_name = models.CharField(help_text="계정명", max_length=255, blank=True, null=True)
     account_amount = models.IntegerField(help_text="계정명에 대한 자산", blank=True, null=True)
     
     def __str__(self):
