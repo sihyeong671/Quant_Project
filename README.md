@@ -1,7 +1,7 @@
 # Quant_Project
 
 ## 프로젝트 소개
-- 재무재표
+- 재무제표
 ---
 
 ## :file_folder: 폴더 설명
