@@ -26,14 +26,14 @@
                             {% for fd in lo.fs_div_set.all %}
                                 <td> {{fd.sj_div}} </td>
                                 {% for fsa in fd.fs_account_set.all %}
-                                    <td> {{fsa.account_name}} </td><td> {{fsa.account_amount}} </td>
+                                    <td> {{fsa.account_name}} </td>
+                                    <td> {{fsa.account_amount}} </td>
                                 {% endfor %}
                             {% endfor %}
                         {% endfor %}
                     {% endfor %}
                 {% endfor %}
                 
-                 
                 <td> {{com.Year.Quarter.qt_name}} </td> 
             </tr>
             {% endfor %}
