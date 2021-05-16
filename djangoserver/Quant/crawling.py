@@ -43,7 +43,7 @@ def dart_unique_key(api_key):
 
 def Get_Data(api_key,corp_code_,year_,quarter_,link_,link ):
     url = "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json?"
-    params = {'crtfc_key': api_key, 'corp_code': corp_code_, 'bsns_year': str(year_), 'reprt_code': quarter_, 'fs_div': link_}
+    params = {'crtfc_key': api_key, 'corp_code': corp_code_, 'bsns_year': year_, 'reprt_code': quarter_, 'fs_div': link_}
     res = rq.get(url, params)
     json_dict = json.loads(res.text)
     # items = ["rcept_no","reprt_code","bsns_year","sj_div","sj_nm","account_nm","account_detail","thstrm_amount"]
