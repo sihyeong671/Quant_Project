@@ -6,7 +6,6 @@
 
 ## :file_folder: 폴더 설명
 - djangoserver : Django 서버가 있는 폴더
-- webpage : Front-End 파일이 있는 폴더
 ---
 
 ## 개발 환경
@@ -18,6 +17,8 @@
 ## Python Package List
 - `django==3.1.3`
 - `pandas`
+- `requests`
+- `json`
 ---
 
 ## CONTRIBUTOR
@@ -34,6 +35,3 @@
 2. 띄어쓰기 = 언더바(_) 
 > `ex) this_is_variables`
 
-
-수정 또 수정.
-.
