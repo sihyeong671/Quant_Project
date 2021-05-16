@@ -39,9 +39,8 @@ def dart_unique_key(api_key):
             for item in items:
                 data[-1].append(child.find(item).text)
     return data
-    
 
-def Get_Data(api_key,corp_code_,year_,quarter_,link_,link ):
+def Get_Data(api_key,corp_code_,year_,quarter_,link_, link):
     url = "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json?"
     params = {'crtfc_key': api_key, 'corp_code': corp_code_, 'bsns_year': year_, 'reprt_code': quarter_, 'fs_div': link_}
     res = rq.get(url, params)
@@ -51,6 +50,9 @@ def Get_Data(api_key,corp_code_,year_,quarter_,link_,link ):
     if json_dict['status'] == "000": # 정상적으로 데이터 가져옴
         BS = FS_Div()
         BS.sj_div = "BS"
+        BS.lob = link
+        BS.save()
+        
         IS = FS_Div()
         IS.sj_div = "IS"
         CIS = FS_Div()
@@ -141,6 +143,3 @@ if __name__ == "__main__":
                             if count == 2:
                                 print('success')
                                 exit()
-
-
-
