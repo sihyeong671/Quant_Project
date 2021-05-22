@@ -12,86 +12,61 @@
 
     <main class="main">
 
-        <div class="sideBar">
-            <ul class="category">
-
-                <a href="">
-                    <li class="category_item">
-                        첫번째
-                    </li>
-                </a>
-
-                <a href="">
-                    <li class="category_item">
-                        두번째
-                    </li>
-                </a>
-
-                <a href="">
-                    <li class="category_item">
-                        세번째
-                    </li>
-                </a>
-
-            </ul>
-        </div>
-
         <div class="main_container">
-            
-            <!-- <article class="chart_view">
-                <div class="csr line_chart-wrapper">
-                    <canvas id="line_chart"></canvas>
-                </div>
 
-                <div class="csr rader_chart-wrapper">
-                    <canvas id="rader_chart"></canvas>
-                </div>
-
-                <div class="csr doughnut_chart-wrapper">
-                    <canvas id="doughnut_chart"></canvas>
-                </div>
-
-                <div class="csr polar_chart-wrapper">
-                    <canvas id="polar_chart"></canvas>
-                </div>
-            </article>
-            <button class="chartChanger">CLICK</button> -->
-            <form action="{% url 'quantDB:searchcompanyname' %}" method="GET">
-                <input type="text" placeholder="회사명" name="company_name" id="company_name">
-                <input type="submit" value="검색">
-            </form>
             <div class="statement_table-wrapper">
                 <table class="statement_table">
                     <thead class="statement_head">  
                         <tr>
+                            {% comment %} 
                             <th>회사명</th>
                             <th>연도</th>
                             <th>분기</th>
                             <th>재무재표 연결, 일반</th>
                             <th>재무재표 분류</th>
                             <th>계정명</th>
-                            <th>자산</th>
+                            <th>자산</th> 
+                            {% endcomment %}
                         </tr>
                     </thead>
                     <tbody class="statement_body">
-                        {% if company_list %}
+
                         {% for com in company_list %}
                         <tr>
+                            <td>종목명</td> 
                             <td> {{com.company_name}} </td> 
+                        </tr>
                             {% for y in com.year_set.all %}
+                            <tr>
+                                <td>연도</td>
                                 <td> {{y.bs_year}} </td>
-
+                            </tr>
                                 {% for q in y.quarter_set.all %}
+                                <tr>
+                                    <td>분기</td>
                                     <td> {{q.qt_name}} </td>
+                                </tr>    
 
-                                    {% for lo in q.fs_lob_set.all %}
-                                        <td> {{lo.lob}} </td>
+                                    {% for lo in q.fs_lob_set.all %}    
+                                        {% if lo.lob == 'CFS' %}
+                                            <tr>
+                                                <td>연결 / 비연결</td>
+                                                <td> {{lo.lob}} </td>
+                                            </tr>
+                                        {% endif %}
 
                                         {% for fd in lo.fs_div_set.all %}
-                                            <td> {{fd.sj_div}} </td>
+                                            {% if fd.sj_div == 'BS' %}
+                                                <tr>
+                                                    <td>재부재표 구분</td>
+                                                    <td> {{fd.sj_div}} </td>
+                                                </tr>
+                                            {% endif %}
 
                                             {% for fsa in fd.fs_account_set.all %}
+                                            <tr>
                                                 <td> {{fsa.account_name}} </td><td> {{fsa.account_amount}} </td>
+                                            </tr> 
                                             {% endfor %}
 
                                         {% endfor %}
@@ -101,9 +76,8 @@
                                 {% endfor %}
 
                             {% endfor %}
-                        </tr>
+
                         {% endfor %}
-                        {% endif %}
                     
                     </tbody>
                 </table>
@@ -114,12 +88,4 @@
     </main>
 
 </div>
-<script>
-    // var chartSet = JSON.parse("{{ chartJson|escapejs }}");  
-    const companySelect = document.getElementById('comSel');
-
-    companySelect.addEventListener('click', (e)=>{
-        console.log(companySelect.value);
-    });
-</script>
 {% endblock %}
