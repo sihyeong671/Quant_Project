@@ -50,9 +50,9 @@ def search_companyname(request):
         company = company_list.filter(
             Q(company_name__icontains=cname) # 회사명 검색
         ).distinct()
-    
-    
-    
+    else:
+        company = ""
+        
     context = {"company" : company, "cname" : cname}
     return render(request, 'search.html', context)
                
