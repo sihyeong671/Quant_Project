@@ -56,7 +56,10 @@
                 </div>
             </article>
             <button class="chartChanger">CLICK</button> -->
-
+            <form action="{% url 'quantDB:searchcompanyname' %}" method="GET">
+                <input type="text" placeholder="회사명" name="company_name" id="company_name">
+                <input type="submit" value="검색">
+            </form>
             <div class="statement_table-wrapper">
                 <table class="statement_table">
                     <thead class="statement_head">  
@@ -71,7 +74,7 @@
                         </tr>
                     </thead>
                     <tbody class="statement_body">
-
+                        {% if company_list %}
                         {% for com in company_list %}
                         <tr>
                             <td> {{com.company_name}} </td> 
@@ -100,6 +103,7 @@
                             {% endfor %}
                         </tr>
                         {% endfor %}
+                        {% endif %}
                     
                     </tbody>
                 </table>
