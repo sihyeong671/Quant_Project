@@ -15,6 +15,12 @@
         <div class="main_container">
 
             <div class="statement_table-wrapper">
+                <form action="{% url 'quantDB:searchcompanyname' %}" method="GET">
+                    <input type="text" placeholder="회사명" value="{{ cname|default_if_none:'' }}" name="company_name" id="company_name">
+                    {% comment %} <button onclick="search_companyname()"></button> {% endcomment %}
+                    <input type="submit" value="검색">
+                    
+                </form>
                 <table class="statement_table">
                     <thead class="statement_head">  
                         <tr>
@@ -30,8 +36,8 @@
                         </tr>
                     </thead>
                     <tbody class="statement_body">
-
-                        {% for com in company_list %}
+                        {% if company %}
+                        {% for com in company %}
                         <tr>
                             <td>종목명</td> 
                             <td> {{com.company_name}} </td> 
@@ -78,7 +84,7 @@
                             {% endfor %}
 
                         {% endfor %}
-                    
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
