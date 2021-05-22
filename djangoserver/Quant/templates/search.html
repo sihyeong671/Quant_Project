@@ -37,42 +37,44 @@
                     </thead>
                     <tbody class="statement_body">
                         {% if company %}
-                        {% for com in company %}
-                        <tr>
-                            <td>종목명</td> 
-                            <td> {{com.company_name}} </td> 
-                        </tr>
-                            {% for y in com.year_set.all %}
+                            {% for com in company %}
                             <tr>
-                                <td>연도</td>
-                                <td> {{y.bs_year}} </td>
+                                <td>종목명</td> 
+                                <td> {{com.company_name}} </td> 
                             </tr>
-                                {% for q in y.quarter_set.all %}
+                                {% for y in com.year_set.all %}
                                 <tr>
-                                    <td>분기</td>
-                                    <td> {{q.qt_name}} </td>
-                                </tr>    
+                                    <td>연도</td>
+                                    <td> {{y.bs_year}} </td>
+                                </tr>
+                                    {% for q in y.quarter_set.all %}
+                                    <tr>
+                                        <td>분기</td>
+                                        <td> {{q.qt_name}} </td>
+                                    </tr>    
 
-                                    {% for lo in q.fs_lob_set.all %}    
-                                        {% if lo.lob == 'CFS' %}
-                                            <tr>
-                                                <td>연결 / 비연결</td>
-                                                <td> {{lo.lob}} </td>
-                                            </tr>
-                                        {% endif %}
-
-                                        {% for fd in lo.fs_div_set.all %}
-                                            {% if fd.sj_div == 'BS' %}
+                                        {% for lo in q.fs_lob_set.all %}    
+                                            {% if lo.lob == 'CFS' %}
                                                 <tr>
-                                                    <td>재부재표 구분</td>
-                                                    <td> {{fd.sj_div}} </td>
+                                                    <td>연결 / 비연결</td>
+                                                    <td> {{lo.lob}} </td>
                                                 </tr>
                                             {% endif %}
 
-                                            {% for fsa in fd.fs_account_set.all %}
-                                            <tr>
-                                                <td> {{fsa.account_name}} </td><td> {{fsa.account_amount}} </td>
-                                            </tr> 
+                                            {% for fd in lo.fs_div_set.all %}
+                                                {% if fd.sj_div == 'BS' %}
+                                                    <tr>
+                                                        <td>재부재표 구분</td>
+                                                        <td> {{fd.sj_div}} </td>
+                                                    </tr>
+                                                {% endif %}
+
+                                                {% for fsa in fd.fs_account_set.all %}
+                                                <tr>
+                                                    <td> {{fsa.account_name}} </td><td> {{fsa.account_amount}} </td>
+                                                </tr> 
+                                                {% endfor %}
+
                                             {% endfor %}
 
                                         {% endfor %}
@@ -82,8 +84,6 @@
                                 {% endfor %}
 
                             {% endfor %}
-
-                        {% endfor %}
                         {% endif %}
                     </tbody>
                 </table>
