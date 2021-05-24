@@ -71,7 +71,7 @@ class FS_Div(models.Model):
 class FS_Account(models.Model):
     fs_div = models.ForeignKey(FS_Div, on_delete=models.CASCADE)
     account_name = models.CharField(help_text="계정명", max_length=255, blank=True, null=True)
-    account_amount = models.IntegerField(help_text="계정명에 대한 자산", blank=True, null=True)
+    account_amount = models.FloatField(help_text="계정명에 대한 자산", blank=True, null=True)
     
     def __str__(self):
         return self.account_name
@@ -90,5 +90,7 @@ class Dart(models.Model):
         return self.company_name_dart
 
     class Meta:
-        verbose_name = "dart 정보"
-        verbose_name_plural = "dart 정보"
+        verbose_name = "dart info"
+        verbose_name_plural = "dart info"
+
+
