@@ -20,10 +20,6 @@ from quantDB.models import Company, FS_LoB,\
 # pd.set_option('display.max_row', 300) # 행 갯수 늘려서 보는 옵션
 # pd.set_option('display.max_column', 100) # 열 갯수 늘려서 보는 옵션 
 
-
-def Update_data():
-    pass
-
 # krx 상장회사 종목코드 가져오기
 def Get_krx_corp():
     
@@ -147,10 +143,11 @@ def Get_Data(api_key,corp_code_,year_,quarter_,link_, link):
             money.save()
     else:
         print('dart error')
+        print(corp_code, year_,quarter_, link_)
         print(json_dict['status'])
 
-
-
+# data = Company.objects.all()
+# data.delete()
 
 if __name__ == "__main__":
     # k = "first"
@@ -162,7 +159,7 @@ if __name__ == "__main__":
             Dart(dart_code=data[0],company_name_dart=data[1],short_code=data[2],recent_modify=data[3]).save()
     elif k == "second":
         linklst = ["CFS", "OFS"] # link, basic
-        years = ["2019","2020"]
+        years = ["2020"]
         # years = ["2015", "2016", "2017","2018","2019","2020"]
 
         # 기업 데이터 이미 있는지 확인 하는 코드 추가
@@ -171,7 +168,7 @@ if __name__ == "__main__":
 
         dart_codes = Dart.objects.all()
 
-        count = 0
+        count = 1
         # 상폐된거 인식해줘야함
         # 013 => 데이터 없음
         for code in dart_codes:
@@ -183,7 +180,7 @@ if __name__ == "__main__":
                 year.bs_year = int(y)
                 year.company = company
                 year.save()
-                time.sleep(0.1)
+                time.sleep(8)
                 for q in quarters:
                     quarter = Quarter()
                     quarter.qt_name = q
@@ -194,10 +191,10 @@ if __name__ == "__main__":
                         link.lob = l
                         link.quarter = quarter
                         link.save()
-                        count += 1 
+                        count += 1
                         Get_Data(api_key, code.dart_code, y, q, l, link)
                         
-                        if count == 100:
+                        if count == 10000:
                             exit()
                             
 

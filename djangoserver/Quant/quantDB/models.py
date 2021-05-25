@@ -72,7 +72,7 @@ class FS_Account(models.Model):
     fs_div = models.ForeignKey(FS_Div, on_delete=models.CASCADE)
     account_name = models.CharField(help_text="계정명", max_length=255, blank=True, null=True)
     account_amount = models.FloatField(help_text="계정명에 대한 자산", blank=True, null=True)
-    
+    account_detail = models.CharField(help_text="계정상세", max_length=255, blank=True, null=True)
     def __str__(self):
         return self.account_name
 
