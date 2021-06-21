@@ -26,22 +26,8 @@ def find_state(request):
     
     context = {'company_list' : company_list}
     
-    return render(request, 'chart.html', context)
+    return render(request, 'chart/chart.html', context)
 
-def show_chart(request):
-    chart_dataset = { 
-        '1': 10, 
-        '2': 30,
-        '3': 45,
-        '4': 70,
-        '5': 20,
-    } 
-    chartJson = json.dumps(chart_dataset)
-    context = {
-        'chartJson' : chartJson,
-    }
-    return render(request, 'chart.html', context)
-    
 def search_companyname(request):
     cname = request.GET.get('company_name', '')  # 회사명
 
