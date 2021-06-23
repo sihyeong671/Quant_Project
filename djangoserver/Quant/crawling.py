@@ -182,7 +182,6 @@ def make_company_obje(dartcode):
         company.save()
         return company
 
-
 def make_year_obje(comp:Company, year:str):
     # company 객체를 가져와서 해당 company 객체에 인자로 받은 year가 존재하면 그대로 반환
     for y in comp.year_set.all():
@@ -192,7 +191,6 @@ def make_year_obje(comp:Company, year:str):
     y = Year(company=comp, bs_year=int(year))
     y.save()
     return y
-
 
 def make_quarter_obje(year:Year, quarter:str):
     # year 객체를 가져와서 해당 year 객체에 인자로 받은 quarter가 존재하면 그대로 반환
@@ -208,16 +206,16 @@ def make_islink_obje(quarter:Quarter, islink:str):
     # year 객체를 가져와서 해당 year 객체에 인자로 받은 quarter가 존재하면 그대로 반환
     for l in quarter.fs_lob_set.all():
         if l.lob == islink:
-            return l
+            return l, False
 
     l = FS_LoB(quarter=quarter, lob=islink)
     l.save()
-    return l
+    return l, True
 
 if __name__ == "__main__":
     # k = "first"
-    # k = "second"
-    k = "third"
+    k = "second"
+    # k = "third"
 
     if k == "first":
         dart_data = Dart_Unique_Key(api_key)
@@ -225,65 +223,29 @@ if __name__ == "__main__":
             Dart(dart_code=data[0],company_name_dart=data[1],short_code=data[2],recent_modify=data[3]).save()
     elif k == "second":
         linklst = ["CFS", "OFS"] # link, basic
-        years = ["2019","2020"]
-        # years = ["2015", "2016", "2017","2018","2019","2020"]
+        years = ["2015","2016","2017","2018","2019","2020"]
         # 기업 데이터 이미 있는지 확인 하는 코드 추가
-        # api 받아오는거 없으면 pass
         quarters = ["11013", "11014", "11012", "11011"]
 
         dart_codes = Dart.objects.all()
-
-        # 013 => 데이터 없음
         count = 1
+        # 013 => 데이터 없음
         company_list = Company.objects.all()
         for code in dart_codes:
-            check = False
-            # company = company_list.filter(company_name=code.company_name_dart)
-            company = ''
-            for company_ in company_list:
-                if company_.company_name == code.company_name_dart:
-                    company = company_
-                    check = True
-                    break
-            if not check:
-                company = Company(short_code=code.short_code, company_name=code.company_name_dart)
-                company.save()
+            company = make_company_obje(code)
             for y in years:
-                time.sleep(1)
-                check = False
-                for year_ in company.year_set.all():
-                    if year_.bs_year == int(y):
-                        check = True
-                        break
-                if not check:
-                    year = Year()
-                    year.bs_year = int(y)
-                    year.company = company
-                    year.save()
+                year = make_year_obje(company, int(y))
                 for q in quarters:
-                    check = False
-                    for quarter_ in company.year.quarter_set.all():
-                        check = True
-                        break
-                    if not check:
-                        quarter = Quarter()
-                        quarter.qt_name = q
-                        quarter.year = year
-                        quarter.save()
+                    quarter = make_quarter_obje(year, q)
                     for l in linklst:
-                        check = False
-                        for link_ in company.year.quarter.fs_LoB_set.all():
-                            check = True
-                            break
-                        if not check:
-                            link = FS_LoB()
-                            link.lob = l
-                            link.quarter = quarter
-                            link.save()
+                        link, check = make_islink_obje(quarter, l)
+                        if check:
                             count += 1
-                            Get_Data(api_key, code.dart_code, y, q, l, link)
-                            if count == 100:
+                            if count == 1000:
                                 exit()
+                            Get_Data(api_key, code.dart_code, y, q, l, link)
+                            # 정정공시 따로 함수 만들기
+                            
                         
     elif k =="third":
         Daily_Crawling()
