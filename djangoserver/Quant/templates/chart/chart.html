@@ -56,21 +56,6 @@
                 {% for y in com.year_set.all %}
                   <td> {{y.bs_year}} </td>
 
-<<<<<<< HEAD
-                  {% for q in y.quarter_set.all %}
-                    <td> {{q.qt_name}} </td>
-
-                    {% for lo in q.fs_lob_set.all %}
-                      <td> {{lo.lob}} </td>
-
-                      {% for fd in lo.fs_div_set.all %}
-                        <td> {{fd.sj_div}} </td>
-
-                        {% for fsa in fd.fs_account_set.all %}
-
-                          <td> {{fsa.account_name}} </td>
-                          <td> {{fsa.account_amount}} </td>
-=======
     <header class="header">
         <h1 class="LOGO">퀀트 기획</h1>
     </header>
@@ -83,15 +68,6 @@
                 <table class="statement_table">
                     <thead class="statement_head">  
                         <tr>
-                            {% comment %} 
-                            <th>회사명</th>
-                            <th>연도</th>
-                            <th>분기</th>
-                            <th>재무재표 연결, 일반</th>
-                            <th>재무재표 분류</th>
-                            <th>계정명</th>
-                            <th>자산</th> 
-                            {% endcomment %}
                         </tr>
                     </thead>
                     <tbody class="statement_body">
@@ -142,7 +118,6 @@
 
                             {% endfor %}
 
->>>>>>> 5e10ce9cb9a87165107ef68707072e9657851fce
                         {% endfor %}
 
                       {% endfor %}

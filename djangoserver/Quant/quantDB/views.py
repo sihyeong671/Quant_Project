@@ -26,8 +26,8 @@ def find_state(request):
     
     context = {'company_list' : company_list}
     
-    return render(request, 'chart.html', context)
-    
+    return render(request, 'chart/chart.html', context)
+
 def search_companyname(request):
     cname = request.GET.get('company_name', '')  # 회사명
 
