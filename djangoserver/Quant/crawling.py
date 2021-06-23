@@ -8,6 +8,9 @@ import API_KEY
 import os
 import django
 import time
+from datetime import date
+from pykrx import stock
+from django.db.models import Q
 
 api_key = API_KEY.APIKEY
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', "config.settings")
@@ -15,13 +18,29 @@ django.setup()
 
 from quantDB.models import Dart
 from quantDB.models import Company, FS_LoB,\
-    FS_Div, Quarter, Year, FS_Account, Dart
+    FS_Div, Quarter, Year, FS_Account, Dart, Corpdata
 
-# pd.set_option('display.max_row', 300) # 행 갯수 늘려서 보는 옵션
-# pd.set_option('display.max_column', 100) # 열 갯수 늘려서 보는 옵션 
+pd.set_option('display.max_row', 300) # 행 갯수 늘려서 보는 옵션
+pd.set_option('display.max_column', 100) # 열 갯수 늘려서 보는 옵션 
+
+def Daily_Crawling():
+    today = date.today().isoformat().replace('-', '')
+    df_market_cap = stock.get_market_cap_by_ticker(today, market="ALL") # index -> ticker == shortcode
+    df_p2 = stock.get_market_fundamental_by_ticker(today, market="ALL")
+    corpdata = Corpdata()
+
+    for idx in range(len(df_market_cap)):
+        corpdata.company = Company.objects.filter(short_code=df_market_cap.index[idx])
+        corpdata.market_cap = df_market_cap["시가총액"][idx]
+
+    for idx in range(len(df_p2)):
+        corpdata.company = Company.objects.filter(short_code=df_p2.index[idx])
+        corpdata.pbr = df_p2["PBR"][idx]
+        corpdata.per = df_p2["PER"][idx]
+    corpdata.save()
 
 # krx 상장회사 종목코드 가져오기
-def Get_krx_corp():
+def Get_Krx_Corp():
     
     generate_url = 'http://data.krx.co.kr/comm/fileDn/GenerateOTP/generate.cmd'
     generate_param = {
@@ -67,7 +86,7 @@ def Get_krx_corp():
     
     return corp['종목코드']
 
-def Dart_unique_key(api_key):
+def Dart_Unique_Key(api_key):
     # dart에서 고유번호 가져오기
     items = ["corp_code", "corp_name", "stock_code", "modify_date"]  # OpenApi에서 주는 정보
     # item_names = ["고유번호", "회사명", "종목코드", "최종변경일자"]
@@ -78,7 +97,7 @@ def Dart_unique_key(api_key):
     # xml 파일 파싱하기
     root = et.fromstring(tree.read().decode('utf-8'))
     data = []
-    krx_short_code = list(Get_krx_corp())
+    krx_short_code = list(Get_Krx_Corp())
     for child in root:      
         # 상장회사만 가져오기
         dart_short_code = child.find('stock_code').text.strip()
@@ -120,6 +139,7 @@ def Get_Data(api_key,corp_code_,year_,quarter_,link_, link):
         for fs_lst in json_dict['list']: # 한 행씩 가져오기
             money = FS_Account()
             money.account_name = fs_lst["account_nm"]
+            money.account_detail = fs_lst["account_detail"]
             if fs_lst["thstrm_amount"] == '':
                 money.account_amount = 0
             else:
@@ -143,58 +163,87 @@ def Get_Data(api_key,corp_code_,year_,quarter_,link_, link):
             money.save()
     else:
         print('dart error')
-        print(corp_code, year_,quarter_, link_)
+        print(corp_code_, year_,quarter_, link_)
         print(json_dict['status'])
+        print("\n\n")
 
+## delete data ##
 # data = Company.objects.all()
 # data.delete()
 
+
 if __name__ == "__main__":
     # k = "first"
-    k = "second"
+    # k = "second"
+    k = "third"
 
     if k == "first":
-        dart_data = Dart_unique_key(api_key)
+        dart_data = Dart_Unique_Key(api_key)
         for data in dart_data:
             Dart(dart_code=data[0],company_name_dart=data[1],short_code=data[2],recent_modify=data[3]).save()
     elif k == "second":
         linklst = ["CFS", "OFS"] # link, basic
-        years = ["2020"]
+        years = ["2019","2020"]
         # years = ["2015", "2016", "2017","2018","2019","2020"]
-
         # 기업 데이터 이미 있는지 확인 하는 코드 추가
         # api 받아오는거 없으면 pass
         quarters = ["11013", "11014", "11012", "11011"]
 
         dart_codes = Dart.objects.all()
 
-        count = 1
-        # 상폐된거 인식해줘야함
         # 013 => 데이터 없음
+        count = 1
+        company_list = Company.objects.all()
         for code in dart_codes:
-            company = Company()
-            company.company_name = code.company_name_dart
-            company.save()
+            check = False
+            # company = company_list.filter(company_name=code.company_name_dart)
+            company = ''
+            for company_ in company_list:
+                if company_.company_name == code.company_name_dart:
+                    company = company_
+                    check = True
+                    break
+            if not check:
+                company = Company(short_code=code.short_code, company_name=code.company_name_dart)
+                company.save()
             for y in years:
-                year = Year()
-                year.bs_year = int(y)
-                year.company = company
-                year.save()
-                time.sleep(8)
+                time.sleep(1)
+                check = False
+                for year_ in company.year_set.all():
+                    if year_.bs_year == int(y):
+                        check = True
+                        break
+                if not check:
+                    year = Year()
+                    year.bs_year = int(y)
+                    year.company = company
+                    year.save()
                 for q in quarters:
-                    quarter = Quarter()
-                    quarter.qt_name = q
-                    quarter.year = year
-                    quarter.save()
+                    check = False
+                    for quarter_ in company.year.quarter_set.all():
+                        check = True
+                        break
+                    if not check:
+                        quarter = Quarter()
+                        quarter.qt_name = q
+                        quarter.year = year
+                        quarter.save()
                     for l in linklst:
-                        link = FS_LoB()
-                        link.lob = l
-                        link.quarter = quarter
-                        link.save()
-                        count += 1
-                        Get_Data(api_key, code.dart_code, y, q, l, link)
+                        check = False
+                        for link_ in company.year.quarter.fs_LoB_set.all():
+                            check = True
+                            break
+                        if not check:
+                            link = FS_LoB()
+                            link.lob = l
+                            link.quarter = quarter
+                            link.save()
+                            count += 1
+                            Get_Data(api_key, code.dart_code, y, q, l, link)
+                            if count == 100:
+                                exit()
                         
-                        if count == 10000:
-                            exit()
+    elif k =="third":
+        Daily_Crawling()
                             
 

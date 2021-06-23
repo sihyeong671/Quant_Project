@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Company, FS_LoB,\
     FS_Div, Quarter, Year, FS_Account
 import json
+from django.http import HttpResponse
+from django.db.models import Q
 # Create your views here.
 
 
@@ -25,20 +27,22 @@ def find_state(request):
     context = {'company_list' : company_list}
     
     return render(request, 'chart.html', context)
+    
+def search_companyname(request):
+    cname = request.GET.get('company_name', '')  # 회사명
 
-def show_chart(request):
-    chart_dataset = { 
-        '1': 10, 
-        '2': 30,
-        '3': 45,
-        '4': 70,
-        '5': 20,
-    } 
-    chartJson = json.dumps(chart_dataset)
-    context = {
-        'chartJson' : chartJson,
-    }
-    return render(request, 'chart.html', context)
+    company_list = Company.objects.order_by('-company_name')
+    if cname:
+        company = company_list.filter(
+            Q(company_name__icontains=cname) # 회사명 검색
+        ).distinct()
+    else:
+        company = ""
+        
+    context = {"company" : company, "cname" : cname}
+    return render(request, 'search.html', context)
+
+    
 
 
 

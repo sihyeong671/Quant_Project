@@ -4,8 +4,10 @@ from django.db import models
 # item_names = ["접수번호","보고서코드","사업연도","재무제표구분","재무제표명","계정명","계정상세","당기금액"]
 
 # 객체 n개
+
 class Company(models.Model):
     company_name = models.CharField(max_length=200, null=False)
+    short_code = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return self.company_name
@@ -30,9 +32,8 @@ class Year(models.Model):
 
 # 객체 4개 (1/4, 2/4, 3/4, 4/4)
 class Quarter(models.Model):
-    # report_code = models.IntegerField(help_text="보고서코드(분기 구분)", blank=False, null=False)  # 분기를 판단
     qt_name = models.CharField(help_text="1분기:11013 2분기:11012 3분기보고서:11014 사업보고서:11011",\
-         max_length=30, blank=True, null=True)
+        max_length=30, blank=True, null=True)
     year = models.ForeignKey(Year, null=True, blank=True, on_delete=models.CASCADE)
     
     def __str__(self):
@@ -93,4 +94,12 @@ class Dart(models.Model):
         verbose_name = "dart info"
         verbose_name_plural = "dart info"
 
+class Corpdata(models.Model):
+    market_cap = models.IntegerField(help_text="시가총액", null=True, blank=True)
+    per = models.FloatField(help_text="PER", null=True, blank=True)
+    pbr = models.FloatField(help_text="PBR", null=True, blank=True)
+    company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name = "일별 데이터"
+        verbose_name_plural = "일별 데이터"

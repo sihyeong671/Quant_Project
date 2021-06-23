@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import Company, Year, Quarter, FS_Div, \
-    FS_LoB, FS_Account, Dart
+    FS_LoB, FS_Account, Dart,Corpdata
 
 # class CompanyAdmin(admin.ModelAdmin):
 #     search_fields = ['company_name']
@@ -15,3 +15,4 @@ admin.site.register(FS_LoB)
 admin.site.register(FS_Div)
 admin.site.register(FS_Account)
 admin.site.register(Dart)
+admin.site.register(Corpdata)
