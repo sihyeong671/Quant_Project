@@ -171,6 +171,48 @@ def Get_Data(api_key,corp_code_,year_,quarter_,link_, link):
 # data = Company.objects.all()
 # data.delete()
 
+def make_company_obje(dartcode):
+    cmpname = dartcode.company_name_dart
+    # dart에서 가져온 company이름과 동일한 이름을 가진 company 객체가 있다면 그대로 반환
+    try:
+        company = Company.objects.get(company_name=cmpname)
+        return company
+    except:
+        company = Company(company_name = cmpname)
+        company.save()
+        return company
+
+
+def make_year_obje(comp:Company, year:str):
+    # company 객체를 가져와서 해당 company 객체에 인자로 받은 year가 존재하면 그대로 반환
+    for y in comp.year_set.all():
+        if y.bs_year == int(year):
+            return y
+
+    y = Year(company=comp, bs_year=int(year))
+    y.save()
+    return y
+
+
+def make_quarter_obje(year:Year, quarter:str):
+    # year 객체를 가져와서 해당 year 객체에 인자로 받은 quarter가 존재하면 그대로 반환
+    for q in year.quarter_set.all():
+        if q.qt_name == quarter:
+            return q
+
+    q = Quarter(year=year, qt_name=quarter)
+    q.save()
+    return q
+    
+def make_islink_obje(quarter:Quarter, islink:str):
+    # year 객체를 가져와서 해당 year 객체에 인자로 받은 quarter가 존재하면 그대로 반환
+    for l in quarter.fs_lob_set.all():
+        if l.lob == islink:
+            return l
+
+    l = FS_LoB(quarter=quarter, lob=islink)
+    l.save()
+    return l
 
 if __name__ == "__main__":
     # k = "first"
