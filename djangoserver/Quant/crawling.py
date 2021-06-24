@@ -173,12 +173,13 @@ def Get_Data(api_key,corp_code_,year_,quarter_,link_, link):
 
 def make_company_obje(dartcode):
     cmpname = dartcode.company_name_dart
+    cmpcode = dartcode.short_code
     # dart에서 가져온 company이름과 동일한 이름을 가진 company 객체가 있다면 그대로 반환
     try:
         company = Company.objects.get(company_name=cmpname)
         return company
     except:
-        company = Company(company_name = cmpname)
+        company = Company(company_name = cmpname, short_code = cmpcode)
         company.save()
         return company
 
@@ -241,7 +242,9 @@ if __name__ == "__main__":
                         link, check = make_islink_obje(quarter, l)
                         if check:
                             count += 1
-                            if count == 1000:
+                            if count % 1000 == 0:
+                                time.sleep(5)
+                            elif count == 10000:
                                 exit()
                             Get_Data(api_key, code.dart_code, y, q, l, link)
                             # 정정공시 따로 함수 만들기
