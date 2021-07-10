@@ -1,13 +1,10 @@
-import requests as rq
-import pandas as pd
-from io import BytesIO
-import zipfile
-import xml.etree.ElementTree as et
 import json
-import API_KEY
 import os
 import django
 import time
+from datetime import date
+from pykrx import stock
+from django.db.models import Q
 
 api_key = API_KEY.APIKEY
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', "config.settings")
@@ -15,43 +12,40 @@ django.setup()
 
 from quantDB.models import Dart
 from quantDB.models import Company, FS_LoB,\
-    FS_Div, Quarter, Year, FS_Account, Dart
-from django.db.models import Q
+    FS_Div, Quarter, Year, FS_Account, Dart, Corpdata
 
-# pd.set_option('display.max_row', 300) # 행 갯수 늘려서 보는 옵션
-# pd.set_option('display.max_column', 100) # 열 갯수 늘려서 보는 옵션 
+pd.set_option('display.max_row', 300) # 행 갯수 늘려서 보는 옵션
+pd.set_option('display.max_column', 100) # 열 갯수 늘려서 보는 옵션 
 
-def dart_unique_key(api_key):
-    # dart에서 고유번호 가져오기
-    items = ["corp_code", "corp_name", "stock_code", "modify_date"]  # OpenApi에서 주는 정보
-    # item_names = ["고유번호", "회사명", "종목코드", "최종변경일자"]
-    url = "https://opendart.fss.or.kr/api/corpCode.xml?crtfc_key={}".format(api_key)
-    resp = rq.get(url)
-    zfile = zipfile.ZipFile(BytesIO(resp.content))
-    tree = zfile.open(zfile.namelist()[0])  # 압축파일 내의 CORPCODE.xml 열기
-    # xml 파일 파싱하기
-    root = et.fromstring(tree.read().decode('utf-8'))
-    # print(root)
-    data = []
-    for child in root:
-        # 상장회사만 가져오기
-        if len(child.find('stock_code').text.strip()) > 1:  # stock_code 없는 기업 제외
-            data.append([])
-            for item in items:
-                data[-1].append(child.find(item).text)
-    return data
+# def Daily_Crawling():
+#     today = date.today().isoformat().replace('-', '')
+#     df_market_cap = stock.get_market_cap_by_ticker(today, market="ALL") # index -> ticker == shortcode
+#     df_p2 = stock.get_market_fundamental_by_ticker(today, market="ALL")
+#     corpdata = Corpdata()
+
+#     for idx in range(len(df_market_cap)):
+#         corpdata.company = Company.objects.filter(short_code=df_market_cap.index[idx])
+#         corpdata.market_cap = df_market_cap["시가총액"][idx]
+
+#     for idx in range(len(df_p2)):
+#         corpdata.company = Company.objects.filter(short_code=df_p2.index[idx])
+#         corpdata.pbr = df_p2["PBR"][idx]
+#         corpdata.per = df_p2["PER"][idx]
+#     corpdata.save()
+
+# krx 상장회사 종목코드 가져오기
+
+
+
 
 def Get_Data(api_key,corp_code_,year_,quarter_,link_, link):
     url = "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json?"
     params = {'crtfc_key': api_key, 'corp_code': corp_code_, 'bsns_year': year_, 'reprt_code': quarter_, 'fs_div': link_}
     res = rq.get(url, params)
     json_dict = json.loads(res.text)
-    # items = ["rcept_no","reprt_code","bsns_year","sj_div","sj_nm","account_nm","account_detail","thstrm_amount"]
-    # item_names = ["접수번호","보고서코드","사업연도","재무제표구분","재무제표명","계정명","계정상세","당기금액"]
     if json_dict['status'] == "000": # 정상적으로 데이터 가져옴
         BS = FS_Div()
         BS.sj_div = "BS"
-        
         IS = FS_Div()
         IS.sj_div = "IS"
         CIS = FS_Div()
@@ -76,6 +70,7 @@ def Get_Data(api_key,corp_code_,year_,quarter_,link_, link):
         for fs_lst in json_dict['list']: # 한 행씩 가져오기
             money = FS_Account()
             money.account_name = fs_lst["account_nm"]
+            money.account_detail = fs_lst["account_detail"]
             if fs_lst["thstrm_amount"] == '':
                 money.account_amount = 0
             else:
@@ -97,21 +92,27 @@ def Get_Data(api_key,corp_code_,year_,quarter_,link_, link):
                 money.fs_div = SCE
 
             money.save()
+    else:
+        print('dart error')
+        print(corp_code_, year_,quarter_, link_)
+        print(json_dict['status'])
+        print("\n\n")
 
-
-# financial_data(api_key,"00126380")
+## delete data ##
+# data = Company.objects.all()
+# data.delete()
 
 def make_company_obje(dartcode):
     cmpname = dartcode.company_name_dart
+    cmpcode = dartcode.short_code
     # dart에서 가져온 company이름과 동일한 이름을 가진 company 객체가 있다면 그대로 반환
     try:
         company = Company.objects.get(company_name=cmpname)
         return company
     except:
-        company = Company(company_name = cmpname)
+        company = Company(company_name = cmpname, short_code = cmpcode)
         company.save()
         return company
-
 
 def make_year_obje(comp:Company, year:str):
     # company 객체를 가져와서 해당 company 객체에 인자로 받은 year가 존재하면 그대로 반환
@@ -122,7 +123,6 @@ def make_year_obje(comp:Company, year:str):
     y = Year(company=comp, bs_year=int(year))
     y.save()
     return y
-
 
 def make_quarter_obje(year:Year, quarter:str):
     # year 객체를 가져와서 해당 year 객체에 인자로 받은 quarter가 존재하면 그대로 반환
@@ -138,50 +138,50 @@ def make_islink_obje(quarter:Quarter, islink:str):
     # year 객체를 가져와서 해당 year 객체에 인자로 받은 quarter가 존재하면 그대로 반환
     for l in quarter.fs_lob_set.all():
         if l.lob == islink:
-            return l
+            return l, False
 
     l = FS_LoB(quarter=quarter, lob=islink)
     l.save()
-    return l
+    return l, True
 
 if __name__ == "__main__":
     # k = "first"
     k = "second"
+    # k = "third"
 
     if k == "first":
-        DART_data = dart_unique_key(api_key)
-        for data in DART_data:
-            Dart(dart_code=data[0],company_name_dart=data[1],short_code=data[2],recent_modify =data[3]).save()
+        dart_data = Dart_Unique_Key(api_key)
+        for data in dart_data:
+            Dart(dart_code=data[0],company_name_dart=data[1],short_code=data[2],recent_modify=data[3]).save()
     elif k == "second":
         linklst = ["CFS", "OFS"] # link, basic
-        years = ["2019","2020"]
-        # years = ["2015", "2016", "2017","2018","2019","2020"]
-
+        years = ["2015","2016","2017","2018","2019","2020"]
+        # 기업 데이터 이미 있는지 확인 하는 코드 추가
         quarters = ["11013", "11014", "11012", "11011"]
+
         dart_codes = Dart.objects.all()
-        count = 0
+        count = 1
+        # 013 => 데이터 없음
+        company_list = Company.objects.all()
         for code in dart_codes:
-            if code.dart_code == "00274933":
-                company = Company()
-                company.company_name = code.company_name_dart
-                company.save()
-                for y in years:
-                    year = Year()
-                    year.bs_year = int(y)
-                    year.company = company
-                    year.save()
-                    for q in quarters:
-                        quarter = Quarter()
-                        quarter.qt_name = q
-                        quarter.year = year
-                        quarter.save()
-                        for l in linklst:
-                            link = FS_LoB()
-                            link.lob = l
-                            link.quarter = quarter
-                            link.save()
-                            count += 1 
-                            Get_Data(api_key, code.dart_code, y, q, l, link)
-                            if count == 2:
-                                print('success')
+            company = make_company_obje(code)
+            for y in years:
+                year = make_year_obje(company, int(y))
+                for q in quarters:
+                    quarter = make_quarter_obje(year, q)
+                    for l in linklst:
+                        link, check = make_islink_obje(quarter, l)
+                        if check:
+                            count += 1
+                            if count % 1000 == 0:
+                                time.sleep(5)
+                            elif count == 10000:
                                 exit()
+                            Get_Data(api_key, code.dart_code, y, q, l, link)
+                            # 정정공시 따로 함수 만들기
+                            
+                        
+    elif k =="third":
+        Daily_Crawling()
+                            
+
