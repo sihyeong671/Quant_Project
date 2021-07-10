@@ -1,3 +1,16 @@
-APIKEY = "7bd0686ed4f0d6ae5dd1b27866d99b9cf12c1e09"
+from pathlib import Path
+import os
+import environ
 
-USERAGENT = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0"
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+environ.Env.read_env(
+    env_file=os.path.join(BASE_DIR, '.env')
+)
+
+APIKEY = env('APIKEY')
+USERAGENT = env('USERAGENT')
