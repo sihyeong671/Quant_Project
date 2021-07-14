@@ -4,28 +4,18 @@ from .models import Company, FS_LoB,\
 import json
 from django.http import HttpResponse
 from django.db.models import Q
-# Create your views here.
+
+from .bs import list
 
 
 def find_state(request):
     company_list = Company.objects.all()
+
+    il = list
+
+    context = {'company_list' : company_list, 'il' : il}
     
-    # start_date = request.stdate
-    # end_date = request.eddate
-    
-    # com_name_list = []
-    # year_list = []
-    # quarter_list = []
-    
-    
-    # for com in company_list:
-    #     b_list.append(com.fs.quarter.benefit)
-    #     com_name_list.append(com.company_name)
-    
-    # data_list = [b_list, com_name_list]
-    
-    context = {'company_list' : company_list}
-    
+    # return render(request, 'chart/chart.html', context)
     return render(request, 'chart/chart.html', context)
 
 def search_companyname(request):
