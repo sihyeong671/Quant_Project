@@ -1,9 +1,9 @@
 from django.urls import path
+from .views import View_All_Data
 
-from . import views
 
-app_name = "quantDB"
+app_name = "DBmanageapp"
 
 urlpatterns = [
-    path('', views.find_state, name='find_state'),
+  path('', View_All_Data.as_view(), name="company_list"), 
 ]

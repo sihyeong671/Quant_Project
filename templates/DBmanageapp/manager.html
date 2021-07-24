@@ -1,0 +1,20 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+
+  {% if company_data %}
+  <div>
+    {% for company in company_data %}
+    <ul>
+      {{ company.company_name }}
+    </ul>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div>
+    <span> No Data </span>
+  </div>
+  {% endif %}
+
+{% endblock %}

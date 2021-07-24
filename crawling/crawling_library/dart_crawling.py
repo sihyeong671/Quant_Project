@@ -139,6 +139,8 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                                 sub_money.account_amount = 0
                             else:
                                 sub_money.account_amount = fs_lst["thstrm_amount"]
+                        else:
+                            continue
             else:
                 money.account_name = fs_lst["account_nm"]
                 money.account_detail = fs_lst["account_detail"]
