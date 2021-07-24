@@ -5,9 +5,26 @@ import zipfile
 from io import BytesIO
 import time
 from krx_crawling import Get_Krx_Short_Code
+from bs4 import BeautifulSoup
 
 # print(datetime.today().strftime("%Y%m%d"))
 
+# 재무제표 viewDoc파라미터 찾기
+def find_parameter(string: str, fs_name: str) -> list:
+    pointer_1 = 0
+    pointer_2 = 0
+
+    for i in range(2000, len(string)):
+        if string[i-len(fs_name):i] == fs_name:
+            for j in range(i, len(string)):
+                if string[j-7:j] == "viewDoc":
+                    pointer_1 = j
+                    continue
+                elif string[j] == ";":
+                    pointer_2 = j
+                    param = string[pointer_1+1:pointer_2-1]
+                    lst = param.replace("'", "").split(", ")
+                    return lst
 
 # dart에서 고유번호 가져오기
 def Dart_Unique_Key(api_key) -> list:
@@ -37,10 +54,48 @@ def Dart_Unique_Key(api_key) -> list:
 
 def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
 
-    url = "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json?"
+    dart_url = "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json?"
     params = {'crtfc_key': api_key, 'corp_code': corp_code, 'bsns_year': year, 'reprt_code': quarter, 'fs_div': link_state}
-    res = rq.get(url, params)
+    res = rq.get(dart_url, params)
     json_dict = json.loads(res.text)
+    report_number = json_dict['list'][0]['rcept_no']
+
+    fs_url = f'http://dart.fss.or.kr/dsaf001/main.do?rcpNo={report_number}'
+    fs_res = rq.get(fs_url)
+
+    fs_soup = BeautifulSoup(fs_res.text, "lxml")
+    script_content = str(fs_soup.find_all('script')[-2].string)
+
+    if link_state == "CFS":
+        parameter_list = find_parameter(script_content, "연결재무제표")
+    else:
+        parameter_list = find_parameter(script_content, "재무제표")
+
+    bs_url = f"http://dart.fss.or.kr/report/viewer.do?rcpNo={parameter_list[0]}" \
+    f"&dcmNo={parameter_list[1]}" \
+    f"&eleId={parameter_list[2]}" \
+    f"&offset={parameter_list[3]}" \
+    f"&length={parameter_list[4]}" \
+    f"&dtd={parameter_list[5]}"
+
+    bs_res = rq.get(bs_url)
+    bs_soup = BeautifulSoup(bs_res.text, "lxml") # html.parser 도 가능
+
+    bs_tree = {}
+    now = ''
+    for a in bs_soup.find_all("p"):
+        account = a.text
+        if len(account) > 0:
+            if account[0] == '　':
+                if account[1] == '　':
+                    if account[2] == '　':
+                        continue
+                    bs_tree[now].append(account.replace('　', ""))
+                else:
+                    now = account.replace('　', "")
+                    bs_tree[now] = []
+        if account == "자본과부채총계":
+            break
 
     if json_dict['status'] == "000": # 정상적으로 데이터 가져옴
         BS = FS_Div()
@@ -71,12 +126,27 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
 
         for fs_lst in json_dict['list']: # 한 행씩 가져오기
             money = FS_Account()
-            money.account_name = fs_lst["account_nm"]
-            money.account_detail = fs_lst["account_detail"]
-            if fs_lst["thstrm_amount"] == '':
-                money.account_amount = 0
+            if fs_lst["sj_div"] == "BS":
+                if fs_lst["account_nm"] not in bs_tree.keys():
+                    # need to change(simplify)
+                    for child in bs_tree.values():
+                        if fs_lst["account_nm"] in child:
+                            sub_money = SUB_Account()
+                            sub_money.pre_account = money
+                            sub_money.account_name = fs_lst["account_nm"]
+                            sub_money.account_detail = fs_lst["account_detail"]
+                            if fs_lst["thstrm_amount"] == '':
+                                sub_money.account_amount = 0
+                            else:
+                                sub_money.account_amount = fs_lst["thstrm_amount"]
             else:
-                money.account_amount = fs_lst["thstrm_amount"]
+                money.account_name = fs_lst["account_nm"]
+                money.account_detail = fs_lst["account_detail"]
+
+                if fs_lst["thstrm_amount"] == '':
+                    money.account_amount = 0
+                else:
+                    money.account_amount = fs_lst["thstrm_amount"]
 
             if fs_lst["sj_div"] == "BS":
                 money.fs_div = BS

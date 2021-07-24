@@ -10,7 +10,7 @@ from crawling_library import *
 # os.environ.setdefault('DJANGO_SETTINGS_MODULE', "config.settings")
 # django.setup()
 
-from quantDB.models import Company, FS_LoB, FS_Div, Quarter, Year, FS_Account, Dart, Corpdata
+from quantDB.models import Company, FS_LoB, FS_Div, Quarter, Year, FS_Account, Dart, Corpdata, SUB_Account
 
 # data delete function
 
