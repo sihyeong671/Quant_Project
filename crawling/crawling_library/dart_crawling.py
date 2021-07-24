@@ -124,7 +124,3 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             print(corp_code, year, quarter, link_state)
 
 
-
-
-
-

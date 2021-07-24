@@ -74,8 +74,8 @@ def Save_FS_Data():
     company_list = Company.objects.all()
     count = 0
 
-    for code in dart_codes:
-        company = make_company_obje(code)
+    for dart_data in dart_codes:
+        company = make_company_obje(dart_data)
         for y in years:
             year = make_year_obje(company, int(y))
             for q in quarters:
@@ -88,7 +88,7 @@ def Save_FS_Data():
                             time.sleep(3)
                         elif count == 10000:
                             exit()
-                        Get_Data(api_key, code.dart_code, y, q, l, link)
+                        dart_crawling.Get_Amount_Data(api_key, dart_data.dart_code, y, q, l, link)
                         # 정정공시 따로 함수 만들기
                         
 
