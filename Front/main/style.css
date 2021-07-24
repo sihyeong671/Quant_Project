@@ -1,0 +1,103 @@
+:root{
+    --base: rgb(56, 55, 55);
+    --light: rgba(90, 90, 90, 0.3);
+}
+
+/* Gmarket Sans */
+@font-face {
+    font-family: 'GmarketSans';
+    font-style: normal;
+    font-weight: lighter;
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'GmarketSans';
+    font-style: normal;
+    font-weight: medium;
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'GmarketSans';
+    font-style: normal;
+    font-weight: bold;
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
+}
+
+/* Google Icon */
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://example.com/MaterialIcons-Regular.eot);
+    /* For IE6-8 */
+    src: local('Material Icons'),
+        local('MaterialIcons-Regular'),
+        url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'),
+        url(https://example.com/MaterialIcons-Regular.woff) format('woff'),
+        url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+* {
+    font-family: 'GmarketSans';
+    box-sizing: border-box;
+    outline: none;
+}
+
+body, ul, li, a, p, td, tr, table, h1 {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
+}
+
+/* Header */
+.header {
+    width: 100%;
+    height: 100px;
+    background-color: #fff;
+    border-bottom: 1px solid var(--light);
+}
+
+/* header Nav */
+.header_nav {
+    display: flex;
+    justify-content: space-between;
+    line-height: 100px;
+    height: 100px;
+}
+
+.blank{
+    width: 100px;
+}
+
+.main-logo {
+    font-size: 50px;
+    font-weight: bold;
+    color: var(--base);
+}
+
+.nav_box>.material-icons {
+    color: var(--base);
+    padding: 0 10px;
+    line-height: 100px;
+    font-size: 30px;
+}
+.nav_box:last-child>.material-icons{
+    padding-right: 20px;
+}
+
+/* Main */
+.container {
+    min-height: 80vh;
+    background-color: rgb(255, 255, 255);
+    padding: 5% 10%;
+}
+
+/* Footer */
+.footer {
+    min-height: 300px;
+    background-color: #fff;
+    border-top: 1px solid var(--light);
+}
