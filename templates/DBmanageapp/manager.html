@@ -2,19 +2,26 @@
 {% load static %}
 
 {% block content %}
+  <div>
+    <span>
+      update
+    </span>
+  </div>
 
-  {% if company_data %}
-  <div>
-    {% for company in company_data %}
-    <ul>
-      {{ company.company_name }}
-    </ul>
-    {% endfor %}
-  </div>
-  {% else %}
-  <div>
-    <span> No Data </span>
-  </div>
-  {% endif %}
+  <table>
+      {% for c in company_data.set_all %}
+        <tr>
+          {% for y in c.year.set_all %}
+            {% for q in y.quarter_set.all %}
+              {% if q.fs_lob.exits %}
+                <td>O</td>
+              {% else%}
+                <td>X</td>
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+        </tr>
+      {% endfor %}
+  </table>
 
 {% endblock %}

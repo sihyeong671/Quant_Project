@@ -58,114 +58,119 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
     params = {'crtfc_key': api_key, 'corp_code': corp_code, 'bsns_year': year, 'reprt_code': quarter, 'fs_div': link_state}
     res = rq.get(dart_url, params)
     json_dict = json.loads(res.text)
-    report_number = json_dict['list'][0]['rcept_no']
-
-    fs_url = f'http://dart.fss.or.kr/dsaf001/main.do?rcpNo={report_number}'
-    fs_res = rq.get(fs_url)
-
-    fs_soup = BeautifulSoup(fs_res.text, "lxml")
-    script_content = str(fs_soup.find_all('script')[-2].string)
-
-    if link_state == "CFS":
-        parameter_list = find_parameter(script_content, "연결재무제표")
-    else:
-        parameter_list = find_parameter(script_content, "재무제표")
-
-    bs_url = f"http://dart.fss.or.kr/report/viewer.do?rcpNo={parameter_list[0]}" \
-    f"&dcmNo={parameter_list[1]}" \
-    f"&eleId={parameter_list[2]}" \
-    f"&offset={parameter_list[3]}" \
-    f"&length={parameter_list[4]}" \
-    f"&dtd={parameter_list[5]}"
-
-    bs_res = rq.get(bs_url)
-    bs_soup = BeautifulSoup(bs_res.text, "lxml") # html.parser 도 가능
-
-    bs_tree = {}
-    now = ''
-    for a in bs_soup.find_all("p"):
-        account = a.text
-        if len(account) > 0:
-            if account[0] == '　':
-                if account[1] == '　':
-                    if account[2] == '　':
-                        continue
-                    bs_tree[now].append(account.replace('　', ""))
-                else:
-                    now = account.replace('　', "")
-                    bs_tree[now] = []
-        if account == "자본과부채총계":
-            break
 
     if json_dict['status'] == "000": # 정상적으로 데이터 가져옴
-        BS = FS_Div()
-        BS.sj_div = "BS"
-        BS.lob = link_model
-        BS.save()
 
-        IS = FS_Div()
-        IS.sj_div = "IS"
-        IS.lob = link_model
-        IS.save()
-        
-        CIS = FS_Div()
-        CIS.sj_div = "CIS"
-        CIS.lob = link_model
-        CIS.save()
+        link_model.exits = True
 
-        CF = FS_Div()
-        CF.sj_div = "CF"
-        CF.lob = link_model
-        CF.save()
+        report_number = json_dict['list'][0]['rcept_no']
 
-        SCE = FS_Div()
-        SCE.sj_div = "SCE"
-        SCE.lob = link_model
-        SCE.save()
+        fs_url = f'http://dart.fss.or.kr/dsaf001/main.do?rcpNo={report_number}'
+        fs_res = rq.get(fs_url)
 
+        fs_soup = BeautifulSoup(fs_res.text, "lxml")
+        script_content = str(fs_soup.find_all('script')[-2].string)
 
-        for fs_lst in json_dict['list']: # 한 행씩 가져오기
-            money = FS_Account()
-            if fs_lst["sj_div"] == "BS":
-                if fs_lst["account_nm"] not in bs_tree.keys():
-                    # need to change(simplify)
-                    for child in bs_tree.values():
-                        if fs_lst["account_nm"] in child:
-                            sub_money = SUB_Account()
-                            sub_money.pre_account = money
-                            sub_money.account_name = fs_lst["account_nm"]
-                            sub_money.account_detail = fs_lst["account_detail"]
-                            if fs_lst["thstrm_amount"] == '':
-                                sub_money.account_amount = 0
-                            else:
-                                sub_money.account_amount = fs_lst["thstrm_amount"]
-                        else:
+        if link_state == "CFS":
+            parameter_list = find_parameter(script_content, "연결재무제표")
+        else:
+            parameter_list = find_parameter(script_content, "재무제표")
+
+        bs_url = f"http://dart.fss.or.kr/report/viewer.do?rcpNo={parameter_list[0]}" \
+        f"&dcmNo={parameter_list[1]}" \
+        f"&eleId={parameter_list[2]}" \
+        f"&offset={parameter_list[3]}" \
+        f"&length={parameter_list[4]}" \
+        f"&dtd={parameter_list[5]}"
+
+        bs_res = rq.get(bs_url)
+        bs_soup = BeautifulSoup(bs_res.text, "lxml") # html.parser 도 가능
+
+        bs_tree = {}
+        now = ''
+        for a in bs_soup.find_all("p"):
+            account = a.text
+            if len(account) > 0:
+                if account[0] == '　':
+                    if account[1] == '　':
+                        if account[2] == '　':
                             continue
-            else:
-                money.account_name = fs_lst["account_nm"]
-                money.account_detail = fs_lst["account_detail"]
+                        bs_tree[now].append(account.replace('　', ""))
+                    else:
+                        now = account.replace('　', "")
+                        bs_tree[now] = []
+            if account == "자본과부채총계":
+                break
 
-                if fs_lst["thstrm_amount"] == '':
-                    money.account_amount = 0
+        
+            BS = FS_Div()
+            BS.sj_div = "BS"
+            BS.lob = link_model
+            BS.save()
+
+            IS = FS_Div()
+            IS.sj_div = "IS"
+            IS.lob = link_model
+            IS.save()
+            
+            CIS = FS_Div()
+            CIS.sj_div = "CIS"
+            CIS.lob = link_model
+            CIS.save()
+
+            CF = FS_Div()
+            CF.sj_div = "CF"
+            CF.lob = link_model
+            CF.save()
+
+            SCE = FS_Div()
+            SCE.sj_div = "SCE"
+            SCE.lob = link_model
+            SCE.save()
+
+
+            for fs_lst in json_dict['list']: # 한 행씩 가져오기
+                money = FS_Account()
+                if fs_lst["sj_div"] == "BS":
+                    if fs_lst["account_nm"] not in bs_tree.keys():
+                        # need to change(simplify)
+                        for child in bs_tree.values():
+                            if fs_lst["account_nm"] in child:
+                                sub_money = SUB_Account()
+                                sub_money.pre_account = money
+                                sub_money.account_name = fs_lst["account_nm"]
+                                sub_money.account_detail = fs_lst["account_detail"]
+                                if fs_lst["thstrm_amount"] == '':
+                                    sub_money.account_amount = 0
+                                else:
+                                    sub_money.account_amount = fs_lst["thstrm_amount"]
+                            else:
+                                continue
                 else:
-                    money.account_amount = fs_lst["thstrm_amount"]
+                    money.account_name = fs_lst["account_nm"]
+                    money.account_detail = fs_lst["account_detail"]
 
-            if fs_lst["sj_div"] == "BS":
-                money.fs_div = BS
+                    if fs_lst["thstrm_amount"] == '':
+                        money.account_amount = 0
+                    else:
+                        money.account_amount = fs_lst["thstrm_amount"]
 
-            elif fs_lst["sj_div"] == "IS":
-                money.fs_div = IS
+                if fs_lst["sj_div"] == "BS":
+                    money.fs_div = BS
 
-            elif fs_lst["sj_div"] == "CIS":
-                money.fs_div = CIS
+                elif fs_lst["sj_div"] == "IS":
+                    money.fs_div = IS
 
-            elif fs_lst["sj_div"] == "CF":
-                money.fs_div = CF
+                elif fs_lst["sj_div"] == "CIS":
+                    money.fs_div = CIS
 
-            elif fs_lst["sj_div"] == "SCE":
-                money.fs_div = SCE
+                elif fs_lst["sj_div"] == "CF":
+                    money.fs_div = CF
 
-            money.save()
+                elif fs_lst["sj_div"] == "SCE":
+                    money.fs_div = SCE
+
+                money.save()
     else:
         if json_dict['status'] == "010":
             print('등록되지 않은 키입니다.')
