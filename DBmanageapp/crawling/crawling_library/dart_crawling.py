@@ -4,7 +4,7 @@ import requests as rq
 import zipfile
 from io import BytesIO
 import time
-from krx_crawling import Get_Krx_Short_Code
+from .krx_crawling import Get_Krx_Short_Code
 from bs4 import BeautifulSoup
 
 # print(datetime.today().strftime("%Y%m%d"))
