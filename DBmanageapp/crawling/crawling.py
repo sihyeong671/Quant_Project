@@ -4,15 +4,9 @@ import django
 import time
 from datetime import date
 from pykrx import stock
-from crawling_library import *
+from .crawling_library import *
 
-# api_key = API_KEY.APIKEY
-# os.environ.setdefault('DJANGO_SETTINGS_MODULE', "config.settings")
-# django.setup()
-
-from quantDB.models import Company, FS_LoB, FS_Div, Quarter, Year, FS_Account, Dart, Corpdata, SUB_Account
-
-# data delete function
+from DBmanageapp.models import Company, FS_LoB, FS_Div, Quarter, Year, FS_Account, Dart, Corpdata, SUB_Account
 
 # data 존재여부 확인 함수
 def make_company_obje(dartcode):
@@ -57,17 +51,19 @@ def make_islink_obje(quarter:Quarter, islink:str):
     l.save()
     return l, True
 
-# 
-def Save_Dart_Data():
+#
+def Save_Dart_Data(api_key):
     dart_data = dart_crawling.Dart_Unique_Key(api_key)
     for data in dart_data:
         Dart(dart_code=data[0],company_name_dart=data[1],short_code=data[2],recent_modify=data[3]).save()
 
 
-# 
+#
 def Save_FS_Data():
     linklst = ["CFS", "OFS"] # link, basic
-    years = ["2015","2016","2017","2018","2019","2020"]
+    # years = ["2015","2016","2017","2018","2019","2020"]
+    years = ["2018","2019","2020"]
+
     quarters = ["11013", "11014", "11012", "11011"]
 
     dart_codes = Dart.objects.all()
@@ -84,9 +80,9 @@ def Save_FS_Data():
                     link, check = make_islink_obje(quarter, l)
                     if check:
                         count += 1
-                        if count % 1000 == 0:
+                        if count % 100 == 0:
                             time.sleep(3)
-                        elif count == 10000:
+                        elif count == 1000:
                             exit()
                         dart_crawling.Get_Amount_Data(api_key, dart_data.dart_code, y, q, l, link)
                         # 정정공시 따로 함수 만들기

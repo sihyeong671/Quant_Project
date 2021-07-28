@@ -108,7 +108,7 @@ class Corpdata(models.Model):
     per = models.FloatField(help_text="PER", null=True, blank=True)
     pbr = models.FloatField(help_text="PBR", null=True, blank=True)
     company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
-
+    # date = models.models.models.DateField(_(""), auto_now=False, auto_now_add=False)
     class Meta:
         verbose_name = "일별 데이터"
         verbose_name_plural = "일별 데이터"

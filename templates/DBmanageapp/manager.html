@@ -1,27 +1,33 @@
 {% extends 'index.html' %}
-{% load static %}
+{% load static %} 
 
 {% block content %}
-  <div>
-    <span>
-      update
-    </span>
-  </div>
+<div>
+	<form action="{% url 'DBmanageapp:crawling' %}" method="POSt">
+		{% csrf_token %}
+		<input type="submit" value="button">
+	</form>
+</div>
 
-  <table>
-      {% for c in company_data.set_all %}
-        <tr>
-          {% for y in c.year.set_all %}
-            {% for q in y.quarter_set.all %}
-              {% if q.fs_lob.exits %}
-                <td>O</td>
-              {% else%}
-                <td>X</td>
-              {% endif %}
-            {% endfor %}
-          {% endfor %}
-        </tr>
-      {% endfor %}
-  </table>
+<table>
+	<thead>
+		table
+	</thead>
+	<tbody>
+			{% for c in company_data.set_all %}
+				<tr>
+					{% for y in c.year.set_all %} 
+						{% for q in y.quarter_set.all %} 
+							{% if q.fs_lob.exits %}
+								<td>O</td>
+							{% else%}
+								<td>X</td>
+							{% endif %}
+						{% endfor %} 
+					{% endfor %}
+				</tr>
+			{% endfor %}
+	</tbody>
+</table>
 
-{% endblock %}
+{% endblock %} 
