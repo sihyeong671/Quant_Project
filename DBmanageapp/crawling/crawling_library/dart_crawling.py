@@ -6,7 +6,8 @@ from io import BytesIO
 import time
 from .krx_crawling import Get_Krx_Short_Code
 from bs4 import BeautifulSoup
-
+import json
+from DBmanageapp.models import FS_Div, FS_Account, SUB_Account
 # print(datetime.today().strftime("%Y%m%d"))
 
 # 재무제표 viewDoc파라미터 찾기
@@ -61,7 +62,8 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
 
     if json_dict['status'] == "000": # 정상적으로 데이터 가져옴
 
-        link_model.exits = True
+        link_model.exist = True
+        link_model.save()
 
         report_number = json_dict['list'][0]['rcept_no']
 
@@ -103,74 +105,74 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                 break
 
         
-            BS = FS_Div()
-            BS.sj_div = "BS"
-            BS.lob = link_model
-            BS.save()
+        BS = FS_Div()
+        BS.sj_div = "BS"
+        BS.lob = link_model
+        BS.save()
 
-            IS = FS_Div()
-            IS.sj_div = "IS"
-            IS.lob = link_model
-            IS.save()
-            
-            CIS = FS_Div()
-            CIS.sj_div = "CIS"
-            CIS.lob = link_model
-            CIS.save()
+        IS = FS_Div()
+        IS.sj_div = "IS"
+        IS.lob = link_model
+        IS.save()
+        
+        CIS = FS_Div()
+        CIS.sj_div = "CIS"
+        CIS.lob = link_model
+        CIS.save()
 
-            CF = FS_Div()
-            CF.sj_div = "CF"
-            CF.lob = link_model
-            CF.save()
+        CF = FS_Div()
+        CF.sj_div = "CF"
+        CF.lob = link_model
+        CF.save()
 
-            SCE = FS_Div()
-            SCE.sj_div = "SCE"
-            SCE.lob = link_model
-            SCE.save()
+        SCE = FS_Div()
+        SCE.sj_div = "SCE"
+        SCE.lob = link_model
+        SCE.save()
 
-
-            for fs_lst in json_dict['list']: # 한 행씩 가져오기
-                money = FS_Account()
-                if fs_lst["sj_div"] == "BS":
-                    if fs_lst["account_nm"] not in bs_tree.keys():
-                        # need to change(simplify)
-                        for child in bs_tree.values():
-                            if fs_lst["account_nm"] in child:
-                                sub_money = SUB_Account()
-                                sub_money.pre_account = money
-                                sub_money.account_name = fs_lst["account_nm"]
-                                sub_money.account_detail = fs_lst["account_detail"]
-                                if fs_lst["thstrm_amount"] == '':
-                                    sub_money.account_amount = 0
-                                else:
-                                    sub_money.account_amount = fs_lst["thstrm_amount"]
-                            else:
-                                continue
-                else:
-                    money.account_name = fs_lst["account_nm"]
-                    money.account_detail = fs_lst["account_detail"]
-
-                    if fs_lst["thstrm_amount"] == '':
-                        money.account_amount = 0
-                    else:
-                        money.account_amount = fs_lst["thstrm_amount"]
-
-                if fs_lst["sj_div"] == "BS":
+        pre_money = {}
+        for fs_lst in json_dict['list']: # 한 행씩 가져오기
+            money = FS_Account()
+            if fs_lst["sj_div"] == "BS":
+                if fs_lst["account_nm"] in bs_tree.keys():
                     money.fs_div = BS
+                    pre_money = money
+                else:
+                    for child in bs_tree.values():
+                        if fs_lst["account_nm"] in child:
+                            sub_money = SUB_Account()
+                            sub_money.pre_account = pre_money
+                            sub_money.account_name = fs_lst["account_nm"]
+                            sub_money.account_detail = fs_lst["account_detail"]
+                            if fs_lst["thstrm_amount"] == '':
+                                sub_money.account_amount = 0
+                            else:
+                                sub_money.account_amount = fs_lst["thstrm_amount"]
+                            sub_money.save()
+                            break
+                    continue
+            elif fs_lst["sj_div"] == "IS":
+                money.fs_div = IS
 
-                elif fs_lst["sj_div"] == "IS":
-                    money.fs_div = IS
+            elif fs_lst["sj_div"] == "CIS":
+                money.fs_div = CIS
 
-                elif fs_lst["sj_div"] == "CIS":
-                    money.fs_div = CIS
+            elif fs_lst["sj_div"] == "CF":
+                money.fs_div = CF
 
-                elif fs_lst["sj_div"] == "CF":
-                    money.fs_div = CF
+            elif fs_lst["sj_div"] == "SCE":
+                money.fs_div = SCE
+            
+            money.account_name = fs_lst["account_nm"]
+            money.account_detail = fs_lst["account_detail"]
 
-                elif fs_lst["sj_div"] == "SCE":
-                    money.fs_div = SCE
+            if fs_lst["thstrm_amount"] == '':
+                money.account_amount = 0
+            else:
+                money.account_amount = fs_lst["thstrm_amount"]
 
-                money.save()
+            money.save()
+    
     else:
         if json_dict['status'] == "010":
             print('등록되지 않은 키입니다.')

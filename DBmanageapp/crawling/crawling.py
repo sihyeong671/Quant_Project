@@ -4,7 +4,8 @@ import django
 import time
 from datetime import date
 from pykrx import stock
-from .crawling_library import *
+from .crawling_library import dart_crawling
+import sys
 
 from DBmanageapp.models import Company, FS_LoB, FS_Div, Quarter, Year, FS_Account, Dart, Corpdata, SUB_Account
 
@@ -23,7 +24,8 @@ def make_company_obje(dartcode):
 
 def make_year_obje(comp:Company, year:str):
     # company 객체를 가져와서 해당 company 객체에 인자로 받은 year가 존재하면 그대로 반환
-    for y in comp.year_set.all():
+
+    for y in comp.year.all():
         if y.bs_year == int(year):
             return y
 
@@ -33,7 +35,7 @@ def make_year_obje(comp:Company, year:str):
 
 def make_quarter_obje(year:Year, quarter:str):
     # year 객체를 가져와서 해당 year 객체에 인자로 받은 quarter가 존재하면 그대로 반환
-    for q in year.quarter_set.all():
+    for q in year.quarter.all():
         if q.qt_name == quarter:
             return q
 
@@ -43,7 +45,7 @@ def make_quarter_obje(year:Year, quarter:str):
     
 def make_islink_obje(quarter:Quarter, islink:str):
     # year 객체를 가져와서 해당 year 객체에 인자로 받은 quarter가 존재하면 그대로 반환
-    for l in quarter.fs_lob_set.all():
+    for l in quarter.fs_lob.all():
         if l.lob == islink:
             return l, False
 
@@ -59,7 +61,7 @@ def Save_Dart_Data(api_key):
 
 
 #
-def Save_FS_Data():
+def Save_FS_Data(api_key):
     linklst = ["CFS", "OFS"] # link, basic
     # years = ["2015","2016","2017","2018","2019","2020"]
     years = ["2018","2019","2020"]
@@ -72,22 +74,25 @@ def Save_FS_Data():
 
     for dart_data in dart_codes:
         company = make_company_obje(dart_data)
+        print(company.company_name)
         for y in years:
-            year = make_year_obje(company, int(y))
+            year = make_year_obje(company, y)
             for q in quarters:
                 quarter = make_quarter_obje(year, q)
                 for l in linklst:
                     link, check = make_islink_obje(quarter, l)
                     if check:
                         count += 1
-                        if count % 100 == 0:
-                            time.sleep(3)
-                        elif count == 1000:
-                            exit()
+                        time.sleep(0.1)
+                        if count == 100:
+                            sys.exit()
                         dart_crawling.Get_Amount_Data(api_key, dart_data.dart_code, y, q, l, link)
                         # 정정공시 따로 함수 만들기
                         
 
 # update
                 
+    
+
+    
 

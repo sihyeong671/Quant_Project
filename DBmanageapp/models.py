@@ -44,7 +44,7 @@ class Quarter(models.Model):
 class FS_LoB(models.Model):
     lob = models.CharField(help_text="연결/일반", max_length=30, blank=True, null=True)
     quarter = models.ForeignKey(Quarter, on_delete=models.CASCADE, related_name="fs_lob")
-    exits = models.BooleanField(default=False)
+    exist = models.BooleanField(default=False)
     
     def __str__(self):
         return self.lob
@@ -67,7 +67,7 @@ class FS_Div(models.Model):
         verbose_name_plural = "재무제표구분"
 
 class FS_Account(models.Model):
-    fs_div = models.ForeignKey(FS_Div, on_delete=models.CASCADE, related_name="fs_account")
+    fs_div = models.ForeignKey(FS_Div, on_delete=models.CASCADE, related_name="fs_account", null=True)
     account_name = models.CharField(help_text="계정명", max_length=255, blank=True, null=True)
     account_amount = models.FloatField(help_text="계정명에 대한 자산", blank=True, null=True)
     account_detail = models.CharField(help_text="계정상세", max_length=255, blank=True, null=True)
@@ -87,8 +87,8 @@ class SUB_Account(models.Model):
         return self.account_name
 
     class Meta:
-        verbose_name = "계정명"
-        verbose_name_plural = "계정명"
+        verbose_name = "sub계정명"
+        verbose_name_plural = "sub계정명"
 
 class Dart(models.Model):
     dart_code = models.CharField(help_text="고유번호",max_length=10, blank=True, null=True)

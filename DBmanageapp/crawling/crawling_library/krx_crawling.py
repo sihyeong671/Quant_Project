@@ -5,10 +5,10 @@ from pykrx import stock
 
 
 ## UERAGENT##
-from API_KEY import USERAGENT
+from .API_KEY import USERAGENT
 
 # 상장기업 정보 가져오기
-def Get_Krx_Corp() -> DataFrame:
+def Get_Krx_Corp():
     
     generate_url = 'http://data.krx.co.kr/comm/fileDn/GenerateOTP/generate.cmd'
     generate_param = {
@@ -69,7 +69,7 @@ def Get_Krx_Ohlv(day:str):
 
 
 # PBR, PER
-def Daily_Crawling(day:str) -> DataFrame:
+def Daily_Crawling(day:str):
     df_market_cap = stock.get_market_cap_by_ticker(day, market="ALL") # index -> ticker == shortcode
     df_p2 = stock.get_market_fundamental_by_ticker(day, market="ALL")
 
