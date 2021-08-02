@@ -18,11 +18,19 @@
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
 }
 
+<<<<<<< HEAD
+body, ul, li, a, p, td, tr, table, h1{
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+=======
 @font-face {
     font-family: 'GmarketSans';
     font-style: normal;
     font-weight: bold;
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
+>>>>>>> 03df14fe60ff2b8c2c92d290bf30a1aefd861a4b
 }
 
 /* Google Icon */
@@ -39,10 +47,19 @@
         url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
 }
 
+<<<<<<< HEAD
+
+/* HEADER */
+.header{
+  background-color: rgb(42, 42, 42);
+  grid-area: header;
+  padding: 0px 50px;
+=======
 * {
     font-family: 'GmarketSans';
     box-sizing: border-box;
     outline: none;
+>>>>>>> 03df14fe60ff2b8c2c92d290bf30a1aefd861a4b
 }
 
 body, ul, li, a, p, td, tr, table, h1 {
@@ -53,9 +70,33 @@ body, ul, li, a, p, td, tr, table, h1 {
 }
 
 
+<<<<<<< HEAD
+/* main MAIN_CONTAINER */
+.main .main_container{
+  grid-area: main_container;
+  background-color: rgb(255, 255, 255);
+  padding: 50px;
+}
+
+/* main main_container CHART */
+.chart_view{
+}
+
+.chart_view .csr{
+  width: 20%;
+  vertical-align: top;
+  display: inline-block;
+}
+
+
+.chart_view .csr.line_chart-wrapper{
+  display: block;
+  width: 55%;
+=======
 /* Main */
 .container {
     min-height: 80vh;
     background-color: rgb(255, 255, 255);
     padding: 5% 10%;
+>>>>>>> 03df14fe60ff2b8c2c92d290bf30a1aefd861a4b
 }

@@ -19,7 +19,7 @@
     <!-- Google Icon API -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    {% static 'css/style.css' %}
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
 
     <title>Quant</title>
 </head>
@@ -31,8 +31,9 @@
         {% endblock %}
     </div>
     {% include "./base/footer.html" %}
+</body>
+<script>
     {% block script %}
     {% endblock script %}
-</body>
-
+</script>
 </html>

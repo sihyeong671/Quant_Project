@@ -1,0 +1,67 @@
+{% extends 'index.html' %}
+{% load static %} 
+
+{% block content %}
+<div>
+	<form action="{% url 'DBmanageapp:crawling' %}" method="POSt">
+		{% csrf_token %}
+		<input type="submit" value="button">
+	</form>
+</div>
+
+<table>
+	<thead>TABLE</thead>
+	<tbody>
+		<tr>
+			<td></td>
+				{% for y in company_temp.year.all %}
+					<td colspan="8">{{y.bs_year}}</td>
+				{% endfor %}
+		</tr>
+		<tr>
+			<td></td>
+				{% for y in company_temp.year.all %}
+					{% for q in y.quarter.all %}
+						<td colspan="2">{{q.qt_name}}</td>
+					{% endfor %}
+				{% endfor %}
+		</tr>
+		<tr>
+			<td></td>
+				{% for y in company_temp.year.all %}
+					{% for q in y.quarter.all %}
+						{% for l in q.fs_lob.all %}
+							<td>{{ l }}</td>
+						{% endfor %}
+					{% endfor %}	
+				{% endfor %}
+		</tr>
+	</tbody>
+
+	<tbody>
+		{% for c in company_data %}
+			<tr>
+				<td>
+				{{ c.company_name }}
+				</td>
+				{% for y in c.year.all %}
+					{% for q in y.quarter.all %}
+						{% for l in q.fs_lob.all %}
+							{% if l.exist %}
+								<td>
+									O
+								</td>
+							{% else %}
+								<td>
+									X
+								</td>
+							{% endif %}
+				  	{% endfor %}
+					{% endfor %}	
+				{% endfor %}
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %} 
