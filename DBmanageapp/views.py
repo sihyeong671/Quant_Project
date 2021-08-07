@@ -6,9 +6,9 @@ from .models import Company, FS_Account
 from django.http import HttpResponse
 # Create your views here.
 
-from crawling.crawling import *
-from crawling.API_KEY import *
-from DBmanageapp.models import *
+from .crawling import *
+from .API_KEY import *
+from .models import *
 # api_key = API_KEY.APIKEY
 
 class View_All_Data(ListView):
@@ -17,15 +17,15 @@ class View_All_Data(ListView):
   template_name='DBmanageapp/manager.html'
   paginat_by = 30
   
-  def get_context_data(self, **kwargs):
-      context = super().get_context_data(**kwargs)
-      context["company_temp"] = Company.objects.get(company_name="엑세스바이오")
-      return context
+  # def get_context_data(self, **kwargs):
+  #     context = super().get_context_data(**kwargs)
+  #     context["company_temp"] = Company.objects.get(company_name="엑세스바이오")
+  #     return context
   
 def Crawling_Data(request):
   apikey = APIKEY
-  Save_Dart_Data(apikey)
-  Save_FS_Data(apikey)
+  # Save_Dart_Data(apikey)
+  # Save_FS_Data(apikey)
   
   return redirect('DBmanageapp:company_list')
   

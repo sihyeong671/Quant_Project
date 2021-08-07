@@ -1,11 +1,7 @@
-import json
-import os
-import django
 import time
 from datetime import date
-from pykrx import stock
 
-from DBmanageapp.models import *
+from .models import *
 from .dart_crawling import *
 from .API_KEY import *
 
@@ -53,7 +49,7 @@ def make_islink_obje(quarter:Quarter, islink:str):
     l.save()
     return l, True
 
-#
+# 고유번호, 단축코드, 기업명, 최근 수정 날짜 저장
 def Save_Dart_Data(api_key):
     dart_data = Dart_Unique_Key(api_key)
     for data in dart_data:
@@ -61,7 +57,7 @@ def Save_Dart_Data(api_key):
         dart.save()
 
 
-#
+# 재무제표 데이터 저장
 def Save_FS_Data(api_key):
     linklst = ["CFS", "OFS"] # link, basic
     # years = ["2015","2016","2017","2018","2019","2020"]

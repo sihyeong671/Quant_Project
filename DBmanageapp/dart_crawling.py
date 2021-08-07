@@ -7,7 +7,7 @@ from .krx_crawling import Get_Krx_Short_Code
 from bs4 import BeautifulSoup
 import json
 
-from DBmanageapp.models import FS_Div, FS_Account, SUB_Account
+from .models import FS_Div, FS_Account, SUB_Account
 # print(datetime.today().strftime("%Y%m%d"))
 
 # 재무제표 viewDoc파라미터 찾기
