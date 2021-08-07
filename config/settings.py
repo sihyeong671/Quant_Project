@@ -95,9 +95,9 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': '?',
-#         'USER': '?',
-#         'PASSWORD': read_secret('MARIADB_PASSWORD'),
+#         'NAME': 'quant',
+#         'USER': 'root',
+#         'PASSWORD': env('MARIADB_ROOT_PASSWORD'),
 #         'HOST': 'mariadb',
 #         'PORT': '3306',
 #     }
