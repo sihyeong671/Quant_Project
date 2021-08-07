@@ -4,10 +4,10 @@ import django
 import time
 from datetime import date
 from pykrx import stock
-from .crawling_library import dart_crawling
-import sys
 
-from DBmanageapp.models import Company, FS_LoB, FS_Div, Quarter, Year, FS_Account, Dart, Corpdata, SUB_Account
+from DBmanageapp.models import *
+from .dart_crawling import *
+from .API_KEY import *
 
 # data 존재여부 확인 함수
 def make_company_obje(dartcode):
@@ -49,15 +49,16 @@ def make_islink_obje(quarter:Quarter, islink:str):
         if l.lob == islink:
             return l, False
 
-    l = FS_LoB(quarter=quarter, lob=islink)
+    l = FS_LoB(quarter=quarter, lob=islink, exst=0)
     l.save()
     return l, True
 
 #
 def Save_Dart_Data(api_key):
-    dart_data = dart_crawling.Dart_Unique_Key(api_key)
+    dart_data = Dart_Unique_Key(api_key)
     for data in dart_data:
-        Dart(dart_code=data[0],company_name_dart=data[1],short_code=data[2],recent_modify=data[3]).save()
+        dart = Dart(dart_code=data[0],company_name_dart=data[1],short_code=data[2],recent_modify=data[3])
+        dart.save()
 
 
 #
@@ -86,10 +87,10 @@ def Save_FS_Data(api_key):
                         time.sleep(0.1)
                         if count == 100:
                             return
-                        dart_crawling.Get_Amount_Data(api_key, dart_data.dart_code, y, q, l, link)
+                        Get_Amount_Data(api_key, dart_data.dart_code, y, q, l, link)
                         # 정정공시 따로 함수 만들기
                         
-
+    
 # update
                 
     

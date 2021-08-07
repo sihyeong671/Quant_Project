@@ -3,7 +3,6 @@ import pandas as pd
 from io import BytesIO
 from pykrx import stock
 
-
 ## UERAGENT##
 from .API_KEY import USERAGENT
 

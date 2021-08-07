@@ -41,6 +41,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'crawling',
     'DBmanageapp',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -98,7 +99,7 @@ DATABASES = {
         'NAME': 'quant',
         'USER': 'root',
         'PASSWORD': env('MARIADB_ROOT_PASSWORD'),
-        'HOST': 'mariadb',
+        'HOST': 'mariadbquant',
         'PORT': '3306',
     }
 }
