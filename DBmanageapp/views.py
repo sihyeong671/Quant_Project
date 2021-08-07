@@ -6,8 +6,8 @@ from .models import Company, FS_Account
 from django.http import HttpResponse
 # Create your views here.
 
-from .crawling.crawling import *
-from .crawling.crawling_library import API_KEY
+from ..crawling import *
+from ..API_KEY import *
 from DBmanageapp.models import *
 api_key = API_KEY.APIKEY
 

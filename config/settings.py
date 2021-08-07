@@ -98,7 +98,7 @@ DATABASES = {
         'NAME': 'quant',
         'USER': 'root',
         'PASSWORD': env('MARIADB_ROOT_PASSWORD'),
-        'HOST': 'mariadb',
+        'HOST': 'mariadbquant',
         'PORT': '3306',
     }
 }

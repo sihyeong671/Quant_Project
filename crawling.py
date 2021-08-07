@@ -4,10 +4,14 @@ import django
 import time
 from datetime import date
 from pykrx import stock
-from .crawling_library import dart_crawling
-import sys
 
-from DBmanageapp.models import Company, FS_LoB, FS_Div, Quarter, Year, FS_Account, Dart, Corpdata, SUB_Account
+import os, sys
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+import django
+django.setup()
+
+from DBmanageapp.models import *
+import dart_crawling, API_KEY
 
 # data 존재여부 확인 함수
 def make_company_obje(dartcode):
@@ -89,7 +93,10 @@ def Save_FS_Data(api_key):
                         dart_crawling.Get_Amount_Data(api_key, dart_data.dart_code, y, q, l, link)
                         # 정정공시 따로 함수 만들기
                         
-
+if __name__ == "__main__":
+    api_key = API_KEY.APIKEY
+    Save_FS_Data(api_key)
+    
 # update
                 
     
