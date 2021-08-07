@@ -3,11 +3,8 @@ import pandas as pd
 from io import BytesIO
 from pykrx import stock
 
-import django, os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
-django.setup()
 ## UERAGENT##
-from API_KEY import USERAGENT
+from .API_KEY import USERAGENT
 
 # 상장기업 정보 가져오기
 def Get_Krx_Corp():

@@ -1,16 +1,11 @@
-from config.settings import BASE_DIR
 from datetime import datetime
 import xml.etree.ElementTree as et
 import requests as rq
 import zipfile
 from io import BytesIO
-import time
-from krx_crawling import Get_Krx_Short_Code
+from .krx_crawling import Get_Krx_Short_Code
 from bs4 import BeautifulSoup
-import json, os, sys, django
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
-django.setup()
+import json
 
 from DBmanageapp.models import FS_Div, FS_Account, SUB_Account
 # print(datetime.today().strftime("%Y%m%d"))
@@ -67,7 +62,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
 
     if json_dict['status'] == "000": # 정상적으로 데이터 가져옴
 
-        link_model.exist = True
+        link_model.exst = 1
         link_model.save()
 
         report_number = json_dict['list'][0]['rcept_no']
