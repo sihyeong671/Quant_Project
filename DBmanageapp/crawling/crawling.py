@@ -4,10 +4,10 @@ import django
 import time
 from datetime import date
 from pykrx import stock
-from .crawling_library import dart_crawling
 import sys
 
-from DBmanageapp.models import Company, FS_LoB, FS_Div, Quarter, Year, FS_Account, Dart, Corpdata, SUB_Account
+from .crawling_library import dart_crawling
+from DBmanageapp.models import *
 
 # data 존재여부 확인 함수
 def make_company_obje(dartcode):

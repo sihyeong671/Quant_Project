@@ -1,7 +1,24 @@
 from django.db import models
 
 
+class Daily_Price(models.Model):
+    open = models.IntegerField(help_text="", null=True, blank=True)
+    high = models.IntegerField(help_text="", null=True, blank=True)
+    low = models.IntegerField(help_text="", null=True, blank=True)
+    close = models.IntegerField(help_text="", null=True, blank=True)
+    volume = models.IntegerField(help_text="", null=True, blank=True)
+
+
+class Kospi(models.Model):
+    price = models.ForeignKey(Daily_Price, on_delete=models.CASCADE, null=True, blank=True)
+
+class Kosdaq(models.Model):
+    price = models.ForeignKey(Daily_Price, on_delete=models.CASCADE, null=True, blank=True)
+
 class Company(models.Model):
+    price = models.ForeignKey(Daily_Price, on_delete=models.CASCADE, null=True, blank=True)
+    kospi = models.ForeignKey(Kospi, blank=True, null=True, on_delete=models.CASCADE)
+    kosdaq = models.ForeignKey(Kosdaq, blank=True, null=True, on_delete=models.CASCADE)
     company_name = models.CharField(max_length=200, null=False)
     short_code = models.CharField(max_length=200, blank=True, null=True)
 
