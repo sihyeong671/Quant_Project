@@ -85,7 +85,7 @@ def Save_FS_Data(api_key):
                         count += 1
                         time.sleep(0.1)
                         if count == 100:
-                            sys.exit()
+                            return
                         dart_crawling.Get_Amount_Data(api_key, dart_data.dart_code, y, q, l, link)
                         # 정정공시 따로 함수 만들기
                         
