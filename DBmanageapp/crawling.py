@@ -1,14 +1,17 @@
 import time
-from datetime import date
+from datetime import date, datetime
 
-from .models import *
-from .dart_crawling import *
-from .API_KEY import *
+from models import *
+from dart_crawling import *
+from krx_crawling import *
+from API_KEY import *
 
 # data 존재여부 확인 함수
-def make_company_obje(dartcode):
-    cmpname = dartcode.company_name_dart
-    cmpcode = dartcode.short_code
+def make_company_obje(dartdata):
+    # 코스피, 코스닥
+    # 결산월
+    cmpname = dartdata.company_name_dart
+    cmpcode = dartdata.short_code
     # dart에서 가져온 company이름과 동일한 이름을 가진 company 객체가 있다면 그대로 반환
     try:
         company = Company.objects.get(company_name=cmpname)
@@ -45,7 +48,7 @@ def make_islink_obje(quarter:Quarter, islink:str):
         if l.lob == islink:
             return l, False
 
-    l = FS_LoB(quarter=quarter, lob=islink, exst=0)
+    l = FS_LoB(quarter=quarter, lob=islink, exist=0)
     l.save()
     return l, True
 
@@ -56,7 +59,6 @@ def Save_Dart_Data(api_key):
         dart = Dart(dart_code=data[0],company_name_dart=data[1],short_code=data[2],recent_modify=data[3])
         dart.save()
 
-
 # 재무제표 데이터 저장
 def Save_FS_Data(api_key):
     linklst = ["CFS", "OFS"] # link, basic
@@ -66,9 +68,8 @@ def Save_FS_Data(api_key):
     quarters = ["11013", "11014", "11012", "11011"]
 
     dart_codes = Dart.objects.all()
-    company_list = Company.objects.all()
     count = 0
-
+    
     for dart_data in dart_codes:
         company = make_company_obje(dart_data)
         print(company.company_name)
@@ -86,10 +87,28 @@ def Save_FS_Data(api_key):
                         Get_Amount_Data(api_key, dart_data.dart_code, y, q, l, link)
                         # 정정공시 따로 함수 만들기
                         
-    
-# update
-                
-    
+
+# day에 시가총액, ohlcv, per, pbr 정보 가져와서 저장
+def Save_Price():
+    dart_codes = Dart.objects.all()
+    for dart_data in dart_codes:
+         # 시가총액, ohlvc, per, pbr 함수로 가져와서 저장하기
+        data = Daily_Crawling("20200101", "20210101", dart_data.short_code)
+        for row in data.itertuples():
+            Daily_Data = Daily_Price()
+            Daily_Data.company = Company(company_name = dart_data.company_name_dart, short_code = dart_data.short_code)
+            Daily_Data.date = row[0]
+            Daily_Data.market_gap = row[1]
+            Daily_Data.open = row[2]
+            Daily_Data.high = row[3]
+            Daily_Data.low = row[4]
+            Daily_Data.close = row[5]
+            Daily_Data.per = row[6]
+            Daily_Data.pbr = row[7]
+            Daily_Data.save()
+        
+# 매일 업데이트 하는 함수
+
 
     
 

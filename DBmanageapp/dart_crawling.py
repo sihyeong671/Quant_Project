@@ -3,11 +3,15 @@ import xml.etree.ElementTree as et
 import requests as rq
 import zipfile
 from io import BytesIO
-from .krx_crawling import Get_Krx_Short_Code
+from krx_crawling import Get_Krx_Short_Code
 from bs4 import BeautifulSoup
 import json
 
-from .models import FS_Div, FS_Account, SUB_Account
+#  개별로 실행하면 생기기는 문제 해결을 위한 코드
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+
+# from models import FS_Div, FS_Account, SUB_Account
 # print(datetime.today().strftime("%Y%m%d"))
 
 # 재무제표 viewDoc파라미터 찾기
@@ -46,6 +50,8 @@ def Dart_Unique_Key(api_key) -> list:
     for child in root:      
         # 상장회사만 가져오기
         dart_short_code = child.find('stock_code').text.strip()
+        if dart_short_code == '323410':
+            print('kakaobank')
         if dart_short_code in krx_short_code:
             data.append([])
             for item in items:
@@ -62,7 +68,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
 
     if json_dict['status'] == "000": # 정상적으로 데이터 가져옴
 
-        link_model.exst = 1
+        link_model.exist = 1
         link_model.save()
 
         report_number = json_dict['list'][0]['rcept_no']
@@ -202,4 +208,5 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             print('정의되지 않은 오류가 발생하였습니다.')
             print(corp_code, year, quarter, link_state)
 
-
+# api_key = "7bd0686ed4f0d6ae5dd1b27866d99b9cf12c1e09"
+# Dart_Unique_Key(api_key)

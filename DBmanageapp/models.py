@@ -1,26 +1,8 @@
 from django.db import models
 
-
-class Daily_Price(models.Model):
-    open = models.IntegerField(help_text="시가", null=True, blank=True)
-    high = models.IntegerField(help_text="고가", null=True, blank=True)
-    low = models.IntegerField(help_text="저가", null=True, blank=True)
-    close = models.IntegerField(help_text="종가", null=True, blank=True)
-    volume = models.IntegerField(help_text="거래량", null=True, blank=True)
-
-
-class Kospi(models.Model):
-    price = models.ForeignKey(Daily_Price, on_delete=models.CASCADE, null=True, blank=True)
-
-class Kosdaq(models.Model):
-    price = models.ForeignKey(Daily_Price, on_delete=models.CASCADE, null=True, blank=True)
-
 class Company(models.Model):
-    price = models.ForeignKey(Daily_Price, on_delete=models.CASCADE, null=True, blank=True)
-    kospi = models.ForeignKey(Kospi, blank=True, null=True)
-    kosdaq = models.ForeignKey(Kosdaq, blank=True, null=True)
     company_name = models.CharField(max_length=200, null=False)
-    short_code = models.CharField(max_length=200, blank=True, null=True)
+    short_code = models.CharField(max_length=200, null=False, blank=False)
 
     def __str__(self):
         return self.company_name
@@ -30,6 +12,28 @@ class Company(models.Model):
         verbose_name = "기업"
         verbose_name_plural = "기업"
         ordering = ["company_name"]
+
+
+class Daily_Price(models.Model):
+    # 날짜 문자열로 저장
+    date = models.DateField(null=True, blank=True)
+    company = models.ForeignKey(Company, null=True, blank=True)
+
+    market_gap = models.FloatField(help_text="시가총액", null=True, blank=True)
+    per = models.FloatField(help_text="PER", null=True, blank=True)
+    pbr = models.FloatField(help_text="PBR", null=True, blank=True)
+
+    open = models.FloatField(help_text="시가", null=True, blank=True)
+    high = models.FloatField(help_text="고가", null=True, blank=True)
+    low = models.FloatField(help_text="저가", null=True, blank=True)
+    close = models.FloatField(help_text="종가", null=True, blank=True)
+    volume = models.FloatField(help_text="거래량", null=True, blank=True)
+
+    class Meta:
+        verbose_name = "일별 데이터"
+        verbose_name_plural = "일별 데이터"
+
+
 
 # 객체 7개 (2015 ~ 2017)
 class Year(models.Model):
@@ -42,6 +46,7 @@ class Year(models.Model):
     class Meta:
         verbose_name = "연도별 데이터"
         verbose_name_plural = "연도별 데이터"
+
 
 # 객체 4개 (1/4, 2/4, 3/4, 4/4)
 class Quarter(models.Model):
@@ -61,7 +66,7 @@ class Quarter(models.Model):
 class FS_LoB(models.Model):
     lob = models.CharField(help_text="연결/일반", max_length=30, blank=True, null=True)
     quarter = models.ForeignKey(Quarter, on_delete=models.CASCADE, related_name="fs_lob")
-    ex = models.IntegerField(null=True, blank=True)
+    exist = models.IntegerField(null=True, blank=True)
     
     def __str__(self):
         return self.lob
@@ -120,12 +125,4 @@ class Dart(models.Model):
         verbose_name = "dart info"
         verbose_name_plural = "dart info"
 
-class Corpdata(models.Model):
-    market_cap = models.IntegerField(help_text="시가총액", null=True, blank=True)
-    per = models.FloatField(help_text="PER", null=True, blank=True)
-    pbr = models.FloatField(help_text="PBR", null=True, blank=True)
-    company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
-    # date = models.models.models.DateField(_(""), auto_now=False, auto_now_add=False)
-    class Meta:
-        verbose_name = "일별 데이터"
-        verbose_name_plural = "일별 데이터"
+    
