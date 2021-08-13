@@ -17,7 +17,7 @@ class Company(models.Model):
 class Daily_Price(models.Model):
     # 날짜 문자열로 저장
     date = models.DateField(null=True, blank=True)
-    company = models.ForeignKey(Company, null=True, blank=True)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
 
     market_gap = models.FloatField(help_text="시가총액", null=True, blank=True)
     per = models.FloatField(help_text="PER", null=True, blank=True)

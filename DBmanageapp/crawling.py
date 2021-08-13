@@ -106,7 +106,8 @@ def Save_Price():
             Daily_Data.per = row[6]
             Daily_Data.pbr = row[7]
             Daily_Data.save()
-        
+
+
 # 매일 업데이트 하는 함수
 
 
