@@ -97,7 +97,7 @@ def Save_Price():
         for row in data.itertuples():
             Daily_Data = Daily_Price()
             Daily_Data.company = Company(company_name = dart_data.company_name_dart, short_code = dart_data.short_code)
-            Daily_Data.date = row[0]
+            Daily_Data.date = row[0].to_pydatetime().date()
             Daily_Data.market_gap = row[1]
             Daily_Data.open = row[2]
             Daily_Data.high = row[3]
