@@ -1,10 +1,10 @@
 import time
 from datetime import date, datetime
 
-from models import *
-from dart_crawling import *
-from krx_crawling import *
-from API_KEY import *
+from .models import *
+from .dart_crawling import *
+from .krx_crawling import *
+from .API_KEY import *
 
 # data 존재여부 확인 함수
 def make_company_obje(dartdata):
@@ -90,13 +90,13 @@ def Save_FS_Data(api_key):
 
 # day에 시가총액, ohlcv, per, pbr 정보 가져와서 저장
 def Save_Price():
-    dart_codes = Dart.objects.all()
-    for dart_data in dart_codes:
+    corporations = Company.objects.all()
+    for corp in corporations:
          # 시가총액, ohlvc, per, pbr 함수로 가져와서 저장하기
-        data = Daily_Crawling("20200101", "20210101", dart_data.short_code)
+        data = Daily_Crawling("20200101", "20210101", corp.short_code)
         for row in data.itertuples():
             Daily_Data = Daily_Price()
-            Daily_Data.company = Company(company_name = dart_data.company_name_dart, short_code = dart_data.short_code)
+            Daily_Data.company = Company(company_name = corp.company_name, short_code = corp.short_code)
             Daily_Data.date = row[0].to_pydatetime().date()
             Daily_Data.market_gap = row[1]
             Daily_Data.open = row[2]

@@ -3,7 +3,7 @@ import xml.etree.ElementTree as et
 import requests as rq
 import zipfile
 from io import BytesIO
-from krx_crawling import Get_Krx_Short_Code
+from .krx_crawling import Get_Krx_Short_Code
 from bs4 import BeautifulSoup
 import json
 

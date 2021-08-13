@@ -2,9 +2,9 @@ import requests as rq
 import pandas as pd
 from io import BytesIO
 from pykrx import stock
-
+import time
 ## UERAGENT##
-from API_KEY import USERAGENT
+from .API_KEY import USERAGENT
 
 # 상장기업 정보 가져오기
 def Get_Krx_Corp():
@@ -71,7 +71,7 @@ def Daily_Crawling(start_date:str, end_date:str, code:str):
     df_p2 = stock.get_market_fundamental_by_date(start_date, end_date, code)
     df_ohlcv = stock.get_market_ohlcv_by_date(start_date, end_date, code)
     df = pd.concat([df_market_cap.iloc[:, 0], df_ohlcv, df_p2.iloc[:, 1:3]], axis=1)
-    
+    time.sleep(0.1)
     return df
 
 
