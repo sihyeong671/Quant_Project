@@ -6,12 +6,13 @@ from io import BytesIO
 from .krx_crawling import Get_Krx_Short_Code
 from bs4 import BeautifulSoup
 import json
+from .models import FS_Div, FS_Account, SUB_Account
 
 #  개별로 실행하면 생기기는 문제 해결을 위한 코드
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
-# from models import FS_Div, FS_Account, SUB_Account
+
 # print(datetime.today().strftime("%Y%m%d"))
 
 # 재무제표 viewDoc파라미터 찾기
@@ -50,8 +51,6 @@ def Dart_Unique_Key(api_key) -> list:
     for child in root:      
         # 상장회사만 가져오기
         dart_short_code = child.find('stock_code').text.strip()
-        if dart_short_code == '323410':
-            print('kakaobank')
         if dart_short_code in krx_short_code:
             data.append([])
             for item in items:

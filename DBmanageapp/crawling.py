@@ -4,8 +4,12 @@ from datetime import date, datetime
 from .models import *
 from .dart_crawling import *
 from .krx_crawling import *
-from .API_KEY import *
+from .API_KEY import APIKEY
 
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+
+api_key = APIKEY
 # data 존재여부 확인 함수
 def make_company_obje(dartdata):
     # 코스피, 코스닥
@@ -108,6 +112,11 @@ def Save_Price():
             Daily_Data.save()
 
 
+Save_Dart_Data(api_key)
+time.sleep(1)
+Save_FS_Data(api_key)
+time.sleep(1)
+Save_Price()
 # 매일 업데이트 하는 함수
 
 

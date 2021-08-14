@@ -9,5 +9,5 @@ admin.site.register(FS_LoB)
 admin.site.register(FS_Div)
 admin.site.register(FS_Account)
 admin.site.register(SUB_Account)
-
+admin.site.register(Daily_Price)
 
