@@ -23,9 +23,8 @@ class View_All_Data(ListView):
   #     return context
   
 def Crawling_Data(request):
-  apikey = APIKEY
-  # Save_Dart_Data(apikey)
-  # Save_FS_Data(apikey)
+  Save_price()
+  
   
   return redirect('DBmanageapp:company_list')
   

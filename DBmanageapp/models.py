@@ -20,8 +20,8 @@ class Daily_Price(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
 
     market_gap = models.FloatField(help_text="시가총액", null=True, blank=True)
-    per = models.FloatField(help_text="PER", null=True, blank=True)
-    pbr = models.FloatField(help_text="PBR", null=True, blank=True)
+    # per = models.FloatField(help_text="PER", null=True, blank=True)
+    # pbr = models.FloatField(help_text="PBR", null=True, blank=True)
 
     open = models.FloatField(help_text="시가", null=True, blank=True)
     high = models.FloatField(help_text="고가", null=True, blank=True)
@@ -29,6 +29,9 @@ class Daily_Price(models.Model):
     close = models.FloatField(help_text="종가", null=True, blank=True)
     volume = models.FloatField(help_text="거래량", null=True, blank=True)
 
+    def __str__(self):
+        return self.date
+    
     class Meta:
         verbose_name = "일별 데이터"
         verbose_name_plural = "일별 데이터"

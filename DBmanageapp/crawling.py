@@ -6,8 +6,8 @@ from .dart_crawling import *
 from .krx_crawling import *
 from .API_KEY import APIKEY
 
-import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+# import os
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
 api_key = APIKEY
 # data 존재여부 확인 함수
@@ -76,7 +76,7 @@ def Save_FS_Data(api_key):
     
     for dart_data in dart_codes:
         company = make_company_obje(dart_data)
-        print(company.company_name)
+        # print(company.company_name)
         for y in years:
             year = make_year_obje(company, y)
             for q in quarters:
@@ -96,28 +96,22 @@ def Save_FS_Data(api_key):
 def Save_Price():
     corporations = Company.objects.all()
     for corp in corporations:
-         # 시가총액, ohlvc, per, pbr 함수로 가져와서 저장하기
-        data = Daily_Crawling("20200101", "20210101", corp.short_code)
+        # 시가총액, ohlvc, per, pbr 함수로 가져와서 저장하기
+        data = Daily_Crawling("20201201", "20210101", corp.short_code)
+        time.sleep(1)
         for row in data.itertuples():
             Daily_Data = Daily_Price()
-            Daily_Data.company = Company(company_name = corp.company_name, short_code = corp.short_code)
+            Daily_Data.company = Company.objects.get(company_name = corp.company_name, short_code = corp.short_code)
             Daily_Data.date = row[0].to_pydatetime().date()
             Daily_Data.market_gap = row[1]
             Daily_Data.open = row[2]
             Daily_Data.high = row[3]
             Daily_Data.low = row[4]
             Daily_Data.close = row[5]
-            Daily_Data.per = row[6]
-            Daily_Data.pbr = row[7]
+            Daily_Data.volume = row[6]
+            # Daily_Data.per = 
+            # Daily_Datapbr = 
             Daily_Data.save()
-
-
-Save_Dart_Data(api_key)
-time.sleep(1)
-Save_FS_Data(api_key)
-time.sleep(1)
-Save_Price()
-# 매일 업데이트 하는 함수
 
 
     

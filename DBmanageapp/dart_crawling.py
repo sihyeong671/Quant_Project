@@ -9,8 +9,8 @@ import json
 from .models import FS_Div, FS_Account, SUB_Account
 
 #  개별로 실행하면 생기기는 문제 해결을 위한 코드
-import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+# import os
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
 
 # print(datetime.today().strftime("%Y%m%d"))
