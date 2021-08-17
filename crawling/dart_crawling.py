@@ -62,7 +62,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
 
     if json_dict['status'] == "000": # 정상적으로 데이터 가져옴
 
-        link_model.exst = 1
+        link_model.exist = 1
         link_model.save()
 
         report_number = json_dict['list'][0]['rcept_no']

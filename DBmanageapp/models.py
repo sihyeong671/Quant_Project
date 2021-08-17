@@ -44,7 +44,7 @@ class Quarter(models.Model):
 class FS_LoB(models.Model):
     lob = models.CharField(help_text="연결/일반", max_length=30, blank=True, null=True)
     quarter = models.ForeignKey(Quarter, on_delete=models.CASCADE, related_name="fs_lob")
-    ex = models.IntegerField(null=True, blank=True)
+    exist = models.IntegerField(default=0, null=True, blank=True)
     
     def __str__(self):
         return self.lob
