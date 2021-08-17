@@ -47,7 +47,7 @@
 				{% for y in c.year.all %}
 					{% for q in y.quarter.all %}
 						{% for l in q.fs_lob.all %}
-							{% if l.exst %}
+							{% if l.exist %}
 								<td>
 									O
 								</td>
