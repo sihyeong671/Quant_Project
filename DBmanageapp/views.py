@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from .crawling import *
 from .API_KEY import *
 from .models import *
-# api_key = API_KEY.APIKEY
+
 
 class View_All_Data(ListView):
   model = Company
@@ -23,8 +23,7 @@ class View_All_Data(ListView):
   #     return context
   
 def Crawling_Data(request):
-  Save_price()
-  
+  Save_Dart_Data(APIKEY)
   
   return redirect('DBmanageapp:company_list')
   

@@ -110,7 +110,7 @@ def Save_Price():
             Daily_Data.close = row[5]
             Daily_Data.volume = row[6]
             # Daily_Data.per = 
-            # Daily_Datapbr = 
+            # Daily_Data.pbr = 
             Daily_Data.save()
 
 

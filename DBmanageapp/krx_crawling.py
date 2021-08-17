@@ -63,13 +63,12 @@ def Get_Krx_Short_Code(day:str) -> list:
 
 
 
-#   시가총액, ohlcv, per, pbr
+# 시가총액, ohlcv
 def Daily_Crawling(start_date:str, end_date:str, code:str):
     # 위 순서대로
     df_market_cap = stock.get_market_cap_by_date(start_date, end_date, code)
-    df_p2 = stock.get_market_fundamental_by_date(start_date, end_date, code)
     df_ohlcv = stock.get_market_ohlcv_by_date(start_date, end_date, code)
-    df = pd.concat([df_market_cap.iloc[:, 0], df_ohlcv, df_p2.iloc[:, 1:3]], axis=1)
+    df = pd.concat([df_market_cap.iloc[:, 0], df_ohlcv], axis=1)
     time.sleep(1)
     return df
 
