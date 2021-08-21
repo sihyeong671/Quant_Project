@@ -10,10 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-from pathlib import Path
+import datetime
 import os
 import environ
-from django.urls import reverse_lazy
+
+from pathlib import Path
+from django.core.management.utils import get_random_secret_key
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,21 +40,38 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+BASE_BACKEND_URL = env.str('DJANGO_BASE_BACKEND_URL', default='http://localhost:8000')
+BASE_FRONTEND_URL = env.str('DJANGO_BASE_FRONTEND_URL', default='http://localhost:3000')
+
 
 # Application definition
 
 INSTALLED_APPS = [
-    'crawling',
     'DBmanageapp',
+    'users',
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    #rest_framework
+    'rest_framework',
+    'rest_framework_jwt',
+    'rest_framework_jwt.blacklist',
+    'rest_framework.authtoken',
+    
+    'django_extensions',
+    
+    # corsheader
+    'corsheaders',
+    
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -62,6 +82,56 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+
+
+# JWT SETTINGS
+JWT_AUTH = {
+   'JWT_ALGORITHM': 'HS256',
+   'JWT_VERIFY_EXPIRATION' : True,
+   'JWT_ALLOW_REFRESH': True,
+   
+   # default : 1 hour
+   'JWT_EXPIRATION_DELTA': datetime.timedelta(
+       seconds=env.int(
+           'DJANGO_JWT_EXPIRATION_DELTA',
+           default=3600
+       )
+    ),
+   # default : 1 day
+   'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(
+       seconds=env.int(
+           'DJANGO_JWT_REFRESH_EXPIRATION_DELTA',
+           default=86400
+       )
+    ),
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+    'JWT_GET_USER_SECRET_KEY': lambda user: user.secret_key,
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'auth.authenticate.jwt_response_payload_handler',
+    'JWT_AUTH_COOKIE': 'jwt_token',
+    'JWT_AUTH_COOKIE_SAMESITE': 'None'
+}
+
+
+# CORS SETTINGS
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = env.list(
+    'DJANGO_CORS_ORIGIN_WHITELIST',
+    default=[BASE_FRONTEND_URL]
+)
+
 
 TEMPLATES = [
     {
@@ -95,13 +165,17 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # ---deploy database format---
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'quant',
-        'USER': 'root',
-        'PASSWORD': env('MARIADB_ROOT_PASSWORD'),
-        'HOST': 'mariadbquant',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'quant',
+    #     'USER': 'root',
+    #     'PASSWORD': env('MARIADB_ROOT_PASSWORD'),
+    #     'HOST': 'mariadbquant',
+    #     'PORT': '3306',
+    # }
 }
 
 # Password validation
@@ -123,6 +197,19 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    
+    # Custom email or username authenticate
+    'auth.authenticate.EmailorUsernameAuthBackend',
+    
+)
+
+
+# Custom User model
+AUTH_USER_MODEL = 'users.User'
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -141,16 +228,29 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    BASE_DIR / 'static'
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticroot')
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# LOGIN_REDIRECT_URL = reverse_lazy()
-# LOGOUT_REDIRECT_URL = reverse_lazy()
 
-# MEDIA_URL = '/media/'
+# Email settings
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Google OAuth2 settings
+GOOGLE_OAUTH2_CLIENT_ID = env.str('DJANGO_GOOGLE_OAUTH2_CLIENT_ID')
+GOOGLE_OAUTH2_CLIENT_SECRET = env.str('DJANGO_GOOGLE_OAUTH2_CLIENT_SECRET')
+KAKAO_REST_API_KEY = env.str('DJANGO_KAKAO_REST_API_KEY')

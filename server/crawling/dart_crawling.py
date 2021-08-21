@@ -1,13 +1,20 @@
-from datetime import datetime
-import xml.etree.ElementTree as et
 import requests as rq
-import zipfile
-from io import BytesIO
-from .krx_crawling import Get_Krx_Short_Code
-from bs4 import BeautifulSoup
 import json
+import xml.etree.ElementTree as et
+import zipfile
+from datetime import datetime
+from io import BytesIO
+from bs4 import BeautifulSoup
 
-from DBmanageapp.models import FS_Div, FS_Account, SUB_Account
+from crawling.krx_crawling import Get_Krx_Short_Code
+
+from DBmanageapp.models import FS_Div, FS_Account, SUB_Account, Dart
+
+
+#  개별로 실행하면 생기기는 문제 해결을 위한 코드
+# import os
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+
 # print(datetime.today().strftime("%Y%m%d"))
 
 # 재무제표 viewDoc파라미터 찾기
@@ -27,8 +34,9 @@ def find_parameter(string: str, fs_name: str) -> list:
                     lst = param.replace("'", "").split(", ")
                     return lst
 
+
 # dart에서 고유번호 가져오기
-def Dart_Unique_Key(api_key) -> list:
+def Dart_Unique_Key(api_key):
 
     items = ["corp_code", "corp_name", "stock_code", "modify_date"]  # OpenApi에서 주는 정보
     # item_names = ["고유번호", "회사명", "종목코드", "최종변경일자"]
@@ -62,7 +70,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
 
     if json_dict['status'] == "000": # 정상적으로 데이터 가져옴
 
-        link_model.exst = 1
+        link_model.exist = 1
         link_model.save()
 
         report_number = json_dict['list'][0]['rcept_no']
@@ -201,5 +209,10 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         elif json_dict['status'] == "900":
             print('정의되지 않은 오류가 발생하였습니다.')
             print(corp_code, year, quarter, link_state)
-
-
+            
+            
+def Save_Dart_Data(api_key):
+    dart_data = Dart_Unique_Key(api_key)
+    for data in dart_data:
+        Dart(dart_code=data[0],company_name_dart=data[1],
+             short_code=data[2],recent_modify=data[3]).save()

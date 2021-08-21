@@ -1,10 +1,12 @@
+import time
 import requests as rq
 import pandas as pd
 from io import BytesIO
 from pykrx import stock
 
-## UERAGENT##
+## UERAGENT ##
 from .API_KEY import USERAGENT
+
 
 # 상장기업 정보 가져오기
 def Get_Krx_Corp():
@@ -49,33 +51,26 @@ def Get_Krx_Corp():
     download_res = rq.post(download_url, download_param, headers = headers)
 
     corp = pd.read_excel(BytesIO(download_res.content), dtype={'종목코드': str})
-    
-    # return corp['종목코드']
-    return corp
+    return corp['종목코드']
+    # return corp
 
 
 # 상장기업 단축코드 가져오기
-def Get_Krx_Short_Code(day:str) -> list:
+def Get_Krx_Short_Code(day:str):
 
 	# list
-	short_code = stock.get_market_ticker_list(day, market="ALL")
-	return short_code
+    short_code = stock.get_market_ticker_list(day, market="ALL")
+    # print(short_code)
+    return short_code
 
 
-
-def Get_Krx_Ohlv(day:str):
-	pass
-
-
-# PBR, PER
-def Daily_Crawling(day:str):
-    df_market_cap = stock.get_market_cap_by_ticker(day, market="ALL") # index -> ticker == shortcode
-    df_p2 = stock.get_market_fundamental_by_ticker(day, market="ALL")
-
-    # print(df_market_cap)
-    # print(df_p2)
-
-
-
+# 시가총액, ohlcv
+def Daily_Crawling(start_date:str, end_date:str, code:str):
+    # 위 순서대로
+    df_market_cap = stock.get_market_cap_by_date(start_date, end_date, code)
+    df_ohlcv = stock.get_market_ohlcv_by_date(start_date, end_date, code)
+    df = pd.concat([df_market_cap.iloc[:, 0], df_ohlcv], axis=1)
+    time.sleep(1)
+    return df
 
 
