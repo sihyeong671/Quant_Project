@@ -1,0 +1,42 @@
+# 각 폴더의 index.js에 기능 모두 담기
+
+
+index - 최상위
+
+/APP - APP - 컴포넌트 최상위
+
+/Component - 실제 컴포넌트
+ - Redux사용하는 모든 컴포넌트가 들어가야함
+
+/Store - 스토어
+ - /Reducer - 리듀서
+ - /Action - 액션, 액션함수
+
+/Containers - 컨테이너 컴포넌트
+ - /login - 로그인 페이지
+ - /sign up - 회원가입 페이지(소셜 로그인)
+ - /main - 메인페이지 - 라우터 home, chart, calc, rank
+ - /header - 상단
+ - /footer - 하단
+ - /chart - 차트 페이지(기업 선택, 비교)
+ - /calc - 연산, 청산가치 계산페이지
+ - /manage - 관리자 페이지(업데이트)
+ - /user - 사용자 페이지(프로필 및 사용자 정보)
+ - /rank - 재무지표를 통한 순위 매기는 페이지
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
