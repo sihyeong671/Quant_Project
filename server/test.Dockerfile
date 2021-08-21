@@ -1,8 +1,8 @@
 FROM python:3.9.0
 
-COPY ./ /home/Quant_Project
+COPY ./ /home/Quant_Project/server/
 
-WORKDIR /home/Quant_Project/
+WORKDIR /home/Quant_Project/server/
 
 RUN apt-get upgrade && pip3 install --upgrade pip
 
