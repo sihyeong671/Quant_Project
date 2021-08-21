@@ -30,7 +30,7 @@ class Daily_Price(models.Model):
     volume = models.FloatField(help_text="거래량", null=True, blank=True)
 
     def __str__(self):
-        return self.date
+        return str(self.date)
     
     class Meta:
         verbose_name = "일별 데이터"

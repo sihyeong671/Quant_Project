@@ -207,5 +207,3 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             print('정의되지 않은 오류가 발생하였습니다.')
             print(corp_code, year, quarter, link_state)
 
-# api_key = "7bd0686ed4f0d6ae5dd1b27866d99b9cf12c1e09"
-# Dart_Unique_Key(api_key)

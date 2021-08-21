@@ -29,7 +29,7 @@ def Save_FS_Data(api_key):
                 quarter, flag = Quarter.objects.get_or_create(qt_name=q, year=year)
                 for l in linklst:
                     link, check = FS_LoB.objects.get_or_create(lob=l, quarter=quarter)
-                    if check and not link.exist:
+                    if check:
                         count += 1
                         time.sleep(0.1)
                         if count == 100:

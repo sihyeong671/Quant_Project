@@ -1,3 +1,4 @@
+from re import A
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
 # from django.views.generic.list import MultipleObjectMixin
@@ -23,7 +24,9 @@ class View_All_Data(ListView):
   #     return context
   
 def Crawling_Data(request):
-  Save_Dart_Data(APIKEY)
+  # Save_Dart_Data(APIKEY)
+  # Save_FS_Data(APIKEY)
+  Save_Price()
   
   return redirect('DBmanageapp:company_list')
   
