@@ -1,4 +1,3 @@
-from re import A
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
 # from django.views.generic.list import MultipleObjectMixin
@@ -7,10 +6,9 @@ from .models import Company, FS_Account
 from django.http import HttpResponse
 # Create your views here.
 
-from .crawling import *
-from .API_KEY import *
-from .models import *
-
+from crawling.crawling import *
+from crawling.API_KEY import *
+from DBmanageapp.models import *
 
 class View_All_Data(ListView):
   model = Company
