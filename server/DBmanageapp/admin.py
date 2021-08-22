@@ -1,7 +1,6 @@
 from django.contrib import admin
-from .models import Dart, Company, Year, Quarter, FS_LoB, FS_Div, FS_Account, SUB_Account, Daily_Price
-
-
+from .models import *
+# Register your models here.
 admin.site.register(Dart)
 admin.site.register(Company)
 admin.site.register(Year)

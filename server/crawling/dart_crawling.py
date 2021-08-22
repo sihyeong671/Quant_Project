@@ -5,7 +5,7 @@ import zipfile
 from datetime import datetime
 from io import BytesIO
 from bs4 import BeautifulSoup
-<<<<<<< HEAD:server/DBmanageapp/dart_crawling.py
+
 import json
 from .models import FS_Div, FS_Account, SUB_Account
 
@@ -14,7 +14,6 @@ from .models import FS_Div, FS_Account, SUB_Account
 # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
 
-=======
 
 from crawling.krx_crawling import Get_Krx_Short_Code
 
@@ -25,7 +24,6 @@ from DBmanageapp.models import FS_Div, FS_Account, SUB_Account, Dart
 # import os
 # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
->>>>>>> 452a11a0cd20270fe44123a8a8ba5e7f9059f3d5:server/crawling/dart_crawling.py
 # print(datetime.today().strftime("%Y%m%d"))
 
 # 재무제표 viewDoc파라미터 찾기
@@ -220,9 +218,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         elif json_dict['status'] == "900":
             print('정의되지 않은 오류가 발생하였습니다.')
             print(corp_code, year, quarter, link_state)
-<<<<<<< HEAD:server/DBmanageapp/dart_crawling.py
 
-=======
             
             
 def Save_Dart_Data(api_key):
@@ -230,4 +226,3 @@ def Save_Dart_Data(api_key):
     for data in dart_data:
         Dart(dart_code=data[0],company_name_dart=data[1],
              short_code=data[2],recent_modify=data[3]).save()
->>>>>>> 452a11a0cd20270fe44123a8a8ba5e7f9059f3d5:server/crawling/dart_crawling.py

@@ -3,11 +3,7 @@ import requests as rq
 import pandas as pd
 from io import BytesIO
 from pykrx import stock
-<<<<<<< HEAD:server/DBmanageapp/krx_crawling.py
-import time
-=======
 
->>>>>>> 452a11a0cd20270fe44123a8a8ba5e7f9059f3d5:server/crawling/krx_crawling.py
 ## UERAGENT ##
 from .API_KEY import USERAGENT
 
@@ -68,10 +64,7 @@ def Get_Krx_Short_Code(day:str):
     return short_code
 
 
-<<<<<<< HEAD:server/DBmanageapp/krx_crawling.py
 
-=======
->>>>>>> 452a11a0cd20270fe44123a8a8ba5e7f9059f3d5:server/crawling/krx_crawling.py
 # 시가총액, ohlcv
 def Daily_Crawling(start_date:str, end_date:str, code:str):
     # 위 순서대로
@@ -80,11 +73,6 @@ def Daily_Crawling(start_date:str, end_date:str, code:str):
     df = pd.concat([df_market_cap.iloc[:, 0], df_ohlcv], axis=1)
     time.sleep(1)
     return df
-<<<<<<< HEAD:server/DBmanageapp/krx_crawling.py
 
-
-
-=======
->>>>>>> 452a11a0cd20270fe44123a8a8ba5e7f9059f3d5:server/crawling/krx_crawling.py
 
 

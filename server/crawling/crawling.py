@@ -1,15 +1,13 @@
 import time
-<<<<<<< HEAD:server/DBmanageapp/crawling.py
 from datetime import date, datetime
 
 from .models import *
 from .dart_crawling import *
 from .krx_crawling import *
 from .API_KEY import APIKEY
-=======
 
 from DBmanageapp.models import *
->>>>>>> 452a11a0cd20270fe44123a8a8ba5e7f9059f3d5:server/crawling/crawling.py
+
 
 from crawling.krx_crawling import *
 from crawling.dart_crawling import *
@@ -45,8 +43,6 @@ def Save_FS_Data(api_key):
                             return
                         Get_Amount_Data(api_key, dart_data.dart_code, y, q, l, link)
                         # 정정공시 따로 함수 만들기
-                        
-<<<<<<< HEAD:server/DBmanageapp/crawling.py
 
 # day에 시가총액, ohlcv, per, pbr 정보 가져와서 저장
 def Save_Price():
@@ -69,10 +65,6 @@ def Save_Price():
             # Daily_Data.pbr = 
             Daily_Data.save()
 
-
-    
-=======
->>>>>>> 452a11a0cd20270fe44123a8a8ba5e7f9059f3d5:server/crawling/crawling.py
 
 # day에 시가총액, ohlcv, per, pbr 정보 가져와서 저장
 def Save_Price():

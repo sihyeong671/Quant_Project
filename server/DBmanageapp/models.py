@@ -37,10 +37,6 @@ class Daily_Price(models.Model):
         verbose_name_plural = "일별 데이터"
 
 
-<<<<<<< HEAD:DBmanageapp/models.py
-
-=======
->>>>>>> 452a11a0cd20270fe44123a8a8ba5e7f9059f3d5:server/DBmanageapp/models.py
 # 객체 7개 (2015 ~ 2017)
 class Year(models.Model):
     bs_year = models.IntegerField(help_text="사업연도", blank=True, null=True)
@@ -135,8 +131,3 @@ class Dart(models.Model):
     class Meta:
         verbose_name = "dart info"
         verbose_name_plural = "dart info"
-<<<<<<< HEAD:DBmanageapp/models.py
-
-    
-=======
->>>>>>> 452a11a0cd20270fe44123a8a8ba5e7f9059f3d5:server/DBmanageapp/models.py
