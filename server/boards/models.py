@@ -4,20 +4,21 @@ from users.models import User
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=128, null=True, blank=False)
+    title = models.CharField(max_length=128, null=True, blank=False)
     is_anonymous = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True)
     top_fixed = models.BooleanField(default=False)
     
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="category")
+    favorite = models.ManyToManyField(User, blank=True, related_name='favorite_category')
     
     class Meta:
         verbose_name = '게시판 종류'
         verbose_name_plural = '게시판 종류 모음'
-        ordering = ['-name', ]
+        ordering = ['-title', ]
         
     def __str__(self):
-        return self.name
+        return self.title
     
 
 class Board(models.Model):
@@ -31,11 +32,12 @@ class Board(models.Model):
     
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="board")
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="board")
+    favorite = models.ManyToManyField(User, blank=True, related_name='favorite_board')
     
     class Meta:
         verbose_name = '게시글'
         verbose_name_plural = '게시글 모음'
-        ordering = ['-category__name', ]
+        ordering = ['-category__title', ]
         
     def __str__(self):
         return self.title
