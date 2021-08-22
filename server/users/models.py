@@ -36,7 +36,7 @@ class UserManager(BaseUserManager):
         user.full_clean()
         user.save()
         
-        profile = Profile(user=user)
+        profile = Profile(user=user, nickname=username)
         profile.save()
         
         return user
@@ -83,6 +83,10 @@ class User(AbstractUser):
     
     class Meta:
         swappable = 'AUTH_USER_MODEL'
+        
+    def __str__(self):
+        return self.username
+    
 
     @property
     def name(self):
@@ -95,7 +99,7 @@ class User(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     auth = models.CharField(max_length=128, null=True, blank=True)
-    nickname = models.CharField(max_length=64, null=True, blank=True)
+    nickname = models.CharField(max_length=64, unique=True)
     image = models.ImageField(
         default='profile_image/basic_profile.png',
         upload_to='profile_image/',

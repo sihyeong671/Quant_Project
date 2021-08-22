@@ -49,6 +49,7 @@ BASE_FRONTEND_URL = env.str('DJANGO_BASE_FRONTEND_URL', default='http://localhos
 INSTALLED_APPS = [
     'DBmanageapp',
     'users',
+    'boards',
     
     'django.contrib.admin',
     'django.contrib.auth',

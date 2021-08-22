@@ -16,7 +16,7 @@ def user_create(username, password=None, **extra_fields):
     user.full_clean()
     user.save()
     
-    profile = Profile(user=user)
+    profile = Profile(user=user, nickname=username)
     
     if extra_fields['image']:
         profile.image = extra_fields['image']
@@ -75,3 +75,4 @@ def user_get_or_create(username, **extra_data):
         return user, False
     
     return user_create(username=username, **extra_data), True
+
