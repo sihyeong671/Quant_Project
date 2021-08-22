@@ -4,7 +4,7 @@ from rest_framework import status, serializers
 from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework_jwt.views import ObtainJSONWebTokenView
+from rest_framework_jwt.views import ObtainJSONWebToken
 
 from django.urls import reverse
 from django.shortcuts import redirect
@@ -24,7 +24,7 @@ from auth.services import \
 
 
 
-class LoginApi(PublicApiMixin, ObtainJSONWebTokenView):
+class LoginApi(PublicApiMixin, ObtainJSONWebToken):
     """
     Using Custom LoginApi rather than obtain_jwt_token
     Because have to record last login time
