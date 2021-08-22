@@ -1,6 +1,10 @@
 import time
+from datetime import date, datetime
 
-from DBmanageapp.models import *
+from .models import *
+from .dart_crawling import *
+from .krx_crawling import *
+from .API_KEY import APIKEY
 
 from crawling.krx_crawling import *
 from crawling.dart_crawling import *
@@ -37,6 +41,30 @@ def Save_FS_Data(api_key):
                         Get_Amount_Data(api_key, dart_data.dart_code, y, q, l, link)
                         # 정정공시 따로 함수 만들기
                         
+
+# day에 시가총액, ohlcv, per, pbr 정보 가져와서 저장
+def Save_Price():
+    corporations = Company.objects.all()
+    for corp in corporations:
+        # 시가총액, ohlvc, per, pbr 함수로 가져와서 저장하기
+        data = Daily_Crawling("20201201", "20210101", corp.short_code)
+        time.sleep(1)
+        for row in data.itertuples():
+            Daily_Data = Daily_Price()
+            Daily_Data.company = Company.objects.get(company_name = corp.company_name, short_code = corp.short_code)
+            Daily_Data.date = row[0].to_pydatetime().date()
+            Daily_Data.market_gap = row[1]
+            Daily_Data.open = row[2]
+            Daily_Data.high = row[3]
+            Daily_Data.low = row[4]
+            Daily_Data.close = row[5]
+            Daily_Data.volume = row[6]
+            # Daily_Data.per = 
+            # Daily_Data.pbr = 
+            Daily_Data.save()
+
+
+    
 
 # day에 시가총액, ohlcv, per, pbr 정보 가져와서 저장
 def Save_Price():
