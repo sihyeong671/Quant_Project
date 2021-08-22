@@ -5,15 +5,13 @@ import zipfile
 from datetime import datetime
 from io import BytesIO
 from bs4 import BeautifulSoup
-
-from crawling.krx_crawling import Get_Krx_Short_Code
-
-from DBmanageapp.models import FS_Div, FS_Account, SUB_Account, Dart
-
+import json
+from .models import FS_Div, FS_Account, SUB_Account
 
 #  개별로 실행하면 생기기는 문제 해결을 위한 코드
 # import os
 # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+
 
 # print(datetime.today().strftime("%Y%m%d"))
 
@@ -209,10 +207,3 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         elif json_dict['status'] == "900":
             print('정의되지 않은 오류가 발생하였습니다.')
             print(corp_code, year, quarter, link_state)
-            
-            
-def Save_Dart_Data(api_key):
-    dart_data = Dart_Unique_Key(api_key)
-    for data in dart_data:
-        Dart(dart_code=data[0],company_name_dart=data[1],
-             short_code=data[2],recent_modify=data[3]).save()

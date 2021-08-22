@@ -1,3 +1,4 @@
+from re import A
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
 # from django.views.generic.list import MultipleObjectMixin
@@ -6,10 +7,10 @@ from .models import Company, FS_Account
 from django.http import HttpResponse
 # Create your views here.
 
-from crawling.crawling import *
-from crawling.API_KEY import *
-from DBmanageapp.models import *
-# api_key = API_KEY.APIKEY
+from .crawling import *
+from .API_KEY import *
+from .models import *
+
 
 class View_All_Data(ListView):
   model = Company
@@ -23,9 +24,9 @@ class View_All_Data(ListView):
   #     return context
   
 def Crawling_Data(request):
-  apikey = APIKEY
-  # Save_Dart_Data(apikey)
-  Save_FS_Data(apikey)
+  # Save_Dart_Data(APIKEY)
+  # Save_FS_Data(APIKEY)
+  # Save_Price()
   
   return redirect('DBmanageapp:company_list')
   
