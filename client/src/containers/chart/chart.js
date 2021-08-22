@@ -1,4 +1,4 @@
-import Chart from '../../components/chart/chart';
+import Chart from '../../components/pages/chart/chart';
 import React from 'react';
 import {connect}  from 'react-redux';
 import Constants from '../../store/constants';
@@ -13,7 +13,7 @@ function mapDispatchToProps(dispatch){
       e.preventDefault();
       //
       if (l >= 4){
-        return
+        return;
       }
       
       dispatch({

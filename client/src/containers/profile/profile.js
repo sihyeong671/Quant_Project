@@ -1,4 +1,4 @@
-import Rank from '../../components/pages/rank/rank';
+import Profile from '../../components/auth/profile/profile';
 import React from 'react';
 import {connect}  from 'react-redux';
 
@@ -14,5 +14,5 @@ function mapDispatchToProps(){
 }
 
 
-export default connect(mapStateToProps, null)(Rank);
+export default connect(mapStateToProps, null)(Profile);
 

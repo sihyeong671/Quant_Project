@@ -1,4 +1,4 @@
-import { searchConstants } from "../constants/searchconstants"
+import Constants from "../constants";
 
 
 const initState = {
@@ -9,7 +9,7 @@ const initState = {
 
 export default function reducer(state=initState, action){
   switch(action.type){
-    case searchConstants.CREATE:
+    case Constants.search.CREATE:
 
       return {
         ...state,
@@ -23,7 +23,7 @@ export default function reducer(state=initState, action){
         id: action.id
       }
     
-    case searchConstants.DELETE:
+    case Constants.search.DELETE:
 
       const newList = state.corpList.filter(data=> data.id != action.id);
       return{
