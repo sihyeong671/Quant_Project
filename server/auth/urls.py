@@ -4,10 +4,11 @@ from django.urls import path, include
 
 from auth.apis import \
     LoginApi, GoogleLoginApi, LogoutApi, KakaoLoginApi, \
-    KakaoSigninCallBackApi, RegistrationApi
+    KakaoSigninCallBackApi, username_duplicate_check, \
+    email_duplicate_check
+
 
 login_patterns = [
-    # path('', obtain_jwt_token),
     path('verify/', verify_jwt_token),
     path('refresh/', refresh_jwt_token),
     path('', LoginApi.as_view(), name='login'),
@@ -17,9 +18,15 @@ login_patterns = [
     
 ]
 
+validate_patterns = [
+    path('username/', username_duplicate_check),
+    path('email/', email_duplicate_check),
+    
+]
+
 urlpatterns = [
-    path('', RegistrationApi.as_view(), name="register"),
+    path('logout/', LogoutApi.as_view(), name="logout"),
     path('login/', include(login_patterns)),
-    path('logout/', LogoutApi.as_view(), name="logout")
+    path('validate/', include(validate_patterns)),
 ]
 
