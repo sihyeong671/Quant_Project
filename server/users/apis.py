@@ -14,8 +14,7 @@ from api.mixins import ApiAuthMixin, PublicApiMixin
 
 from auth.services import jwt_login
 
-from users.serializers import RegisterSerializer
-from users.serializers import UserSerializer, PasswordChangeSerializer
+from users.serializers import RegisterSerializer, UserSerializer, PasswordChangeSerializer
 from users.models import Profile, User
 from users.services import send_mail, email_auth_string
 
@@ -67,10 +66,8 @@ class UserMeApi(ApiAuthMixin, APIView):
 
 
 class UserCreateApi(PublicApiMixin, APIView):
-    serializer_class = RegisterSerializer
-    
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer = RegisterSerializer(data=request.data)
         if not serializer.is_valid(raise_exception=True):
             return Response({
                 "message": "Request Body Error"

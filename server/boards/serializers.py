@@ -1,8 +1,7 @@
-from boards.models import Post
 from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
 
-
-from boards.models import Category
+from boards.models import Category, Post, Comment, Reply
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -43,7 +42,51 @@ class PostSerializer(serializers.ModelSerializer):
         return obj.favorite.all().count()
 
 
+class ReplySerializer(serializers.ModelSerializer):
+    creator = serializers.SerializerMethodField(read_only=True)
+    favorite_count = SerializerMethodField(read_only=True)
+    
+    class Meta:
+        model = Reply
+        fields = (
+            'id', 'content', 'creator', 'favorite_count',
+        )
+        
+    def get_creator(self, obj):
+        is_anonymous = obj.comment.post.category.is_anonymous
+        if is_anonymous:
+            return "익명"
+        else:
+            return obj.creator.profile.nickname
+    
+    def get_favorite_count(self, obj):
+        return obj.favorite.all().count()
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    reply = ReplySerializer(read_only=True)
+    creator = SerializerMethodField(read_only=True)
+    favorite_count = SerializerMethodField(read_only=True)
+    
+    class Meta:
+        model = Comment
+        fields = (
+            'id', 'content', 'creator', 'favorite_count', 'reply', 
+        )
+        
+    def get_creator(self, obj):
+        is_anonymous = obj.post.category.is_anonymous
+        if is_anonymous:
+            return "익명"
+        else:
+            return obj.creator.profile.nickname
+    
+    def get_favorite_count(self, obj):
+        return obj.favorite.all().count()
+
+
 class PostDetailSerializer(serializers.ModelSerializer):
+    comment = CommentSerializer(read_only=True)
     thumbnail = serializers.SerializerMethodField(read_only=True)
     creator = serializers.SerializerMethodField(read_only=True)
     favorite_count = serializers.SerializerMethodField(read_only=True)
@@ -52,7 +95,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
         model = Post
         fields = (
             'id', 'thumbnail', 'title', 'content', 'hits', 'created_date', 
-            'modified_date', 'creator', 'favorite_count',
+            'modified_date', 'creator', 'favorite_count', 'comment',
         )
     
     def get_creator(self, obj):

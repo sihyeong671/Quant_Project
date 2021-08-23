@@ -46,11 +46,15 @@ class Post(models.Model):
 class Comment(models.Model):
     content = models.TextField(null=True, blank=False)
     
-    creator = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comment")
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comment")
+    favorite = models.ManyToManyField(User, blank=True, related_name='favorite_comment')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comment")
     
 
 class Reply(models.Model):
     content = models.TextField(null=True, blank=False)
     
-    creator = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="reply")
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reply")
+    favorite = models.ManyToManyField(User, blank=True, related_name='favorite_reply')
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="reply")
     
