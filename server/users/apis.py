@@ -2,6 +2,7 @@ from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.shortcuts import redirect
 from django.conf import settings
 from django.contrib.auth.hashers import check_password
 from django.core.management.utils import get_random_secret_key
@@ -12,7 +13,9 @@ from django.template.loader import render_to_string
 from api.mixins import ApiAuthMixin, PublicApiMixin
 
 from auth.services import jwt_login
-from users.serializers import UserSerializer, ProfileSerializer, PasswordChangeSerializer
+
+from users.serializers import RegisterSerializer
+from users.serializers import UserSerializer, PasswordChangeSerializer
 from users.models import Profile, User
 from users.services import send_mail, email_auth_string
 
@@ -61,7 +64,28 @@ class UserMeApi(ApiAuthMixin, APIView):
         return Response({
             "message": "Delete user success"
             }, status=status.HTTP_204_NO_CONTENT)
-            
+
+
+class UserCreateApi(PublicApiMixin, APIView):
+    serializer_class = RegisterSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid(raise_exception=True):
+            return Response({
+                "message": "Request Body Error"
+                }, status=status.HTTP_409_CONFLICT)
+
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        
+        profile = Profile(user=user, introduce="hello")
+        profile.save()
+        
+        response = redirect(settings.BASE_FRONTEND_URL)
+        response = jwt_login(response=response, user=user)
+        return response
+
 
 class FindIDApi(PublicApiMixin, APIView):
     def post(self, request, *args, **kwargs):

@@ -34,9 +34,40 @@ class PostSerializer(serializers.ModelSerializer):
         )
     
     def get_thumbnail(self, obj):
-        return obj.thumbnail.url
+        try:
+            return obj.thumbnail.url
+        except:
+            return ''
     
     def get_favorite_count(self, obj):
         return obj.favorite.all().count()
 
-        
+
+class PostDetailSerializer(serializers.ModelSerializer):
+    thumbnail = serializers.SerializerMethodField(read_only=True)
+    creator = serializers.SerializerMethodField(read_only=True)
+    favorite_count = serializers.SerializerMethodField(read_only=True)
+    
+    class Meta:
+        model = Post
+        fields = (
+            'id', 'thumbnail', 'title', 'content', 'hits', 'created_date', 
+            'modified_date', 'creator', 'favorite_count',
+        )
+    
+    def get_creator(self, obj):
+        is_anonymous = obj.category.is_anonymous
+        if is_anonymous:
+            return "익명"
+        else:
+            return obj.creator.profile.nickname
+    
+    def get_thumbnail(self, obj):
+        try:
+            return obj.thumbnail.url
+        except:
+            return ''
+    
+    def get_favorite_count(self, obj):
+        return obj.favorite.all().count()
+    
