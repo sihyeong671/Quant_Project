@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
-from boards.models import Board, Category, Comment, Reply
+from boards.models import Post, Category, Comment, Reply
 
 
 class CategoryInline(admin.StackedInline):
@@ -11,10 +11,10 @@ class CategoryInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = "categories"
     
-class BoardInline(admin.StackedInline):
-    model = Board
+class PostInline(admin.StackedInline):
+    model = Post
     can_delete = False
-    verbose_name_plural = "boards"
+    verbose_name_plural = "posts"
 
 class CommentInline(admin.StackedInline):
     model = Comment
@@ -34,7 +34,7 @@ class CategoryAdmin(admin.ModelAdmin):
         'get_creator',
     )
     search_fields = ('created_date', 'creator__profile__nickname', 'title', )
-    inlines = (BoardInline, )
+    inlines = (PostInline, )
     
     def get_creator(self, obj):
         creator = obj.creator.profile.nickname
@@ -42,8 +42,8 @@ class CategoryAdmin(admin.ModelAdmin):
     get_creator.short_description = _("creator")
 
 
-@admin.register(Board)
-class BoardAdmin(admin.ModelAdmin):
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
     ordering = ('-created_date', 'creator__profile__nickname')
     list_display = (
         'get_thumbnail_image', 'category', 'title', 'content', 'get_creator', 'hits',

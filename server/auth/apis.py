@@ -1,4 +1,5 @@
 from urllib.parse import urlencode
+from django.http.response import HttpResponse
 
 from rest_framework import status, serializers
 from rest_framework.generics import GenericAPIView
@@ -9,14 +10,14 @@ from rest_framework_jwt.views import ObtainJSONWebTokenView
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.conf import settings
+from django.core.exceptions import ValidationError
 
 from api.mixins import PublicApiMixin, ApiAuthMixin
 
-from users.models import Profile
+from users.models import Profile, User
 from users.utils import \
     user_record_login, user_change_secret_key, user_get_or_create
 
-from auth.serializers import RegisterSerializer
 from auth.services import \
     jwt_login, google_get_access_token, \
     google_get_user_info, kakao_get_access_token, \
@@ -130,27 +131,6 @@ class KakaoSigninCallBackApi(PublicApiMixin, APIView):
         return response
 
 
-class RegistrationApi(PublicApiMixin, GenericAPIView):
-    serializer_class = RegisterSerializer
-    
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if not serializer.is_valid(raise_exception=True):
-            return Response({
-                "message": "Request Body Error"
-                }, status=status.HTTP_409_CONFLICT)
-
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        
-        profile = Profile(user=user, introduce="hello")
-        profile.save()
-        
-        response = redirect(settings.BASE_FRONTEND_URL)
-        response = jwt_login(response=response, user=user)
-        return response
-
-
 class LogoutApi(ApiAuthMixin, APIView):
     def post(self, request):
         """
@@ -164,3 +144,26 @@ class LogoutApi(ApiAuthMixin, APIView):
         response.delete_cookie(settings.JWT_AUTH['JWT_AUTH_COOKIE'])
 
         return response
+
+
+def username_duplicate_check(request):
+    input_username = request.GET.get('username', '')
+    
+    user = User.objects.filter(username=input_username).first()
+    
+    if user:
+        raise ValidationError("There is an ID registered with that username")
+    
+    return HttpResponse(status=status.HTTP_200_OK)
+
+
+def email_duplicate_check(request):
+    input_email = request.GET.get('email', '')
+    
+    user = User.objects.filter(username=input_email).first()
+    
+    if user:
+        raise ValidationError("There is an ID registered with that email")
+    
+    return HttpResponse(status=status.HTTP_200_OK)
+    

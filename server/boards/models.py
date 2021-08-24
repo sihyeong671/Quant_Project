@@ -4,7 +4,7 @@ from users.models import User
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=128, null=True, blank=False)
+    title = models.CharField(max_length=128, unique=True, null=True, blank=False)
     is_anonymous = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True)
     top_fixed = models.BooleanField(default=False)
@@ -15,24 +15,24 @@ class Category(models.Model):
     class Meta:
         verbose_name = '게시판 종류'
         verbose_name_plural = '게시판 종류 모음'
-        ordering = ['-title', ]
+        ordering = ['-created_date', ]
         
     def __str__(self):
         return self.title
     
 
-class Board(models.Model):
+class Post(models.Model):
     title = models.CharField(max_length=128, null=True, blank=False)
     content = models.TextField(null=True, blank=False)
-    thumbnail = models.ImageField(upload_to='board_thumbnail/', null=True, blank=True)
+    thumbnail = models.ImageField(upload_to='post_thumbnail/', null=True, blank=True)
     hits = models.PositiveIntegerField(default=0)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
     top_fixed = models.BooleanField(default=False)
     
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="board")
-    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="board")
-    favorite = models.ManyToManyField(User, blank=True, related_name='favorite_board')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="post")
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="post")
+    favorite = models.ManyToManyField(User, blank=True, related_name='favorite_post')
     
     class Meta:
         verbose_name = '게시글'
@@ -46,11 +46,15 @@ class Board(models.Model):
 class Comment(models.Model):
     content = models.TextField(null=True, blank=False)
     
-    creator = models.ForeignKey(Board, on_delete=models.CASCADE, related_name="comment")
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comment")
+    favorite = models.ManyToManyField(User, blank=True, related_name='favorite_comment')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comment")
     
 
 class Reply(models.Model):
     content = models.TextField(null=True, blank=False)
     
-    creator = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="reply")
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reply")
+    favorite = models.ManyToManyField(User, blank=True, related_name='favorite_reply')
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="reply")
     
