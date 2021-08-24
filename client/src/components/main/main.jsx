@@ -7,8 +7,7 @@ import { Helmet } from 'react-helmet';
 import NoneRegRoute from '../router/NoneRegRoute';
 import NeedRegRoute from '../router/NeedRegRoute';
 
-import SignUp from '../../containers/signup/signup';
-import Login from '../../containers/login/login';
+import AuthForm from '../../containers/auth/authForm';
 import Profile from '../../containers/profile/profile';
 
 import Home from '../pages/home/home';
@@ -28,8 +27,7 @@ const Main=()=>{
             <Switch>
                 <Route exact path="/" component={Home}></Route>
 
-                <Route path="/login" component={Login}></Route>
-                <Route path="/signup" component={SignUp}></Route>
+                <Route path="/auth" component={AuthForm}></Route>
                 <Route path="/profile" component={Profile}></Route>
 
                 <Route path="/chart" component={Chart}></Route>

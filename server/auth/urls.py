@@ -25,7 +25,7 @@ validate_patterns = [
 ]
 
 urlpatterns = [
-    path('logout', LogoutApi.as_view(), name="logout"),
+    path('logout/', LogoutApi.as_view(), name="logout"),
     path('login/', include(login_patterns)),
     path('validate', include(validate_patterns)),
 ]

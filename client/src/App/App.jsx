@@ -4,7 +4,7 @@ import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import Header from '../components/base/header/header';
+import Header from '../containers/base/header/header';
 import Footer from '../components/base/footer/footer';
 import Main from '../components/main/main';
 

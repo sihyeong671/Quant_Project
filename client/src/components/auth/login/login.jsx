@@ -1,25 +1,22 @@
 import React, { useState } from 'react';
 import { hot } from 'react-hot-loader';
+import { useHistory } from 'react-router';
 import { Link } from "react-router-dom";
-import Constants from "../../../store/constants";
-import GoogleLogo from './assets/img/googlelogin.png';
-import KakaoLogo from './assets/img/kakaologin.png';
+import { Cookies, useCookies } from 'react-cookie';
 
-import './assets/css/style.scss';
 
-// #D3D5FD
-// #929AAB
-// #474A56
-// #0B0B0D
-
-function Login(props){
+// 엔터 누르면 자동으로 submit이 된다
+function Login({basicLogin}){
   console.log('Login rendering');
-  const [id, setId] = useState('');
+  const [username, setUserName] = useState('');
   const [pwd, setPwd] = useState('');
+  const history = useHistory();
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  console.log('cookie', cookies);
 
-  const onChangeId = (e) => {
+  const onChangeUserName = (e) => {
     e.preventDefault();
-    setId(e.target.value);
+    setUserName(e.target.value);
   };
 
   const onChangePwd = (e) => {
@@ -27,19 +24,26 @@ function Login(props){
     setPwd(e.target.value);
   };
 
-  return(
-    <div className="login">
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const token = await basicLogin(username ,pwd);
+    setCookie('token', token);
+    console.log(cookies);
+    history.push('/');
+  }
 
+  return(
+    <>
       <h1>Login</h1>
 
       <div className='login-form'>
-        <form onSubmit={(e) => props.basicLogin(e)}>
+        <form onSubmit={onSubmit}>
           <div className="input-area">
-            <input id="username" name='username' type="text" onChange={(e) => onChangeId(e)} value={id}/>
+            <input username="username" name='username' type="text" onChange={(e) => onChangeUserName(e)} value={username} required='required'/>
             <label htmlFor='username'>USERNAME</label>
           </div>
           <div className="input-area">
-            <input id="pwd" name='pwd' type="password" onChange={(e) => onChangePwd(e)} value={pwd}/>
+            <input id="pwd" name='pwd' type="password" onChange={(e) => onChangePwd(e)} value={pwd} required='required'/>
             <label htmlFor="pwd">PASSWORD</label>
           </div>
           <div>
@@ -47,22 +51,7 @@ function Login(props){
           </div>
         </form>
       </div>
-      
-      <div className='social-btn'>
-        <Link to="" style={{backgroundImage: `url(${KakaoLogo})`}}></Link>
-        <Link to="" style={{backgroundImage: `url(${GoogleLogo})`}}></Link>
-      </div>
-
-      <div>
-        <ul>
-          <li><a href="#">아이디 찾기</a></li>
-          <li><a href="#">비밀번호 찾기</a></li>
-          <li><a href="#">회원가입</a></li>
-        </ul>
-
-      </div>
-
-    </div>
+    </>
   );
 }
 

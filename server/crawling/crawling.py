@@ -1,13 +1,6 @@
 import time
-from datetime import date, datetime
-
-from .models import *
-from .dart_crawling import *
-from .krx_crawling import *
-from .API_KEY import APIKEY
 
 from DBmanageapp.models import *
-
 
 from crawling.krx_crawling import *
 from crawling.dart_crawling import *

@@ -3,43 +3,54 @@ import { Link } from "react-router-dom";
 import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
+import { useHistory } from 'react-router';
 
 import './assets/css/style.scss'
 
-// {} <- 파라미터에 이거 까먹지 말기
-function Header({isAuthenticated, username, handleLogout}){
-	// console.log(handleLogout);
-	// handleLogout()
-	const genAuth=()=>{
-		console.log(isAuthenticated);
-		if(isAuthenticated == false){
+function Header(props){
+
+	console.log("Header rendering");
+	console.log(props)
+	let authHeader;
+
+	const history = useHistory();
+
+	const onClick = async (e) => {
+		e.preventDefault();
+		await props.basicLogOut();
+		// 로그아웃 로직 구현
+	}
+
+
+
+	const getAuth = () => {
+		if(props.user.isAuthenticated === false)
+		{
 			return(
 				<div className="auth-link" key={1}>
-					{/* {console.log(isAuthenticated)} */}
-					<Link to='/login'>Login</Link>
-					<Link to='/signup'>Sign Up</Link>
+					<Link to='/auth/login'>LogIn</Link>
 				</div>
 			)
 		}else{
+			// user명 출력
 			return(
 				<div className="auth-link" key={0}>
-					<button onClick={handleLogout}>Logout</button> 
+					
+					<button onClick={onClick}>LogOut</button> 
 					<Link to='/profile'>Profile</Link>
 				</div>	
 			)
 		}
 	}
+	authHeader = getAuth();
 
 	return(
 		<header className="header">
 			<div className="logo">
-				Quant
+				<Link to ='/'>Quant</Link>
 			</div>
 			<nav className="nav">
-				<Link to="/">Home</Link>
-				<Link to='/login'>Log In</Link>
-				<Link to='/signup'>Sign Up</Link>
-				<Link to='/profile'>Profile</Link>
+				{authHeader}
 			</nav>
 		</header>
 	);
