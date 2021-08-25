@@ -311,14 +311,14 @@ class CommentManageApi(ApiAuthMixin, APIView):
         comment.delete()
         
         return Response({
-            "message": "Post delete success"
+            "message": "Comment delete success"
         }, status=status.HTTP_200_OK)
     
     
     def put(self, request, *args, **kwargs):
         """
         댓글 수정 기능.
-        title, content, thumbnail 
+        content
         """
         comment_id = kwargs['comment_id']
         comment = get_object_or_404(Post, pk=comment_id)
@@ -332,7 +332,7 @@ class CommentManageApi(ApiAuthMixin, APIView):
         
         if content == '':
             return Response({
-                "message": "title required"
+                "message": "content required"
             }, status=status.HTTP_400_BAD_REQUEST)
         
         comment.content = content
@@ -341,4 +341,106 @@ class CommentManageApi(ApiAuthMixin, APIView):
         
         return Response({
             "message": "Comment update success"
+        }, status=status.HTTP_200_OK)
+        
+
+class ReplyCreateApi(ApiAuthMixin, APIView):
+    def post(self, request, *args, **kwargs):
+        """
+        comment_id 댓글에 새로운 대댓글을 작성한다.
+        content 필수
+        """
+        comment_id = kwargs['comment_id']
+        comment = get_object_or_404(Comment, pk=comment_id)
+        
+        content = request.data.get('content', '')
+        
+        if content == '':
+            return Response({
+                "message": "content required"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        reply = Reply(
+            creator=request.user, 
+            comment=comment,
+            content=content,
+        )
+        
+        reply.save()
+        
+        return Response({
+            "message": "Reply created success"
+        }, status=status.HTTP_201_CREATED)
+
+
+class ReplyManageApi(ApiAuthMixin, APIView):
+    def post(self, request, *args, **kwargs):
+        """
+        대댓글 좋아요 기능.
+        이미 좋아요를 누른 경우 취소
+        """
+        pk = kwargs['reply_id']
+        user = request.user
+        if not pk:
+            return Response({
+                "message": "Select a reply number"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        reply = get_object_or_404(Reply, pk=pk)
+        
+        if user.favorite_reply.filter(pk=pk).exists():
+            reply.favorite.remove(user)
+        else:
+            reply.favorite.add(user)
+            
+        return Response({
+            "message": "Reply like/unlike success"
+        }, status=status.HTTP_200_OK)
+    
+    
+    def delete(self, request, *args, **kwargs):
+        """
+        대댓글 삭제 기능.
+        """
+        reply_id = kwargs['reply_id']
+        reply = get_object_or_404(Reply, pk=reply_id)
+        
+        if request.user != reply.creator:
+            return Response({
+                "message": "You do not have permission"
+            }, status=status.HTTP_403_FORBIDDEN)
+    
+        reply.delete()
+        
+        return Response({
+            "message": "Reply delete success"
+        }, status=status.HTTP_200_OK)
+    
+    
+    def put(self, request, *args, **kwargs):
+        """
+        대댓글 수정 기능.
+        content
+        """
+        reply_id = kwargs['reply_id']
+        reply = get_object_or_404(Reply, pk=reply_id)
+        
+        if request.user != reply.creator:
+            return Response({
+                "message": "You do not have permission"
+            }, status=status.HTTP_403_FORBIDDEN)
+        
+        content = request.data.get('title', '')
+        
+        if content == '':
+            return Response({
+                "message": "content required"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        reply.content = content
+        
+        reply.save()
+        
+        return Response({
+            "message": "Reply update success"
         }, status=status.HTTP_200_OK)
