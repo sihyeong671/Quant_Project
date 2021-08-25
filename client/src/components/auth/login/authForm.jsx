@@ -18,7 +18,7 @@ const authForm = (props) => (
     <Switch>
       <Route exact path ='/auth/login' render={() => <Login basicLogin={props.basicLogin}/>}></Route>
       <Route path ='/auth/search_id' render={() => <SearchId searchId={props.searchId}/>}></Route>
-      <Route path ='/auth/search_pwd' render={() => <SearchPwd searchPwd={props.searchPwd}/>}></Route>
+      <Route path ='/auth/search_pwd' render={() => <SearchPwd searchPwd={props.searchPwd} sendCode={props.sendCode}/>}></Route>
       <Route path ='/auth/signup'  render={() => <SignUp basicSignUp={props.basicSignUp}/>}></Route>
     </Switch>
 

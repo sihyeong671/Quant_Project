@@ -112,12 +112,41 @@ function mapDispatchToProps(dispatch){
             email: email
           }
         })
-        return res
+        if(res.status === 200)
+          return res.data.id;
       }catch(error){
         console.log(error)
       }
     },
-    serachPwd: async () => {
+    serachPwd: async (username, email) => {
+      try{
+        const res = await axios({
+          method: 'post',
+          url: 'http://localhost:8000/api/v1/users/me/password/code',
+          data:{
+            username: username,
+            email: email
+          }
+        })
+        
+      }catch(error){
+        console.log(error);
+      }
+
+    },
+    sendCode: async (username, code) => {
+      try{
+        await axios({
+          method:'post',
+          url:'http://localhost:8000/api/v1/users/me/password/verifycode',
+          data:{
+            username: username,
+            code: code
+          }
+        })
+      }catch(error){
+        console.log(error);
+      }
 
     },
     kakaoLogin: async () => {

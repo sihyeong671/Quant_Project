@@ -27,8 +27,26 @@ $color-green4: #3b8686;
         text-align: center;
         margin-bottom: 20px;
     }
+
+    .show-name-container{
+        border-radius: 50px;
+        background-color: $color-green4;
+        margin-bottom: 20px;
+        .show-name{
+            font-size: 20px;
+            font-weight: 500;
+            color:$color-green1;
+            text-align: center;
+            margin: 50px 0;
+        }
+
+    }
     
     .login-form{
+        .code-input-container{
+            margin-top: 10px;
+        }
+
         width:450px;
         form{
             margin: auto;
