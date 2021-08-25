@@ -13,21 +13,27 @@ function Footer(){
       </div>
       
       <div className="foot-bottom">
-        <span>Guide</span>
+        <span>GUIDE</span>
 
       </div>
 
       <div className="foot-bottom">
-        <span>문의 이메일: | 문의 전화번호: </span>
-          
+        <div>
+          CONTACT
+        </div>
+        <div>
+          projectquant@naver.com
+        </div>
+        <div>
+          010 - 0000 - 0000
+        </div>
       </div>
 
       <div className="foot-bottom">
-        <span>아이콘</span>
-          
-      </div>
-      <div>
-        <span>박시형|조현우|허상원</span>
+        <div>ABOUT</div>
+        <div>
+          박시형 | 조현우 | 허상원
+        </div>
       </div>
     </div>
   );

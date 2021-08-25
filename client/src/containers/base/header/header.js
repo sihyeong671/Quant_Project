@@ -15,7 +15,7 @@ function mapDispatchToProps(dispatch){
         // axios.post 로 하니 문제 생김
         const res = await axios({
           method: 'post',
-          url: 'http://localhost:8000/api/v1/auth/logout/',
+          url: 'http://localhost:8000/api/v1/auth/logout',
         })
         console.log(res)
         dispatch({

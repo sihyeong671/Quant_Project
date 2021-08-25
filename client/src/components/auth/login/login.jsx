@@ -28,7 +28,6 @@ function Login({basicLogin}){
     e.preventDefault();
     const token = await basicLogin(username ,pwd);
     setCookie('token', token);
-    console.log(cookies);
     history.push('/');
   }
 
