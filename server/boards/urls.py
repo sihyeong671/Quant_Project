@@ -2,15 +2,17 @@ from django.urls import path, include
 
 from boards.apis import CategoryCreateReadApi, \
     CategoryManageApi, PostManageApi, PostCreateApi, \
-    CommentCreateApi, CommentManageApi
+    CommentCreateApi, CommentManageApi, ReplyCreateApi, \
+    ReplyManageApi
 
 
 # start :  ~board/
 
 reply_urlpatterns = [
-    # path('reply',)
+    path('reply', ReplyCreateApi.as_view(), name="reply_create"),
+    path('reply/<int:reply_id>', ReplyManageApi.as_view(), name="reply_manage"),
+    
 ]
-
 
 comment_urlpatterns = [
     path('comment', CommentCreateApi.as_view(), name="comment_create"),
