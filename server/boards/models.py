@@ -50,6 +50,12 @@ class Comment(models.Model):
     favorite = models.ManyToManyField(User, blank=True, related_name='favorite_comment')
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comment")
     
+    class Meta:
+        verbose_name_plural = '댓글'
+    
+    def __str__(self):
+        return self.content
+    
 
 class Reply(models.Model):
     content = models.TextField(null=True, blank=False)
@@ -58,3 +64,8 @@ class Reply(models.Model):
     favorite = models.ManyToManyField(User, blank=True, related_name='favorite_reply')
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="reply")
     
+    class Meta:
+        verbose_name_plural = '대댓글'
+    
+    def __str__(self):
+        return self.content
