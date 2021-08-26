@@ -21,6 +21,11 @@ class CommentInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = "comments"
 
+class ReplyInline(admin.StackedInline):
+    model = Reply
+    can_delete = False
+    verbose_name_plural = 'replies'
+
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -78,4 +83,28 @@ class PostAdmin(admin.ModelAdmin):
         return cnt
     get_favorit_count.short_description = _("favorite_count")
     
+# admin.site.register(Comment)
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'get_post', 'content', 'get_creator',
+    )
+    list_display_links = (
+        'id', 'get_post', 'content', 'get_creator',
+    )
+    search_fields = ('created_date', 'creator__profile__nickname', 'post__title')
+    list_filter = ('post__title', )
+    
+    inlines = (ReplyInline, )
+    
+    def get_creator(self, obj):
+        creator = obj.creator.profile.nickname
+        return creator
+    get_creator.short_description = _("creator")
+    
+    def get_post(self, obj):
+        post = obj.post.title
+        return post
+    get_post.short_description = _("post")
     
