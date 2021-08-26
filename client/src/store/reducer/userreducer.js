@@ -3,7 +3,7 @@ import { userConstants } from "../constants/userconstants";
 
 const initState = {
   isAuthenticated: false,
-  user:null
+  username:null
 }
 
 export default function reducer(state=initState, action){
@@ -11,14 +11,14 @@ export default function reducer(state=initState, action){
     case Constants.user.LOGIN_SUCCESS:
       return {
         ...state,
-        user:action.username,
+        username:action.username,
         isAuthenticated:true
       }
     case Constants.user.LOGOUT:
       return{
         ...state,
-        user:null,
-        inAuthenticated:false
+        username:null,
+        isAuthenticated:false
       }
   }
   return state;

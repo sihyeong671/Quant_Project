@@ -33,7 +33,7 @@ const SignUp = (props) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    basicSignUp(e);
+    props.basicSignUp(e);
   }
 
   return(

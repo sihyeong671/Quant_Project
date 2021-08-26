@@ -10,14 +10,15 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
   return {
-    basicLogOut: async function(){
+    basicLogOut: async function(username){
       try{
         // axios.post 로 하니 문제 생김
         const res = await axios({
           method: 'post',
           url: 'http://localhost:8000/api/v1/auth/logout',
+          withCredentials:true
         })
-        console.log(res)
+        console.log(res);
         dispatch({
           type: Constants.user.LOGOUT
         })

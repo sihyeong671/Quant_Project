@@ -16,7 +16,7 @@ function Header(props){
 
 	const onClick = async (e) => {
 		e.preventDefault();
-		await props.basicLogOut();
+		await props.basicLogOut(props.user.username);
 		// 로그아웃 로직 구현
 	}
 

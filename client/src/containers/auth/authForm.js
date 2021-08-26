@@ -41,10 +41,12 @@ function mapDispatchToProps(dispatch){
         const res = await axios({
           method:'post',
           url: 'http://localhost:8000/api/v1/auth/login/',
-          data:{
+          data:
+          {
             username: username,
             password: pwd
-            }
+          },
+          withCredentials:true
         })
         dispatch({
           type: Constants.user.LOGIN_SUCCESS,
@@ -72,7 +74,7 @@ function mapDispatchToProps(dispatch){
       try{
         await axios({
           method:'post',
-          url: 'http://localhost:8000/api/v1/auth/validate/username/',
+          url: 'http://localhost:8000/api/v1/auth/validate/username',
           data:{
             username: username
           }
@@ -80,7 +82,7 @@ function mapDispatchToProps(dispatch){
 
         await axios({
           method:'post',
-          url: 'http://localhost:8000/api/v1/auth/validate/email/',
+          url: 'http://localhost:8000/api/v1/auth/validate/email',
           data:{
             email: email
           }
@@ -88,13 +90,14 @@ function mapDispatchToProps(dispatch){
 
         const res = await axios({
           method:'post',
-          url: 'http://localhost:8000/api/v1/users/me',
+          url: 'http://localhost:8000/api/v1/users/me/',
           data:{
             username: username,
             password1: pwd1,
             password2: pwd2,
             email: email
-          }
+          },
+          withCredentials:true
         })
         console.log(res);
         // dispatch 유저 정보 저장
@@ -128,7 +131,6 @@ function mapDispatchToProps(dispatch){
             email: email
           }
         })
-        
       }catch(error){
         console.log(error);
       }
@@ -150,10 +152,26 @@ function mapDispatchToProps(dispatch){
 
     },
     kakaoLogin: async () => {
-
+      try{
+        await axios({
+          method: 'post',
+          url:'http://localhost:8000/api/v1/auth/login/kakao/callback'
+        })
+        // dispatch
+      }catch(error){
+        console.log(error);
+      }
     },
     googleLogin: async () => {
-
+      try{
+        await axios({
+          method: 'post',
+          url:'http://localhost:8000/api/v1/auth/login/google'
+        })
+        // dispatch
+      }catch(error){
+        console.log(error);
+      }
     },
     naverLogin: async () => {
 
