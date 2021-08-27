@@ -10,7 +10,7 @@ import storage from "redux-persist/lib/storage";
 // window.localstorage를 쓰면 스토어와는 별개로 저장
 const persistConfig = {
   key: 'root',
-  storage:storage,
+  storage: storage,
   whitelist: ['user']
 }
 const rootReducer =  combineReducers({
