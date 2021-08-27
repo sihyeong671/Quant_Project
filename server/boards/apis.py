@@ -169,7 +169,9 @@ class PostManageApi(ApiAuthMixin, APIView):
 
         if f'_{pk}_' not in cookie_value:
             cookie_value += f'{pk}_'
-            response.set_cookie('hitboard', value=cookie_value, max_age=expire_time, httponly=True)
+            response.set_cookie(
+                'hitboard', value=cookie_value, 
+                max_age=expire_time, httponly=True)
 
             post.hits += 1
             post.save()
