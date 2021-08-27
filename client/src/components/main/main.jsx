@@ -4,24 +4,37 @@ import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import home from '../home/home';
-import calc from '../calc/calc';
-import chart from '../../containers/chart/chart';
-import rank from '../../containers/rank/rank';
+import NoneRegRoute from '../router/NoneRegRoute';
+import NeedRegRoute from '../router/NeedRegRoute';
+
+import AuthForm from '../../containers/auth/authForm';
+import Profile from '../../containers/profile/profile';
+
+import Home from '../pages/home/home';
+
+import Calc from '../../containers/calc/calc';
+import Chart from '../../containers/chart/chart';
+import Rank from '../../containers/rank/rank';
 
 
-
+import NotFound from '../notfound';
 
 import './assets/css/style.scss'
 
-function Main(){
+const Main=()=>{
 	return(
         <main className="main">
             <Switch>
-                <Route exact path="/" component={home}></Route>
-                <Route path="/chart" component={chart}></Route>
-                <Route path="/calc" component={calc}></Route>
-                <Route path="/rank" component={rank}></Route>
+                <Route exact path="/" component={Home}></Route>
+
+                <Route path="/auth" component={AuthForm}></Route>
+                <Route path="/profile" component={Profile}></Route>
+
+                <Route path="/chart" component={Chart}></Route>
+                <Route path="/calc" component={Calc}></Route>
+                <Route path="/rank" component={Rank}></Route>
+
+                <Route component={NotFound}></Route>
             </Switch>
         </main>
 	);

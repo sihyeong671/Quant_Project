@@ -1,4 +1,4 @@
-import Rank from '../../components/rank/rank';
+import Rank from '../../components/pages/rank/rank';
 import React from 'react';
 import {connect}  from 'react-redux';
 
