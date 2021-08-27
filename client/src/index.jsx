@@ -14,11 +14,11 @@ const rootElement = document.getElementById('root');
 ReactDOM.render(
     <Provider store = {store}>
       <PersistGate persistor={persistor}>
-          <CookiesProvider>
-            <BrowserRouter>
-              <App/>    
-            </BrowserRouter>
-          </CookiesProvider>  
+        <CookiesProvider>
+          <BrowserRouter>
+            <App/>    
+          </BrowserRouter>
+        </CookiesProvider>  
       </PersistGate>
     </Provider>
     ,
