@@ -10,7 +10,6 @@ import './index.scss'
 
 const rootElement = document.getElementById('root');
 ReactDOM.render(
-
     <Provider store = {store}>
       <BrowserRouter>
         <App/>    
