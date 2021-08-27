@@ -101,6 +101,7 @@ function mapDispatchToProps(dispatch){
         })
         console.log(res);
         // dispatch 유저 정보 저장
+        
         // 토큰 저장
       }catch(error){
         console.log(error);
