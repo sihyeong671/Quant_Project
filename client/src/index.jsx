@@ -12,7 +12,7 @@ import './index.scss'
 
 const rootElement = document.getElementById('root');
 ReactDOM.render(
-    <Provider store = {store}>
+    <Provider store={store}>
       <PersistGate persistor={persistor}>
         <CookiesProvider>
           <BrowserRouter>
