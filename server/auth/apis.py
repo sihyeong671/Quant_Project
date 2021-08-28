@@ -76,7 +76,6 @@ class GoogleLoginApi(PublicApiMixin, APIView):
             'last_name': user_data.get('family_name', ''),
             'image': user_data.get('picture', None),
             'path': "google",
-            
         }
 
         user, _ = user_get_or_create(**profile_data)

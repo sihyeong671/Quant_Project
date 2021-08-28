@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class Company(models.Model):
     company_name = models.CharField(max_length=200, null=True, blank=True)
     short_code = models.CharField(max_length=200, null=True, blank=True)

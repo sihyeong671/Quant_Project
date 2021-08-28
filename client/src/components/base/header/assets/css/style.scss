@@ -1,0 +1,57 @@
+$color-green1: #cff09e;
+$color-green2: #a8dba8;
+$color-green3: #79bd9a;
+$color-green4: #3b8686;
+
+.header {
+    width: 100%;
+    height: 150px;
+    padding: 0 5%;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0px 0px 10px rgba(56, 56, 56, 0.3);
+    font-weight: 500;
+    
+    .logo{
+        a{
+            line-height: 150px;
+            font-size: 50px;
+            font-weight: bold;
+            color: $color-green3;
+        }
+        
+
+    }
+    
+    .nav {
+        line-height: 150px;
+        display: flex;
+
+        button{
+            cursor: pointer;
+            border: none;
+            background-color: transparent;
+            font-size: 20px;
+            font-weight: inherit;
+            color: $color-green3;
+            transition: all .5s ease;
+            &:hover{
+                font-size: 25px;
+                color: $color-green4;
+            }
+        }
+        a{
+            color: $color-green3;
+            font-size: 20px;
+            margin: 0 10px;
+            transition: all .5s ease;
+            &:last-child{
+                margin-right: 0;
+            }
+            &:hover{
+                font-size: 25px;
+                color: $color-green4;
+            }
+        }
+    }
+}

@@ -1,0 +1,27 @@
+$color-green1: #cff09e;
+$color-green2: #a8dba8;
+$color-green3: #79bd9a;
+$color-green4: #3b8686;
+
+.footer{
+  background-color: $color-green4;
+  color: $color-green1;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(8, minmax(2rem, auto));
+  box-shadow: 0 0 10px rgba(93, 93, 93, 0.3);
+  padding: 2% 5%;
+
+  .foot-top{
+    align-items: center;
+    justify-items: center;
+    grid-row:1/3;
+    grid-column: 1/4;
+  }
+  
+  .foot-bottom{
+    justify-items: center;
+    align-items: center;
+    grid-row: 3/9;
+  }
+}
