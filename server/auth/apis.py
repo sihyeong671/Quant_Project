@@ -11,10 +11,9 @@ from django.urls import reverse
 from django.shortcuts import redirect
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.conf import settings
 
 from api.mixins import PublicApiMixin, ApiAuthMixin
-
-from users.models import Profile, User
 from users.utils import \
     user_record_login, user_change_secret_key, user_get_or_create
 
@@ -23,6 +22,8 @@ from auth.services import \
     google_get_user_info, kakao_get_access_token, \
     kakao_get_user_info
 
+
+User = settings.AUTH_USER_MODEL
 
 
 class LoginApi(PublicApiMixin, ObtainJSONWebTokenView):

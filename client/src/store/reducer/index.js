@@ -5,6 +5,7 @@ import chart from './chartreducer'
 import search from './searchreducer';
 import user from './userreducer';
 import board from './boardreducer';
+import calc from './calcreducer'
 
 import storage from "redux-persist/lib/storage";
 
@@ -14,12 +15,14 @@ import storage from "redux-persist/lib/storage";
 const persistConfig = {
   key: 'root',
   storage: storage,
-  whitelist: ['user']
+  whitelist: 'user'
 }
+
 const rootReducer =  combineReducers({
   chart,
   search,
-  user
+  user,
+  calc
 });
 
 export default persistReducer(persistConfig, rootReducer);

@@ -10,7 +10,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
   return {
-    basicLogOut: async function(username){
+    basicLogOut: async function(){
       try{
         // axios.post 로 하니 문제 생김
         const res = await axios({
@@ -18,7 +18,6 @@ function mapDispatchToProps(dispatch){
           url: 'http://localhost:8000/api/v1/auth/logout',
           withCredentials:true
         })
-        console.log(res);
         dispatch({
           type: Constants.user.LOGOUT
         })

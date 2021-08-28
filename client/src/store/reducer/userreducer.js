@@ -1,8 +1,7 @@
 import Constants from "../constants";
-import { userConstants } from "../constants/userconstants";
 
 const initState = {
-  isAuthenticated: false,
+  token: null,
   username:null
 }
 
@@ -12,13 +11,13 @@ export default function reducer(state=initState, action){
       return {
         ...state,
         username:action.username,
-        isAuthenticated:true
+        token:action.token
       }
     case Constants.user.LOGOUT:
       return{
         ...state,
         username:null,
-        isAuthenticated:false
+        token:null
       }
   }
   return state;

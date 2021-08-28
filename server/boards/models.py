@@ -1,8 +1,9 @@
 from django.utils import timezone
 from django.db import models
+from django.conf import settings
 
-from users.models import User
 
+User = settings.AUTH_USER_MODEL
 
 class Category(models.Model):
     title = models.CharField(max_length=128, unique=True, null=True, blank=False)
@@ -67,7 +68,7 @@ class Reply(models.Model):
     
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reply")
     favorite = models.ManyToManyField(User, blank=True, related_name='favorite_reply')
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="reply")
+    comment = models.ForeignKey(Comment, null=True, on_delete=models.SET_NULL, related_name="reply")
     
     class Meta:
         verbose_name_plural = '대댓글'
