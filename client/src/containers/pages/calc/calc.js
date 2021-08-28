@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import React from 'react';
-import Calc from '../../components/pages/calc/calc';
-import Constants from '../../store/constants';
+import Calc from '../../../components/pages/calc/calc';
+import Constants from '../../../store/constants';
 
 const mapStateToProps=(state)=>{
-  return state;
+  return state.calc;
 }
 
 const mapDispatchToProps=(dispatch)=>{

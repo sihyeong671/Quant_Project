@@ -4,6 +4,9 @@ import AuthForm from '../../components/auth/login/authForm';
 import Constants from '../../store/constants';
 import axios from 'axios';
 
+axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.withCredentials = true;
+
 // 이메일 검사
 function isvalidEmail(email) {
 
@@ -13,10 +16,19 @@ function isvalidEmail(email) {
 }
 
 // 비밀 번호 검사
-function isVaildForm(pwd1, pwd2, email){
+function isVaildForm(username, pwd1, pwd2, email){
   let message = null;
+  if(username.length < 3){
+    message = "아이디가 너무 짧습니다 3자리 이상으로 만들어 주세요"
+    return [fasle, message];
+  }
 
-  if(pwd1 !== pwd2){
+  else if (pwd1.length < 8){
+    message = "비밀번호가 너무 짧습니다 8자리 이상으로 만들어주세요"
+    return [false, message];
+  }
+
+  else if(pwd1 !== pwd2){
     message = "비밀번호가 일치하지 않습니다";
     return [false, message];
 
@@ -25,6 +37,7 @@ function isVaildForm(pwd1, pwd2, email){
     message = "이메일이 형식에 맞지 않습니다";
     return [false, message];
   }
+
   return [true, message];
 }
 
@@ -40,33 +53,26 @@ function mapDispatchToProps(dispatch){
       try{
         const res = await axios({
           method:'post',
-          url: 'http://localhost:8000/api/v1/auth/login/',
+          url: '/api/v1/auth/login/',
           data:
           {
             username: username,
             password: pwd
-          },
-          withCredentials:true
+          }
         })
         dispatch({
           type: Constants.user.LOGIN_SUCCESS,
           username: res.data.user.username,
+          token: res.data.token
         })
-        return res.data.token;
-        
       } catch(error){
         console.log(error);
       }
     },
-    basicSignUp: async function(e){
-      const [username ,pwd1, pwd2, email] = [
-        e.target.username.value,
-        e.target.pwd1.value,
-        e.target.pwd2.value,
-        e.target.email.value,
-      ];
+    basicSignUp: async function(username, pwd1, pwd2, email){
+      
       // 유효성 검사
-      const [check, message] = isVaildForm(pwd1, pwd2, email);
+      const [check, message] = isVaildForm(username, pwd1, pwd2, email);
       if (!check){
         window.alert(message);
         return;
@@ -74,7 +80,7 @@ function mapDispatchToProps(dispatch){
       try{
         await axios({
           method:'post',
-          url: 'http://localhost:8000/api/v1/auth/validate/username',
+          url: '/api/v1/auth/validate/username',
           data:{
             username: username
           }
@@ -82,7 +88,7 @@ function mapDispatchToProps(dispatch){
 
         await axios({
           method:'post',
-          url: 'http://localhost:8000/api/v1/auth/validate/email',
+          url: '/api/v1/auth/validate/email',
           data:{
             email: email
           }
@@ -90,16 +96,14 @@ function mapDispatchToProps(dispatch){
 
         const res = await axios({
           method:'post',
-          url: 'http://localhost:8000/api/v1/users/me/',
+          url: '/api/v1/users/me/',
           data:{
             username: username,
             password1: pwd1,
             password2: pwd2,
             email: email
-          },
-          withCredentials:true
+          }
         })
-        console.log(res);
         // dispatch 유저 정보 저장
         
         // 토큰 저장
@@ -111,7 +115,7 @@ function mapDispatchToProps(dispatch){
       try{
         const res = await axios({
           method: 'post',
-          url: 'http://localhost:8000/api/v1/users/me/id',
+          url: '/api/v1/users/me/id',
           data:{
             email: email
           }
@@ -126,7 +130,7 @@ function mapDispatchToProps(dispatch){
       try{
         const res = await axios({
           method: 'post',
-          url: 'http://localhost:8000/api/v1/users/me/password/code',
+          url: '/api/v1/users/me/password/code',
           data:{
             username: username,
             email: email
@@ -141,7 +145,7 @@ function mapDispatchToProps(dispatch){
       try{
         await axios({
           method:'post',
-          url:'http://localhost:8000/api/v1/users/me/password/verifycode',
+          url:'/api/v1/users/me/password/verifycode',
           data:{
             username: username,
             code: code
@@ -156,7 +160,7 @@ function mapDispatchToProps(dispatch){
       try{
         await axios({
           method: 'post',
-          url:'http://localhost:8000/api/v1/auth/login/kakao/callback'
+          url:'/api/v1/auth/login/kakao/callback'
         })
         // dispatch
       }catch(error){
@@ -167,7 +171,7 @@ function mapDispatchToProps(dispatch){
       try{
         await axios({
           method: 'post',
-          url:'http://localhost:8000/api/v1/auth/login/google'
+          url:'/api/v1/auth/login/google'
         })
         // dispatch
       }catch(error){

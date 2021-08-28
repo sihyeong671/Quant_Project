@@ -15,20 +15,18 @@ function Login({basicLogin}){
   // console.log('cookie', cookies);
 
   const onChangeUserName = (e) => {
-    e.preventDefault();
     setUserName(e.target.value);
   };
 
   const onChangePwd = (e) => {
-    e.preventDefault();
     setPwd(e.target.value);
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const token = await basicLogin(username ,pwd);
-    // setCookie('token', token);
+    await basicLogin(username ,pwd);
     history.push('/');
+    // 리로드로 변경
   }
 
   return(

@@ -36,6 +36,7 @@ def Save_FS_Data(api_key):
                             return
                         Get_Amount_Data(api_key, dart_data.dart_code, y, q, l, link)
                         # 정정공시 따로 함수 만들기
+                # ROE, ROA 계산 후 넣기
 
 # day에 시가총액, ohlcv, per, pbr 정보 가져와서 저장
 def Save_Price():
