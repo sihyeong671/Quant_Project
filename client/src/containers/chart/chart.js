@@ -9,9 +9,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
   return {
-    onClickCreate: function(id, name, l, e){
-      e.preventDefault();
-      //
+    onClickCreate: function(id, name, l){
       if (l >= 4){
         return;
       }

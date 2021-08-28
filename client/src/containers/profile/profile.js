@@ -4,7 +4,7 @@ import {connect}  from 'react-redux';
 
 
 function mapStateToProps(state){
-  return state.title
+  return state
 }
 
 function mapDispatchToProps(){
