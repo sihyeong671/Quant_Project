@@ -15,8 +15,11 @@ from api.mixins import ApiAuthMixin, PublicApiMixin
 from auth.services import jwt_login
 
 from users.serializers import RegisterSerializer, UserSerializer, PasswordChangeSerializer
-from users.models import Profile, User
+from users.models import Profile
 from users.services import send_mail, email_auth_string
+
+
+User = settings.AUTH_USER_MODEL
 
 
 class UserMeApi(ApiAuthMixin, APIView):
