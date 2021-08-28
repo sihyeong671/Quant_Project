@@ -71,7 +71,7 @@ class ReplySerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    reply = ReplySerializer(read_only=True)
+    reply = ReplySerializer(many=True, read_only=True)
     creator = SerializerMethodField(read_only=True)
     favorite_count = SerializerMethodField(read_only=True)
     
@@ -94,7 +94,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
-    comment = CommentSerializer(read_only=True)
+    comment = CommentSerializer(many=True, read_only=True)
     thumbnail = serializers.SerializerMethodField(read_only=True)
     creator = serializers.SerializerMethodField(read_only=True)
     favorite_count = serializers.SerializerMethodField(read_only=True)
