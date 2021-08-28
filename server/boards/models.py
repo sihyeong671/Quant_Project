@@ -1,8 +1,9 @@
 from django.utils import timezone
 from django.db import models
+from django.conf import settings
 
-from users.models import User
 
+User = settings.AUTH_USER_MODEL
 
 class Category(models.Model):
     title = models.CharField(max_length=128, unique=True, null=True, blank=False)

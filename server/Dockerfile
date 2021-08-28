@@ -1,6 +1,8 @@
 FROM python:3.9.0
 
-COPY ./ /home/Quant_Project/server/
+WORKDIR /home/
+
+RUN git clone https://github.com/sihyeong671/Quant_Project.git
 
 WORKDIR /home/Quant_Project/server/
 

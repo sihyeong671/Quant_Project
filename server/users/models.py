@@ -6,9 +6,8 @@ from django.utils.translation import gettext_lazy as _
 from django.core import validators
 from django.utils.deconstruct import deconstructible
 
-from users.models import User
 from boards.models import Post
-
+from DBmanageapp.models import Company
 
 @deconstructible
 class UnicodeUsernameValidator(validators.RegexValidator):
