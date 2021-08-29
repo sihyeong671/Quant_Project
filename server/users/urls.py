@@ -13,5 +13,4 @@ urlpatterns = [
     path('password/code', SendPasswordEmailApi.as_view(), name="sendpw"),
     path('password/verifycode', ConfirmPasswordEmailApi.as_view(), name="confirmpw"),
     path('password/reset', ResetPasswordApi.as_view(), name="resetpw"),
-    
 ]

@@ -1,11 +1,10 @@
-import { chart } from "highcharts"
-import { chartConstants } from "../constants/chartconstants"
+import Constants from "../constants"
 
 const initState = {}
 
 export default function reducer(state=initState, action){
   switch(action.type){
-    case chartConstants.UPDATE:
+    case Constants.chart.UPDATE:
       return state
   }
 
