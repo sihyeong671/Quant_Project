@@ -20,7 +20,8 @@ from users.utils import \
 from auth.services import \
     jwt_login, google_get_access_token, \
     google_get_user_info, kakao_get_access_token, \
-    kakao_get_user_info
+    kakao_get_user_info, naver_get_access_token, \
+    naver_get_user_info
 
 
 User = settings.AUTH_USER_MODEL
@@ -43,41 +44,46 @@ class LoginApi(PublicApiMixin, ObtainJSONWebTokenView):
 
 
 class GoogleLoginApi(PublicApiMixin, APIView):
-    class InputSerializer(serializers.Serializer):
-        code = serializers.CharField(required=False)
-        error = serializers.CharField(required=False)
-
     def get(self, request, *args, **kwargs):
-        input_serializer = self.InputSerializer(data=request.GET)
-        input_serializer.is_valid(raise_exception=True)
+        app_key = settings.GOOGLE_OAUTH2_CLIENT_ID
+        scope = "https://www.googleapis.com/auth/userinfo.email " + \
+                "https://www.googleapis.com/auth/userinfo.profile"
+        # scope = " ".join(scope)
+        
+        redirect_uri = settings.BASE_BACKEND_URL + "/api/v1/auth/login/google/callback"
+        google_auth_api = "https://accounts.google.com/o/oauth2/v2/auth"
+        
+        response = redirect(
+            f"{google_auth_api}?client_id={app_key}&response_type=code&redirect_uri={redirect_uri}&scope={scope}"
+        )
+        
+        print(response)
+        
+        return response
 
-        validated_data = input_serializer.validated_data
 
-        code = validated_data.get('code')
-        error = validated_data.get('error')
-
-        login_url = f'{settings.BASE_FRONTEND_URL}/login'
-
-        if error or not code:
-            params = urlencode({'error': error})
-            return redirect(f'{login_url}?{params}')
-
-        domain = settings.BASE_BACKEND_URL
-        api_uri = reverse('api:v1:auth:google_login')
-        redirect_uri = f'{domain}{api_uri}'
-
-        access_token = google_get_access_token(code=code, redirect_uri=redirect_uri)
-
+class GoogleSigninCallBackApi(PublicApiMixin, APIView):
+    def get(self, request, *args, **kwargs):
+        code = request.GET.get('code')
+        google_token_api = "https://oauth2.googleapis.com/token"
+        
+        
+        
+        access_token = google_get_access_token(google_token_api, code)
         user_data = google_get_user_info(access_token=access_token)
+        
+        print(user_data)
         
         profile_data = {
             'username': user_data['email'],
             'first_name': user_data.get('given_name', ''),
             'last_name': user_data.get('family_name', ''),
+            'nickname': user_data.get('nickname', ''),
+            'name': user_data.get('name', ''),
             'image': user_data.get('picture', None),
             'path': "google",
         }
-
+        
         user, _ = user_get_or_create(**profile_data)
 
         response = redirect(settings.BASE_FRONTEND_URL)
@@ -120,6 +126,57 @@ class KakaoSigninCallBackApi(PublicApiMixin, APIView):
             'image': user_info['kakao_account'].get('profile_image', ''),
             'nickname': user_info['kakao_account'].get('profile_nickname', ''),
             'path': "kakao",
+            
+        }
+        
+        user, _ = user_get_or_create(**profile_data)
+        
+        response = redirect(settings.BASE_FRONTEND_URL)
+        response = jwt_login(response=response, user=user)
+        
+        return response
+
+
+class NaverLoginApi(PublicApiMixin, APIView):
+    def get(self, request, *args, **kwargs):
+        app_key = settings.NAVER_OAUTH2_CLIENT_ID
+        state = "RAMDOM_STATE"
+        redirect_uri = settings.BASE_BACKEND_URL + "/api/v1/auth/login/naver/callback"
+        naver_auth_api = "https://nid.naver.com/oauth2.0/authorize?response_type=code"
+        
+        response = redirect(
+            f"{naver_auth_api}&client_id={app_key}&redirect_uri={redirect_uri}&state={state}"
+        )
+        
+        return response
+
+
+class NaverSigninCallBackApi(PublicApiMixin, APIView):
+    def get(self, request, *args, **kwargs):
+        app_key = settings.NAVER_OAUTH2_CLIENT_ID
+        app_secret_key = settings.NAVER_OAUTH2_CLIENT_SECRET
+        auth_code = request.GET.get('code')
+        state = request.GET.get('state')
+        naver_token_api = "https://nid.naver.com/oauth2.0/token"
+        data = {
+            'grant_type': 'authorization_code',
+            'client_id': app_key,
+            'client_secret': app_secret_key,
+            'state': state,
+            'code': auth_code,
+        }
+        
+        access_token, token_type = naver_get_access_token(naver_token_api, data)
+        user_info = naver_get_user_info(access_token, token_type)
+        
+        print(user_info)
+        
+        profile_data = {
+            'username': user_info['response'].get('email'),
+            'image': user_info['response'].get('profile_image', ''),
+            'nickname': user_info['response'].get('nickname', ''),
+            'name': user_info['response'].get('name', ''),
+            'path': "naver",
             
         }
         

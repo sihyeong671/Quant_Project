@@ -24,6 +24,9 @@ def user_create(username, password=None, **extra_fields):
     if extra_fields['nickname']:
         profile.nickname = extra_fields['nickname']
     
+    if extra_fields['name']:
+        user.first_name = extra_fields['name']
+    
     
     if extra_fields['path'] == 'google':
         profile.signup_path = "google"
