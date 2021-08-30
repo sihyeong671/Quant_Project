@@ -2,10 +2,11 @@ from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token, refresh
 
 from django.urls import path, include
 
-from auth.apis import \
-    LoginApi, LogoutApi, GoogleLoginApi, GoogleSigninCallBackApi, KakaoLoginApi, \
-    KakaoSigninCallBackApi, NaverLoginApi, NaverSigninCallBackApi,\
-    username_duplicate_check, email_duplicate_check
+from auth.apis import LoginApi, LogoutApi, username_duplicate_check, email_duplicate_check
+
+from auth.googleapi import *
+from auth.kakaoapi import *
+from auth.naverapi import *
 
 
 login_patterns = [

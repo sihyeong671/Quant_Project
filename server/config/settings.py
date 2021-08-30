@@ -107,14 +107,7 @@ JWT_AUTH = {
    'JWT_EXPIRATION_DELTA': datetime.timedelta(
        seconds=env.int(
            'DJANGO_JWT_EXPIRATION_DELTA',
-           default=3600
-       )
-    ),
-   # default : 1 day
-   'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(
-       seconds=env.int(
-           'DJANGO_JWT_REFRESH_EXPIRATION_DELTA',
-           default=86400
+           default=1800
        )
     ),
     'JWT_AUTH_HEADER_PREFIX': 'JWT',

@@ -1,14 +1,11 @@
 import requests
-from typing import Dict, Any
-
-from django.conf import settings
-from django.http import HttpResponse
-from django.core.exceptions import ValidationError
 
 from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.compat import set_cookie_with_token
 
-from users.models import User
+from django.conf import settings
+from django.core.exceptions import ValidationError
+
 from users.utils import user_record_login
 
 
@@ -17,6 +14,7 @@ GOOGLE_USER_INFO_URL = 'https://www.googleapis.com/oauth2/v3/userinfo'
 
 
 def jwt_login(response, user):
+
     jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
     jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
