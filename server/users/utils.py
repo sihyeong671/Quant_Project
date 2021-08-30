@@ -18,24 +18,27 @@ def user_create(username, password=None, **extra_fields):
     
     profile = Profile(user=user, nickname=username)
     
-    if extra_fields['image']:
+    try:
         profile.image = extra_fields['image']
+    except:
+        pass
     
-    if extra_fields['nickname']:
+    try:
         profile.nickname = extra_fields['nickname']
+    except:
+        pass
     
-    if extra_fields['name']:
+    try:
         user.first_name = extra_fields['name']
+    except:
+        pass
     
-    
-    if extra_fields['path'] == 'google':
-        profile.signup_path = "google"
-        profile.image = 'profile_image/google_basic.jpeg'
-        
-    elif extra_fields['path'] == 'kakao':
-        profile.signup_path = "kakao"
-        profile.image = 'profile_image/kakao_basic.png'
-        
+    try:
+        path = extra_fields['path']
+        profile.signup_path = f"{path}"
+        profile.image = f"profile_image/{path}_basic.png"
+    except:
+        pass
     
     profile.save()
     

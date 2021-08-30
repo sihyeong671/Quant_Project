@@ -16,7 +16,7 @@ GOOGLE_ACCESS_TOKEN_OBTAIN_URL = 'https://oauth2.googleapis.com/token'
 GOOGLE_USER_INFO_URL = 'https://www.googleapis.com/oauth2/v3/userinfo'
 
 
-def jwt_login(*, response: HttpResponse, user: User):
+def jwt_login(response, user):
     jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
     jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
