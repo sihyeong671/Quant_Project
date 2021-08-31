@@ -4,7 +4,15 @@ import AuthForm from '../../components/auth/login/authForm';
 import Constants from '../../store/constants';
 import axios from 'axios';
 
-const JWT_EXPIRE_TIME = 24*3600*1000;
+axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.withCredentials = true;
+
+const JWT_EXPIRE_TIME = 29*60*1000;
+
+const onSilentRefresh = async(token) => {
+  const res = await axios.post('/api/v1/auth/login/refresh', data={token});
+  return res.data;
+}
 
 // 이메일 검사
 function isvalidEmail(email) {
@@ -59,8 +67,21 @@ function mapDispatchToProps(dispatch){
       try{
         const res = await axios.post('/api/v1/auth/login/', data);
         const accessToken = res.data.token;
-        axios.defaults.headers.common['Authorization'] = `jwt ${accessToken}`;
-        setTimeout(onSilentRefresh, JWT_EXPIRE_TIME - 60000);
+        axios.defaults.headers.common['Authorization'] = `JWT ${accessToken}`;
+        setTimeout(async () => {
+          try{
+            const data = await onSilentRefresh(accessToken);
+            console.log(data);
+            dispatch({
+              type: Constants.user.LOGIN_SUCCESS,
+              username: data.user.username,
+              token: data.token
+            })
+          }catch(error){
+            console.log(error);
+          }
+        },
+        JWT_EXPIRE_TIME);
         dispatch({
           type: Constants.user.LOGIN_SUCCESS,
           username: res.data.user.username,
@@ -81,16 +102,16 @@ function mapDispatchToProps(dispatch){
       }
       try{
         await axios({
-          method:'post',
-          url: '/api/v1/auth/validate/username',
+          method:'get',
+          url: '/api/v1/auth/validate/username/',
           data:{
             username: username
           }
         })
 
         await axios({
-          method:'post',
-          url: '/api/v1/auth/validate/email',
+          method:'get',
+          url: '/api/v1/auth/validate/email/',
           data:{
             email: email
           }
@@ -106,8 +127,8 @@ function mapDispatchToProps(dispatch){
             email: email
           }
         })
+        console.log(res);
         // dispatch 유저 정보 저장
-        
         // 토큰 저장
       }catch(error){
         console.log(error);

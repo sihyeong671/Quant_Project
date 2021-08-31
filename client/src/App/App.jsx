@@ -9,16 +9,19 @@ import Footer from '../components/base/footer/footer';
 import Main from '../components/main/main';
 
 
-axios.defaults.withCredentials = true;
 
-const JWT_EXPIRE_TIME = 24*3600*1000;
-
-function App(props){
-  const toekn = useRef('');
-  useEffect(async (token) => {
-    await props.onSilentRefresh(token);
-
-  });
+function App(){
+  const token = document.cookie;
+  console.log(token);
+  // useEffect(async (token) => {
+    
+  //   try{
+  //     const res = await axios.post('/api/v1/auth/login/refresh',data={token});
+  //     console.log(res);
+  //   }catch(error){
+  //     console.log(error);
+  //   }
+  // });
   // 로그인 상태 확인 필요
 
 

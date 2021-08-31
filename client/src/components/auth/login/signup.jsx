@@ -28,6 +28,7 @@ const SignUp = (props) => {
   };
 
   const onSubmit = async (e) => {
+    e.preventDefault();
     const [username ,pwd1, pwd2, email] = [
       e.target.username.value,
       e.target.pwd1.value,
