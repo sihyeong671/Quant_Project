@@ -26,7 +26,6 @@ function Login({basicLogin}){
     e.preventDefault();
     await basicLogin(username ,pwd);
     history.push('/');
-    // 리로드로 변경
   }
 
   return(

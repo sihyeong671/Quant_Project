@@ -22,7 +22,7 @@ function Header(props){
 
 
 	const getAuth = () => {
-		if(props.user.token === null)
+		if(props.user.username === null)
 		{
 			return(
 				<div className="auth-link" key={1}>
@@ -33,7 +33,6 @@ function Header(props){
 			// user명 출력
 			return(
 				<div className="auth-link" key={0}>
-					
 					<button onClick={onClick}>LogOut</button>
 					<Link to='/profile'>Profile</Link>
 				</div>	

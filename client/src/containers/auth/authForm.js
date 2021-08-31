@@ -4,8 +4,7 @@ import AuthForm from '../../components/auth/login/authForm';
 import Constants from '../../store/constants';
 import axios from 'axios';
 
-axios.defaults.baseURL = "http://localhost:8000";
-axios.defaults.withCredentials = true;
+const JWT_EXPIRE_TIME = 24*3600*1000;
 
 // 이메일 검사
 function isvalidEmail(email) {
@@ -46,29 +45,32 @@ function mapStateToProps(state){
   return state;
 }
 
+
+
+//
 function mapDispatchToProps(dispatch){
   return {
+    // local 로그인 함수
     basicLogin: async function(username, pwd){
-      // 이벤트는 컴포넌트에서 처리하는 걸로 로직바꾸기
+      const data = {
+        username,
+        pwd
+      }
       try{
-        const res = await axios({
-          method:'post',
-          url: '/api/v1/auth/login/',
-          data:
-          {
-            username: username,
-            password: pwd
-          }
-        })
+        const res = await axios.post('/api/v1/auth/login/', data);
+        const accessToken = res.data.token;
+        axios.defaults.headers.common['Authorization'] = `jwt ${accessToken}`;
+        setTimeout(onSilentRefresh, JWT_EXPIRE_TIME - 60000);
         dispatch({
           type: Constants.user.LOGIN_SUCCESS,
           username: res.data.user.username,
-          token: res.data.token
+          token:res.data.token
         })
-      } catch(error){
+      }catch(error){
         console.log(error);
       }
     },
+    // local 회원가입 함수
     basicSignUp: async function(username, pwd1, pwd2, email){
       
       // 유효성 검사

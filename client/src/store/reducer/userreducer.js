@@ -1,22 +1,24 @@
 import Constants from "../constants";
 
 const initState = {
-  token: null,
-  username:null
+  isAuthenticated:false,
+  username:null,
+  token:null
 }
 
 export default function reducer(state=initState, action){
   switch (action.type){
     case Constants.user.LOGIN_SUCCESS:
       return {
-        ...state,
         username:action.username,
+        isAuthenticated:true,
         token:action.token
+
       }
     case Constants.user.LOGOUT:
       return{
-        ...state,
         username:null,
+        isAuthenticated:false,
         token:null
       }
   }
