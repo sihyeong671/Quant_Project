@@ -2,19 +2,26 @@ from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token, refresh
 
 from django.urls import path, include
 
-from auth.apis import \
-    LoginApi, GoogleLoginApi, LogoutApi, KakaoLoginApi, \
-    KakaoSigninCallBackApi, username_duplicate_check, \
-    email_duplicate_check
+from auth.apis import LoginApi, LogoutApi, username_duplicate_check, email_duplicate_check
+
+from auth.googleapi import *
+from auth.kakaoapi import *
+from auth.naverapi import *
 
 
 login_patterns = [
     path('verify', verify_jwt_token),
     path('refresh', refresh_jwt_token),
     path('', LoginApi.as_view(), name='login'),
+    
     path('google', GoogleLoginApi.as_view(), name='google_login'),
+    path('google/callback', GoogleSigninCallBackApi.as_view(), name='google_login_callback'),
+    
     path('kakao', KakaoLoginApi.as_view(), name='kakao_login'),
     path('kakao/callback', KakaoSigninCallBackApi.as_view(), name='kakao_login_callback'),
+    
+    path('naver', NaverLoginApi.as_view(), name='naver_login'),
+    path('naver/callback', NaverSigninCallBackApi.as_view(), name='naver_login_callback'),
     
 ]
 
