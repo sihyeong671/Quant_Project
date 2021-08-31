@@ -2,7 +2,7 @@ from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token, refresh
 
 from django.urls import path, include
 
-from auth.apis import LoginApi, LogoutApi, username_duplicate_check, email_duplicate_check
+from auth.apis import LoginApi, LogoutApi, username_duplicate_checkApi, email_duplicate_checkApi
 
 from auth.googleapi import *
 from auth.kakaoapi import *
@@ -26,8 +26,8 @@ login_patterns = [
 ]
 
 validate_patterns = [
-    path('username/', username_duplicate_check),
-    path('email/', email_duplicate_check),
+    path('username/', username_duplicate_checkApi.as_view()),
+    path('email/', email_duplicate_checkApi.as_view()),
     
 ]
 

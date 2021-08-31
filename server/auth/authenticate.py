@@ -7,13 +7,14 @@ from rest_framework_jwt.settings import api_settings
 
 from django.contrib.auth import backends
 from django.db.models import Q
+from django.contrib.auth import get_user_model
 
-from users.models import User
+# from users.models import User
 from users.serializers import UserSerializer
 
 from auth.services import my_set_cookie_with_token
 
-
+User = get_user_model()
 
 class EmailorUsernameAuthBackend(backends.ModelBackend):
     def authenticate(self, username, password=None, **kwargs):

@@ -2,13 +2,15 @@ from rest_framework.views import APIView
 
 from django.shortcuts import redirect
 from django.conf import settings
+from django.contrib.auth import get_user_model
 
 from api.mixins import PublicApiMixin
 from users.utils import user_get_or_create
 from auth.services import jwt_login, kakao_get_access_token, kakao_get_user_info
 
 
-User = settings.AUTH_USER_MODEL
+# User = settings.AUTH_USER_MODEL
+User = get_user_model()
 
 
 class KakaoLoginApi(PublicApiMixin, APIView):

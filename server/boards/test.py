@@ -34,6 +34,7 @@ class BoardTest(APITestCase):
         self.assertIsInstance(comment, Comment)
         
         reply = Reply(content="대댓글", creator=self.user, comment=self.comment)
+        reply.save()
         self.reply = reply
         self.assertIsInstance(reply, Reply)
         
@@ -102,9 +103,8 @@ class BoardTest(APITestCase):
         }
         
         response = self.client.put(
-            f'/api/v1/board/{self.category.id}/post/{self.post.id}/comment/{self.comment.id}/reply{self.reply.id}', 
+            f'/api/v1/board/{self.category.id}/post/{self.post.id}/comment/{self.comment.id}/reply/{self.reply.id}', 
             json.dumps(context), **self.header, content_type='application/json')
-        print(response.data)
         self.assertEqual(response.status_code, 201)
         
         print("After reply : ", self.reply.content)
