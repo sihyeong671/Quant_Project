@@ -79,7 +79,7 @@ class UserCreateApi(PublicApiMixin, APIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         
-        profile = Profile(user=user, introduce="hello")
+        profile = Profile(user=user, introduce="소개를 작성해주세요.")
         profile.save()
         
         response = redirect(settings.BASE_FRONTEND_URL)

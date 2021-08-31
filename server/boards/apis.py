@@ -441,7 +441,7 @@ class ReplyManageApi(ApiAuthMixin, APIView):
                 "message": "You do not have permission"
             }, status=status.HTTP_403_FORBIDDEN)
         
-        content = request.data.get('title', '')
+        content = request.data.get('content', '')
         
         if content == '':
             return Response({
