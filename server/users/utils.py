@@ -5,6 +5,7 @@ from django.utils import timezone
 from users.models import User, Profile
 
 
+@transaction.atomic
 def user_create(username, password=None, **extra_fields):
     user = User(username=username, email=username)
     
