@@ -107,21 +107,22 @@ $color-green4: #3b8686;
 
     .social-btn{
         display: flex;
+        flex-direction: column;
         justify-content: center;
-        font-size: 12px;
+        width: 100%;
         margin-bottom: 10px;
         a{
             overflow: hidden;
             display: block;
-            width: 8em;
-            height: 8em;
-            
-            background-size: cover;
+            width:100%;
+            height:50px;
+            object-fit: cover;
             background-position: center;
             background-repeat: no-repeat;
-
-            margin: 0 10px;
-
+            margin: 10px;
+            &:hover{
+                filter: brightness(70%);
+            }
         }
         
     }

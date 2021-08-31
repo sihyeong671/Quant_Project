@@ -102,7 +102,7 @@ function mapDispatchToProps(dispatch){
       }
       try{
         await axios({
-          method:'get',
+          method:'post',
           url: '/api/v1/auth/validate/username/',
           data:{
             username: username
@@ -110,7 +110,7 @@ function mapDispatchToProps(dispatch){
         })
 
         await axios({
-          method:'get',
+          method:'post',
           url: '/api/v1/auth/validate/email/',
           data:{
             email: email
@@ -133,8 +133,10 @@ function mapDispatchToProps(dispatch){
           username: res.data.user.username,
           token:res.data.token
         })
+        return true;
       }catch(error){
         console.log(error);
+        return false;
       }
     },
     searchId: async (email) => {

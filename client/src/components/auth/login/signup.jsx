@@ -1,6 +1,7 @@
 import React, {useState, useRef} from 'react';
 import Constants from "../../../store/constants";
 import { useState } from "react";
+import { useHistory } from 'react-router';
 
 
 const SignUp = (props) => {
@@ -9,7 +10,7 @@ const SignUp = (props) => {
   const [pwd1, setPwd1] = useState('');
   const [pwd2, setPwd2] = useState('');
   const [email, setEmail] = useState('');
-  // usecallback쓰면 최적화 되나?
+  const history = useHistory();
 
   const onChangeId = (e) => {
     setId(e.target.value);
@@ -35,7 +36,10 @@ const SignUp = (props) => {
       e.target.pwd2.value,
       e.target.email.value,
     ];
-    props.basicSignUp(username, pwd1, pwd2, email);
+    const check = props.basicSignUp(username, pwd1, pwd2, email);
+    if(check){
+      history.push('/');
+    }
     
   }
 

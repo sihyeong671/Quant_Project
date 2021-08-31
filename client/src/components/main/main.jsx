@@ -22,6 +22,7 @@ import NotFound from '../notfound';
 import './assets/css/style.scss'
 
 const Main=()=>{
+    console.log("main rendering")
 	return(
         <main className="main">
             <Switch>
