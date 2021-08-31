@@ -36,6 +36,7 @@ const SignUp = (props) => {
       e.target.email.value,
     ];
     props.basicSignUp(username, pwd1, pwd2, email);
+    
   }
 
   return(
