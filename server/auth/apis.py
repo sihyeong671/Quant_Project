@@ -46,28 +46,37 @@ class LogoutApi(ApiAuthMixin, APIView):
 
         return response
 
-
-def username_duplicate_check(request):
-    if request.method == 'POST':
-        input_username = request.POST['username']
+class username_duplicate_checkApi(PublicApiMixin, APIView):
+    def post(self, request, *args, **kwargs):
+        input_username = request.data.get('username', '')
+        
+        if not input_username:
+            raise ValidationError("Need username")
         
         user = User.objects.filter(username=input_username).first()
         
         if user:
             raise ValidationError("There is an ID registered with that username")
         
-        return HttpResponse(status=status.HTTP_200_OK)
-    return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+        return Response({
+            "message": "Allowed username"
+        }
+        ,status=status.HTTP_200_OK)
 
 
-def email_duplicate_check(request):
-    if request.method == 'POST':
-        input_email = request.POST['email']
+class email_duplicate_checkApi(PublicApiMixin, APIView):
+    def post(self, request, *args, **kwargs):
+        input_email = request.data.get('email', '')
         
-        user = User.objects.filter(username=input_email).first()
+        if not input_email:
+            raise ValidationError("Need email")
+        
+        user = User.objects.filter(email=input_email).first()
         
         if user:
             raise ValidationError("There is an ID registered with that email")
         
-        return HttpResponse(status=status.HTTP_200_OK)
-    return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+        return Response({
+            "message": "Allowed email"
+        }
+        ,status=status.HTTP_200_OK)
