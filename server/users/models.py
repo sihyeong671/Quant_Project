@@ -1,11 +1,14 @@
+from django.conf import settings
 from django.contrib.auth.base_user import BaseUserManager
-from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.core.management.utils import get_random_secret_key
-from django.utils.translation import gettext_lazy as _
 from django.core import validators
+from django.core.management.utils import get_random_secret_key
+from django.db import models
+from django.utils.translation import gettext_lazy as _
 from django.utils.deconstruct import deconstructible
 
+from boards.models import Post
+from DBmanageapp.models import Company
 
 @deconstructible
 class UnicodeUsernameValidator(validators.RegexValidator):
@@ -99,7 +102,7 @@ class User(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     auth = models.CharField(max_length=128, null=True, blank=True)
-    nickname = models.CharField(max_length=64, unique=True)
+    nickname = models.CharField(max_length=64, unique=True, null=True, blank=True)
     image = models.ImageField(
         default='profile_image/basic_profile.png',
         upload_to='profile_image/',
@@ -109,8 +112,8 @@ class Profile(models.Model):
     
     signup_path = models.CharField(max_length=64, default='basic')
     
-    # favorite_company = models.ManyToManyField(Company)
-    # favorite_board = models.ManyToManyField(Board)
+    favorite_company = models.ManyToManyField(Company)
+    favorite_post = models.ManyToManyField(Post)
     
     def __str__(self):
         return self.user.username

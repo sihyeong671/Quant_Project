@@ -17,7 +17,7 @@ class Company(models.Model):
 class Daily_Price(models.Model):
     # 날짜 문자열로 저장
     date = models.DateField(null=True, blank=True)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
+    company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
 
     market_gap = models.FloatField(help_text="시가총액", null=True, blank=True)
     # per = models.FloatField(help_text="PER", null=True, blank=True)
@@ -40,7 +40,11 @@ class Daily_Price(models.Model):
 # 객체 7개 (2015 ~ 2017)
 class Year(models.Model):
     bs_year = models.IntegerField(help_text="사업연도", blank=True, null=True)
-    company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE, related_name = 'year')
+    company = models.ForeignKey(
+        Company, 
+        null=True, blank=True, 
+        on_delete=models.CASCADE, related_name = 'year'
+    )
     
     def __str__(self):
         return str(self.bs_year)
@@ -52,9 +56,15 @@ class Year(models.Model):
 
 # 객체 4개 (1/4, 2/4, 3/4, 4/4)
 class Quarter(models.Model):
-    qt_name = models.CharField(help_text="1분기:11013 2분기:11012 3분기보고서:11014 사업보고서:11011",\
-        max_length=30, blank=True, null=True)
-    year = models.ForeignKey(Year, null=True, blank=True, on_delete=models.CASCADE, related_name='quarter')
+    qt_name = models.CharField(
+        help_text="1분기:11013 2분기:11012 3분기보고서:11014 사업보고서:11011",
+        max_length=30, blank=True, null=True
+    )
+    year = models.ForeignKey(
+        Year, 
+        null=True, blank=True, 
+        on_delete=models.CASCADE, related_name='quarter'
+    )
     
     def __str__(self):
         return self.qt_name
@@ -81,8 +91,11 @@ class FS_LoB(models.Model):
 
 # 객체 5개 (BS:재무상태표, IS:손익계산서, CIS:포괄손익계산서, CF:현금흐름표, SCE:자본변동표)
 class FS_Div(models.Model):
-    sj_div = models.CharField(help_text="재무제표구분(BS:재무상태표, IS:손익계산서, CIS:포괄손익계산서, CF:현금흐름표, SCE:자본변동표)",\
-         max_length=255, blank=True, null=True)
+    sj_div = models.CharField(
+        help_text="재무제표구분(BS:재무상태표, IS:손익계산서, CIS:포괄손익계산서, CF:현금흐름표, SCE:자본변동표)",
+        max_length=255, 
+        blank=True, null=True
+    )
     lob = models.ForeignKey(FS_LoB, on_delete=models.CASCADE, related_name='fs_div')
     
     def __str__(self):
@@ -98,6 +111,7 @@ class FS_Account(models.Model):
     account_name = models.CharField(help_text="계정명", max_length=255, blank=True, null=True)
     account_amount = models.FloatField(help_text="계정명에 대한 자산", blank=True, null=True)
     account_detail = models.CharField(help_text="계정상세", max_length=255, blank=True, null=True)
+    
     def __str__(self):
         return self.account_name
 

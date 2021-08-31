@@ -107,14 +107,7 @@ JWT_AUTH = {
    'JWT_EXPIRATION_DELTA': datetime.timedelta(
        seconds=env.int(
            'DJANGO_JWT_EXPIRATION_DELTA',
-           default=3600
-       )
-    ),
-   # default : 1 day
-   'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(
-       seconds=env.int(
-           'DJANGO_JWT_REFRESH_EXPIRATION_DELTA',
-           default=86400
+           default=1800
        )
     ),
     'JWT_AUTH_HEADER_PREFIX': 'JWT',
@@ -258,4 +251,6 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # Google OAuth2 settings
 GOOGLE_OAUTH2_CLIENT_ID = env.str('DJANGO_GOOGLE_OAUTH2_CLIENT_ID')
 GOOGLE_OAUTH2_CLIENT_SECRET = env.str('DJANGO_GOOGLE_OAUTH2_CLIENT_SECRET')
+NAVER_OAUTH2_CLIENT_ID = env.str('DJANGO_NAVER_OAUTH2_CLIENT_ID')
+NAVER_OAUTH2_CLIENT_SECRET = env.str('DJANGO_NAVER_OAUTH2_CLIENT_SECRET')
 KAKAO_REST_API_KEY = env.str('DJANGO_KAKAO_REST_API_KEY')

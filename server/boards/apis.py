@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 
 from api.mixins import PublicApiMixin, ApiAuthMixin
 
-from boards.serializers import CategorySerializer, PostSerializer,\
+from boards.serializers import CategorySerializer, PostListSerializer,\
     PostDetailSerializer
 from boards.models import Category, Post, Comment, Reply
 
@@ -24,14 +24,22 @@ class CategoryCreateReadApi(ApiAuthMixin, APIView):
         """
         카테고리를 새로 만든다. title 필수
         """
-        if request.data.get('title', '') == '':
+        title = request.data.get('title', '')
+        
+        if title == '':
             return Response({
             "message": "Title required"
             }, status=status.HTTP_400_BAD_REQUEST)
         
+        if Category.objects.filter(title=title).first():
+            return Response({
+            "message": "Title duplicated"
+            }, status=status.HTTP_400_BAD_REQUEST)
+            
+        
         category = Category(
             creator=request.user, 
-            title=request.data.get('title'),
+            title=title,
             is_anonymous=request.data.get('anonymous', False)
         )
         
@@ -54,10 +62,10 @@ class CategoryManageApi(ApiAuthMixin, APIView):
                 "message": "Select a board type"
             }, status=status.HTTP_400_BAD_REQUEST)
             
-        category = Category.objects.get(pk=pk)
+        category = get_object_or_404(Category, pk=pk)
         postlist = Post.objects.filter(category=category)
         
-        serializer = PostSerializer(postlist, many=True)
+        serializer = PostListSerializer(postlist, many=True)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -108,7 +116,7 @@ class CategoryManageApi(ApiAuthMixin, APIView):
         
         return Response({
             "message": "Category delete success"
-        }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_204_NO_CONTENT)
         
     
 class PostCreateApi(ApiAuthMixin, APIView):
@@ -152,15 +160,18 @@ class PostManageApi(ApiAuthMixin, APIView):
         """
         pk = kwargs['post_id']
         post = get_object_or_404(Post, pk=pk)
-        serializer = PostDetailSerializer(post, many=False, allow_null=True)
-        print(serializer)
+        serializer = PostDetailSerializer(post, many=False)
+        
         response = Response(serializer.data, status=status.HTTP_200_OK)
+        
         expire_time = 600
         cookie_value = request.COOKIES.get('hitboard', '_')
 
         if f'_{pk}_' not in cookie_value:
             cookie_value += f'{pk}_'
-            response.set_cookie('hitboard', value=cookie_value, max_age=expire_time, httponly=True)
+            response.set_cookie(
+                'hitboard', value=cookie_value, 
+                max_age=expire_time, httponly=True)
 
             post.hits += 1
             post.save()
@@ -207,7 +218,7 @@ class PostManageApi(ApiAuthMixin, APIView):
         
         return Response({
             "message": "Post delete success"
-        }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_204_NO_CONTENT)
     
     
     def put(self, request, *args, **kwargs):
@@ -239,7 +250,7 @@ class PostManageApi(ApiAuthMixin, APIView):
         
         return Response({
             "message": "Post update success"
-        }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_201_CREATED)
 
 
 class CommentCreateApi(ApiAuthMixin, APIView):
@@ -293,7 +304,7 @@ class CommentManageApi(ApiAuthMixin, APIView):
             
         return Response({
             "message": "Comment like/unlike success"
-        }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_201_CREATED)
     
     
     def delete(self, request, *args, **kwargs):
@@ -312,7 +323,7 @@ class CommentManageApi(ApiAuthMixin, APIView):
         
         return Response({
             "message": "Comment delete success"
-        }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_204_NO_CONTENT)
     
     
     def put(self, request, *args, **kwargs):
@@ -341,7 +352,7 @@ class CommentManageApi(ApiAuthMixin, APIView):
         
         return Response({
             "message": "Comment update success"
-        }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_201_CREATED)
         
 
 class ReplyCreateApi(ApiAuthMixin, APIView):
@@ -414,7 +425,7 @@ class ReplyManageApi(ApiAuthMixin, APIView):
         
         return Response({
             "message": "Reply delete success"
-        }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_204_NO_CONTENT)
     
     
     def put(self, request, *args, **kwargs):
@@ -430,7 +441,7 @@ class ReplyManageApi(ApiAuthMixin, APIView):
                 "message": "You do not have permission"
             }, status=status.HTTP_403_FORBIDDEN)
         
-        content = request.data.get('title', '')
+        content = request.data.get('content', '')
         
         if content == '':
             return Response({
@@ -443,4 +454,4 @@ class ReplyManageApi(ApiAuthMixin, APIView):
         
         return Response({
             "message": "Reply update success"
-        }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_201_CREATED)
