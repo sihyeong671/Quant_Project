@@ -61,7 +61,6 @@ class RegisterSerializer(serializers.Serializer):
         return password1
     
     def validate_username(self, username):
-        print("check validate username")
         if not username:
             raise serializers.ValidationError(
                 _("username field not allowed empty")
@@ -74,11 +73,10 @@ class RegisterSerializer(serializers.Serializer):
         return username
     
     def validate(self, data):
-        print("check validate ALL")
-        
         data['password1'] = self.validate_password12(data['password1'], data['password2'])
         data['email'] = self.validate_email(data['email'])
         data['username'] = self.validate_username(data['username'])
+        print("check validate ALL")
         
         return data
 
