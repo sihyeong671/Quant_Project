@@ -32,9 +32,17 @@ def user_create(username, password=None, **extra_fields):
         pass
     
     try:
-        user.first_name = extra_fields['name']
+        try:
+            user.first_name = extra_fields['first_name']
+            user.last_name = extra_fields['last_name']
+        except:
+            try:
+                user.first_name = extra_fields['name']
+            except:
+                pass
     except:
         pass
+    
     
     try:
         path = extra_fields['path']
@@ -78,7 +86,7 @@ def user_change_secret_key(user: User):
 
 @transaction.atomic
 def user_get_or_create(username, **extra_data):
-    user = User.objects.filter(username=username).first()
+    user = User.objects.filter(email=username).first()
     
     if user:
         return user, False

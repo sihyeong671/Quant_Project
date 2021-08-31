@@ -80,7 +80,7 @@ class UserCreateApi(PublicApiMixin, APIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         
-        profile = Profile(user=user, introduce="소개를 작성해주세요.")
+        profile = Profile(user=user, nickname=user.username, introduce="소개를 작성해주세요.")
         profile.save()
         
         response = redirect(settings.BASE_FRONTEND_URL)
@@ -94,7 +94,7 @@ class FindIDApi(PublicApiMixin, APIView):
         user = User.objects.get(email=target_email)
         
         data = {
-            "id": user.username
+            "username": user.username
         }
         
         return Response(data, status=status.HTTP_200_OK)

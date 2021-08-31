@@ -8,12 +8,12 @@ from django.http import HttpResponse
 
 from crawling.crawling import *
 from crawling.API_KEY import *
-from DBmanageapp.models import *
+from stockmanage.models import *
 
 class View_All_Data(ListView):
   model = Company
   context_object_name = "company_data"
-  template_name='DBmanageapp/manager.html'
+  template_name='stockmanage/manager.html'
   paginat_by = 30
   
   # def get_context_data(self, **kwargs):
@@ -30,6 +30,6 @@ def Crawling_Data(request):
 
 
   
-  return redirect('DBmanageapp:company_list')
+  return redirect('stockmanage:company_list')
   
 

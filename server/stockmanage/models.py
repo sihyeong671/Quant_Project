@@ -1,9 +1,10 @@
 from django.db import models
 
+
 class Company(models.Model):
     company_name = models.CharField(max_length=200, null=True, blank=True)
     short_code = models.CharField(max_length=200, null=True, blank=True)
-
+    
     def __str__(self):
         return self.company_name
     
@@ -77,7 +78,7 @@ class Quarter(models.Model):
 # 객체 2개 (linked or basic)
 # 연결/일반 재무제표 구분
 class FS_LoB(models.Model):
-    lob = models.CharField(help_text="연결/일반", max_length=30, blank=True, null=True)
+    lob = models.CharField(help_text="연결(CFS)/일반(OFS)", max_length=30, blank=True, null=True)
     quarter = models.ForeignKey(Quarter, on_delete=models.CASCADE, related_name="fs_lob")
     exist = models.IntegerField(default=0, null=True, blank=True)
     

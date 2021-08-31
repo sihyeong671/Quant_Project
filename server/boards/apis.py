@@ -84,10 +84,10 @@ class CategoryManageApi(ApiAuthMixin, APIView):
         
         category = get_object_or_404(Category, pk=pk)
         
-        if user.favorite_category.filter(pk=pk).exists():
-            category.favorite.remove(user)
+        if user.profile.favorite_category.filter(pk=pk).exists():
+            user.profile.favorite_category.remove(category)
         else:
-            category.favorite.add(user)
+            user.profile.favorite_category.add(category)
             
         return Response({
             "message": "Category like/unlike success"
@@ -192,10 +192,10 @@ class PostManageApi(ApiAuthMixin, APIView):
         
         post = get_object_or_404(Post, pk=pk)
         
-        if user.favorite_post.filter(pk=pk).exists():
-            post.favorite.remove(user)
+        if user.profile.favorite_post.filter(pk=pk).exists():
+            user.profile.favorite_post.remove(post)
         else:
-            post.favorite.add(user)
+            user.profile.favorite_post.add(post)
             
         return Response({
             "message": "Post like/unlike success"
@@ -297,14 +297,14 @@ class CommentManageApi(ApiAuthMixin, APIView):
         
         comment = get_object_or_404(Comment, pk=pk)
         
-        if user.favorite_comment.filter(pk=pk).exists():
-            comment.favorite.remove(user)
+        if user.profile.favorite_comment.filter(pk=pk).exists():
+            user.profile.favorite_comment.remove(comment)
         else:
-            comment.favorite.add(user)
+            user.profile.favorite_comment.add(comment)
             
         return Response({
             "message": "Comment like/unlike success"
-        }, status=status.HTTP_201_CREATED)
+        }, status=status.HTTP_200_OK)
     
     
     def delete(self, request, *args, **kwargs):
@@ -332,7 +332,7 @@ class CommentManageApi(ApiAuthMixin, APIView):
         content
         """
         comment_id = kwargs['comment_id']
-        comment = get_object_or_404(Post, pk=comment_id)
+        comment = get_object_or_404(Comment, pk=comment_id)
         
         if request.user != comment.creator:
             return Response({
@@ -399,10 +399,10 @@ class ReplyManageApi(ApiAuthMixin, APIView):
         
         reply = get_object_or_404(Reply, pk=pk)
         
-        if user.favorite_reply.filter(pk=pk).exists():
-            reply.favorite.remove(user)
+        if user.profile.favorite_reply.filter(pk=pk).exists():
+            user.profile.favorite_reply.remove(reply)
         else:
-            reply.favorite.add(user)
+            user.profile.favorite_reply.add(reply)
             
         return Response({
             "message": "Reply like/unlike success"
