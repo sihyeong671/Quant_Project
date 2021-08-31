@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React from 'react';
 import App from '../../App/App';
-import Constants from '../../../store/constants';
+import Constants from '../../store/constants';
 import axios from 'axios';
 
 
@@ -17,9 +17,24 @@ const mapDispatchToProps=(dispatch)=>{
     onSilentRefresh: async (token) => {
       const data = {
         token
-      } 
-      axios.post('/api/v1/auth/login/refresh', data)
-    }
+      }
+      try{
+        const res = await axios.post('/api/v1/auth/login/refresh', data);
+        console.log(res);
+        dispatch({
+          type:Constants.user.LOGIN_SUCCESS,
+          username:res.data.user.username,
+          token:res.data.token,
+          isAuthenticated:true
+        })
+        return true;
+        
+      }catch(error){
+        console.log(error);
+        return false
+      }
+    },
+
   }
 }
 

@@ -3,6 +3,7 @@ import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
+import { useCookies } from 'react-cookie';
 
 import Header from '../containers/base/header/header';
 import Footer from '../components/base/footer/footer';
@@ -10,19 +11,16 @@ import Main from '../components/main/main';
 
 
 
-function App(){
-  const token = document.cookie;
-  console.log(token);
-  // useEffect(async (token) => {
-    
-  //   try{
-  //     const res = await axios.post('/api/v1/auth/login/refresh',data={token});
-  //     console.log(res);
-  //   }catch(error){
-  //     console.log(error);
-  //   }
-  // });
-  // 로그인 상태 확인 필요
+function App(props){
+  const [cookies, setCookie, removeCookie] = useCookies(['toekn']);
+  console.log(cookies);
+
+  useEffect(async () => {
+    if(cookies.jwt_token){
+      props.onSilentRefresh(cookies.jwt_token);
+    };
+  },[]);
+  //로그인 상태 확인 필요
 
 
   console.log('App rendering');

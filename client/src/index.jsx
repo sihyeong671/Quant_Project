@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import { CookiesProvider } from 'react-cookie';
 
 import {store, persistor} from './store/store';
-import App from './App/App';
+import App from './containers/App/App';
 import './index.scss'
 
 axios.defaults.baseURL = "http://localhost:8000";

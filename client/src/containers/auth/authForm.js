@@ -66,7 +66,6 @@ function mapDispatchToProps(dispatch){
       }
       try{
         const res = await axios.post('/api/v1/auth/login/', data);
-        console.log(res);
         const accessToken = res.data.token;
         axios.defaults.headers.common['Authorization'] = `JWT ${accessToken}`;
         setTimeout(async () => {
