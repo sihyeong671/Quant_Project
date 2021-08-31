@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 
 from crawling.krx_crawling import Get_Krx_Short_Code
 
-from DBmanageapp.models import FS_Div, FS_Account, SUB_Account, Dart
+from stockmanage.models import FS_Div, FS_Account, SUB_Account, Dart
 
 
 #  개별로 실행하면 생기기는 문제 해결을 위한 코드

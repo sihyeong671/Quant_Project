@@ -47,7 +47,7 @@ BASE_FRONTEND_URL = env.str('DJANGO_BASE_FRONTEND_URL', default='http://localhos
 # Application definition
 
 INSTALLED_APPS = [
-    'DBmanageapp',
+    'stockmanage',
     'users',
     'boards',
     

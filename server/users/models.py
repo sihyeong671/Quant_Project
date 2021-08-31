@@ -7,8 +7,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.deconstruct import deconstructible
 
-from boards.models import Post
-from DBmanageapp.models import Company
+from boards.models import Post, Category, Comment, Reply
+from stockmanage.models import Company
 
 @deconstructible
 class UnicodeUsernameValidator(validators.RegexValidator):
@@ -112,8 +112,11 @@ class Profile(models.Model):
     
     signup_path = models.CharField(max_length=64, default='basic')
     
-    favorite_company = models.ManyToManyField(Company)
-    favorite_post = models.ManyToManyField(Post)
+    favorite_category = models.ManyToManyField(Category, blank=True, related_name='favorite_user')
+    favorite_company = models.ManyToManyField(Company, blank=True, related_name='favorite_user')
+    favorite_post = models.ManyToManyField(Post, blank=True, related_name='favorite_user')
+    favorite_comment = models.ManyToManyField(Comment, blank=True, related_name='favorite_user')
+    favorite_reply = models.ManyToManyField(Reply, blank=True, related_name='favorite_user')
     
     def __str__(self):
         return self.user.username

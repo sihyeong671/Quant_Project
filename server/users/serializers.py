@@ -1,13 +1,20 @@
+from django.db.models import fields
 from rest_framework import serializers
 
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 
 from users.models import Profile
+from boards.serializers import PostListSerializer, CategorySerializer
 
 User = get_user_model()
 
 class ProfileSerializer(serializers.ModelSerializer):
+    # favorite_company = PostListSerializer(read_only=True)
+    favorite_category = CategorySerializer(read_only=True, many=True)
+    favorite_post = PostListSerializer(read_only=True, many=True)
+    # favorite_company = serializers.SerializerMethodField(read_only=True)
+    
     class Meta:
         model = Profile
         fields = [
@@ -15,8 +22,21 @@ class ProfileSerializer(serializers.ModelSerializer):
             'user',
             'image',
             'introduce',
-            'signup_path'
+            'signup_path',
+            'favorite_category',
+            'favorite_post',
+            'favorite_company',
         ]
+    
+    def get_favorite_post(self, obj):
+        return obj.favorite_post.all()
+    
+    def get_favorite_category(self, obj):
+        return obj.favorite_category.all()
+    
+    def get_favorite_company(self, obj):
+        return obj.favorite_company.all()
+        
 
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(read_only=True)

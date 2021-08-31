@@ -52,11 +52,11 @@ class PostAdmin(admin.ModelAdmin):
     ordering = ('-created_date', 'creator__profile__nickname')
     list_display = (
         'get_thumbnail_image', 'category', 'title', 'content', 'get_creator', 'hits',
-        'top_fixed', 'get_creator', 'get_favorit_count'
+        'top_fixed', 'get_creator',
     )
     list_display_links = (
         'get_thumbnail_image', 'category', 'title', 'content', 'get_creator', 'hits',
-        'top_fixed', 'get_creator', 'get_favorit_count'
+        'top_fixed', 'get_creator',
     )
     search_fields = ('created_date', 'creator__profile__nickname', 'title', 'category__title')
     list_filter = ('category__title', )
@@ -77,13 +77,6 @@ class PostAdmin(admin.ModelAdmin):
         return creator
     get_creator.short_description = _("creator")
     
-    
-    def get_favorit_count(self, obj):
-        cnt = obj.favorite.count()
-        return cnt
-    get_favorit_count.short_description = _("favorite_count")
-    
-# admin.site.register(Comment)
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
