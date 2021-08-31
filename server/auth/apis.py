@@ -48,23 +48,26 @@ class LogoutApi(ApiAuthMixin, APIView):
 
 
 def username_duplicate_check(request):
-    input_username = request.GET.get('username', '')
-    
-    user = User.objects.filter(username=input_username).first()
-    
-    if user:
-        raise ValidationError("There is an ID registered with that username")
-    
-    return HttpResponse(status=status.HTTP_200_OK)
+    if request.method == 'POST':
+        input_username = request.POST['username']
+        
+        user = User.objects.filter(username=input_username).first()
+        
+        if user:
+            raise ValidationError("There is an ID registered with that username")
+        
+        return HttpResponse(status=status.HTTP_200_OK)
+    return HttpResponse(status=status.HTTP_404_NOT_FOUND)
 
 
 def email_duplicate_check(request):
-    input_email = request.GET.get('email', '')
-    
-    user = User.objects.filter(username=input_email).first()
-    
-    if user:
-        raise ValidationError("There is an ID registered with that email")
-    
-    return HttpResponse(status=status.HTTP_200_OK)
-    
+    if request.method == 'POST':
+        input_email = request.POST['email']
+        
+        user = User.objects.filter(username=input_email).first()
+        
+        if user:
+            raise ValidationError("There is an ID registered with that email")
+        
+        return HttpResponse(status=status.HTTP_200_OK)
+    return HttpResponse(status=status.HTTP_404_NOT_FOUND)
