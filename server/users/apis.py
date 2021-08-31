@@ -9,6 +9,7 @@ from django.core.management.utils import get_random_secret_key
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.template.loader import render_to_string
+from django.contrib.auth import get_user_model
 
 from api.mixins import ApiAuthMixin, PublicApiMixin
 
@@ -19,7 +20,7 @@ from users.models import Profile
 from users.services import send_mail, email_auth_string
 
 
-User = settings.AUTH_USER_MODEL
+User = get_user_model()
 
 
 class UserMeApi(ApiAuthMixin, APIView):

@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 
 from django.shortcuts import redirect
 from django.conf import settings
+from django.contrib.auth import get_user_model
 
 from api.mixins import PublicApiMixin
 from users.utils import user_get_or_create
@@ -9,6 +10,7 @@ from auth.services import jwt_login, google_get_access_token, google_get_user_in
 
 
 User = settings.AUTH_USER_MODEL
+User = get_user_model()
 
 
 class GoogleLoginApi(PublicApiMixin, APIView):

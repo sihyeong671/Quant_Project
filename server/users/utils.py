@@ -1,9 +1,11 @@
 from django.core.management.utils import get_random_secret_key
 from django.db import transaction
 from django.utils import timezone
+from django.contrib.auth import get_user_model
 
-from users.models import User, Profile
+from users.models import Profile
 
+User = get_user_model()
 
 @transaction.atomic
 def user_create(username, password=None, **extra_fields):

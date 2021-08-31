@@ -1,4 +1,4 @@
-from django.http.response import HttpResponse
+from django.contrib.auth import get_user_model
 
 from rest_framework import status
 from rest_framework.views import APIView
@@ -13,7 +13,7 @@ from api.mixins import PublicApiMixin, ApiAuthMixin
 from users.utils import user_record_login, user_change_secret_key
 
 
-User = settings.AUTH_USER_MODEL
+User = get_user_model()
 
 
 class LoginApi(PublicApiMixin, CustomJSONWebTokenAPIView):
