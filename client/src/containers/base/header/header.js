@@ -16,8 +16,8 @@ function mapDispatchToProps(dispatch){
         const res = await axios({
           method: 'post',
           url: 'http://localhost:8000/api/v1/auth/logout',
+          withCredentials:true
         })
-        console.log(res)
         dispatch({
           type: Constants.user.LOGOUT
         })

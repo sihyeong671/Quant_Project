@@ -1,8 +1,12 @@
 import { combineReducers } from "redux";
+import { persistReducer } from "redux-persist";
+
 import chart from './chartreducer'
 import search from './searchreducer';
 import user from './userreducer';
-import { persistReducer } from "redux-persist";
+import board from './boardreducer';
+import calc from './calcreducer'
+
 import storage from "redux-persist/lib/storage";
 
 
@@ -10,13 +14,15 @@ import storage from "redux-persist/lib/storage";
 // window.localstorage를 쓰면 스토어와는 별개로 저장
 const persistConfig = {
   key: 'root',
-  storage:storage,
-  whitelist: ['user']
+  storage: storage,
+  whitelist: []
 }
+
 const rootReducer =  combineReducers({
   chart,
   search,
-  user
+  user,
+  calc
 });
 
 export default persistReducer(persistConfig, rootReducer);

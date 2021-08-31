@@ -14,16 +14,15 @@ function Header(props){
 
 	const history = useHistory();
 
-	const onClick = async (e) => {
-		e.preventDefault();
-		await props.basicLogOut();
+	const onClick = async () => {
+		await props.basicLogOut(props.user.username);
 		// 로그아웃 로직 구현
 	}
 
 
 
 	const getAuth = () => {
-		if(props.user.isAuthenticated === false)
+		if(props.user.username === null)
 		{
 			return(
 				<div className="auth-link" key={1}>
@@ -34,8 +33,7 @@ function Header(props){
 			// user명 출력
 			return(
 				<div className="auth-link" key={0}>
-					
-					<button onClick={onClick}>LogOut</button> 
+					<button onClick={onClick}>LogOut</button>
 					<Link to='/profile'>Profile</Link>
 				</div>	
 			)

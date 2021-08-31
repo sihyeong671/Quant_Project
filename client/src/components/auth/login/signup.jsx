@@ -12,28 +12,29 @@ const SignUp = (props) => {
   // usecallback쓰면 최적화 되나?
 
   const onChangeId = (e) => {
-    e.preventDefault();
     setId(e.target.value);
   };
 
   const onChangePwd1 = (e) => {
-    e.preventDefault();
     setPwd1(e.target.value);
   };
 
   const onChangePwd2 = (e) => {
-    e.preventDefault();
     setPwd2(e.target.value);
     }
 
   const onChangeEmail = (e) => {
-    e.preventDefault();
     setEmail(e.target.value);
   };
 
   const onSubmit = async (e) => {
-    e.preventDefault();
-    basicSignUp(e);
+    const [username ,pwd1, pwd2, email] = [
+      e.target.username.value,
+      e.target.pwd1.value,
+      e.target.pwd2.value,
+      e.target.email.value,
+    ];
+    props.basicSignUp(username, pwd1, pwd2, email);
   }
 
   return(

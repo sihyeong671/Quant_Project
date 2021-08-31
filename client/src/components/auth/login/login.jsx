@@ -11,23 +11,20 @@ function Login({basicLogin}){
   const [username, setUserName] = useState('');
   const [pwd, setPwd] = useState('');
   const history = useHistory();
-  const [cookies, setCookie, removeCookie] = useCookies(['token']);
-  console.log('cookie', cookies);
+  // const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  // console.log('cookie', cookies);
 
   const onChangeUserName = (e) => {
-    e.preventDefault();
     setUserName(e.target.value);
   };
 
   const onChangePwd = (e) => {
-    e.preventDefault();
     setPwd(e.target.value);
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const token = await basicLogin(username ,pwd);
-    setCookie('token', token);
+    await basicLogin(username ,pwd);
     history.push('/');
   }
 

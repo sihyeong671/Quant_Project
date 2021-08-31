@@ -36,9 +36,10 @@ export default ({searchId}) => {
       </>;
   }
   else{
+    // 에러인 경우 아이디가 없습니다
     showForm = 
     <>
-      <span>아이디를 찾았습니다</span>
+      <h3>아이디를 찾았습니다</h3>
       <div className="show-name-container">
         <div className='show-name'>
           {userName}

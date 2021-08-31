@@ -14,7 +14,7 @@ const InputCode = ({userName, sendCode}) => {
 
   function onSubmit(e){
     e.preventDefault();
-    // sendCode(userName, code);
+    sendCode(userName, code);
   }
 
   return(
@@ -35,7 +35,7 @@ export default ({searchPwd, sendCode}) => {
   console.log('SearchPwd rendering');
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState(''); 
-  const [codeSend, setCodeSend] = useState(false);
+  const [iscodeSend, setIsCodeSend] = useState(false);
 
   const onChangeUserName = (e) => {
     e.preventDefault();
@@ -49,9 +49,8 @@ export default ({searchPwd, sendCode}) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    // await searchPwd(userName, email);
-    setCodeSend(true);
-    // 비밀번호 찾기 로직
+    await searchPwd(userName, email);
+    setIsCodeSend(true);
   }
 
   return(
@@ -73,7 +72,7 @@ export default ({searchPwd, sendCode}) => {
           </div>
         </form>
 
-        {codeSend? <InputCode userName={userName} sendCode={sendCode}/>:null}
+        {iscodeSend? <InputCode userName={userName} sendCode={sendCode}/>:null}
 
       </div>
     </>

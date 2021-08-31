@@ -23,9 +23,9 @@ const authForm = (props) => (
     </Switch>
 
     <div className='social-btn'>
-      <Link to="" style={{backgroundImage: `url(${KakaoLogo})`}}></Link>
-      <Link to="" style={{backgroundImage: `url(${GoogleLogo})`}}></Link>
-      <Link to =''>네이버</Link>
+      <Link to='' style={{backgroundImage: `url(${KakaoLogo})`}}></Link>
+      <Link to='' style={{backgroundImage: `url(${GoogleLogo})`}}></Link>
+      <Link to='' >네이버</Link>
     </div>
 
     <div>

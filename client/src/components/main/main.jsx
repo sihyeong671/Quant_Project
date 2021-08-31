@@ -12,9 +12,9 @@ import Profile from '../../containers/profile/profile';
 
 import Home from '../pages/home/home';
 
-import Calc from '../../containers/calc/calc';
-import Chart from '../../containers/chart/chart';
-import Rank from '../../containers/rank/rank';
+import Calc from '../../containers/pages/calc/calc';
+import Chart from '../../containers/pages/chart/chart';
+import Rank from '../../containers/pages/rank/rank';
 
 
 import NotFound from '../notfound';

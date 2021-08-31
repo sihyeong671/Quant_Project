@@ -36,6 +36,7 @@ def Save_FS_Data(api_key):
                             return
                         Get_Amount_Data(api_key, dart_data.dart_code, y, q, l, link)
                         # 정정공시 따로 함수 만들기
+                # ROE, ROA 계산 후 넣기
 
 # day에 시가총액, ohlcv, per, pbr 정보 가져와서 저장
 def Save_Price():
@@ -60,12 +61,14 @@ def Save_Price():
 
 
 # day에 시가총액, ohlcv, per, pbr 정보 가져와서 저장
+
 def Save_Price():
     corporations = Company.objects.all()
     for corp in corporations:
         # 시가총액, ohlvc, per, pbr 함수로 가져와서 저장하기
         data = Daily_Crawling("20201201", "20210101", corp.short_code)
         time.sleep(1)
+        # 직전 분기의 재무제표를 가져와 PER, PBR산출
         for row in data.itertuples():
             Daily_Data = Daily_Price()
             Daily_Data.company = Company.objects.get(company_name = corp.company_name, short_code = corp.short_code)
