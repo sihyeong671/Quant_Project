@@ -16,11 +16,11 @@ def Save_FS_Data(api_key):
 
     dart_codes = Dart.objects.all()
     count = 0
-    
+    #함수만들어서 기업개황 정보 집어넣기
     for dart_data in dart_codes:
         company, flag = Company.objects.get_or_create(
             company_name=dart_data.company_name_dart, \
-                short_code=dart_data.short_code
+            short_code=dart_data.short_code
         )
         # print(company.company_name)
         for y in years:

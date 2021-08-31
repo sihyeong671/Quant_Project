@@ -23,7 +23,7 @@ const authForm = (props) => (
     </Switch>
 
     <div className='social-btn'>
-      <Link to='' style={{backgroundImage: `url(${KakaoLogo})`}}></Link>
+      <a href='http://localhost:8000/api/v1/auth/login/kakao' style={{backgroundImage: `url(${KakaoLogo})`}}></a>
       <Link to='' style={{backgroundImage: `url(${GoogleLogo})`}}></Link>
       <Link to='' >네이버</Link>
     </div>

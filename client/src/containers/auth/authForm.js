@@ -61,11 +61,12 @@ function mapDispatchToProps(dispatch){
     // local 로그인 함수
     basicLogin: async function(username, pwd){
       const data = {
-        username,
-        pwd
+        username:username,
+        password:pwd
       }
       try{
         const res = await axios.post('/api/v1/auth/login/', data);
+        console.log(res);
         const accessToken = res.data.token;
         axios.defaults.headers.common['Authorization'] = `JWT ${accessToken}`;
         setTimeout(async () => {
@@ -187,8 +188,8 @@ function mapDispatchToProps(dispatch){
     kakaoLogin: async () => {
       try{
         await axios({
-          method: 'post',
-          url:'/api/v1/auth/login/kakao/callback'
+          method: 'get',
+          url:'/api/v1/auth/login/kakao'
         })
         // dispatch
       }catch(error){

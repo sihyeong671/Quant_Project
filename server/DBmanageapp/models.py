@@ -65,6 +65,8 @@ class Quarter(models.Model):
         null=True, blank=True, 
         on_delete=models.CASCADE, related_name='quarter'
     )
+    ROE = models.FloatField(null=True, blank=True)
+    ROA = models.FloatField(null=True, blank=True)
     
     def __str__(self):
         return self.qt_name
