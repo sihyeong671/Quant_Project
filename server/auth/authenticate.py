@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-from rest_framework_jwt.serializers import JSONWebTokenSerializer
+from rest_framework_jwt.serializers import JSONWebTokenSerializer, RefreshAuthTokenSerializer
 from rest_framework_jwt.settings import api_settings
 
 from django.contrib.auth import backends
@@ -59,6 +59,10 @@ class CustomJSONWebTokenAPIView(GenericAPIView):
 
         return response
 
+
+class CustomRefreshJSONWebTokenAPIView(CustomJSONWebTokenAPIView):
+    serializer_class = RefreshAuthTokenSerializer
+    
 
 def jwt_response_payload_handler(token, user=None, request=None, *args):
     return {

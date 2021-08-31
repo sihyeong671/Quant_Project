@@ -1,6 +1,6 @@
 import time
 
-from DBmanageapp.models import *
+from stockmanage.models import *
 
 from crawling.krx_crawling import *
 from crawling.dart_crawling import *

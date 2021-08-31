@@ -14,7 +14,6 @@ class Category(models.Model):
     top_fixed = models.BooleanField(default=False)
     
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="category")
-    favorite = models.ManyToManyField(User, blank=True, related_name='favorite_category')
     
     class Meta:
         verbose_name = '게시판 종류'
@@ -34,9 +33,8 @@ class Post(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
     top_fixed = models.BooleanField(default=False)
     
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="post")
+    category = models.ForeignKey(Category, null=True, on_delete=models.CASCADE, related_name="post")
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="post")
-    favorite = models.ManyToManyField(User, blank=True, related_name='favorite_post')
     
     class Meta:
         verbose_name = '게시글'
@@ -53,7 +51,6 @@ class Comment(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
     
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comment")
-    favorite = models.ManyToManyField(User, blank=True, related_name='favorite_comment')
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comment")
     
     class Meta:
@@ -69,7 +66,6 @@ class Reply(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
     
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reply")
-    favorite = models.ManyToManyField(User, blank=True, related_name='favorite_reply')
     comment = models.ForeignKey(Comment, null=True, on_delete=models.SET_NULL, related_name="reply")
     
     class Meta:
