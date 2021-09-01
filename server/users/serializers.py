@@ -1,4 +1,3 @@
-from django.db.models import fields
 from rest_framework import serializers
 
 from django.utils.translation import gettext_lazy as _
@@ -25,7 +24,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             'signup_path',
             'favorite_category',
             'favorite_post',
-            'favorite_company',
+            # 'favorite_company',
         ]
     
     def get_favorite_post(self, obj):

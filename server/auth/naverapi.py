@@ -4,10 +4,10 @@ from django.shortcuts import redirect
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
-
 from api.mixins import PublicApiMixin
 from users.utils import user_get_or_create
-from auth.services import jwt_login, naver_get_access_token, naver_get_user_info
+from auth.services import naver_get_access_token, naver_get_user_info
+from auth.authenticate import jwt_login
     
 
 # User = settings.AUTH_USER_MODEL
@@ -45,8 +45,6 @@ class NaverSigninCallBackApi(PublicApiMixin, APIView):
         
         access_token, token_type = naver_get_access_token(naver_token_api, data)
         user_info = naver_get_user_info(access_token, token_type)
-        
-        print(user_info)
         
         profile_data = {
             'username': user_info['response'].get('email'),

@@ -1,9 +1,12 @@
+from django.views.decorators.csrf import csrf_protect
 from rest_framework import status, serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from django.db.models.query_utils import Q
 from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
 
 from api.mixins import PublicApiMixin, ApiAuthMixin
 
@@ -339,7 +342,7 @@ class CommentManageApi(ApiAuthMixin, APIView):
                 "message": "You do not have permission"
             }, status=status.HTTP_403_FORBIDDEN)
         
-        content = request.data.get('title', '')
+        content = request.data.get('content', '')
         
         if content == '':
             return Response({

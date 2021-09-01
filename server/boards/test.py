@@ -1,21 +1,22 @@
 import json
-import jwt
 
 from rest_framework.test import APITestCase, APIClient
 
 from django.conf import settings
 
-from users.models import User
+from users.models import User, Profile
 from boards.models import Category, Post, Comment, Reply
+
 
 class BoardTest(APITestCase):
     client = APIClient()
-    header = {}
+    headers = {}
     
     def setUp(self):
         user = User.objects.create_user('test', 'test@test.com', 'test1234@')
         self.user = user
-        self.assertIsInstance(user, User)
+        profile = Profile(user=user)
+        profile.save()
         
         category = Category(title="카테고리", creator=self.user)
         category.save()
@@ -44,13 +45,17 @@ class BoardTest(APITestCase):
         }
         
         response = self.client.post('/api/v1/auth/login/', json.dumps(user), content_type='application/json')
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
         
-        self.token = response.data['token']
+        self.token = response.data['access_token']
+        self.csrftoken = response.cookies.get('csrftoken').value
+        
         self.assertNotEqual(self.token, '')
         
-        self.header = {"Authorization": "jwt " + self.token}
-        
+        self.headers = {
+            "HTTP_Authorization": "jwt " + self.token,
+            "X-CSRFToken": self.csrftoken,
+        }
     
     def test_create_category(self):
         context = {
@@ -59,7 +64,7 @@ class BoardTest(APITestCase):
         
         response = self.client.post(
             '/api/v1/board/', 
-            json.dumps(context), **self.header, content_type='application/json')
+            json.dumps(context), **self.headers, content_type='application/json')
         self.assertEqual(response.status_code, 201)
     
     
@@ -71,7 +76,7 @@ class BoardTest(APITestCase):
         
         response = self.client.post(
             f'/api/v1/board/{self.category.id}/post', 
-            json.dumps(context), **self.header, content_type='application/json')
+            json.dumps(context), **self.headers, content_type='application/json')
         self.assertEqual(response.status_code, 201)
     
     
@@ -82,7 +87,7 @@ class BoardTest(APITestCase):
         
         response = self.client.post(
             f'/api/v1/board/{self.category.id}/post/{self.post.id}/comment', 
-            json.dumps(context), **self.header, content_type='application/json')
+            json.dumps(context), **self.headers, content_type='application/json')
         self.assertEqual(response.status_code, 201)
     
     
@@ -93,7 +98,7 @@ class BoardTest(APITestCase):
         
         response = self.client.post(
             f'/api/v1/board/{self.category.id}/post/{self.post.id}/comment/{self.comment.id}/reply', 
-            json.dumps(context), **self.header, content_type='application/json')
+            json.dumps(context), **self.headers, content_type='application/json')
         self.assertEqual(response.status_code, 201)
     
     
@@ -104,21 +109,21 @@ class BoardTest(APITestCase):
         
         response = self.client.put(
             f'/api/v1/board/{self.category.id}/post/{self.post.id}/comment/{self.comment.id}/reply/{self.reply.id}', 
-            json.dumps(context), **self.header, content_type='application/json')
+            json.dumps(context), **self.headers, content_type='application/json')
         self.assertEqual(response.status_code, 201)
     
     
     def test_like_reply(self):
         response = self.client.post(
             f'/api/v1/board/{self.category.id}/post/{self.post.id}/comment/{self.comment.id}/reply/{self.reply.id}', 
-            **self.header, content_type='application/json')
+            **self.headers, content_type='application/json')
         self.assertEqual(response.status_code, 200)
         
         
     def test_delete_reply(self):
         response = self.client.delete(
             f'/api/v1/board/{self.category.id}/post/{self.post.id}/comment/{self.comment.id}/reply/{self.reply.id}', 
-            **self.header, content_type='application/json')
+            **self.headers, content_type='application/json')
         self.assertEqual(response.status_code, 204)
         
         self.reply.delete()
@@ -131,21 +136,21 @@ class BoardTest(APITestCase):
         
         response = self.client.put(
             f'/api/v1/board/{self.category.id}/post/{self.post.id}/comment/{self.comment.id}', 
-            json.dumps(context), **self.header, content_type='application/json')
+            json.dumps(context), **self.headers, content_type='application/json')
         self.assertEqual(response.status_code, 201)
     
     
     def test_like_comment(self):
         response = self.client.post(
             f'/api/v1/board/{self.category.id}/post/{self.post.id}/comment/{self.comment.id}', 
-            **self.header, content_type='application/json')
+            **self.headers, content_type='application/json')
         self.assertEqual(response.status_code, 200)
     
     
     def test_delete_comment(self):
         response = self.client.delete(
             f'/api/v1/board/{self.category.id}/post/{self.post.id}/comment/{self.comment.id}', 
-            **self.header, content_type='application/json')
+            **self.headers, content_type='application/json')
         self.assertEqual(response.status_code, 204)
         
         self.comment.delete()

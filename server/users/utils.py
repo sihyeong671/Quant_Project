@@ -76,15 +76,6 @@ def user_record_login(user: User):
 
 
 @transaction.atomic
-def user_change_secret_key(user: User):
-    user.secret_key = get_random_secret_key()
-    user.full_clean()
-    user.save()
-    
-    return user
-
-
-@transaction.atomic
 def user_get_or_create(username, **extra_data):
     user = User.objects.filter(email=username).first()
     

@@ -32,8 +32,9 @@ environ.Env.read_env(
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+
 SECRET_KEY = env('SECRET_KEY')
+REFRESH_TOKEN_SECRET = env('REFRESH_TOKEN_SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -58,11 +59,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    #rest_framework
+    # rest_framework
     'rest_framework',
-    'rest_framework_jwt',
-    'rest_framework_jwt.blacklist',
-    'rest_framework.authtoken',
     
     'django_extensions',
     
@@ -90,9 +88,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        'auth.authenticate.SafeJWTAuthentication',
     ),
 }
 

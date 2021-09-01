@@ -1,17 +1,13 @@
-from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token, refresh_jwt_token
-
 from django.urls import path, include
 
-from auth.apis import LoginApi, LogoutApi, username_duplicate_checkApi, email_duplicate_checkApi
-from auth.authenticate import CustomRefreshJSONWebTokenAPIView
+from auth.apis import LoginApi, LogoutApi, username_duplicate_checkApi, email_duplicate_checkApi, RefreshJWTtoken
 from auth.googleapi import *
 from auth.kakaoapi import *
 from auth.naverapi import *
 
 
 login_patterns = [
-    path('verify', verify_jwt_token),
-    path('refresh', CustomRefreshJSONWebTokenAPIView.as_view()),
+    path('refresh', RefreshJWTtoken.as_view()),
     path('', LoginApi.as_view(), name='login'),
     
     path('google', GoogleLoginApi.as_view(), name='google_login'),
