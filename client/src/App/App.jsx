@@ -12,7 +12,19 @@ import Main from '../components/main/main';
 
 
 function App(props){
+
+  const [cookies, setCookie] = useCookies()
+  useEffect(async() => {
+    // csrf존재할때 코드수정해야 할 것 같음
+    if (cookies){
+      console.log(cookies.csrftoken);
+      axios.defaults.headers.post['X-CSRFToken'] = cookies.csrftoken;
+    }
+    props.reload();
+    // setTimeout 필요
+  },[]);
   //로그인 상태 확인 필요
+
 
   console.log('App rendering');
   return (

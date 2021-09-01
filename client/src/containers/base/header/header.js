@@ -10,14 +10,14 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
   return {
-    basicLogOut: async function(){
+    basicLogOut: async function(csrfToken){
       try{
         // axios.post 로 하니 문제 생김
         const res = await axios({
-          method: 'post',
-          url: 'http://localhost:8000/api/v1/auth/logout',
-          withCredentials:true
+          method:'post',
+          url:'/api/v1/auth/logout'
         })
+        console.log(res);
         dispatch({
           type: Constants.user.LOGOUT
         })

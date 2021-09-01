@@ -48,7 +48,7 @@ def Save_Price():
         time.sleep(1)
         for row in data.itertuples():
             Daily_Data = Daily_Price()
-            Daily_Data.company = Company.objects.get(company_name = corp.company_name, short_code = corp.short_code)
+            Daily_Data.company = Company.objects.get(corp_name = corp.corp_name, short_code = corp.short_code)
             Daily_Data.date = row[0].to_pydatetime().date()
             Daily_Data.market_gap = row[1]
             Daily_Data.open = row[2]

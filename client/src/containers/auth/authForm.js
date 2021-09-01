@@ -66,16 +66,17 @@ function mapDispatchToProps(dispatch){
       }
       try{
         const res = await axios.post('/api/v1/auth/login/', data);
-        const accessToken = res.data.token;
+        console.log(res);
+        const accessToken = res.data.access_token;
         axios.defaults.headers.common['Authorization'] = `JWT ${accessToken}`;
         setTimeout(async () => {
           try{
-            const data = await onSilentRefresh(accessToken);
-            console.log(data);
+            const res_refresh = await onSilentRefresh(accessToken);
+            const accessToken_refresh = res_refresh.data.access_token
             dispatch({
               type: Constants.user.LOGIN_SUCCESS,
-              username: data.user.username,
-              token: data.token
+              username: username,
+              accessToken: accessToken_refresh
             })
           }catch(error){
             console.log(error);
@@ -84,8 +85,9 @@ function mapDispatchToProps(dispatch){
         JWT_EXPIRE_TIME);
         dispatch({
           type: Constants.user.LOGIN_SUCCESS,
-          username: res.data.user.username,
-          token:res.data.token
+          username: username,
+          accessToken: accessToken,
+          isAuthenticated:true
         })
       }catch(error){
         console.log(error);

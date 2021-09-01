@@ -25,13 +25,13 @@ class Company(models.Model):
 
     
     def __str__(self):
-        return self.company_name
+        return self.corp_name
     
     class Meta:
         # admin 페이지에서 조회할 때, 클래스명 대신 알아보기 쉬운 단어로 지정하는 것
         verbose_name = "기업"
         verbose_name_plural = "기업"
-        ordering = ["company_name"]
+        ordering = ["corp_name"]
 
 
 class Daily_Price(models.Model):

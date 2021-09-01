@@ -25,14 +25,14 @@ function Header(props){
 		if(!props.user.isAuthenticated)
 		{
 			return(
-				<div className="auth-link">
+				<div className="auth-link" key={0}>
 					<Link to='/auth/login'>LogIn</Link>
 				</div>
 			)
 		}else{
 			// user명 출력
 			return(
-				<div className="auth-link">
+				<div className="auth-link" key={1}>
 					<button onClick={onClick}>LogOut</button>
 					<Link to='/profile'>Profile</Link>
 				</div>	

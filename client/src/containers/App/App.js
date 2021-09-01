@@ -24,7 +24,7 @@ const mapDispatchToProps=(dispatch)=>{
         dispatch({
           type:Constants.user.LOGIN_SUCCESS,
           username:res.data.user.username,
-          token:res.data.token,
+          accessToken:res.data.token,
           isAuthenticated:true
         })
         return true;
@@ -34,6 +34,20 @@ const mapDispatchToProps=(dispatch)=>{
         return false
       }
     },
+    reload: async() => {
+      try{
+        const res = await axios.post('/api/v1/auth/login/refresh');
+        console.log(res);
+        dispatch({
+          type:Constants.user.LOGIN_SUCCESS,
+          username:res.data.user.username,
+          accessToken:res.data.token,
+          isAuthenticated:true
+        })
+      }catch(error){
+        console.log(error);
+      }
+    }
 
   }
 }
