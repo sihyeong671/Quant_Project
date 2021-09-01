@@ -12,14 +12,7 @@ import Main from '../components/main/main';
 
 
 function App(props){
-  const [cookies, setCookie, removeCookie] = useCookies(['toekn']);
-  useEffect(async () => {
-    if(cookies.jwt_token){
-      props.onSilentRefresh(cookies.jwt_token);
-    };
-  },[]);
   //로그인 상태 확인 필요
-
 
   console.log('App rendering');
   return (
