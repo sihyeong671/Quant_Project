@@ -7,6 +7,9 @@ from crawling.dart_crawling import *
 from crawling.API_KEY import *
 
 
+
+
+
 def Save_FS_Data(api_key):
     linklst = ["CFS", "OFS"] # link, basic
     # years = ["2015","2016","2017","2018","2019","2020"]
@@ -16,13 +19,11 @@ def Save_FS_Data(api_key):
 
     dart_codes = Dart.objects.all()
     count = 0
-    
+    # 함수만들어서 기업개황 정보 집어넣기
     for dart_data in dart_codes:
-        company, flag = Company.objects.get_or_create(
-            company_name=dart_data.company_name_dart, \
-                short_code=dart_data.short_code
-        )
-        # print(company.company_name)
+        company, flag = Company.objects.get_or_create(stock_code=dart_data.short_code)
+        if flag:
+            Save_Corp_Info(api_key, dart_data.dart_code, company)
         for y in years:
             year, flag = Year.objects.get_or_create(bs_year=int(y), company=company)
             for q in quarters:
@@ -47,7 +48,7 @@ def Save_Price():
         time.sleep(1)
         for row in data.itertuples():
             Daily_Data = Daily_Price()
-            Daily_Data.company = Company.objects.get(company_name = corp.company_name, short_code = corp.short_code)
+            Daily_Data.company = Company.objects.get(corp_name = corp.corp_name, short_code = corp.short_code)
             Daily_Data.date = row[0].to_pydatetime().date()
             Daily_Data.market_gap = row[1]
             Daily_Data.open = row[2]

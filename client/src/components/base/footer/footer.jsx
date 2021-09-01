@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet';
 import './assets/css/style.scss';
 
 function Footer(){
+  console.log("Footer rendering")
   return(
     <div className="footer">
       <div className='foot-top'>

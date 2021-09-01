@@ -4,15 +4,12 @@ import { useHistory } from 'react-router';
 import { Link } from "react-router-dom";
 import { Cookies, useCookies } from 'react-cookie';
 
-
 // 엔터 누르면 자동으로 submit이 된다
 function Login({basicLogin}){
   console.log('Login rendering');
   const [username, setUserName] = useState('');
   const [pwd, setPwd] = useState('');
   const history = useHistory();
-  // const [cookies, setCookie, removeCookie] = useCookies(['token']);
-  // console.log('cookie', cookies);
 
   const onChangeUserName = (e) => {
     setUserName(e.target.value);
@@ -26,7 +23,6 @@ function Login({basicLogin}){
     e.preventDefault();
     await basicLogin(username ,pwd);
     history.push('/');
-    // 리로드로 변경
   }
 
   return(

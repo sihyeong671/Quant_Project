@@ -8,6 +8,7 @@ import "./assets/style/style.scss";
 import banner from './assets/img/1.jpg';
 
 const Home=()=>{
+  console.log("home rendering")
 	return(
     <>
       <div className="search">

@@ -9,6 +9,7 @@ import SearchPwd from './serachPwd';
 
 import GoogleLogo from './assets/img/googlelogin.png';
 import KakaoLogo from './assets/img/kakaologin.png';
+import NaverLogo from './assets/img/naverlogin.png'
 
 import './assets/css/style.scss';
 
@@ -23,9 +24,9 @@ const authForm = (props) => (
     </Switch>
 
     <div className='social-btn'>
-      <Link to='' style={{backgroundImage: `url(${KakaoLogo})`}}></Link>
-      <Link to='' style={{backgroundImage: `url(${GoogleLogo})`}}></Link>
-      <Link to='' >네이버</Link>
+      <a href='http://localhost:8000/api/v1/auth/login/kakao'><img src={KakaoLogo} alt="kakaologin" /></a>
+      <a href='http://localhost:8000/api/v1/auth/login/google'><img src={GoogleLogo} alt="googlelogin" /></a>
+      <a href='http://localhost:8000/api/v1/auth/login/naver'><img src={NaverLogo} alt="naverlogin" /></a>
     </div>
 
     <div>
