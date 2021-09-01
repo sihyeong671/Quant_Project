@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.core import validators
@@ -76,10 +75,6 @@ class User(AbstractUser):
         _('email address'),
         unique=True,
         blank=True
-    )
-    secret_key = models.CharField(
-        max_length=255,
-        default=get_random_secret_key()
     )
     
     object = UserManager()

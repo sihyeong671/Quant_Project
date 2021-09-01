@@ -2,6 +2,7 @@ from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.db import transaction
 from django.shortcuts import redirect
 from django.conf import settings
 from django.contrib.auth.hashers import check_password
@@ -13,7 +14,7 @@ from django.contrib.auth import get_user_model
 
 from api.mixins import ApiAuthMixin, PublicApiMixin
 
-from auth.services import jwt_login
+from auth.authenticate import jwt_login
 
 from users.serializers import RegisterSerializer, UserSerializer, PasswordChangeSerializer
 from users.models import Profile
@@ -70,6 +71,7 @@ class UserMeApi(ApiAuthMixin, APIView):
 
 
 class UserCreateApi(PublicApiMixin, APIView):
+    @transaction.atomic
     def post(self, request, *args, **kwargs):
         serializer = RegisterSerializer(data=request.data)
         if not serializer.is_valid(raise_exception=True):
@@ -173,3 +175,4 @@ class ResetPasswordApi(ApiAuthMixin, APIView):
         response.delete_cookie(settings.JWT_AUTH['JWT_AUTH_COOKIE'])
 
         return response
+    

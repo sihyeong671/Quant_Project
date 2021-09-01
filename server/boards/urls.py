@@ -29,7 +29,7 @@ post_urlpatterns = [
 ]
 
 urlpatterns = [
-    path('', CategoryCreateReadApi.as_view(), name="category_cr"),
+    path('', CategoryCreateReadApi.as_view(), name="category_create"),
     path('<int:cate_id>', CategoryManageApi.as_view(), name="category_manage"),
     path('<int:cate_id>/', include(post_urlpatterns)),
     

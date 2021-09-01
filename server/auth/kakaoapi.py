@@ -6,7 +6,8 @@ from django.contrib.auth import get_user_model
 
 from api.mixins import PublicApiMixin
 from users.utils import user_get_or_create
-from auth.services import jwt_login, kakao_get_access_token, kakao_get_user_info
+from auth.services import kakao_get_access_token, kakao_get_user_info
+from auth.authenticate import jwt_login
 
 
 # User = settings.AUTH_USER_MODEL
