@@ -1,51 +1,103 @@
-from django.contrib.auth import get_user_model
+import jwt
 
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework_jwt.views import ObtainJSONWebTokenView
 
+from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
 
-from auth.authenticate import CustomJSONWebTokenAPIView
+from auth.authenticate import generate_access_token, jwt_login
 from api.mixins import PublicApiMixin, ApiAuthMixin
 from users.utils import user_record_login, user_change_secret_key
+from django.utils.decorators import method_decorator
 
 
 User = get_user_model()
 
 
-class LoginApi(PublicApiMixin, CustomJSONWebTokenAPIView):
-    """
-    Using Custom LoginApi rather than obtain_jwt_token
-    Because have to record last login time
-    """
+@method_decorator(ensure_csrf_cookie, name="dispatch")
+class LoginApi(PublicApiMixin, APIView):
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        user = User
+        username = request.data.get('username')
+        password = request.data.get('password')
+        
+        if (username is None) or (password is None):
+            return Response({
+                "message": "username/password required"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        user = User.objects.filter(username=username).first()
+        if user is None:
+            return Response({
+                "message": "user not found"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        if not user.check_password(password):
+            return Response({
+                "message": "wrong password"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        response = Response(status=status.HTTP_200_OK)
+        return jwt_login(response, user)
+        
 
-        serializer.is_valid(raise_exception=True)
-
-        user = serializer.validated_data.get('user') or request.user
-        user_record_login(user=user)
-
-        return super().post(request, *args, **kwargs)
-
-
-class LogoutApi(ApiAuthMixin, APIView):
+@method_decorator(csrf_protect, name='dispatch')
+class RefreshJWTtoken(PublicApiMixin, APIView):
+    def post(self, request, *args, **kwargs):
+        refresh_token = request.COOKIES.get('refreshtoken')
+        
+        if refresh_token is None:
+            return Response({
+                "message": "Authentication credentials were not provided."
+            }, status=status.HTTP_403_FORBIDDEN)
+        
+        try:
+            payload = jwt.decode(
+                refresh_token, settings.REFRESH_TOKEN_SECRET, algorithms=['HS256']
+            )
+        except:
+            return Response({
+                "message": "expired refresh token, please login again."
+            }, status=status.HTTP_403_FORBIDDEN)
+        
+        user = User.objects.filter(id=payload['user_id']).first()
+        
+        if user is None:
+            return Response({
+                "message": "user not found"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        if not user.is_active:
+            return Response({
+                "message": "user is inactive"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        access_token = generate_access_token(user)
+        
+        return Response(
+            {
+                'access_token': access_token,
+            }
+        )
+        
+        
+@method_decorator(csrf_protect, name='dispatch')
+class LogoutApi(PublicApiMixin, APIView):
     def post(self, request):
-        """
-        Logs out user by removing JWT cookie header.
-        """
-        user_change_secret_key(user=request.user)
-
+        
+        user_change_secret_key(request.user)
+        
         response = Response({
             "message": "Logout success"
             }, status=status.HTTP_202_ACCEPTED)
-        response.delete_cookie(settings.JWT_AUTH['JWT_AUTH_COOKIE'])
+        response.delete_cookie('refreshtoken')
 
         return response
 
+
+@method_decorator(csrf_protect, name='dispatch')
 class username_duplicate_checkApi(PublicApiMixin, APIView):
     def post(self, request, *args, **kwargs):
         input_username = request.data.get('username', '')
@@ -64,6 +116,7 @@ class username_duplicate_checkApi(PublicApiMixin, APIView):
         ,status=status.HTTP_200_OK)
 
 
+@method_decorator(csrf_protect, name='dispatch')
 class email_duplicate_checkApi(PublicApiMixin, APIView):
     def post(self, request, *args, **kwargs):
         input_email = request.data.get('email', '')

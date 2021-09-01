@@ -1,9 +1,10 @@
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+
+from auth.authenticate import SafeJWTAuthentication
 
 
 class ApiAuthMixin:
-    authentication_classes = (JSONWebTokenAuthentication, )
+    authentication_classes = (SafeJWTAuthentication, )
     permission_classes = (IsAuthenticatedOrReadOnly, )
 
 

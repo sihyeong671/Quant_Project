@@ -1,43 +1,11 @@
-import requests, datetime
-
-from rest_framework_jwt.settings import api_settings
-from rest_framework_jwt.compat import set_cookie_with_token
+import requests
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
 
-from users.utils import user_record_login
-
 
 GOOGLE_ACCESS_TOKEN_OBTAIN_URL = 'https://oauth2.googleapis.com/token'
 GOOGLE_USER_INFO_URL = 'https://www.googleapis.com/oauth2/v3/userinfo'
-
-
-def my_set_cookie_with_token(response, name, token):
-    params = {
-        'expires': datetime.datetime.utcnow() + api_settings.JWT_EXPIRATION_DELTA,
-        'domain': api_settings.JWT_AUTH_COOKIE_DOMAIN,
-        'path': api_settings.JWT_AUTH_COOKIE_PATH,
-        'secure': api_settings.JWT_AUTH_COOKIE_SECURE,
-    }
-
-    response.set_cookie(name, token, **params)
-
-
-def jwt_login(response, user):
-
-    jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-    jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-
-    payload = jwt_payload_handler(user)
-    token = jwt_encode_handler(payload)
-
-    if api_settings.JWT_AUTH_COOKIE:
-        my_set_cookie_with_token(response, api_settings.JWT_AUTH_COOKIE, token)
-
-    user_record_login(user=user)
-
-    return response
 
 
 def google_get_access_token(google_token_api, code):
