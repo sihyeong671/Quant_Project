@@ -13,8 +13,6 @@ import Main from '../components/main/main';
 
 function App(props){
   const [cookies, setCookie, removeCookie] = useCookies(['toekn']);
-  console.log(cookies);
-
   useEffect(async () => {
     if(cookies.jwt_token){
       props.onSilentRefresh(cookies.jwt_token);

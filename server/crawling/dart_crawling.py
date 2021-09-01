@@ -5,11 +5,11 @@ import zipfile
 from datetime import datetime
 from io import BytesIO
 from bs4 import BeautifulSoup
-
+import re
 
 from crawling.krx_crawling import Get_Krx_Short_Code
 
-from stockmanage.models import FS_Div, FS_Account, SUB_Account, Dart
+from stockmanage.models import FS_Div, FS_Account, SUB_Account, Dart, Company
 
 
 #  개별로 실행하면 생기기는 문제 해결을 위한 코드
@@ -20,20 +20,15 @@ from stockmanage.models import FS_Div, FS_Account, SUB_Account, Dart
 
 # 재무제표 viewDoc파라미터 찾기
 def find_parameter(string: str, fs_name: str) -> list:
-    pointer_1 = 0
-    pointer_2 = 0
-
-    for i in range(2000, len(string)):
-        if string[i-len(fs_name):i] == fs_name:
-            for j in range(i, len(string)):
-                if string[j-7:j] == "viewDoc":
-                    pointer_1 = j
-                    continue
-                elif string[j] == ";":
-                    pointer_2 = j
-                    param = string[pointer_1+1:pointer_2-1]
-                    lst = param.replace("'", "").split(", ")
-                    return lst
+    p = re.compile('"[a-zA-Z0-9]*"')
+    idx_start = string.find(fs_name)
+    idx_end = string.find('cnt++', idx_start)
+    string_limit = string[idx_start:idx_end]
+    parameters = p.findall(string_limit)
+    lst = []
+    for param in parameters:
+        lst.append(param.replace('"', ""))
+    return lst
 
 
 # dart에서 고유번호 가져오기
@@ -87,12 +82,12 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         else:
             parameter_list = find_parameter(script_content, "재무제표")
 
-        bs_url = f"http://dart.fss.or.kr/report/viewer.do?rcpNo={parameter_list[0]}" \
-        f"&dcmNo={parameter_list[1]}" \
-        f"&eleId={parameter_list[2]}" \
-        f"&offset={parameter_list[3]}" \
-        f"&length={parameter_list[4]}" \
-        f"&dtd={parameter_list[5]}"
+        bs_url = f"http://dart.fss.or.kr/report/viewer.do?rcpNo={parameter_list[1]}" \
+        f"&dcmNo={parameter_list[2]}" \
+        f"&eleId={parameter_list[3]}" \
+        f"&offset={parameter_list[4]}" \
+        f"&length={parameter_list[5]}" \
+        f"&dtd={parameter_list[6]}"
 
         bs_res = rq.get(bs_url)
         bs_soup = BeautifulSoup(bs_res.text, "lxml") # html.parser 도 가능
@@ -218,3 +213,33 @@ def Save_Dart_Data(api_key):
     for data in dart_data:
         Dart(dart_code=data[0],company_name_dart=data[1],
              short_code=data[2],recent_modify=data[3]).save()
+
+
+def Save_Corp_Info(api_key, code, company):
+    url = 'https://opendart.fss.or.kr/api/company.json'
+    param = {
+        'crtfc_key': api_key,
+        'corp_code':code
+    }
+    try:
+        res = rq.get(url, param)
+        # json을 딕셔너리 객체로 디코딩
+        json_dict = json.loads(res.text)
+        if json_dict['status'] == '000':
+            company.corp_name = json_dict['corp_name']
+            company.corp_namge_eng = json_dict['corp_name_eng']
+            company.stock_name = json_dict['stock_name']
+            company.ceo_name = json_dict['ceo_nm']
+            company.corp_cls = json_dict['corp_cls']
+            company.jurir_no = json_dict['jurir_no']
+            company.bizr_no = json_dict['bizr_no']
+            company.adres = json_dict['adres']
+            company.hm_url = json_dict['hm_url']
+            company.ir_url = json_dict['ir_url']
+            company.phn_no = json_dict['phn_no']
+            company.fax_no = json_dict['fax_no']
+            company.induty_code = json_dict['induty_code']
+            company.est_dt = json_dict['est_dt']
+            company.acc_mt = json_dict['acc_mt']
+    except:
+        print('error')

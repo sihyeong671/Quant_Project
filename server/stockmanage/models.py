@@ -2,8 +2,26 @@ from django.db import models
 
 
 class Company(models.Model):
-    company_name = models.CharField(max_length=200, null=True, blank=True)
-    short_code = models.CharField(max_length=200, null=True, blank=True)
+    corp_name = models.CharField(max_length=100, null=True, blank=True)
+    corp_name_eng = models.CharField(max_length=100, null=True, blank=True)
+    stock_name = models.CharField(max_length=100, null=True, blank=True)
+    stock_code = models.CharField(max_length=100, null=True, blank=True)
+    ceo_name = models.CharField(max_length=100, null=True, blank=True)
+    # 법인구분 Y:유가, K:코스닥, N:코넥스, E:기타
+    corp_cls = models.CharField(max_length=100, null=True, blank=True)
+    jurir_no = models.CharField(max_length=100, null=True, blank=True)
+    bizr_no = models.CharField(max_length=100, null=True, blank=True)
+    adres = models.CharField(max_length=100, null=True, blank=True)
+    hm_url = models.CharField(max_length=100, null=True, blank=True)
+    ir_url = models.CharField(max_length=100, null=True, blank=True)
+    phn_no = models.CharField(max_length=100, null=True, blank=True)
+    fax_no = models.CharField(max_length=100, null=True, blank=True)
+    # 업종코드
+    induty_code = models.CharField(max_length=100, null=True, blank=True)
+    est_dt = models.CharField(max_length=100, null=True, blank=True)
+    # 결산월
+    acc_mt = models.CharField(max_length=100, null=True, blank=True)
+
     
     def __str__(self):
         return self.company_name
