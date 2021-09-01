@@ -25,8 +25,8 @@ const authForm = (props) => (
 
     <div className='social-btn'>
       <a href='http://localhost:8000/api/v1/auth/login/kakao'><img src={KakaoLogo} alt="kakaologin" /></a>
-      <a href='http://localhost:8000/api/v1/auth/login/kakao'><img src={GoogleLogo} alt="googlelogin" /></a>
-      <a href='http://localhost:8000/api/v1/auth/login/kakao'><img src={NaverLogo} alt="naverlogin" /></a>
+      <a href='http://localhost:8000/api/v1/auth/login/google'><img src={GoogleLogo} alt="googlelogin" /></a>
+      <a href='http://localhost:8000/api/v1/auth/login/naver'><img src={NaverLogo} alt="naverlogin" /></a>
     </div>
 
     <div>

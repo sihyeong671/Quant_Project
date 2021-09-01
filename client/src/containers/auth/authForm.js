@@ -132,8 +132,8 @@ function mapDispatchToProps(dispatch){
         console.log(res);
         dispatch({
           type: Constants.user.LOGIN_SUCCESS,
-          username: res.data.user.username,
-          token:res.data.token
+          accessToken: res.data.access_token,
+          isAuthenticated:true
         })
         return true;
       }catch(error){
