@@ -76,10 +76,6 @@ class User(AbstractUser):
         unique=True,
         blank=True
     )
-    secret_key = models.CharField(
-        max_length=255,
-        default=get_random_secret_key()
-    )
     
     object = UserManager()
     

@@ -175,3 +175,4 @@ class ResetPasswordApi(ApiAuthMixin, APIView):
         response.delete_cookie(settings.JWT_AUTH['JWT_AUTH_COOKIE'])
 
         return response
+    

@@ -11,7 +11,6 @@ from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
 
 from auth.authenticate import generate_access_token, jwt_login
 from api.mixins import PublicApiMixin, ApiAuthMixin
-from users.utils import user_record_login, user_change_secret_key
 from django.utils.decorators import method_decorator
 
 
@@ -86,8 +85,6 @@ class RefreshJWTtoken(PublicApiMixin, APIView):
 @method_decorator(csrf_protect, name='dispatch')
 class LogoutApi(PublicApiMixin, APIView):
     def post(self, request):
-        
-        user_change_secret_key(request.user)
         
         response = Response({
             "message": "Logout success"
