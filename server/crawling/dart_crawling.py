@@ -67,7 +67,6 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
     if json_dict['status'] == "000": # 정상적으로 데이터 가져옴
 
         link_model.exist = 1
-        link_model.save()
 
         report_number = json_dict['list'][0]['rcept_no']
 
@@ -91,6 +90,11 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
 
         bs_res = rq.get(bs_url)
         bs_soup = BeautifulSoup(bs_res.text, "lxml") # html.parser 도 가능
+
+
+        fs_unit = bs_soup.find("table").find_all('p')[-1]
+        link_model.unit = fs_unit
+        link_model.save()
 
         bs_tree = {}
         now = ''
