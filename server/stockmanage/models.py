@@ -1,18 +1,37 @@
 from django.db import models
+from django.db.models.fields import BLANK_CHOICE_DASH
 
 
 class Company(models.Model):
-    company_name = models.CharField(max_length=200, null=True, blank=True)
-    short_code = models.CharField(max_length=200, null=True, blank=True)
+    corp_name = models.CharField(max_length=100, null=True, blank=True)
+    corp_name_eng = models.CharField(max_length=100, null=True, blank=True)
+    stock_name = models.CharField(max_length=100, null=True, blank=True)
+    stock_code = models.CharField(max_length=100, null=True, blank=True)
+    ceo_name = models.CharField(max_length=100, null=True, blank=True)
+    # 법인구분 Y:유가, K:코스닥, N:코넥스, E:기타
+    corp_cls = models.CharField(max_length=100, null=True, blank=True)
+    jurir_no = models.CharField(max_length=100, null=True, blank=True)
+    bizr_no = models.CharField(max_length=100, null=True, blank=True)
+    adres = models.CharField(max_length=100, null=True, blank=True)
+    hm_url = models.CharField(max_length=100, null=True, blank=True)
+    ir_url = models.CharField(max_length=100, null=True, blank=True)
+    phn_no = models.CharField(max_length=100, null=True, blank=True)
+    fax_no = models.CharField(max_length=100, null=True, blank=True)
+    # 업종코드
+    induty_code = models.CharField(max_length=100, null=True, blank=True)
+    est_dt = models.CharField(max_length=100, null=True, blank=True)
+    # 결산월
+    acc_mt = models.CharField(max_length=100, null=True, blank=True)
+
     
     def __str__(self):
-        return self.company_name
+        return self.corp_name
     
     class Meta:
         # admin 페이지에서 조회할 때, 클래스명 대신 알아보기 쉬운 단어로 지정하는 것
         verbose_name = "기업"
         verbose_name_plural = "기업"
-        ordering = ["company_name"]
+        ordering = ["corp_name"]
 
 
 class Daily_Price(models.Model):
@@ -66,6 +85,8 @@ class Quarter(models.Model):
         null=True, blank=True, 
         on_delete=models.CASCADE, related_name='quarter'
     )
+    ROE = models.FloatField(null=True, blank=True)
+    ROA = models.FloatField(null=True, blank=True)
     
     def __str__(self):
         return self.qt_name
@@ -81,7 +102,9 @@ class FS_LoB(models.Model):
     lob = models.CharField(help_text="연결(CFS)/일반(OFS)", max_length=30, blank=True, null=True)
     quarter = models.ForeignKey(Quarter, on_delete=models.CASCADE, related_name="fs_lob")
     exist = models.IntegerField(default=0, null=True, blank=True)
-    
+    # 돈 단위 - api에서 받는거랑 다를 수도 있음
+    unit = models.CharField(max_length=30, null=True, blank=True)
+
     def __str__(self):
         return self.lob
     

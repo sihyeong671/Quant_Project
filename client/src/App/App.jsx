@@ -1,44 +1,32 @@
-import React,{useState, useEffect} from 'react';
+import React,{useState, useEffect, useRef} from 'react';
 import { hot } from 'react-hot-loader';
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import Cookies from 'universal-cookie';
 import axios from 'axios';
+import { useCookies } from 'react-cookie';
 
 import Header from '../containers/base/header/header';
 import Footer from '../components/base/footer/footer';
 import Main from '../components/main/main';
 
 
-axios.defaults.withCredentials = true;
 
-function App(){
-  useEffect(async () => {
-    const token = JSON.parse(JSON.parse(localStorage.getItem('persist:root')).user).token
-    if (token !== null){
-      try{
-        await axios({
-          method:'post',
-          url:'http://localhost:8000/api/v1/auth/login/verify',
-          data:{
-            token:token
-          }
-        })
-      }catch(error){
-        await axios({
-          method:'post',
-          url:'http://localhost:8000/api/v1/auth/login/refresh',
-          data:{
-            token:token
-          }
-        })
-        console.log(error);
-      }
+function App(props){
+
+  const [cookies, setCookie] = useCookies();
+  useEffect(async() => {
+    // csrf존재할때 코드수정해야 할 것 같음
+    if (cookies.csrftoken !== undefined){
+      console.log('헤더설정');
+      axios.defaults.headers.post['X-CSRFToken'] = cookies.csrftoken;
+      props.reload();
     }
-  },[]
-  );
-  // 로그인 상태 확인 필요
+    
+    // setTimeout 필요
+  },[]);
+  //로그인 상태 확인 필요
+
+
   console.log('App rendering');
   return (
     <>
