@@ -93,27 +93,6 @@ REST_FRAMEWORK = {
 }
 
 
-# JWT SETTINGS
-JWT_AUTH = {
-   'JWT_ALGORITHM': 'HS256',
-   'JWT_VERIFY_EXPIRATION' : True,
-   'JWT_ALLOW_REFRESH': True,
-   
-   # default : 1 hour
-   'JWT_EXPIRATION_DELTA': datetime.timedelta(
-       seconds=env.int(
-           'DJANGO_JWT_EXPIRATION_DELTA',
-           default=1800
-       )
-    ),
-    'JWT_AUTH_HEADER_PREFIX': 'JWT',
-    'JWT_GET_USER_SECRET_KEY': lambda user: user.secret_key,
-    'JWT_RESPONSE_PAYLOAD_HANDLER': 'auth.authenticate.jwt_response_payload_handler',
-    'JWT_AUTH_COOKIE': 'jwt_token',
-    'JWT_AUTH_COOKIE_SAMESITE': 'None'
-}
-
-
 # CORS SETTINGS
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True

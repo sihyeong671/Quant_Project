@@ -1,3 +1,4 @@
+from django.core import exceptions
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -26,6 +27,8 @@ User = get_user_model()
 
 class UserMeApi(ApiAuthMixin, APIView):
     def get(self, request, *args, **kwargs):
+        if request.user is None:
+            raise exceptions.PermissionDenied('PermissionDenied')
         return Response(UserSerializer(request.user, context={'request':request}).data)
     
     def put(self, request, *args, **kwargs):
@@ -79,13 +82,12 @@ class UserCreateApi(PublicApiMixin, APIView):
                 "message": "Request Body Error"
                 }, status=status.HTTP_409_CONFLICT)
 
-        serializer.is_valid(raise_exception=True)
         user = serializer.save()
         
         profile = Profile(user=user, nickname=user.username, introduce="소개를 작성해주세요.")
         profile.save()
         
-        response = redirect(settings.BASE_FRONTEND_URL)
+        response = Response(status=status.HTTP_200_OK)
         response = jwt_login(response=response, user=user)
         return response
 

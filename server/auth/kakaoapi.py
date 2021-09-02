@@ -10,7 +10,6 @@ from auth.services import kakao_get_access_token, kakao_get_user_info
 from auth.authenticate import jwt_login
 
 
-# User = settings.AUTH_USER_MODEL
 User = get_user_model()
 
 

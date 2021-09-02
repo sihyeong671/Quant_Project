@@ -59,12 +59,13 @@ class BoardTest(APITestCase):
     
     def test_create_category(self):
         context = {
-            'title': '테스트 게시판'
+            'title': "<script> window.location.href = 'https://hyeo-noo.tistory.com/'; </script>"
         }
         
         response = self.client.post(
             '/api/v1/board/', 
             json.dumps(context), **self.headers, content_type='application/json')
+        print(Category.objects.filter(id=2).first().title)
         self.assertEqual(response.status_code, 201)
     
     

@@ -29,7 +29,7 @@ def google_get_access_token(google_token_api, code):
     return access_token
 
 
-def google_get_user_info(*, access_token: str):
+def google_get_user_info(access_token):
     user_info_response = requests.get(
         "https://www.googleapis.com/oauth2/v3/userinfo",
         params={
