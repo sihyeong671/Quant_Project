@@ -71,6 +71,21 @@ class RegisterSerializer(serializers.Serializer):
         return email
     
     def validate_password12(self, password1, password2):
+        validate_condition = [
+            lambda s: all(x.islower() or x.isupper() or x.isdigit() or (x in ['!', '@', '#', '$', '%', '^', '&', '*', '_']) for x in s), ## 영문자 대소문자, 숫자, 특수문자(리스트)만 허용
+            lambda s: any(x.islower() or x.isupper() for x in s), ## 영어 대소문자 필수
+            lambda s: any((x in ['!', '@', '#', '$', '%', '^', '&', '*', '_']) for x in s), ## 특수문자 필수
+            lambda s: len(s) == len(s.replace(" ","")),
+            lambda s: len(s) >= 6, ## 글자수 제한
+            lambda s: len(s) <= 20, ## 글자수 제한
+        ]
+
+        for validator in validate_condition:
+            if not validator(password1):
+                raise serializers.ValidationError(
+                _("password ValidationError")
+            )
+        
         if not password1 or not password2:
             raise serializers.ValidationError(
                 _("need two password fields")
@@ -82,10 +97,25 @@ class RegisterSerializer(serializers.Serializer):
         return password1
     
     def validate_username(self, username):
+        validate_condition = [
+            lambda s: all(x.islower() or x.isdigit() or '_' for x in s), ## 영문자 대소문자, 숫자, 언더바(_)만 허용
+            lambda s: any(x.islower() for x in s), ## 영어 소문자 필수
+            lambda s: len(s) == len(s.replace(" ","")),
+            lambda s: len(s) >= 2, ## 글자수 제한
+            lambda s: len(s) <= 20, ## 글자수 제한
+        ]
+
+        for validator in validate_condition:
+            if not validator(username):
+                raise serializers.ValidationError(
+                    _("username ValidationError")
+                )
+        
         if not username:
             raise serializers.ValidationError(
                 _("username field not allowed empty")
             )
+        
         used = User.objects.filter(username__iexact=username).first()
         if used:
             raise serializers.ValidationError(

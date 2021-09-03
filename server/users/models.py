@@ -1,7 +1,6 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.core import validators
-from django.core.management.utils import get_random_secret_key
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.deconstruct import deconstructible
@@ -107,8 +106,8 @@ class Profile(models.Model):
     
     signup_path = models.CharField(max_length=64, default='basic')
     
-    favorite_category = models.ManyToManyField(Category, blank=True, related_name='favorite_user')
     favorite_company = models.ManyToManyField(Company, blank=True, related_name='favorite_user')
+    favorite_category = models.ManyToManyField(Category, blank=True, related_name='favorite_user')
     favorite_post = models.ManyToManyField(Post, blank=True, related_name='favorite_user')
     favorite_comment = models.ManyToManyField(Comment, blank=True, related_name='favorite_user')
     favorite_reply = models.ManyToManyField(Reply, blank=True, related_name='favorite_user')

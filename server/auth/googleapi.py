@@ -9,7 +9,7 @@ from users.utils import user_get_or_create
 from auth.services import google_get_access_token, google_get_user_info
 from auth.authenticate import jwt_login
 
-User = settings.AUTH_USER_MODEL
+
 User = get_user_model()
 
 
@@ -18,7 +18,6 @@ class GoogleLoginApi(PublicApiMixin, APIView):
         app_key = settings.GOOGLE_OAUTH2_CLIENT_ID
         scope = "https://www.googleapis.com/auth/userinfo.email " + \
                 "https://www.googleapis.com/auth/userinfo.profile"
-        # scope = " ".join(scope)
         
         redirect_uri = settings.BASE_BACKEND_URL + "/api/v1/auth/login/google/callback"
         google_auth_api = "https://accounts.google.com/o/oauth2/v2/auth"
@@ -47,6 +46,7 @@ class GoogleSigninCallBackApi(PublicApiMixin, APIView):
             'image': user_data.get('picture', None),
             'path': "google",
         }
+
         
         user, _ = user_get_or_create(**profile_data)
 

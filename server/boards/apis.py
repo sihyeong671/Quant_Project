@@ -3,6 +3,7 @@ from rest_framework import status, serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.utils.html import escape
 from django.db.models.query_utils import Q
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
@@ -39,6 +40,7 @@ class CategoryCreateReadApi(ApiAuthMixin, APIView):
             "message": "Title duplicated"
             }, status=status.HTTP_400_BAD_REQUEST)
             
+        title = escape(title)
         
         category = Category(
             creator=request.user, 
