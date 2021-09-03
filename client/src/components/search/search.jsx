@@ -1,6 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
 import { hot } from 'react-hot-loader';
-
 import './assets/css/style.scss';
 
 // 검색할 기업 보여주는 컴포넌트
