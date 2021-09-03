@@ -1,12 +1,11 @@
-from django.views.decorators.csrf import csrf_protect
 from rest_framework import status, serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.http import QueryDict
 from django.utils.html import escape
 from django.db.models.query_utils import Q
 from django.shortcuts import get_object_or_404
-from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
 
 from api.mixins import PublicApiMixin, ApiAuthMixin
@@ -39,8 +38,6 @@ class CategoryCreateReadApi(ApiAuthMixin, APIView):
             return Response({
             "message": "Title duplicated"
             }, status=status.HTTP_400_BAD_REQUEST)
-            
-        title = escape(title)
         
         category = Category(
             creator=request.user, 
@@ -239,13 +236,14 @@ class PostManageApi(ApiAuthMixin, APIView):
                 "message": "You do not have permission"
             }, status=status.HTTP_403_FORBIDDEN)
         
-        title = request.data.get('title', '')
-        content = request.data.get('content', '')
+        title = request.data.get("title")
+        content = request.data.get("content")
         
         if title == '' or content == '':
             return Response({
                 "message": "title required"
             }, status=status.HTTP_400_BAD_REQUEST)
+        
         
         post.title = title
         post.content = content

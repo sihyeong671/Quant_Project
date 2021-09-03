@@ -101,7 +101,7 @@ class RegisterSerializer(serializers.Serializer):
             lambda s: all(x.islower() or x.isdigit() or '_' for x in s), ## 영문자 대소문자, 숫자, 언더바(_)만 허용
             lambda s: any(x.islower() for x in s), ## 영어 소문자 필수
             lambda s: len(s) == len(s.replace(" ","")),
-            lambda s: len(s) >= 2, ## 글자수 제한
+            lambda s: len(s) >= 3, ## 글자수 제한
             lambda s: len(s) <= 20, ## 글자수 제한
         ]
 

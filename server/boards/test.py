@@ -57,6 +57,8 @@ class BoardTest(APITestCase):
             "X-CSRFToken": self.csrftoken,
         }
     
+    
+    ## ==== POST create TEST ALL ====
     def test_create_category(self):
         context = {
             'title': "<script> window.location.href = 'https://hyeo-noo.tistory.com/'; </script>"
@@ -65,7 +67,7 @@ class BoardTest(APITestCase):
         response = self.client.post(
             '/api/v1/board/', 
             json.dumps(context), **self.headers, content_type='application/json')
-        print(Category.objects.filter(id=2).first().title)
+        # print(Category.objects.filter(id=2).first().title)
         self.assertEqual(response.status_code, 201)
     
     
@@ -103,6 +105,21 @@ class BoardTest(APITestCase):
         self.assertEqual(response.status_code, 201)
     
     
+    ## ==== GET TEST ALL ====
+    def test_show_category(self):
+        response = self.client.get(
+            f'/api/v1/board/', 
+            **self.headers, content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+    
+    def test_show_post(self):
+        response = self.client.get(
+            f'/api/v1/board/{self.category.id}', 
+            **self.headers, content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+    
+    
+    ## ==== POST, PUT, DELETE like, modify, delete TEST ALL ====
     def test_modify_reply(self):
         context = {
             'content': "수정된 대댓글",
@@ -155,4 +172,51 @@ class BoardTest(APITestCase):
         self.assertEqual(response.status_code, 204)
         
         self.comment.delete()
+    
+    
+    def test_modify_post(self):
+        context = {
+            'title': '수정된 제목',
+            'content': '수정된 내용',
+        }
+        
+        response = self.client.put(
+            f'/api/v1/board/{self.category.id}/post/{self.post.id}',
+            json.dumps(context), **self.headers, content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+        
+        
+    def test_like_post(self):
+        response = self.client.post(
+            f'/api/v1/board/{self.category.id}/post/{self.post.id}', 
+            **self.headers, content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        
+        
+    def test_delete_post(self):
+        response = self.client.delete(
+            f'/api/v1/board/{self.category.id}/post/{self.post.id}', 
+            **self.headers, content_type='application/json')
+        self.assertEqual(response.status_code, 204)
+        
+        self.post.delete()
+    
+    
+    def test_like_category(self):
+        response = self.client.post(
+            f'/api/v1/board/{self.category.id}', 
+            **self.headers, content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        
+        
+    def test_delete_category(self):
+        self.post.delete()
+        
+        response = self.client.delete(
+            f'/api/v1/board/{self.category.id}', 
+            **self.headers, content_type='application/json')
+        self.assertEqual(response.status_code, 204)
+        
+        self.category.delete()
+    
     
