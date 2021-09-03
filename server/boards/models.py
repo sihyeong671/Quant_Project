@@ -66,7 +66,7 @@ class Reply(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
     
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reply")
-    comment = models.ForeignKey(Comment, null=True, on_delete=models.SET_NULL, related_name="reply")
+    comment = models.ForeignKey(Comment, null=True, on_delete=models.DO_NOTHING, related_name="reply")
     
     class Meta:
         verbose_name_plural = '대댓글'

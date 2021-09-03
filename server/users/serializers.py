@@ -5,14 +5,14 @@ from django.contrib.auth import get_user_model
 
 from users.models import Profile
 from boards.serializers import PostListSerializer, CategorySerializer
+from stockmanage.serializers import CompanySerializer
 
 User = get_user_model()
 
 class ProfileSerializer(serializers.ModelSerializer):
-    # favorite_company = PostListSerializer(read_only=True)
     favorite_category = CategorySerializer(read_only=True, many=True)
     favorite_post = PostListSerializer(read_only=True, many=True)
-    # favorite_company = serializers.SerializerMethodField(read_only=True)
+    favorite_company = CompanySerializer(read_only=True, many=True)
     
     class Meta:
         model = Profile
@@ -24,7 +24,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             'signup_path',
             'favorite_category',
             'favorite_post',
-            # 'favorite_company',
+            'favorite_company',
         ]
     
     def get_favorite_post(self, obj):
