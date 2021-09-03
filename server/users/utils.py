@@ -1,10 +1,13 @@
 from django.core.management.utils import get_random_secret_key
 from django.db import transaction
 from django.utils import timezone
+from django.contrib.auth import get_user_model
 
-from users.models import User, Profile
+from users.models import Profile
 
+User = get_user_model()
 
+@transaction.atomic
 def user_create(username, password=None, **extra_fields):
     user = User(username=username, email=username)
     
@@ -18,21 +21,35 @@ def user_create(username, password=None, **extra_fields):
     
     profile = Profile(user=user, nickname=username)
     
-    if extra_fields['image']:
+    try:
         profile.image = extra_fields['image']
+    except:
+        pass
     
-    if extra_fields['nickname']:
+    try:
         profile.nickname = extra_fields['nickname']
+    except:
+        pass
+    
+    try:
+        try:
+            user.first_name = extra_fields['first_name']
+            user.last_name = extra_fields['last_name']
+        except:
+            try:
+                user.first_name = extra_fields['name']
+            except:
+                pass
+    except:
+        pass
     
     
-    if extra_fields['path'] == 'google':
-        profile.signup_path = "google"
-        profile.image = 'profile_image/google_basic.jpeg'
-        
-    elif extra_fields['path'] == 'kakao':
-        profile.signup_path = "kakao"
-        profile.image = 'profile_image/kakao_basic.png'
-        
+    try:
+        path = extra_fields['path']
+        profile.signup_path = f"{path}"
+        profile.image = f"profile_image/{path}_basic.png"
+    except:
+        pass
     
     profile.save()
     
@@ -59,17 +76,8 @@ def user_record_login(user: User):
 
 
 @transaction.atomic
-def user_change_secret_key(user: User):
-    user.secret_key = get_random_secret_key()
-    user.full_clean()
-    user.save()
-    
-    return user
-
-
-@transaction.atomic
 def user_get_or_create(username, **extra_data):
-    user = User.objects.filter(username=username).first()
+    user = User.objects.filter(email=username).first()
     
     if user:
         return user, False

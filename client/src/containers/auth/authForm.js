@@ -7,6 +7,13 @@ import axios from 'axios';
 axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.withCredentials = true;
 
+const JWT_EXPIRE_TIME = 29*60*1000;
+
+const onSilentRefresh = async(token) => {
+  const res = await axios.post('/api/v1/auth/login/refresh', data={token});
+  return res.data;
+}
+
 // 이메일 검사
 function isvalidEmail(email) {
 
@@ -46,29 +53,47 @@ function mapStateToProps(state){
   return state;
 }
 
+
+
+//
 function mapDispatchToProps(dispatch){
   return {
+    // local 로그인 함수
     basicLogin: async function(username, pwd){
-      // 이벤트는 컴포넌트에서 처리하는 걸로 로직바꾸기
+      const data = {
+        username:username,
+        password:pwd
+      }
       try{
-        const res = await axios({
-          method:'post',
-          url: '/api/v1/auth/login/',
-          data:
-          {
-            username: username,
-            password: pwd
+        const res = await axios.post('/api/v1/auth/login/', data);
+        console.log(res);
+        const accessToken = res.data.access_token;
+        axios.defaults.headers.common['Authorization'] = `JWT ${accessToken}`;
+        setTimeout(async () => {
+          try{
+            const res_refresh = await onSilentRefresh(accessToken);
+            const accessToken_refresh = res_refresh.data.access_token
+            dispatch({
+              type: Constants.user.LOGIN_SUCCESS,
+              username: username,
+              accessToken: accessToken_refresh
+            })
+          }catch(error){
+            console.log(error);
           }
-        })
+        },
+        JWT_EXPIRE_TIME);
         dispatch({
           type: Constants.user.LOGIN_SUCCESS,
-          username: res.data.user.username,
-          token: res.data.token
+          username: username,
+          accessToken: accessToken,
+          isAuthenticated:true
         })
-      } catch(error){
+      }catch(error){
         console.log(error);
       }
     },
+    // local 회원가입 함수
     basicSignUp: async function(username, pwd1, pwd2, email){
       
       // 유효성 검사
@@ -80,7 +105,7 @@ function mapDispatchToProps(dispatch){
       try{
         await axios({
           method:'post',
-          url: '/api/v1/auth/validate/username',
+          url: '/api/v1/auth/validate/username/',
           data:{
             username: username
           }
@@ -88,7 +113,7 @@ function mapDispatchToProps(dispatch){
 
         await axios({
           method:'post',
-          url: '/api/v1/auth/validate/email',
+          url: '/api/v1/auth/validate/email/',
           data:{
             email: email
           }
@@ -104,11 +129,16 @@ function mapDispatchToProps(dispatch){
             email: email
           }
         })
-        // dispatch 유저 정보 저장
-        
-        // 토큰 저장
+        console.log(res);
+        dispatch({
+          type: Constants.user.LOGIN_SUCCESS,
+          accessToken: res.data.access_token,
+          isAuthenticated:true
+        })
+        return true;
       }catch(error){
         console.log(error);
+        return false;
       }
     },
     searchId: async (email) => {
@@ -159,8 +189,8 @@ function mapDispatchToProps(dispatch){
     kakaoLogin: async () => {
       try{
         await axios({
-          method: 'post',
-          url:'/api/v1/auth/login/kakao/callback'
+          method: 'get',
+          url:'/api/v1/auth/login/kakao'
         })
         // dispatch
       }catch(error){

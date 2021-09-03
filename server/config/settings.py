@@ -32,8 +32,9 @@ environ.Env.read_env(
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+
 SECRET_KEY = env('SECRET_KEY')
+REFRESH_TOKEN_SECRET = env('REFRESH_TOKEN_SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -47,7 +48,7 @@ BASE_FRONTEND_URL = env.str('DJANGO_BASE_FRONTEND_URL', default='http://localhos
 # Application definition
 
 INSTALLED_APPS = [
-    'DBmanageapp',
+    'stockmanage',
     'users',
     'boards',
     
@@ -58,11 +59,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    #rest_framework
+    # rest_framework
     'rest_framework',
-    'rest_framework_jwt',
-    'rest_framework_jwt.blacklist',
-    'rest_framework.authtoken',
     
     'django_extensions',
     
@@ -90,38 +88,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        'auth.authenticate.SafeJWTAuthentication',
     ),
-}
-
-
-# JWT SETTINGS
-JWT_AUTH = {
-   'JWT_ALGORITHM': 'HS256',
-   'JWT_VERIFY_EXPIRATION' : True,
-   'JWT_ALLOW_REFRESH': True,
-   
-   # default : 1 hour
-   'JWT_EXPIRATION_DELTA': datetime.timedelta(
-       seconds=env.int(
-           'DJANGO_JWT_EXPIRATION_DELTA',
-           default=3600
-       )
-    ),
-   # default : 1 day
-   'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(
-       seconds=env.int(
-           'DJANGO_JWT_REFRESH_EXPIRATION_DELTA',
-           default=86400
-       )
-    ),
-    'JWT_AUTH_HEADER_PREFIX': 'JWT',
-    'JWT_GET_USER_SECRET_KEY': lambda user: user.secret_key,
-    'JWT_RESPONSE_PAYLOAD_HANDLER': 'auth.authenticate.jwt_response_payload_handler',
-    'JWT_AUTH_COOKIE': 'jwt_token',
-    'JWT_AUTH_COOKIE_SAMESITE': 'None'
 }
 
 
@@ -258,4 +226,6 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # Google OAuth2 settings
 GOOGLE_OAUTH2_CLIENT_ID = env.str('DJANGO_GOOGLE_OAUTH2_CLIENT_ID')
 GOOGLE_OAUTH2_CLIENT_SECRET = env.str('DJANGO_GOOGLE_OAUTH2_CLIENT_SECRET')
+NAVER_OAUTH2_CLIENT_ID = env.str('DJANGO_NAVER_OAUTH2_CLIENT_ID')
+NAVER_OAUTH2_CLIENT_SECRET = env.str('DJANGO_NAVER_OAUTH2_CLIENT_SECRET')
 KAKAO_REST_API_KEY = env.str('DJANGO_KAKAO_REST_API_KEY')

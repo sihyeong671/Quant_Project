@@ -1,9 +1,13 @@
+from django.views.decorators.csrf import csrf_protect
 from rest_framework import status, serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.utils.html import escape
 from django.db.models.query_utils import Q
 from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
 
 from api.mixins import PublicApiMixin, ApiAuthMixin
 
@@ -36,6 +40,7 @@ class CategoryCreateReadApi(ApiAuthMixin, APIView):
             "message": "Title duplicated"
             }, status=status.HTTP_400_BAD_REQUEST)
             
+        title = escape(title)
         
         category = Category(
             creator=request.user, 
@@ -84,10 +89,10 @@ class CategoryManageApi(ApiAuthMixin, APIView):
         
         category = get_object_or_404(Category, pk=pk)
         
-        if user.favorite_category.filter(pk=pk).exists():
-            category.favorite.remove(user)
+        if user.profile.favorite_category.filter(pk=pk).exists():
+            user.profile.favorite_category.remove(category)
         else:
-            category.favorite.add(user)
+            user.profile.favorite_category.add(category)
             
         return Response({
             "message": "Category like/unlike success"
@@ -116,7 +121,7 @@ class CategoryManageApi(ApiAuthMixin, APIView):
         
         return Response({
             "message": "Category delete success"
-        }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_204_NO_CONTENT)
         
     
 class PostCreateApi(ApiAuthMixin, APIView):
@@ -161,7 +166,7 @@ class PostManageApi(ApiAuthMixin, APIView):
         pk = kwargs['post_id']
         post = get_object_or_404(Post, pk=pk)
         serializer = PostDetailSerializer(post, many=False)
-        print(serializer.data)
+        
         response = Response(serializer.data, status=status.HTTP_200_OK)
         
         expire_time = 600
@@ -192,10 +197,10 @@ class PostManageApi(ApiAuthMixin, APIView):
         
         post = get_object_or_404(Post, pk=pk)
         
-        if user.favorite_post.filter(pk=pk).exists():
-            post.favorite.remove(user)
+        if user.profile.favorite_post.filter(pk=pk).exists():
+            user.profile.favorite_post.remove(post)
         else:
-            post.favorite.add(user)
+            user.profile.favorite_post.add(post)
             
         return Response({
             "message": "Post like/unlike success"
@@ -218,7 +223,7 @@ class PostManageApi(ApiAuthMixin, APIView):
         
         return Response({
             "message": "Post delete success"
-        }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_204_NO_CONTENT)
     
     
     def put(self, request, *args, **kwargs):
@@ -250,7 +255,7 @@ class PostManageApi(ApiAuthMixin, APIView):
         
         return Response({
             "message": "Post update success"
-        }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_201_CREATED)
 
 
 class CommentCreateApi(ApiAuthMixin, APIView):
@@ -297,10 +302,10 @@ class CommentManageApi(ApiAuthMixin, APIView):
         
         comment = get_object_or_404(Comment, pk=pk)
         
-        if user.favorite_comment.filter(pk=pk).exists():
-            comment.favorite.remove(user)
+        if user.profile.favorite_comment.filter(pk=pk).exists():
+            user.profile.favorite_comment.remove(comment)
         else:
-            comment.favorite.add(user)
+            user.profile.favorite_comment.add(comment)
             
         return Response({
             "message": "Comment like/unlike success"
@@ -323,7 +328,7 @@ class CommentManageApi(ApiAuthMixin, APIView):
         
         return Response({
             "message": "Comment delete success"
-        }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_204_NO_CONTENT)
     
     
     def put(self, request, *args, **kwargs):
@@ -332,14 +337,14 @@ class CommentManageApi(ApiAuthMixin, APIView):
         content
         """
         comment_id = kwargs['comment_id']
-        comment = get_object_or_404(Post, pk=comment_id)
+        comment = get_object_or_404(Comment, pk=comment_id)
         
         if request.user != comment.creator:
             return Response({
                 "message": "You do not have permission"
             }, status=status.HTTP_403_FORBIDDEN)
         
-        content = request.data.get('title', '')
+        content = request.data.get('content', '')
         
         if content == '':
             return Response({
@@ -352,7 +357,7 @@ class CommentManageApi(ApiAuthMixin, APIView):
         
         return Response({
             "message": "Comment update success"
-        }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_201_CREATED)
         
 
 class ReplyCreateApi(ApiAuthMixin, APIView):
@@ -399,10 +404,10 @@ class ReplyManageApi(ApiAuthMixin, APIView):
         
         reply = get_object_or_404(Reply, pk=pk)
         
-        if user.favorite_reply.filter(pk=pk).exists():
-            reply.favorite.remove(user)
+        if user.profile.favorite_reply.filter(pk=pk).exists():
+            user.profile.favorite_reply.remove(reply)
         else:
-            reply.favorite.add(user)
+            user.profile.favorite_reply.add(reply)
             
         return Response({
             "message": "Reply like/unlike success"
@@ -425,7 +430,7 @@ class ReplyManageApi(ApiAuthMixin, APIView):
         
         return Response({
             "message": "Reply delete success"
-        }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_204_NO_CONTENT)
     
     
     def put(self, request, *args, **kwargs):
@@ -441,7 +446,7 @@ class ReplyManageApi(ApiAuthMixin, APIView):
                 "message": "You do not have permission"
             }, status=status.HTTP_403_FORBIDDEN)
         
-        content = request.data.get('title', '')
+        content = request.data.get('content', '')
         
         if content == '':
             return Response({
@@ -454,4 +459,4 @@ class ReplyManageApi(ApiAuthMixin, APIView):
         
         return Response({
             "message": "Reply update success"
-        }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_201_CREATED)

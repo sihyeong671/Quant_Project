@@ -5,18 +5,18 @@ from boards.models import Category, Post, Comment, Reply
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    favorite_count = serializers.SerializerMethodField(read_only=True)
+    # favorite_count = serializers.SerializerMethodField(read_only=True)
     creator = serializers.CharField(source="creator.profile.nickname", read_only=True)
     
     class Meta:
         model = Category
         fields = (
             'id', 'title', 'created_date', 'top_fixed', 
-            'favorite_count', 'creator',
+             'creator',
         )
     
-    def get_favorite_count(self, obj):
-        return obj.favorite.all().count()
+    # def get_favorite_count(self, obj):
+    #     return obj.favorite.all().count()
 
 
 class PostListSerializer(serializers.ModelSerializer):
@@ -27,17 +27,22 @@ class PostListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = (
-            'id', 'title', 'content', 'thumbnail', 'hits',
-            'created_date', 'modified_date', 'top_fixed',
+            'id', 'category', 'title', 'content', 'thumbnail', 
+            'hits', 'created_date', 'modified_date', 'top_fixed',
             'creator', 'favorite_count',
         )
     
     def get_creator(self, obj):
-        is_anonymous = obj.category.is_anonymous
-        if is_anonymous:
-            return "익명"
-        else:
-            return obj.creator.profile.nickname
+        try:
+            category = obj.category
+            creator = obj.creator
+            is_anonymous = category.is_anonymous
+            if is_anonymous:
+                return "익명"
+            else:
+                return creator.profile.nickname
+        except:
+            return ''
     
     def get_thumbnail(self, obj):
         try:
@@ -46,7 +51,11 @@ class PostListSerializer(serializers.ModelSerializer):
             return ''
     
     def get_favorite_count(self, obj):
-        return obj.favorite.all().count()
+        try:
+            favorites = obj.favorite.all()
+            return favorites.count()
+        except:
+            return 0
 
 
 class ReplySerializer(serializers.ModelSerializer):
