@@ -3,6 +3,7 @@ import { hot } from 'react-hot-loader';
 import { useHistory } from 'react-router';
 import { Link } from "react-router-dom";
 import { Cookies, useCookies } from 'react-cookie';
+import axios from 'axios';
 
 // 엔터 누르면 자동으로 submit이 된다
 function Login({basicLogin}){

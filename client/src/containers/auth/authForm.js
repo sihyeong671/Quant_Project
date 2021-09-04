@@ -7,7 +7,7 @@ import axios from 'axios';
 axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.withCredentials = true;
 
-const JWT_EXPIRE_TIME = 29*60*1000;
+const JWT_EXPIRE_TIME = 4*60*1000;
 
 const onSilentRefresh = async(token) => {
   const res = await axios.post('/api/v1/auth/login/refresh', data={token});
@@ -69,25 +69,18 @@ function mapDispatchToProps(dispatch){
         console.log(res);
         const accessToken = res.data.access_token;
         axios.defaults.headers.common['Authorization'] = `JWT ${accessToken}`;
-        setTimeout(async () => {
-          try{
-            const res_refresh = await onSilentRefresh(accessToken);
-            const accessToken_refresh = res_refresh.data.access_token
-            dispatch({
-              type: Constants.user.LOGIN_SUCCESS,
-              username: username,
-              accessToken: accessToken_refresh
-            })
-          }catch(error){
-            console.log(error);
-          }
-        },
-        JWT_EXPIRE_TIME);
+        // 자동 토큰 재발급
         dispatch({
           type: Constants.user.LOGIN_SUCCESS,
-          username: username,
           accessToken: accessToken,
           isAuthenticated:true
+        })
+
+        const profileRes = await axios.get('api/v1/user/me/');
+        console.log(profileRes);
+        dispatch({
+          type:Constants.user.GETALL_SUCCESS,
+          //가져온 데이터 전달하기
         })
       }catch(error){
         console.log(error);
@@ -131,7 +124,7 @@ function mapDispatchToProps(dispatch){
         })
         console.log(res);
         dispatch({
-          type: Constants.user.LOGIN_SUCCESS,
+          type: Constants.user.REGISTER_SUCCESS,
           accessToken: res.data.access_token,
           isAuthenticated:true
         })

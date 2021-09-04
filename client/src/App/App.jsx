@@ -20,7 +20,7 @@ function App(props){
       console.log('헤더설정');
       axios.defaults.headers.post['X-CSRFToken'] = cookies.csrftoken;
     }
-    if (cookies.jwt_token !== undefined){
+    if (cookies.refresh_token !== undefined){
       props.reload();
     }
     
