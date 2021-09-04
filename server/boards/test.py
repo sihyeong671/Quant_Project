@@ -2,8 +2,6 @@ import json
 
 from rest_framework.test import APITestCase, APIClient
 
-from django.conf import settings
-
 from users.models import User, Profile
 from boards.models import Category, Post, Comment, Reply
 

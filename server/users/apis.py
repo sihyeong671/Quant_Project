@@ -33,7 +33,6 @@ class UserMeApi(ApiAuthMixin, APIView):
     
     def put(self, request, *args, **kwargs):
         user = request.user
-
         if not check_password(request.data.get("oldpassword"), user.password):
             raise serializers.ValidationError(
                 _("passwords do not match")
@@ -43,19 +42,21 @@ class UserMeApi(ApiAuthMixin, APIView):
         
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_409_CONFLICT)
-        else:
-            validated_data = serializer.validated_data
-            serializer.update(user=user, validated_data=validated_data)
-            return Response({
-                "message": "Change password success"
-                }, status=status.HTTP_200_OK)
+        
+        
+        validated_data = serializer.validated_data
+        print(validated_data)
+        serializer.update(user=user, validated_data=validated_data)
+        return Response({
+            "message": "Change password success"
+            }, status=status.HTTP_200_OK)
     
     
     def delete(self, request, *args, **kwargs):
         user = request.user
-        path = user.profile.path
+        signup_path = user.profile.signup_path
         
-        if path == "kakao" or path == "google":
+        if signup_path == "kakao" or signup_path == "google":
             user.delete()
             return Response({
                 "message": "Delete user success"
