@@ -1,10 +1,9 @@
 from django.urls import path, include
 
-from boards.apis import CategoryCreateReadApi, \
-    CategoryManageApi, PostManageApi, PostCreateApi, \
-    CommentCreateApi, CommentManageApi, ReplyCreateApi, \
-    ReplyManageApi
-
+from boards.api_category import CategoryCreateReadApi, CategoryManageApi
+from boards.api_post import PostCreateApi, PostManageApi
+from boards.api_comment import CommentCreateApi, CommentManageApi
+from boards.api_reply import ReplyCreateApi, ReplyManageApi
 
 # start :  ~board/
 
