@@ -27,8 +27,8 @@ User = get_user_model()
 
 class UserMeApi(ApiAuthMixin, APIView):
     def get(self, request, *args, **kwargs):
-        if request.user is None:
-            raise exceptions.PermissionDenied('PermissionDenied')
+        # if request.user is None:
+        #     raise exceptions.PermissionDenied('PermissionDenied')
         return Response(UserSerializer(request.user, context={'request':request}).data)
     
     def put(self, request, *args, **kwargs):

@@ -11,6 +11,8 @@ import GoogleLogo from './assets/img/googlelogin.png';
 import KakaoLogo from './assets/img/kakaologin.png';
 import NaverLogo from './assets/img/naverlogin.png'
 
+import Test from "../../../containers/pages/rank/rank";
+
 import './assets/css/style.scss';
 
 
