@@ -7,7 +7,7 @@ import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 import axios from 'axios';
 
-import Search from '../../search/search';
+import Search from '../../../containers/search/search';
 
 function Chart(props){
   console.log("Chart rendering");
@@ -24,9 +24,7 @@ function Chart(props){
 
   return (
     <>
-      <Search
-        props={props}
-      ></Search>
+      <Search></Search>
 
       <HighchartsReact
         highcharts={Highcharts}

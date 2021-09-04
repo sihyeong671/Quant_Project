@@ -18,16 +18,12 @@ const Search = (props) =>{
     const [corpName, setCorpName] = useState('');
 
     // API로 회사들 가져와야 함 
-    const [getList, setGetList] = useState([
-        {name: '네이버'}, 
-        {name: '삼성'},
-        {name: 'Apple'},
-        {name: 'Tesla'},
-    ])
+    const [getList, setGetList] = useState([])
     
     // 연관 검색어 리스트
     const [relList, setRelList] = useState([])
-    
+
+    // 스타일
     const [listStyle, setStyle] = useState({});
 
     // 연관 검색어 필터링
@@ -53,10 +49,10 @@ const Search = (props) =>{
                         <li key={i}>
                             {item.name}
                             <button onClick={ e => {
-                                props.props.onClickCreate(
-                                    (props.props.search.id) + 1, 
+                                props.onClickCreate(
+                                    (props.search.id) + 1, 
                                     item.name, 
-                                    props.props.search.corpList.length
+                                    props.search.corpList.length
                                 );
                                 setCorpName('');
                                 setRelList([]);
