@@ -35,4 +35,11 @@
 1. GNU Naming Convention
  * 모두 소문자를 사용하고 복합어 사이를 ‘_‘를 사용하여 연결한다.
  > 예) send_mail, get_access_token
- 
+ ---
+ ## 클라이언트 codingstyle
+ 1. 변수명, 함수명
+ * camelCase
+ 2. 컴포넌트
+ * PascalCase
+ 3. Html클래스명
+ * Bem
