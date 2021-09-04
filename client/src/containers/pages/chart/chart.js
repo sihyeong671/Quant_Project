@@ -4,7 +4,7 @@ import {connect}  from 'react-redux';
 import Constants from '../../../store/constants';
 
 function mapStateToProps(state){
-  return state
+  return state.chart
 }
 
 function mapDispatchToProps(dispatch){
@@ -13,7 +13,6 @@ function mapDispatchToProps(dispatch){
       if (l >= 4){
         return;
       }
-      
       dispatch({
         type:Constants.search.CREATE,
         corpName :name,
@@ -32,9 +31,6 @@ function mapDispatchToProps(dispatch){
       })
     }
   }
-    // input 안의 값 조정
-    // 제출시 corpList에 value 추가
-    // input 초기화
 }
 
 

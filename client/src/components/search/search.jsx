@@ -69,24 +69,20 @@ const Search = (props) =>{
     }
 
     const onChange = async (e) => {
-        e.target.value > 0 ? (
-            await setCorpName(e.target.value)
-        ):(
-            await setCorpName(e.target.value)
-        )
+      await setCorpName(e.target.value);
     }
 
     let message;
     if ( props.props.search.corpList.length >= 4){
-        message = <div>더 이상 추가 할 수 없습니다</div>
+      message = <div>더 이상 추가 할 수 없습니다</div>
     }
     else{
-        message = null
+      message = null
     }
 
     useEffect(() => {
-        filterRelList()
-        return () => {};
+      filterRelList()
+      return () => {};
     }, [corpName]);
 
     return(
