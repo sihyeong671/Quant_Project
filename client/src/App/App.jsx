@@ -17,13 +17,10 @@ function App(props){
   useEffect(async() => {
     // csrf존재할때만 리프레시 할 것
     if (cookies.csrftoken !== undefined){
-      console.log('헤더설정');
       axios.defaults.headers.post['X-CSRFToken'] = cookies.csrftoken;
     }
-    if (cookies.refresh_token !== undefined){
-      props.reload();
-    }
-    
+    props.reload();
+        
     // setTimeout 필요
   },[]);
   //로그인 상태 확인 필요

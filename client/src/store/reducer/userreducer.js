@@ -17,15 +17,18 @@ export default function reducer(state=initState, action){
       }
     case Constants.user.LOGOUT:
       return{
-        ...state,
         isAuthenticated:false,
-        accessToken:null
+        accessToken:null,
+        user: {}
       }
     case Constants.user.GETALL_SUCCESS:
       return{
         ...state,
         user:{
-          //action으로 받은 데이터 저장
+          dateJoined: action.dateJoined,
+          email: action.email,
+          lastLogin: action.lastLogin,
+          userName: action.userName
         }
       }
   }

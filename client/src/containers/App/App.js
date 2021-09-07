@@ -12,27 +12,6 @@ const mapStateToProps=(state)=>{
 
 const mapDispatchToProps=(dispatch)=>{
   return {
-    // 이 부분 로직 확인 필요 async 가 두번 사용
-    onSilentRefresh: async (token) => {
-      const data = {
-        token
-      }
-      try{
-        const res = await axios.post('/api/v1/auth/login/refresh', data);
-        console.log(res);
-        dispatch({
-          type:Constants.user.LOGIN_SUCCESS,
-          username:res.data.user.username,
-          accessToken:res.data.token,
-          isAuthenticated:true
-        })
-        return true;
-        
-      }catch(error){
-        console.log(error);
-        return false
-      }
-    },
     reload: async() => {
       try{
         const res = await axios.post('/api/v1/auth/login/refresh');
@@ -44,10 +23,21 @@ const mapDispatchToProps=(dispatch)=>{
           accessToken:res.data.access_token,
           isAuthenticated:true
         })
-        const profileRes = await axios.get('api/v1/users/me/');
-        console.log(profileRes);
+        const profileRes = await axios.get('api/v1/users/me');
+        // Logic 겹치는 데 분할해서 합칠 수 있나? 미들웨어 써야하나?
+        const [dateJoined, email, lastLogin, userName] = [
+          profileRes.data.date_joined,
+          profileRes.data.email,
+          profileRes.data.last_login,
+          profileRes.data.username
+          //profile 추가 필요
+        ];
         dispatch({
-          type:Constants.user.GETALL_SUCCESS
+          type:Constants.user.GETALL_SUCCESS,
+          dateJoined: dateJoined,
+          email: email,
+          lastLogin: lastLogin,
+          userName: userName
           // 유저 데이터 전달
         })
       }catch(error){

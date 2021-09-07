@@ -129,11 +129,21 @@ function mapDispatchToProps(dispatch){
     },
     getUserData: async () => {
       try{
-        const profileRes = await axios.get('api/v1/users/me/');
-        console.log(profileRes);
+        const profileRes = await axios.get('api/v1/users/me');
+        const [dateJoined, email, lastLogin, userName] = [
+          profileRes.data.date_joined,
+          profileRes.data.email,
+          profileRes.data.last_login,
+          profileRes.data.username
+          //profile 추가 필요
+        ];
         dispatch({
           type:Constants.user.GETALL_SUCCESS,
-          //가져온 유저 데이터
+          dateJoined: dateJoined,
+          email: email,
+          lastLogin: lastLogin,
+          userName: userName
+          //profile
        })
       }catch(error){
         console.log(error);
