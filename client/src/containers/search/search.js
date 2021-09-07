@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React from 'react';
-import Search from '../../../components/search/search';
-import Constants from '../../../store/constants';
+import Search from '../../components/search/search';
+import Constants from '../../store/constants';
 import axios from 'axios';
 
 const mapStateToProps=(state)=>{

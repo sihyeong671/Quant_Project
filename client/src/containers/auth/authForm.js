@@ -66,21 +66,13 @@ function mapDispatchToProps(dispatch){
       }
       try{
         const res = await axios.post('/api/v1/auth/login/', data);
-        console.log(res);
+        // console.log(res);
         const accessToken = res.data.access_token;
         axios.defaults.headers.common['Authorization'] = `JWT ${accessToken}`;
-        // 자동 토큰 재발급
         dispatch({
           type: Constants.user.LOGIN_SUCCESS,
           accessToken: accessToken,
           isAuthenticated:true
-        })
-
-        const profileRes = await axios.get('api/v1/user/me/');
-        console.log(profileRes);
-        dispatch({
-          type:Constants.user.GETALL_SUCCESS,
-          //가져온 데이터 전달하기
         })
       }catch(error){
         console.log(error);
@@ -128,10 +120,23 @@ function mapDispatchToProps(dispatch){
           accessToken: res.data.access_token,
           isAuthenticated:true
         })
+
         return true;
       }catch(error){
         console.log(error);
         return false;
+      }
+    },
+    getUserData: async () => {
+      try{
+        const profileRes = await axios.get('api/v1/users/me/');
+        console.log(profileRes);
+        dispatch({
+          type:Constants.user.GETALL_SUCCESS,
+          //가져온 유저 데이터
+       })
+      }catch(error){
+        console.log(error);
       }
     },
     searchId: async (email) => {
