@@ -1,20 +1,30 @@
 import json
-import jwt
 
-from django.urls import reverse
-from django.test import TestCase, Client
+from rest_framework.test import APITestCase, APIClient
 
-from unittest.mock import patch, MagicMock
+from users.models import User, Profile
 
 
-class AuthTest(TestCase):
+class AuthTest(APITestCase):
+    
+    def setUp(self):
+        user = User.objects.create_user('test', 'test@test.com', 'test')
+        self.user = user
+        profile = Profile(user=user)
+        profile.save()
+        
+        
     def test_login_api(self):
-        client = Client()
+        client = APIClient()
         user = {
-            'username': 'admin',
-            'password': 'admin'
+            'username': 'test',
+            'password': 'test'
         }
 
         response = client.post('/api/v1/auth/login/', json.dumps(user), content_type='application/json')
-        self.assertEqual(response.status_code, 201)
+        
+        print(response)
+        
+        self.assertEqual(response.status_code, 200)
+        
     
