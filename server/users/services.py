@@ -3,8 +3,7 @@ import random
 import threading
 
 from django.conf import settings
-from django.core.mail import send_mail, EmailMultiAlternatives
-from django.core.management.utils import get_random_secret_key
+from django.core.mail import EmailMultiAlternatives
 
 
 class EmailThread(threading.Thread):

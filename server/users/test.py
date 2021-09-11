@@ -1,14 +1,11 @@
 import json
-import jwt
 
-from django.urls import reverse
-from django.test import TestCase, Client
-from rest_framework.test import APITestCase
-from unittest.mock import patch, MagicMock
+from rest_framework.test import APIClient, APITestCase
 
-from users.models import User
+from users.models import User, Profile
 
-class TestModel(APITestCase):
+
+class UserTest(APITestCase):
     
     def test_create_user(self):
         user = User.objects.create_user('TEST', 'test@nav.com', 'test1234@')
@@ -21,6 +18,70 @@ class TestModel(APITestCase):
         self.assertIsInstance(user, User)
         self.assertTrue(user.is_staff)
         self.assertEqual(user.email, 'test@nav.com')
+    
+    
+class ProfileTest(APITestCase):
+    client = APIClient()
+    headers = {}
+    
+    def setUp(self):
+        user = User.objects.create_user('TEST', 'test@nav.com', 'test1234@')
+        self.user = user
+        profile = Profile(user=user)
+        profile.save()
+        
+        user = {
+            "username": "TEST",
+            "password": "test1234@"
+        }
+        
+        response = self.client.post('/api/v1/auth/login/', json.dumps(user), content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        
+        self.token = response.data['access_token']
+        self.csrftoken = response.cookies.get('csrftoken').value
+        
+        self.assertNotEqual(self.token, '')
+        
+        self.headers = {
+            "HTTP_Authorization": "jwt " + self.token,
+            "X-CSRFToken": self.csrftoken,
+        }
+        
+    def test_me_api(self):
+        
+        response = self.client.get(
+            '/api/v1/users/me',
+            **self.headers, content_type = "application/json")
+        self.assertEqual(response.status_code, 200)
+        print(response.data)
+        
+    
+    def test_change_password(self):
+        context = {
+            "oldpassword": "test1234@",
+            "newpassword1": "test",
+            "newpassword2": "test",
+        }
+        
+        response = self.client.put(
+            '/api/v1/users/me',
+            json.dumps(context), **self.headers, content_type="application/json")
+        self.assertEqual(response.status_code, 200)
+    
+    
+    def test_user_delete(self):
+        context = {
+            "password": "test1234@"
+        }
+        
+        response = self.client.delete(
+            '/api/v1/users/me',
+            json.dumps(context), **self.headers, content_type="application/json")
+        self.assertEqual(response.status_code, 200)
+            
+    
+
 
 
 # class UserTest(TestCase):
