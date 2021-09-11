@@ -210,9 +210,13 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             print('정의되지 않은 오류가 발생하였습니다.')
             print(corp_code, year, quarter, link_state)
 
-            
-            
+
+
 def Save_Dart_Data(api_key):
+    """
+    가장 먼저 실행
+    상장된 기업의 Dart 고유번호 가져오는 함수
+    """
     dart_data = Dart_Unique_Key(api_key)
     for data in dart_data:
         Dart(dart_code=data[0],company_name_dart=data[1],

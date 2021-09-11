@@ -1,14 +1,38 @@
 import Constants from "../constants"
 
 const initState ={
-  data:{
-    money1: {
-      sub1: 100
+  account:[
+    {
+      fsname: '유동자산',
+      subAccount: [
+        {
+          name: '현금및현금성자산',
+          amount: 4773580.0
+        },
+        {
+          name:'매출채권 및 기타유동채권',
+          amount:7312390.0
+        }
+      ]
     },
-    money2: {
-      sub1: 200
+    {
+      fsname:'유동부채',
+      subAccount:[
+        {
+          name: '부채1',
+          amount: 477
+        },
+        {
+          name:'부채2',
+          amount:731
+        }
+      ]
     }
-  }
+    
+    
+
+
+  ]
 }
   
 

@@ -12,13 +12,8 @@ const mapDispatchToProps=(dispatch)=>{
   return {
     getFsData: async (corpName) => {
       try{
-        const res = await axios({
-          method:'post',
-          url: '/api/v1/',
-          data: {
-            corpName:corpName
-          }
-        })
+        const res = await axios.get('');
+        console.log(res);
       }catch(error){
         console.log(error);
       }

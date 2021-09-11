@@ -8,9 +8,10 @@ from crawling.API_KEY import *
 
 
 
-
-
 def Save_FS_Data(api_key):
+    """
+    상장된 기업의 Dart
+    """
     linklst = ["CFS", "OFS"] # link, basic
     # years = ["2015","2016","2017","2018","2019","2020"]
     years = ["2018","2019","2020"]

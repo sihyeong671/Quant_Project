@@ -21,7 +21,6 @@ function App(props){
     }
     props.reload();
         
-    // setTimeout 필요
   },[]);
   //로그인 상태 확인 필요
 
