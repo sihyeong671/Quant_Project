@@ -4,13 +4,13 @@ from rest_framework.views import APIView
 
 from django.shortcuts import get_object_or_404
 
-from api.mixins import ApiAuthMixin
+from api.mixins import ApiAuthMixin, SuperUserMixin
 
 from boards.serializers import CategorySerializer, PostListSerializer
 from boards.models import Category, Post
 
 
-class CategoryCreateReadApi(ApiAuthMixin, APIView):
+class CategoryCreateReadApi(SuperUserMixin, APIView):
     def get(self, request, *args, **kwargs):
         """
         현재 생성되어있는 카테고리(게시판 종류)를 모두 보여준다.
@@ -37,7 +37,8 @@ class CategoryCreateReadApi(ApiAuthMixin, APIView):
         category = Category(
             creator=request.user, 
             title=title,
-            is_anonymous=request.data.get('anonymous', False)
+            is_anonymous=request.data.get('anonymous', False),
+            top_fixed=request.data.get('fixed', False),
         )
         
         category.save()
