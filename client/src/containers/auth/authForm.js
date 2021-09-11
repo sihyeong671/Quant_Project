@@ -7,7 +7,7 @@ import axios from 'axios';
 axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.withCredentials = true;
 
-const JWT_EXPIRE_TIME = 29*60*1000;
+const JWT_EXPIRE_TIME = 4*60*1000;
 
 const onSilentRefresh = async(token) => {
   const res = await axios.post('/api/v1/auth/login/refresh', data={token});

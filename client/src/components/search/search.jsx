@@ -19,10 +19,22 @@ const Search = (props) =>{
 
     // API로 회사들 가져와야 함 
     const [getList, setGetList] = useState([
-        {name: '네이버'}, 
-        {name: '삼성'},
-        {name: 'Apple'},
-        {name: 'Tesla'},
+        {
+            name: '네이버',
+            id: 2313
+        }, 
+        {
+            name: '삼성',
+            id: 32456
+        }, 
+        {
+            name: 'Apple',
+            id: 54823
+        }, 
+        {
+            name: 'Tesla',
+            id: 97832
+        }, 
     ])
     
     // 연관 검색어 리스트
@@ -30,11 +42,18 @@ const Search = (props) =>{
     
     const [listStyle, setStyle] = useState({});
 
+    useEffect(async () => {
+        await filterRelList()
+    }, [corpName]);
+
     // 연관 검색어 필터링
     const filterRelList = async ()=>{
         const filterList = await getList.filter(item=>{ 
-            return( item.name.toLowerCase().includes(corpName.toLowerCase()) )
+            return( 
+                item.name.toLowerCase().includes(corpName.toLowerCase()) 
+            )
         });
+        console.log(filterList);
         (corpName.length > 0 && filterList.length > 0) ? ( 
             await setRelList(filterList),
             setStyle({display: 'block'})
@@ -69,11 +88,7 @@ const Search = (props) =>{
     }
 
     const onChange = async (e) => {
-        e.target.value > 0 ? (
-            await setCorpName(e.target.value)
-        ):(
-            await setCorpName(e.target.value)
-        )
+        await setCorpName(e.target.value)
     }
 
     let message;
@@ -83,11 +98,6 @@ const Search = (props) =>{
     else{
         message = null
     }
-
-    useEffect(() => {
-        filterRelList()
-        return () => {};
-    }, [corpName]);
 
     return(
         <section className="search-form">

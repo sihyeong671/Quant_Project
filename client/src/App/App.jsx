@@ -19,6 +19,7 @@ function App(props){
     if (cookies.csrftoken !== undefined){
       console.log('헤더설정');
       axios.defaults.headers.post['X-CSRFToken'] = cookies.csrftoken;
+      axios.defaults.headers.post['X-CSRFToken'] = cookies.csrftoken;
       props.reload();
     }
     

@@ -37,7 +37,7 @@ const mapDispatchToProps=(dispatch)=>{
     reload: async() => {
       try{
         const res = await axios.post('/api/v1/auth/login/refresh');
-        console.log(res);
+        // console.log(res);
         dispatch({
           type:Constants.user.LOGIN_SUCCESS,
           accessToken:res.data.access_token,

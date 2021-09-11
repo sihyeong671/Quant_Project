@@ -12,20 +12,19 @@ import axios from 'axios';
 
 const Profile=(props)=>{
   console.log('Profile rendering');
-  console.log('props',props);
-  const [jwtToken, setJwtToken] = useState(`JWT ${props.accessToken}`);
-  const [xcsrfToken, setXcsrfToken] = useState(cookies?.csrftoken);
+
   const [userInfo, setUserInfo] = useState();
-  const [cookies, setCookie] = useCookies();
-  
-  // console.log(props);
-  axios.defaults.headers.common['Authorization'] = jwtToken;
-  axios.defaults.headers.common['X-CSRFToken'] = xcsrfToken;
+
+  const check = async ()=>{
+    const res = await axios({
+      method:'GET',
+      url: '/api/v1/users/me',
+    })
+    await console.log(res);
+  }
   
   useEffect(async ()=>{
     try{
-      await console.log('jwtToken', props);
-      await console.log('jwtToken', xcsrfToken);
       const res = await axios({
         method:'GET',
         url: '/api/v1/users/me',
@@ -36,23 +35,13 @@ const Profile=(props)=>{
     }catch(err){
       console.log(err);
     }
-    
-    return(async ()=>{
-      await axios({
-        method:'GET',
-        url: '/api/v1/users/me',
-      })
-      await console.log(res)
-      await setUserInfo(res.data)
-      await console.log('user: ',userInfo)
-    })
   },[])
 
   return(
     <article className="profile_manage">
 
-      <section className="profile-info">{}</section>
-
+      <section className="profile-info"></section>
+      {/* <button onClick={check}>Click Me!</button> */}
     </article>
   );
 }
