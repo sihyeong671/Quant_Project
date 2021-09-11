@@ -5,7 +5,13 @@ from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 
 from api.mixins import ApiAuthMixin, PublicApiMixin
+<<<<<<< HEAD
 from stockmanage.models import Company, FS_Account, SUB_Account
+=======
+from stockmanage.models import Company, Daily_Price
+from stockmanage.utils import getData
+
+>>>>>>> a428c6cf323051997d2653b6ed4c8cb7752c674a
 
 
 class CompanyNameApi(PublicApiMixin, APIView):
@@ -56,4 +62,12 @@ class AccountApi(PublicApiMixin, APIView):
         }
         
         return Response(data, status=status.HTTP_200_OK)
+
+
+class DailyPriceApi(PublicApiMixin, APIView):
+    def get(self, request, *args, **kwargs):
+        com = get_object_or_404(Company, stock_code=kwargs['code'])
+        stocks = Daily_Price.objects.filter(company__id=com.id).order_by('date')
+        data = getData(stocks)
+        return Response(data)
     
