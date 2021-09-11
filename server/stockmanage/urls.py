@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import View_All_Data, Crawling_Data
 
-from stockmanage.apis import CompanyNameApi, DailyPriceApi
+from stockmanage.apis import CompanyNameApi, AccountApi, DailyPriceApi
 
 app_name = "stockmanage"
 
@@ -12,6 +12,7 @@ urlpatterns = [
     path('crawling/', Crawling_Data, name="crawling"), 
     
     path('company', CompanyNameApi.as_view(), name="company_info"),
+    path('account', AccountApi.as_view()),
     path('daily/<str:code>', DailyPriceApi.as_view(), name="daily_price"),
     
 ]
