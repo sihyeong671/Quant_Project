@@ -22,6 +22,7 @@ def Save_FS_Data(api_key):
     # 함수만들어서 기업개황 정보 집어넣기
     for dart_data in dart_codes:
         company, flag = Company.objects.get_or_create(stock_code=dart_data.short_code)
+        
         if flag:
             Save_Corp_Info(api_key, dart_data.dart_code, company)
         for y in years:

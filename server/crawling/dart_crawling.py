@@ -58,7 +58,6 @@ def Dart_Unique_Key(api_key):
 
 
 def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
-
     dart_url = "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json?"
     params = {'crtfc_key': api_key, 'corp_code': corp_code, 'bsns_year': year, 'reprt_code': quarter, 'fs_div': link_state}
     res = rq.get(dart_url, params)
@@ -93,7 +92,8 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
 
 
         fs_unit = bs_soup.find("table").find_all('p')[-1]
-        link_model.unit = fs_unit
+        link_model.unit = fs_unit.text
+        print(link_model.unit)
         link_model.save()
 
         bs_tree = {}
@@ -245,5 +245,9 @@ def Save_Corp_Info(api_key, code, company):
             company.induty_code = json_dict['induty_code']
             company.est_dt = json_dict['est_dt']
             company.acc_mt = json_dict['acc_mt']
+            
+            company.save()
+            
+            print("저장됨")
     except:
         print('error')

@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 
 from api.mixins import ApiAuthMixin, PublicApiMixin
-from stockmanage.models import Company
+from stockmanage.models import Company, FS_Account, SUB_Account
 
 
 class CompanyNameApi(PublicApiMixin, APIView):
@@ -24,6 +24,35 @@ class CompanyNameApi(PublicApiMixin, APIView):
         
         data = {
             'company': data_list
+        }
+        
+        return Response(data, status=status.HTTP_200_OK)                      
+
+
+class AccountApi(PublicApiMixin, APIView):
+    def get(self, request, *args, **kwargs):
+        
+        account_list = FS_Account.objects.all()
+        
+        fs_account_list = []
+        
+        for ac in account_list:
+            sub_account_list = []
+            for sub in ac.sub_account.all():
+                subaccount = {
+                    'name': sub.account_name,
+                    'amount': sub.account_amount
+                }
+                sub_account_list.append(subaccount)
+            
+            fsaccount = {
+                'fsname': ac.account_name,
+                'sub_account': sub_account_list,
+            }
+            fs_account_list.append(fsaccount)
+        
+        data = {
+            'account': fs_account_list
         }
         
         return Response(data, status=status.HTTP_200_OK)
