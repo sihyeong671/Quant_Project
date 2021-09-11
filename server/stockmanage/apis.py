@@ -5,13 +5,9 @@ from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 
 from api.mixins import ApiAuthMixin, PublicApiMixin
-<<<<<<< HEAD
-from stockmanage.models import Company, FS_Account, SUB_Account
-=======
-from stockmanage.models import Company, Daily_Price
+from stockmanage.models import Company, FS_Account, SUB_Account, Daily_Price
 from stockmanage.utils import getData
 
->>>>>>> a428c6cf323051997d2653b6ed4c8cb7752c674a
 
 
 class CompanyNameApi(PublicApiMixin, APIView):
