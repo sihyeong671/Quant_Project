@@ -24,7 +24,7 @@ function Chart(props){
 
   return (
     <>
-      <Search></Search>
+      <Search maxLength={4}></Search>
 
       <HighchartsReact
         highcharts={Highcharts}

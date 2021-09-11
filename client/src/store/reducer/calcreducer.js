@@ -1,10 +1,16 @@
 import Constants from "../constants"
 
-const initState = {
-  one:100,
-  two:200,
-  three:300
+const initState ={
+  data:{
+    money1: {
+      sub1: 100
+    },
+    money2: {
+      sub1: 200
+    }
+  }
 }
+  
 
 export default function reducer(state=initState, action){
   switch(action.type){

@@ -5,6 +5,7 @@ import Constants from '../../store/constants';
 import axios from 'axios';
 
 const mapStateToProps=(state)=>{
+
   return state.search;
 }
 
@@ -13,17 +14,14 @@ const mapDispatchToProps=(dispatch)=>{
     getFsData: async (corpName) => {
       try{
         // api만들면 수정
-        const res = await axios.post('api/v1/');
+        const res = await axios.get('api/v1/stock/company');
         console.log(res);
         return res.data;
       }catch(error){
         console.log(error);
       }
     },
-    onClickCreate: function(id, name, l){
-      if (l >= 4){
-        return;
-      }
+    onClickCreate: function(id, name){
       dispatch({
         type:Constants.search.CREATE,
         corpName :name,
