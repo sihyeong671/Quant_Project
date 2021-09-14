@@ -43,26 +43,31 @@ const Table = ({account}) => {
 
 function Calc(props){
 
+  useEffect(() => {
+    // api요청으로 기업 가져오기
+  },[])
+
   let years = [];
   for(let i = 2015; i < 2022; i ++){
     years.push(i.toString());
   }
   // console.log(props);
-  const onSubmit = (e) => {
+  const onSubmitGet = (e) => {
     e.preventDefault();
     // props.getFsData(e.target.);
     console.log(e);
   }
 
-  useEffect(() => {
-    // api요청으로 기업 가져오기
-  },[])
-  //리스트로 수정
+  const onSubmitCalc = (e) => {
+    e.preventDefault();
+    console.log(e);
+    console.log(e.target);
+  }
 
   return (
     <>
     <div>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmitGet}>
 
         <Search maxLength={1} />
 
@@ -87,10 +92,13 @@ function Calc(props){
         <button type='submit'>확인</button>
       </form>
     </div>
-
-    <Table
-    account={props.account}></Table>
-
+    
+    <form onSubmit={onSubmitCalc}>
+      <Table
+      account={props.account}></Table>
+      <button type='submit'>확인</button>
+    </form>
+    
     <div>
       청산가치
     </div>
