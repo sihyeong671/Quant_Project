@@ -6,46 +6,66 @@ import { Helmet } from 'react-helmet';
 import Search from '../../../containers/search/search';
 
 
-const Table = ({account}) => {
-  console.log('Table render');
-  
-  // const[fixStock, setFixStock] = useEffect();
-
-  let table = [];
-
-  // . [] 차이는?
-  // key값 어떻게 정하지?
-  for(const idx in account){
-    const fs = account[idx];
-    table.push(
-      <div key={idx}>
-        <span>{fs.fsname}</span>
-      </div>);
-    for(const subIdx in fs.subAccount){
-      const subFs = fs.subAccount[subIdx];
-      table.push(
-        <div key={subFs.amount}>
-          <span>{subFs.name}</span>
-          <span>{subFs.amount}</span>
-          <input type="text" name={subFs.name}/>
-          <span>수정후금액</span>
-        </div>
-      )
-    }
+const Input = ({name}) => {
+  // 숫자만 넣을 수 있도록 조정하기
+  const [coeffiecient, setCoeeficient] = useState(1);
+  const onChange = (e) => {
+    e.preventDefault();
+    setCoeeficient(e.target.value);
   }
-
   return(
-    <div>
-      {table}
-    </div>
+    <input type="text" name={name} onChange={onChange} value={coeffiecient}/>
+  )
+
+}
+
+const SubAccount = ({subAccount}) => {
+  console.log('SubAccount rendering');
+  const subAccountList = subAccount.map((subacnt, idx) => {
+    return(
+      <div>
+        <span>{subacnt.name}</span>
+        <span>{subacnt.amount}</span>
+        <Input name={subacnt.name}/>
+      </div>
+    )
+  });
+  return(
+    <>
+      {subAccountList}
+    </>
   )
 }
+
+const Account = ({account}) => {
+  console.log('Account rendering');
+
+  const accountList = account.map((acnt, idx) =>{
+    return(
+      <div key={idx}>
+        <div>{acnt.fsname}</div>
+        <SubAccount subAccount={acnt.subAccount}/>
+      </div>
+      );
+  });
+  return(
+    <>
+      {accountList}
+    </>
+  );
+
+}
+
 
 function Calc(props){
 
   useEffect(() => {
     // api요청으로 기업 가져오기
   },[])
+  console.log(props);
+  for(let i = 0; i < props.account.length; i++){
+
+  }
 
   let years = [];
   for(let i = 2015; i < 2022; i ++){
@@ -62,6 +82,7 @@ function Calc(props){
     e.preventDefault();
     console.log(e);
     console.log(e.target);
+    console.log(e.target.input);
   }
 
   return (
@@ -94,8 +115,7 @@ function Calc(props){
     </div>
     
     <form onSubmit={onSubmitCalc}>
-      <Table
-      account={props.account}></Table>
+      <Account account={props.account}/>
       <button type='submit'>확인</button>
     </form>
     
