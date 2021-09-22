@@ -38,6 +38,7 @@ const SignUp = (props) => {
     ];
     const check = props.basicSignUp(username, pwd1, pwd2, email);
     if(check){
+      props.getUserData();
       history.push('/');
     }
     
