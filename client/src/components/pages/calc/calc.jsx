@@ -16,7 +16,6 @@ const Input = ({name}) => {
   return(
     <input type="text" name={name} onChange={onChange} value={coeffiecient}/>
   )
-
 }
 
 const SubAccount = ({subAccount}) => {
