@@ -28,10 +28,6 @@ const initState ={
         }
       ]
     }
-    
-    
-
-
   ]
 }
   
@@ -39,8 +35,13 @@ const initState ={
 export default function reducer(state=initState, action){
   switch(action.type){
     case Constants.calc.GET:
-      
-      return state
+      const newState = {
+        
+      }
+
+
+
+      return newState
   }
 
   return state

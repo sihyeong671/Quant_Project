@@ -8,10 +8,10 @@ import Search from '../../../containers/search/search';
 
 const Input = ({name}) => {
   // 숫자만 넣을 수 있도록 조정하기
-  const [coeffiecient, setCoeeficient] = useState(1);
+  const [coeffiecient, setCoeficient] = useState(1);
   const onChange = (e) => {
     e.preventDefault();
-    setCoeeficient(e.target.value);
+    setCoeficient(e.target.value);
   }
   return(
     <input type="text" name={name} onChange={onChange} value={coeffiecient}/>
@@ -23,7 +23,7 @@ const SubAccount = ({subAccount}) => {
   console.log('SubAccount rendering');
   const subAccountList = subAccount.map((subacnt, idx) => {
     return(
-      <div>
+      <div key={idx}>
         <span>{subacnt.name}</span>
         <span>{subacnt.amount}</span>
         <Input name={subacnt.name}/>
@@ -39,6 +39,15 @@ const SubAccount = ({subAccount}) => {
 
 const Account = ({account}) => {
   console.log('Account rendering');
+  // const [accounts, setAccounts] = useState(account.map((acnt)=>(
+
+  // )));
+  
+  for(let i = 0; i < account.length; ++i){
+
+
+
+  }
 
   const accountList = account.map((acnt, idx) =>{
     return(
@@ -48,6 +57,7 @@ const Account = ({account}) => {
       </div>
       );
   });
+
   return(
     <>
       {accountList}
