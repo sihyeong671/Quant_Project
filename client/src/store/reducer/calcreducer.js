@@ -7,11 +7,13 @@ const initState ={
       subAccount: [
         {
           name: '현금및현금성자산',
-          amount: 4773580.0
+          amount: 4773580.0,
+          coef: 1
         },
         {
           name:'매출채권 및 기타유동채권',
-          amount:7312390.0
+          amount:7312390.0,
+          coef: 1
         }
       ]
     },
@@ -20,11 +22,13 @@ const initState ={
       subAccount:[
         {
           name: '부채1',
-          amount: 477
+          amount: 477,
+          coef: 1
         },
         {
           name:'부채2',
-          amount:731
+          amount:731,
+          coef: 1
         }
       ]
     }

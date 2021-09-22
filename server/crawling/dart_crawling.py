@@ -177,11 +177,17 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             
             money.account_name = fs_lst["account_nm"]
             money.account_detail = fs_lst["account_detail"]
+            
 
             if fs_lst["thstrm_amount"] == '':
                 money.account_amount = 0
             else:
                 money.account_amount = fs_lst["thstrm_amount"]
+
+            if fs_lst["thstrm_add_amount"] == '':
+                money.account_add_amount = 0
+            else:
+                money.account_add_amount = fs_lst["thstrm_add_amount"]
 
             money.save()
     
