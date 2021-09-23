@@ -63,15 +63,16 @@ class QuarterAdmin(admin.ModelAdmin):
     ordering = ('year__company__corp_name', )
     list_display = (
         'get_company', 'get_year', 'get_quarter', 
-        'ROE', 'ROA',
+        # 'ROE', 'ROA',
     )
     list_display_links = (
         'get_company', 'get_year', 'get_quarter', 
-        'ROE', 'ROA',
+        # 'ROE', 'ROA',
     )
     search_fields = (
         'get_company', 'get_year', 'get_quarter', 
-        'ROE', 'ROA',)
+        # 'ROE', 'ROA',
+    )
     list_filter = ('qt_name', )
     
     inlines = ()
