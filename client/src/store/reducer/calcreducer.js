@@ -42,7 +42,11 @@ export default function reducer(state=initState, action){
       const newState = {
         
       }
-
+    case Constants.calc.CHANGE:
+      let newState = {...state};
+      newState.account[action.index[0]].subAccount[action.index[1]].coef = action.coef;
+      console.log(newState);
+      return newState;
 
 
       return newState

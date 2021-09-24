@@ -5,24 +5,29 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import Search from '../../../containers/search/search';
 
-const Input = ({name, coef}) => {
+const Input = ({index, coef, changeCoef}) => {
   console.log("Input rendering")
-
-  return(
-    
-  )
+  const [coefficient, setCoefficient] = useState(coef);
+  const onChange = (e) => {
+    e.preventDefault();
+    setCoefficient(e.target.value);
+    changeCoef([index[0], index[1]], coefficient);
+    return(
+      <input type="number" step='0.1' min="-10" max = '10' value={coefficient} onChange={(e) => onChange(e)}></input>
+    )
+  }
 }
 
-const SubAccount = ({subAccount}) => {
+const SubAccount = ({idx_1, subAccount, changeCoef}) => {
   console.log('SubAccount rendering');
 
   console.log(subAccount);
-  const subAccountList = subAccount.map((subacnt, idx) => {
+  const subAccountList = subAccount.map((subacnt, idx_2) => {
     return(
-      <div key={idx}>
+      <div key={idx_2}>
         <span>{subacnt.name}</span>
         <span>{subacnt.amount}</span>
-        <input type="number" step='0.1' min="-10" max = '10' value={coefficient} onChange={(e) => onChange(e)}></input>
+        <Input name={} changeCoef={changeCoef} index={[idx_1, idx_2]}/>
       </div>
     )
   });
@@ -33,37 +38,29 @@ const SubAccount = ({subAccount}) => {
   )
 }
 
+const Account = ({account, changeCoef}) => {
+  const AccountList = account.map((acnt, idx_1)=>{
+    return(
+      <div key={idx_1}>
+        <SubAccount subAccount={acnt.subAccount} changeCoef={changeCoef} idx_1={idx_1}/>
+      </div>
+    )
+  })
+  
+  return(
+    <>
+      {AccountList}
+    </>
+  )
+}
+
+
 function Calc(props){
 
   useEffect(() => {
     // api요청으로 기업 가져오기
   },[])
   console.log(props);
-
-  const onChange = (e) => {
-    e.preventDefault();
-    console.log(e.target.value);
-  }
-  // 코드 이딴식으로 짜도 되나?
-  const accountList = props.account.map((acnt, idx) =>{
-
-    const subAccountList = acnt.subAccount.map.map((subacnt, idx) => {
-      return(
-        <div key={idx}>
-          <span>{subacnt.name}</span>
-          <span>{subacnt.amount}</span>
-          <input type="number" step='0.1' min="-10" max = '10' value={subacnt.coef} onChange={(e) => onChange(e)}></input>
-        </div>
-      );
-    });
-
-    return(
-      <div key={idx}>
-        <div>{acnt.fsname}</div>
-        <SubAccount subAccount={acnt.subAccount}/>
-      </div>
-      );
-  });
 
   let years = [];
   for(let i = 2015; i < 2022; i ++){
@@ -83,7 +80,6 @@ function Calc(props){
     console.log(e.target.input);
     // props.sendCustom();
   }
-
 
 
   return (
@@ -116,7 +112,7 @@ function Calc(props){
     </div>
     
     <form onSubmit={onSubmitCalc}>
-      <Account account={props.account} setAccount={props.sendCustom}/>
+      <Account account={props.account} changeCoef={props.changeCoef}/>
       <button type='submit'>확인</button>
     </form>
     
