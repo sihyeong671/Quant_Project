@@ -21,6 +21,20 @@ const mapDispatchToProps=(dispatch)=>{
       }catch(error){
         console.log(error);
       }
+    },
+    sendCustom: async () => {
+      try{
+
+      }catch(error){
+        console.log(error);
+      }
+    },
+    changeCoef: () => {
+      try{
+
+      }catch(error){
+        console.log(error);
+      }
     }
   }
 }

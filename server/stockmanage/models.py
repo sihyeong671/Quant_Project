@@ -102,7 +102,9 @@ class FS_LoB(models.Model):
     exist = models.IntegerField(default=0, null=True, blank=True)
     # 돈 단위 - api에서 받는거랑 다를 수도 있음
     unit = models.CharField(max_length=30, null=True, blank=True)
-
+    ROA = models.FloatField(null=True, blank=True)
+    ROE = models.FloatField(null=True, blank=True)
+    
     def __str__(self):
         return self.lob
     

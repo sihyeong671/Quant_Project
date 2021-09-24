@@ -5,27 +5,24 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import Search from '../../../containers/search/search';
 
+const Input = ({name, coef}) => {
+  console.log("Input rendering")
 
-const Input = ({name}) => {
-  // 숫자만 넣을 수 있도록 조정하기
-  const [coeffiecient, setCoeficient] = useState(1);
-  const onChange = (e) => {
-    e.preventDefault();
-    setCoeficient(e.target.value);
-  }
   return(
-    <input type="text" name={name} onChange={onChange} value={coeffiecient}/>
+    
   )
 }
 
 const SubAccount = ({subAccount}) => {
   console.log('SubAccount rendering');
+
+  console.log(subAccount);
   const subAccountList = subAccount.map((subacnt, idx) => {
     return(
       <div key={idx}>
         <span>{subacnt.name}</span>
         <span>{subacnt.amount}</span>
-        <Input name={subacnt.name}/>
+        <input type="number" step='0.1' min="-10" max = '10' value={coefficient} onChange={(e) => onChange(e)}></input>
       </div>
     )
   });
@@ -36,19 +33,30 @@ const SubAccount = ({subAccount}) => {
   )
 }
 
-const Account = ({account}) => {
-  console.log('Account rendering');
-  // const [accounts, setAccounts] = useState(account.map((acnt)=>(
+function Calc(props){
 
-  // )));
-  
-  for(let i = 0; i < account.length; ++i){
+  useEffect(() => {
+    // api요청으로 기업 가져오기
+  },[])
+  console.log(props);
 
-
-
+  const onChange = (e) => {
+    e.preventDefault();
+    console.log(e.target.value);
   }
+  // 코드 이딴식으로 짜도 되나?
+  const accountList = props.account.map((acnt, idx) =>{
 
-  const accountList = account.map((acnt, idx) =>{
+    const subAccountList = acnt.subAccount.map.map((subacnt, idx) => {
+      return(
+        <div key={idx}>
+          <span>{subacnt.name}</span>
+          <span>{subacnt.amount}</span>
+          <input type="number" step='0.1' min="-10" max = '10' value={subacnt.coef} onChange={(e) => onChange(e)}></input>
+        </div>
+      );
+    });
+
     return(
       <div key={idx}>
         <div>{acnt.fsname}</div>
@@ -56,25 +64,6 @@ const Account = ({account}) => {
       </div>
       );
   });
-
-  return(
-    <>
-      {accountList}
-    </>
-  );
-
-}
-
-
-function Calc(props){
-
-  useEffect(() => {
-    // api요청으로 기업 가져오기
-  },[])
-  console.log(props);
-  for(let i = 0; i < props.account.length; i++){
-
-  }
 
   let years = [];
   for(let i = 2015; i < 2022; i ++){
@@ -92,7 +81,10 @@ function Calc(props){
     console.log(e);
     console.log(e.target);
     console.log(e.target.input);
+    // props.sendCustom();
   }
+
+
 
   return (
     <>
@@ -124,10 +116,12 @@ function Calc(props){
     </div>
     
     <form onSubmit={onSubmitCalc}>
-      <Account account={props.account}/>
+      <Account account={props.account} setAccount={props.sendCustom}/>
       <button type='submit'>확인</button>
     </form>
     
+    
+
     <div>
       청산가치
     </div>
