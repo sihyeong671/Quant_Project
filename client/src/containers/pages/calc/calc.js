@@ -29,12 +29,11 @@ const mapDispatchToProps=(dispatch)=>{
         console.log(error);
       }
     },
-    changeCoef: () => {
-      try{
-
-      }catch(error){
-        console.log(error);
-      }
+    changeCoef: (coef) => {
+      dispatch({
+        type: Constants.calc.CHANGE,
+        coef: coef
+      })
     }
   }
 }
