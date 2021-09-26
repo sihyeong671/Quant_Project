@@ -11,11 +11,11 @@ const Input = ({index, coef, changeCoef}) => {
   const onChange = (e) => {
     e.preventDefault();
     setCoefficient(e.target.value);
-    changeCoef([index[0], index[1]], coefficient);
-    return(
-      <input type="number" step='0.1' min="-10" max = '10' value={coefficient} onChange={(e) => onChange(e)}></input>
-    )
+    changeCoef([index[0], index[1]], e.target.value);
   }
+  return(
+    <input type="number" step='0.1' min="-10" max = '10' value={coefficient} onChange={(e) => onChange(e)}></input>
+  );
 }
 
 const SubAccount = ({idx_1, subAccount, changeCoef}) => {
@@ -27,7 +27,7 @@ const SubAccount = ({idx_1, subAccount, changeCoef}) => {
       <div key={idx_2}>
         <span>{subacnt.name}</span>
         <span>{subacnt.amount}</span>
-        <Input name={} changeCoef={changeCoef} index={[idx_1, idx_2]}/>
+        <Input coef={subacnt.coef} changeCoef={changeCoef} index={[idx_1, idx_2]}/>
       </div>
     )
   });
