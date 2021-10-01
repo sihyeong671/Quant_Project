@@ -10,6 +10,7 @@ const mapStateToProps=(state)=>{
 
 const mapDispatchToProps=(dispatch)=>{
   return {
+    //
     getFsData: async (corpName) => {
       try{
         const res = await axios.get('api/v1/');
@@ -22,6 +23,7 @@ const mapDispatchToProps=(dispatch)=>{
         console.log(error);
       }
     },
+    // 서버로 사용자가 커스텀한 숫자 전송
     sendCustom: async () => {
       try{
 
