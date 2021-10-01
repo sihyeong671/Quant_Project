@@ -58,6 +58,11 @@ def Dart_Unique_Key(api_key):
 
 
 def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
+    """
+    기업코드, 년도, 분기, 연결/일반, link모델 매개변수
+    매개변수에 맞는 재무제표 정보가져오고 dart홈페이지에서 BS 하위관계를 알기위해 실제 재무제표 스크래핑
+    재무제표 데이터 for문으로 fs_account모델에 저장
+    """
     dart_url = "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json?"
     params = {'crtfc_key': api_key, 'corp_code': corp_code, 'bsns_year': year, 'reprt_code': quarter, 'fs_div': link_state}
     res = rq.get(dart_url, params)
@@ -93,7 +98,6 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
 
         fs_unit = bs_soup.find("table").find_all('p')[-1]
         link_model.unit = fs_unit.text
-        print(link_model.unit)
         link_model.save()
 
         bs_tree = {}
@@ -173,11 +177,17 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             
             money.account_name = fs_lst["account_nm"]
             money.account_detail = fs_lst["account_detail"]
+            
 
             if fs_lst["thstrm_amount"] == '':
                 money.account_amount = 0
             else:
                 money.account_amount = fs_lst["thstrm_amount"]
+
+            if fs_lst["thstrm_add_amount"] == '':
+                money.account_add_amount = 0
+            else:
+                money.account_add_amount = fs_lst["thstrm_add_amount"]
 
             money.save()
     
@@ -210,9 +220,13 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             print('정의되지 않은 오류가 발생하였습니다.')
             print(corp_code, year, quarter, link_state)
 
-            
-            
+
+
 def Save_Dart_Data(api_key):
+    """
+    가장 먼저 실행
+    상장된 기업의 Dart 고유번호 가져와서 Dart모델에 저장하는 함수
+    """
     dart_data = Dart_Unique_Key(api_key)
     for data in dart_data:
         Dart(dart_code=data[0],company_name_dart=data[1],
@@ -220,6 +234,9 @@ def Save_Dart_Data(api_key):
 
 
 def Save_Corp_Info(api_key, code, company):
+    """
+    code의 기업 개황(정보)가져와서 Company모델에 저장하는 함수
+    """
     url = 'https://opendart.fss.or.kr/api/company.json'
     param = {
         'crtfc_key': api_key,

@@ -15,14 +15,12 @@ function App(props){
 
   const [cookies, setCookie] = useCookies();
   useEffect(async() => {
-    // csrf존재할때 코드수정해야 할 것 같음
+    // csrf존재할때만 리프레시 할 것
     if (cookies.csrftoken !== undefined){
-      console.log('헤더설정');
       axios.defaults.headers.post['X-CSRFToken'] = cookies.csrftoken;
-      props.reload();
     }
-    
-    // setTimeout 필요
+    props.reload();
+        
   },[]);
   //로그인 상태 확인 필요
 

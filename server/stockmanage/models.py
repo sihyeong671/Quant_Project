@@ -85,8 +85,6 @@ class Quarter(models.Model):
         null=True, blank=True, 
         on_delete=models.CASCADE, related_name='quarter'
     )
-    ROE = models.FloatField(null=True, blank=True)
-    ROA = models.FloatField(null=True, blank=True)
     
     def __str__(self):
         return self.qt_name
@@ -104,7 +102,7 @@ class FS_LoB(models.Model):
     exist = models.IntegerField(default=0, null=True, blank=True)
     # 돈 단위 - api에서 받는거랑 다를 수도 있음
     unit = models.CharField(max_length=30, null=True, blank=True)
-
+    
     def __str__(self):
         return self.lob
     
@@ -134,6 +132,7 @@ class FS_Account(models.Model):
     fs_div = models.ForeignKey(FS_Div, on_delete=models.CASCADE, related_name="fs_account", null=True)
     account_name = models.CharField(help_text="계정명", max_length=255, blank=True, null=True)
     account_amount = models.FloatField(help_text="계정명에 대한 자산", blank=True, null=True)
+    account_add_amount = models.FloatField(help_text="계정명에 대한 누적 금액", blank=True, null=True)
     account_detail = models.CharField(help_text="계정상세", max_length=255, blank=True, null=True)
     
     def __str__(self):
@@ -147,7 +146,8 @@ class FS_Account(models.Model):
 class SUB_Account(models.Model):
     pre_account = models.ForeignKey(FS_Account, on_delete=models.CASCADE, related_name="sub_account")
     account_name = models.CharField(help_text="계정명", max_length=255, blank=True, null=True)
-    account_amount = models.FloatField(help_text="계정명에 대한 자산", blank=True, null=True)
+    account_amount = models.FloatField(help_text="계정명에 대한 금액", blank=True, null=True)
+    account_add_amount = models.FloatField(help_text="계정명에 대한 누적 금액", blank=True, null=True)
     account_detail = models.CharField(help_text="계정상세", max_length=255, blank=True, null=True)
     def __str__(self):
         return self.account_name

@@ -3,9 +3,10 @@ import { hot } from 'react-hot-loader';
 import { useHistory } from 'react-router';
 import { Link } from "react-router-dom";
 import { Cookies, useCookies } from 'react-cookie';
+import axios from 'axios';
 
 // 엔터 누르면 자동으로 submit이 된다
-function Login({basicLogin}){
+function Login({basicLogin, getUserData}){
   console.log('Login rendering');
   const [username, setUserName] = useState('');
   const [pwd, setPwd] = useState('');
@@ -22,6 +23,7 @@ function Login({basicLogin}){
   const onSubmit = async (e) => {
     e.preventDefault();
     await basicLogin(username ,pwd);
+    await getUserData();
     history.push('/');
   }
 
