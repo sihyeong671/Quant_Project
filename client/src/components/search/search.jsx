@@ -36,7 +36,7 @@ const Search = (props) =>{
 
   // 연관 검색어 필터링
   const filterRelList = async ()=>{
-    const filterList = await corpList.filter(item=>{ 
+    const filterList = await corpList.filter(item=>{
       return( 
           item.name.toLowerCase().includes(corpName.toLowerCase()) 
       )
@@ -51,7 +51,6 @@ const Search = (props) =>{
     )
   }
 
-  
   // 연관 검색어 렌더
   const renderRelList = () =>{
     return(

@@ -116,8 +116,6 @@ function Calc(props){
       <button type='submit'>확인</button>
     </form>
     
-    
-
     <div>
       청산가치
     </div>

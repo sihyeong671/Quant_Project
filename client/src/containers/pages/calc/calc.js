@@ -10,7 +10,7 @@ const mapStateToProps=(state)=>{
 
 const mapDispatchToProps=(dispatch)=>{
   return {
-    //
+    // 서버에서 재무상태표 (BS) 받아오기
     getFsData: async (corpName) => {
       try{
         const res = await axios.get('api/v1/');
