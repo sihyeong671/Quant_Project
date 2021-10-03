@@ -74,6 +74,7 @@ function mapDispatchToProps(dispatch){
           accessToken: accessToken,
           isAuthenticated:true
         })
+
       }catch(error){
         console.log(error);
       }
@@ -130,6 +131,7 @@ function mapDispatchToProps(dispatch){
     getUserData: async () => {
       try{
         const profileRes = await axios.get('api/v1/users/me');
+        console.log(profiledRes);
         const [dateJoined, email, lastLogin, userName] = [
           profileRes.data.date_joined,
           profileRes.data.email,
@@ -144,7 +146,7 @@ function mapDispatchToProps(dispatch){
           lastLogin: lastLogin,
           userName: userName
           //profile
-       })
+      })
       }catch(error){
         console.log(error);
       }
@@ -153,7 +155,7 @@ function mapDispatchToProps(dispatch){
       try{
         const res = await axios({
           method: 'post',
-          url: '/api/v1/users/me/id',
+          url: '/api/v1/users/me/id/',
           data:{
             email: email
           }

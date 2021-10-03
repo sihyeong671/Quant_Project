@@ -40,13 +40,13 @@ export default function reducer(state=initState, action){
   switch(action.type){
     
     case Constants.calc.GET:
+      return action.account;
 
     case Constants.calc.CHANGE:
       let newState = {...state};
       newState.account[action.index[0]].subAccount[action.index[1]].coef = action.coef;
       console.log(newState);
       return newState;
-      break;
   }
 
   return state

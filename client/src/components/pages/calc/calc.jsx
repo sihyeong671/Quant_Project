@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import Search from '../../../containers/search/search';
 
-const Input = ({index, coef, changeCoef}) => {
+const Input = ({index, coef, changeCoef, pre_value}) => {
   console.log("Input rendering")
   const [coefficient, setCoefficient] = useState(coef);
   const onChange = (e) => {
@@ -13,8 +13,12 @@ const Input = ({index, coef, changeCoef}) => {
     setCoefficient(e.target.value);
     changeCoef([index[0], index[1]], e.target.value);
   }
+  const changedValue = coefficient * pre_value;
   return(
-    <input type="number" step='0.1' min="-10" max = '10' value={coefficient} onChange={(e) => onChange(e)}></input>
+    <>
+      <input type="number" step='0.1' min="-10" max = '10' value={coefficient} onChange={(e) => onChange(e)}></input>
+      <span>{changedValue}</span>
+    </>
   );
 }
 
@@ -22,12 +26,13 @@ const SubAccount = ({idx_1, subAccount, changeCoef}) => {
   console.log('SubAccount rendering');
 
   console.log(subAccount);
+  
   const subAccountList = subAccount.map((subacnt, idx_2) => {
     return(
       <div key={idx_2}>
         <span>{subacnt.name}</span>
         <span>{subacnt.amount}</span>
-        <Input coef={subacnt.coef} changeCoef={changeCoef} index={[idx_1, idx_2]}/>
+        <Input coef={subacnt.coef} changeCoef={changeCoef} index={[idx_1, idx_2]} pre_value={subacnt.amount}/>
       </div>
     )
   });
@@ -58,6 +63,10 @@ const Account = ({account, changeCoef}) => {
 
 function Calc(props){
 
+  const [customTitle, setCustomTitle] = useState('');
+
+  const [parameter, setParameter] = useState({});
+
   useEffect(() => {
     // api요청으로 기업 가져오기
   },[])
@@ -70,16 +79,29 @@ function Calc(props){
   // console.log(props);
   const onSubmitGet = (e) => {
     e.preventDefault();
-    // props.getFsData(e.target.);
-    console.log(e);
+    const param = {
+      id: props.corpList[0].id,
+      name: props.corpList[0].name,
+      year: e.target.year.value,
+      quarter: e.target.quarter.value,
+      link: e.target.FS.value,
+      FS: "BS",
+    }
+    setParameter(param);
+    // props.getFsData(param);
+
+    // console.log(props.corpList[0].id);
+    // console.log(props.corpList[0].name);
+    // console.log(e.target.year.value);
+    // console.log(e.target.quarter.value);
+    // console.log(e.target.FS.value);
   }
 
-  const onSubmitCalc = (e) => {
+  const onSubmitSave = (e) => {
     e.preventDefault();
     console.log(e);
-    console.log(e.target);
-    console.log(e.target.input);
-    // props.sendCustom();
+    //서버로 보내기
+    //props.sendCustom
   }
 
 
@@ -92,7 +114,7 @@ function Calc(props){
 
         <select name="year">
           {years.map((year)=>(
-            <option key = {year} value={year}>{year}</option>
+            <option key={year} value={year}>{year}</option>
           ))}
         </select>
 
@@ -112,15 +134,21 @@ function Calc(props){
       </form>
     </div>
     
-    <form onSubmit={onSubmitCalc}>
+    <form onSubmit={onSubmitSave}>
       <Account account={props.account} changeCoef={props.changeCoef}/>
-      <button type='submit'>확인</button>
+      <input type="text" name="title"/>
+      <button type='submit'>저장하기</button>
     </form>
-    
+
+    {/* 수정 전 */}
     <div>
       청산가치
     </div>
 
+    {/* 수정 후 */}
+    <div>
+      수정 후 청산가치
+    </div>
     </>
   )
 }

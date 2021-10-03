@@ -31,7 +31,7 @@ const Search = (props) =>{
   },[]);
 
   useEffect(async () => {
-      await filterRelList()
+      await filterRelList();
   }, [corpName]);
 
   // 연관 검색어 필터링
@@ -51,8 +51,8 @@ const Search = (props) =>{
     )
   }
 
-  // 연관 검색어 렌더
-  const renderRelList = () =>{
+  // 연관 검색어 렌더링
+  const renderRelList = () => {
     return(
       <ul className="search_relative-list" style={listStyle}>
         {relList?.map((item, i)=>{
