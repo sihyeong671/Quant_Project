@@ -101,7 +101,10 @@ function Calc(props){
     e.preventDefault();
     console.log(e);
     //서버로 보내기
-    //props.sendCustom
+    // props.sendCustom({
+    //   ...parameter,
+    //   title: e.target.title.value
+    // });
   }
 
 
@@ -119,10 +122,10 @@ function Calc(props){
         </select>
 
         <select name="quarter">
-          <option value="1">1분기</option>
-          <option value="2">2분기</option>
-          <option value="3">3분기</option>
-          <option value="4">4분기</option>
+          <option value="11013">1분기</option>
+          <option value="11012">2분기</option>
+          <option value="11014">3분기</option>
+          <option value="11011">4분기</option>
         </select>
 
         <input id='CFS' type="radio" name='FS' value="CFS" defaultChecked/>

@@ -61,7 +61,7 @@ class Daily_Price(models.Model):
 class Year(models.Model):
     bs_year = models.IntegerField(help_text="사업연도", blank=True, null=True)
     company = models.ForeignKey(
-        Company, 
+        Company,
         null=True, blank=True, 
         on_delete=models.CASCADE, related_name = 'year'
     )
