@@ -26,6 +26,9 @@ const mapDispatchToProps=(dispatch)=>{
     // 서버로 사용자가 커스텀한 숫자 전송
     sendCustom: async () => {
       try{
+        //const res = axios.post('api/v1/');
+        console.log(res);
+        // 디스패치
 
       }catch(error){
         console.log(error);

@@ -30,7 +30,7 @@ const Profile=(props)=>{
         url: '/api/v1/users/me',
       })
       await console.log(res);
-      await setUserInfo(res.data)
+      await setUserInfo(res.data);
       await console.log('user: ',userInfo);
     }catch(err){
       console.log(err);

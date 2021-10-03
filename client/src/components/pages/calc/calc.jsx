@@ -42,6 +42,7 @@ const Account = ({account, changeCoef}) => {
   const AccountList = account.map((acnt, idx_1)=>{
     return(
       <div key={idx_1}>
+        <span>{acnt.fsname}</span>
         <SubAccount subAccount={acnt.subAccount} changeCoef={changeCoef} idx_1={idx_1}/>
       </div>
     )
