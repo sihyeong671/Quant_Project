@@ -168,6 +168,10 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
 
             elif fs_lst["sj_div"] == "CIS":
                 money.fs_div = CIS
+                if fs_lst["thstrm_add_amount"] == '':
+                        money.account_add_amount = 0
+                else:
+                    money.account_add_amount = fs_lst["thstrm_add_amount"]
 
             elif fs_lst["sj_div"] == "CF":
                 money.fs_div = CF
@@ -183,11 +187,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                 money.account_amount = 0
             else:
                 money.account_amount = fs_lst["thstrm_amount"]
-
-            if fs_lst["thstrm_add_amount"] == '':
-                money.account_add_amount = 0
-            else:
-                money.account_add_amount = fs_lst["thstrm_add_amount"]
+            
 
             money.save()
     
