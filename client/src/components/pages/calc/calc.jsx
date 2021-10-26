@@ -44,11 +44,13 @@ const SubAccount = ({idx_1, subAccount, changeCoef}) => {
 }
 
 const Account = ({account, changeCoef}) => {
+  console.log(account);
   const AccountList = account.map((acnt, idx_1)=>{
+    console.log(acnt, idx_1);
     return(
       <div key={idx_1}>
         <span>{acnt.fsname}</span>
-        <SubAccount subAccount={acnt.subAccount} changeCoef={changeCoef} idx_1={idx_1}/>
+        <SubAccount subAccount={acnt.sub_account} changeCoef={changeCoef} idx_1={idx_1}/>
       </div>
     )
   })
@@ -75,16 +77,16 @@ function Calc(props){
   for(let i = 2015; i < 2022; i ++){
     years.push(i.toString());
   }
-  // console.log(props);
+  
   const onSubmitGet = (e) => {
     e.preventDefault();
     const param = {
-      id: props.corpList[0].id,
+      id: props.corpList[0].id, //stock_code
       name: props.corpList[0].name,
       year: e.target.year.value,
       quarter: e.target.quarter.value,
       link: e.target.FS.value,
-      FS: "BS",
+      fs: "BS",
     }
     setParameter(param);
     // props.getFsData(param);

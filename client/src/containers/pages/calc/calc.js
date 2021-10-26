@@ -15,7 +15,7 @@ const mapDispatchToProps=(dispatch)=>{
     // 서버에서 재무상태표 (BS) 받아오기
     getFsData: async (parameter) => {
       try{
-        const res = await axios.get('api/v1/account', parameter);
+        const res = await axios.post('api/v1/stock/account', parameter);
         console.log(res);
         dispatch({
           type: Constants.calc.GET,

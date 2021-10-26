@@ -81,8 +81,8 @@ class Quarter(models.Model):
         max_length=30, blank=True, null=True
     )
     year = models.ForeignKey(
-        Year, 
-        null=True, blank=True, 
+        Year,
+        null=True, blank=True,
         on_delete=models.CASCADE, related_name='quarter'
     )
     

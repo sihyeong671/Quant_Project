@@ -53,7 +53,6 @@ def Dart_Unique_Key(api_key):
     Krx에서 상장한 회사들만 Dart에서 고유번호 가져오기 
     """
 
-
     items = ["corp_code", "corp_name", "stock_code", "modify_date"]  # OpenApi에서 주는 정보
     # item_names = ["고유번호", "회사명", "종목코드", "최종변경일자"]
     url = f"https://opendart.fss.or.kr/api/corpCode.xml?crtfc_key={api_key}"
@@ -207,6 +206,11 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                 if "당기순이익" in fs_lst["account_nm"]:
                     net_income = fs_lst["thstrm_amount"]
 
+                if fs_lst["thstrm_add_amount"] == '': # 누적 금액
+                    money.account_add_amount = 0
+                else:
+                    money.account_add_amount = fs_lst["thstrm_add_amount"]
+
             elif fs_lst["sj_div"] == "CF":
                 money.fs_div = CF
 
@@ -222,10 +226,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             else:
                 money.account_amount = fs_lst["thstrm_amount"]
 
-            if fs_lst["thstrm_add_amount"] == '': # 누적 금액
-                money.account_add_amount = 0
-            else:
-                money.account_add_amount = fs_lst["thstrm_add_amount"]
+            
 
             money.save()
 
