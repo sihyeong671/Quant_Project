@@ -5,7 +5,8 @@ import Constants from '../../../store/constants';
 import axios from 'axios';
 
 function mapStateToProps(state){
-  return state.chart
+  const newState = Object.assign({}, state.search, state.chart);
+  return newState;
 }
 
 function mapDispatchToProps(dispatch){

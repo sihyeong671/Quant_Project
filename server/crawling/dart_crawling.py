@@ -18,7 +18,6 @@ from stockmanage.models import FS_Div, FS_Account, SUB_Account, Dart, Company
 
 # print(datetime.today().strftime("%Y%m%d"))
 
-# 재무제표 viewDoc파라미터 찾기
 def find_parameter(string: str, fs_name: str) -> list:
     p = re.compile('"[a-zA-Z0-9]*"')
     idx_start = string.find(fs_name)
@@ -31,8 +30,29 @@ def find_parameter(string: str, fs_name: str) -> list:
     return lst
 
 
+def Print_Error(status: str):
+    if  status == "010":
+            print('등록되지 않은 키입니다.')
+    elif status == "011":
+        print('사용할 수 없는 키입니다')            
+    elif status == "013":
+        print('no data')
+    elif status == "020":
+        print('요청 제한을 초과하였습니다.')        
+    elif status == "100":
+        print('unvaild value')
+    elif status == "800":
+        print('원활한 공시서비스를 위하여 오픈API 서비스가 중지 중입니다.')
+    elif status == "900":
+        print('정의되지 않은 오류가 발생하였습니다.')
+
+
 # dart에서 고유번호 가져오기
 def Dart_Unique_Key(api_key):
+    """
+    Krx에서 상장한 회사들만 Dart에서 고유번호 가져오기 
+    """
+
 
     items = ["corp_code", "corp_name", "stock_code", "modify_date"]  # OpenApi에서 주는 정보
     # item_names = ["고유번호", "회사명", "종목코드", "최종변경일자"]
@@ -69,6 +89,11 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
     json_dict = json.loads(res.text)
 
     if json_dict['status'] == "000": # 정상적으로 데이터 가져옴
+
+        #ROE, ROA
+        net_income = 0
+        total_capital = 0
+        total_asset = 0
 
         link_model.exist = 1
 
@@ -142,16 +167,24 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         SCE.lob = link_model
         SCE.save()
 
+        
+
         pre_money = {}
         for fs_lst in json_dict['list']: # 한 행씩 가져오기
             money = FS_Account()
             if fs_lst["sj_div"] == "BS":
+                
                 if fs_lst["account_nm"] in bs_tree.keys():
                     money.fs_div = BS
                     pre_money = money
+
+                    if fs_lst["account_nm"] == "자산총계":
+                        total_asset = fs_lst["thstrm_amount"]
+                    elif fs_lst["account_nm"] == "자본총계":
+                        total_capital = fs_lst["thstrm_amount"]
                 else:
                     for child in bs_tree.values():
-                        if fs_lst["account_nm"] in child:
+                        if fs_lst["account_nm"] == child:
                             sub_money = SUB_Account()
                             sub_money.pre_account = pre_money
                             sub_money.account_name = fs_lst["account_nm"]
@@ -165,11 +198,14 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                             sub_money.save()
                             break
                     continue
+
             elif fs_lst["sj_div"] == "IS":
                 money.fs_div = IS
 
-            elif fs_lst["sj_div"] == "CIS":
+            elif fs_lst["sj_div"] == "CIS": # 포괄 손익 계산서
                 money.fs_div = CIS
+                if "당기순이익" in fs_lst["account_nm"]:
+                    net_income = fs_lst["thstrm_amount"]
 
             elif fs_lst["sj_div"] == "CF":
                 money.fs_div = CF
@@ -181,46 +217,24 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             money.account_detail = fs_lst["account_detail"]
             
 
-            if fs_lst["thstrm_amount"] == '':
+            if fs_lst["thstrm_amount"] == '': # 당기 금액
                 money.account_amount = 0
             else:
                 money.account_amount = fs_lst["thstrm_amount"]
 
-            if fs_lst["thstrm_add_amount"] == '':
+            if fs_lst["thstrm_add_amount"] == '': # 누적 금액
                 money.account_add_amount = 0
             else:
                 money.account_add_amount = fs_lst["thstrm_add_amount"]
 
             money.save()
-    
+
+        link_model.ROA = net_income / total_asset * 100 # %
+        link_model.ROE = net_income / total_capital * 100 # %
+
     else:
-        if json_dict['status'] == "010":
-            print('등록되지 않은 키입니다.')
-            print(corp_code, year, quarter, link_state)
-
-        elif json_dict['status'] == "011":
-            print('사용할 수 없는 키입니다')
-            print(corp_code, year, quarter, link_state)
-            
-        elif json_dict['status'] == "013":
-            print('no data')
-            print(corp_code, year, quarter, link_state)
-
-        elif json_dict['status'] == "020":
-            print('요청 제한을 초과하였습니다.')
-            print(corp_code, year, quarter, link_state)
+        Print_Error(json_dict['status'])
         
-        elif json_dict['status'] == "100":
-            print('unvaild value')
-            print(corp_code, year, quarter, link_state)
-
-        elif json_dict['status'] == "800":
-            print('원활한 공시서비스를 위하여 오픈API 서비스가 중지 중입니다.')
-            print(corp_code, year, quarter, link_state)
-
-        elif json_dict['status'] == "900":
-            print('정의되지 않은 오류가 발생하였습니다.')
-            print(corp_code, year, quarter, link_state)
 
 
 

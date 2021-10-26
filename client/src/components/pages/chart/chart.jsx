@@ -22,9 +22,13 @@ function Chart(props){
     ]
   }
 
+
   return (
     <>
+    <form onSubmit={props.getStockData}>
       <Search maxLength={4}></Search>
+      <button type="submit">확인</button>
+    </form>
 
       <HighchartsReact
         highcharts={Highcharts}

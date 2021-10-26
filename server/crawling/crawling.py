@@ -40,6 +40,9 @@ def Save_FS_Data(api_key):
 
 # day에 시가총액, ohlcv, per, pbr 정보 가져와서 저장
 def Save_Price():
+    """
+    Daily_Price 모델에 ohlcv, per, pbr 저장
+    """
     corporations = Company.objects.all()
     for corp in corporations:
         # 시가총액, ohlvc, per, pbr 함수로 가져와서 저장하기

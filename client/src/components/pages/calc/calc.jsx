@@ -62,15 +62,14 @@ const Account = ({account, changeCoef}) => {
 
 
 function Calc(props){
-
+  console.log('Calc rendering');
   const [customTitle, setCustomTitle] = useState('');
 
   const [parameter, setParameter] = useState({});
 
-  useEffect(() => {
-    // api요청으로 기업 가져오기
-  },[])
-  console.log(props);
+  // 청산가치 
+  // const LV = props.account;
+  // console.log(LV);
 
   let years = [];
   for(let i = 2015; i < 2022; i ++){
@@ -143,9 +142,13 @@ function Calc(props){
       <button type='submit'>저장하기</button>
     </form>
 
-    {/* 수정 전 */}
+    {/*
+      보여줄 것 : 시가총액, 청산가치
+      청산가치 = 유동자산 + 비유동 자산 - 부채 총계
+      보수적 계산법(벤자민 그레이엄) = 유동자산 - 부채총계 
+    */}
     <div>
-      청산가치
+      청산가치(Liquidation Value)
     </div>
 
     {/* 수정 후 */}
