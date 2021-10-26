@@ -225,7 +225,6 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                 money.account_amount = 0
             else:
                 money.account_amount = fs_lst["thstrm_amount"]
-
             
 
             money.save()
