@@ -12,6 +12,13 @@ import Search from '../../../containers/search/search';
 function Chart(props){
   console.log("Chart rendering");
 
+  const data1 = []
+  const data2 = []
+  for(let i = 0; i < 100; ++i){
+    data1.push(i);
+    data2.push(i**2);
+  }
+
   const options = {
     title: {
       text: 'Stock Chart'
@@ -19,7 +26,12 @@ function Chart(props){
     yAxis:{
       title:{
         text: "stock price"
-      }
+      },
+      plotLines:[{
+        value: 0,
+        width: 2,
+        color: "silver"
+      }]
     },
     xAxis:{
       title:{
@@ -32,15 +44,29 @@ function Chart(props){
     series: [
       {
         name:'삼성',
-        data: [1, 2, 3]
+        data: [...data1] 
       },
       {
         name: '네이버',
-        data: [3, 2, 1]
+        data: [...data2] 
       }
-    ]
+    ],
+    plotOption:{
+      series: {
+        showInNavigator: true
+      }
+    },
+    tooltip: {
+      
+      split: true,
+      valueDecimals: 2
+    },
+    rangeSelector: {
+      verticalAlign: 'top',
+      x : 0,
+      y : 0
+    }
   }
-
 
   return (
     <>

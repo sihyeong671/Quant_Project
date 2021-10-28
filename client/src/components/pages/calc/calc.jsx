@@ -6,14 +6,19 @@ import { Helmet } from 'react-helmet';
 import Search from '../../../containers/search/search';
 
 const Input = ({index, coef, changeCoef, pre_value}) => {
+
   console.log("Input rendering")
+
   const [coefficient, setCoefficient] = useState(coef);
+
   const onChange = (e) => {
     e.preventDefault();
     setCoefficient(e.target.value);
     changeCoef([index[0], index[1]], e.target.value);
   }
+
   const changedValue = coefficient * pre_value;
+
   return(
     <>
       <input type="number" step='0.1' min="-10" max = '10' value={coefficient} onChange={(e) => onChange(e)}></input>
@@ -69,9 +74,16 @@ function Calc(props){
 
   const [parameter, setParameter] = useState({});
 
-  // 청산가치 
-  // const LV = props.account;
-  // console.log(LV);
+
+  // for문으로 삽입
+  // 자산 총계
+  const total_asset = 0;
+  // 자본 총계
+  const total_capital = 0;
+  // 부채 총계
+  const total_debt = 0;
+
+  console.log(LV);
 
   let years = [];
   for(let i = 2015; i < 2022; i ++){
@@ -88,6 +100,7 @@ function Calc(props){
       link: e.target.FS.value,
       fs: "BS",
     }
+
     setParameter(param);
     // props.getFsData(param);
 

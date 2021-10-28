@@ -14,7 +14,7 @@ function mapDispatchToProps(dispatch){
     // 서버에서 주가 정보 받아오기
     getStockData: async () => {
       try{
-        const res = await axios.get('api/v1/');
+        const res = await axios.post('api/v1/');
         console.log(res);
         dispatch({
           type: Constants.chart.GET,
