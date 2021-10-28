@@ -30,11 +30,11 @@ def Save_FS_Data(api_key):
                 for l in linklst:
                     link, check = FS_LoB.objects.get_or_create(lob=l, quarter=quarter)
                     if check:
-                        count += 1
                         time.sleep(0.1)
+                        Get_Amount_Data(api_key, dart_data.dart_code, y, q, l, link)
+                        count += 1
                         if count == 10:
                             return
-                        Get_Amount_Data(api_key, dart_data.dart_code, y, q, l, link)
                         # 정정공시 따로 함수 만들기
                 # ROE, ROA 계산 후 넣기
 

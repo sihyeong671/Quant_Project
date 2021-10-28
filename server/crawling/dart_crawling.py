@@ -7,9 +7,11 @@ from io import BytesIO
 from bs4 import BeautifulSoup
 import re
 
+from django.db import transaction
+
 from crawling.krx_crawling import Get_Krx_Short_Code
 
-from stockmanage.models import FS_Div, FS_Account, SUB_Account, Dart, Company
+from stockmanage.models import FS_Div, FS_Account, FS_LoB, SUB_Account, Dart, Company
 
 
 #  개별로 실행하면 생기기는 문제 해결을 위한 코드
@@ -75,7 +77,7 @@ def Dart_Unique_Key(api_key):
                 data[-1].append(child.find(item).text)
     return data
 
-
+@transaction.atomic
 def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
     """
     기업코드, 년도, 분기, 연결/일반, link모델 매개변수
@@ -141,32 +143,20 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                 break
 
         
-        BS = FS_Div()
-        BS.sj_div = "BS"
-        BS.lob = link_model
+        BS = FS_Div(sj_div="BS", lob=link_model)
         BS.save()
-
-        IS = FS_Div()
-        IS.sj_div = "IS"
-        IS.lob = link_model
+        
+        IS = FS_Div(sj_div="IS",lob=link_model)
         IS.save()
         
-        CIS = FS_Div()
-        CIS.sj_div = "CIS"
-        CIS.lob = link_model
+        CIS = FS_Div(sj_div="CIS",lob=link_model)
         CIS.save()
 
-        CF = FS_Div()
-        CF.sj_div = "CF"
-        CF.lob = link_model
+        CF = FS_Div(sj_div="CF",lob=link_model)
         CF.save()
-
-        SCE = FS_Div()
-        SCE.sj_div = "SCE"
-        SCE.lob = link_model
-        SCE.save()
-
         
+        SCE = FS_Div(sj_div="SCE",lob=link_model)
+        SCE.save()
 
         pre_money = {}
         for fs_lst in json_dict['list']: # 한 행씩 가져오기
@@ -178,9 +168,9 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                     pre_money = money
 
                     if fs_lst["account_nm"] == "자산총계":
-                        total_asset = fs_lst["thstrm_amount"]
+                        total_asset = int(fs_lst["thstrm_amount"])
                     elif fs_lst["account_nm"] == "자본총계":
-                        total_capital = fs_lst["thstrm_amount"]
+                        total_capital = int(fs_lst["thstrm_amount"])
                 else:
                     for child in bs_tree.values():
                         if fs_lst["account_nm"] == child:
@@ -204,7 +194,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             elif fs_lst["sj_div"] == "CIS": # 포괄 손익 계산서
                 money.fs_div = CIS
                 if "당기순이익" in fs_lst["account_nm"]:
-                    net_income = fs_lst["thstrm_amount"]
+                    net_income = int(fs_lst["thstrm_amount"])
 
                 if fs_lst["thstrm_add_amount"] == '': # 누적 금액
                     money.account_add_amount = 0
@@ -228,9 +218,14 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             
 
             money.save()
-
+        
+        link_model = FS_LoB.objects.all().last()
         link_model.ROA = net_income / total_asset * 100 # %
         link_model.ROE = net_income / total_capital * 100 # %
+        
+        link_model.save()
+        
+        
 
     else:
         Print_Error(json_dict['status'])
