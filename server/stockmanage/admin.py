@@ -291,10 +291,7 @@ class FS_AccountAdmin(admin.ModelAdmin):
     get_quarter.short_description = _('Quarter')
     
     def get_company(self, obj):
-        try:
-            company = obj.fs_div.lob.quarter.year.company.corp_name
-        except:
-            company = ''
+        company = obj.fs_div.lob.quarter.year.company.corp_name
         
         if not company:
             return ''
@@ -302,10 +299,7 @@ class FS_AccountAdmin(admin.ModelAdmin):
     get_company.short_description = _('Company')
     
     def get_year(self, obj):
-        try:
-            year = obj.fs_div.lob.quarter.year.bs_year
-        except:
-            year = ''
+        year = obj.fs_div.lob.quarter.year.bs_year
         
         if not year:
             return ''

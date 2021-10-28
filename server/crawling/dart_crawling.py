@@ -77,7 +77,7 @@ def Dart_Unique_Key(api_key):
                 data[-1].append(child.find(item).text)
     return data
 
-# @transaction.atomic
+@transaction.atomic
 def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
     """
     기업코드, 년도, 분기, 연결/일반, link모델 매개변수
