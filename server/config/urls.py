@@ -24,3 +24,18 @@ urlpatterns = [
     path('api/', include(('api.urls', 'api'))),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ]
+    
+# {
+#   "id":"950130",
+#   "name":"pdf",
+#   "year": "2018",
+#   "quarter": "11011",
+#   "link": "CFS",
+#   "fs": "BS"
+# }

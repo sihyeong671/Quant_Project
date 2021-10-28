@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from django.shortcuts import get_object_or_404
+from django.db.models import Q, F
 
 from api.mixins import ApiAuthMixin, PublicApiMixin
 from stockmanage.models import Company, FS_Account, SUB_Account, Daily_Price
@@ -33,8 +34,29 @@ class CompanyNameApi(PublicApiMixin, APIView):
 
 class AccountApi(PublicApiMixin, APIView):
     def get(self, request, *args, **kwargs):
+        {
+            "id":"950130",
+            "name":"pdf",
+            "year": "2018",
+            "quarter": "11011",
+            "link": "CFS",
+            "fs": "BS"
+        }
+        stock_code = "950130"
+        year = 2018
+        quarter = "11011"
+        link = "CFS"
+        fs = "BS"
         
-        account_list = FS_Account.objects.all()
+        account_list = FS_Account.objects\
+            .prefetch_related('sub_account')\
+            .filter(
+                Q(fs_div__sj_div=fs) &
+                Q(fs_div__lob__lob=link) & 
+                Q(fs_div__lob__quarter__qt_name=quarter) & 
+                Q(fs_div__lob__quarter__year__bs_year=year) & 
+                Q(fs_div__lob__quarter__year__company__stock_code=stock_code)
+            )
         
         fs_account_list = []
         
@@ -43,7 +65,74 @@ class AccountApi(PublicApiMixin, APIView):
             for sub in ac.sub_account.all():
                 subaccount = {
                     'name': sub.account_name,
-                    'amount': sub.account_amount
+                    'amount': sub.account_amount,
+                    'coef': 1,
+                }
+                sub_account_list.append(subaccount)
+            
+            fsaccount = {
+                'fsname': ac.account_name,
+                'sub_account': sub_account_list,
+            }
+            fs_account_list.append(fsaccount)
+        
+        data = {
+            'account': fs_account_list
+        }
+        
+        
+        return Response(data, status=status.HTTP_200_OK)
+        
+    #     fs_account_list = []
+        
+    #     for ac in account_list:
+    #         sub_account_list = []
+    #         for sub in ac.sub_account.all():
+    #             subaccount = {
+    #                 'name': sub.account_name,
+    #                 'amount': sub.account_amount
+    #             }
+    #             sub_account_list.append(subaccount)
+            
+    #         fsaccount = {
+    #             'fsname': ac.account_name,
+    #             'sub_account': sub_account_list,
+    #         }
+    #         fs_account_list.append(fsaccount)
+        
+    #     data = {
+    #         'account': fs_account_list
+    #     }
+        
+    #     return Response(data, status=status.HTTP_200_OK)
+    
+    def post(self, request, *args, **kwargs):
+        stock_code = request.data.get('id', '')
+        year = request.data.get('year', '')
+        year = int(year)
+        quarter = request.data.get('quarter', '')
+        link = request.data.get('link', '')
+        fs = request.data.get('fs')
+        
+        account_list = FS_Account.objects.\
+            prefetch_related('sub_account')\
+            .filter(
+                Q(fs_div__sj_div=fs) &
+                Q(fs_div__lob__lob=link) & 
+                Q(fs_div__lob__quarter__qt_name=quarter) & 
+                Q(fs_div__lob__quarter__year__bs_year=year) & 
+                Q(fs_div__lob__quarter__year__company__stock_code=stock_code)
+            )
+        
+        fs_account_list = []
+        
+        for ac in account_list:
+            sub_account_list = []
+            for sub in ac.sub_account.all():
+                subaccount = {
+                    'name': sub.account_name,
+                    'amount': sub.account_amount,
+                    'coef': 1,
                 }
                 sub_account_list.append(subaccount)
             
@@ -58,6 +147,7 @@ class AccountApi(PublicApiMixin, APIView):
         }
         
         return Response(data, status=status.HTTP_200_OK)
+        
 
 
 class DailyPriceApi(PublicApiMixin, APIView):

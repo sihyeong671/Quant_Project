@@ -61,7 +61,7 @@ class Daily_Price(models.Model):
 class Year(models.Model):
     bs_year = models.IntegerField(help_text="사업연도", blank=True, null=True)
     company = models.ForeignKey(
-        Company, 
+        Company,
         null=True, blank=True, 
         on_delete=models.CASCADE, related_name = 'year'
     )
@@ -81,8 +81,8 @@ class Quarter(models.Model):
         max_length=30, blank=True, null=True
     )
     year = models.ForeignKey(
-        Year, 
-        null=True, blank=True, 
+        Year,
+        null=True, blank=True,
         on_delete=models.CASCADE, related_name='quarter'
     )
     
@@ -102,6 +102,8 @@ class FS_LoB(models.Model):
     exist = models.IntegerField(default=0, null=True, blank=True)
     # 돈 단위 - api에서 받는거랑 다를 수도 있음
     unit = models.CharField(max_length=30, null=True, blank=True)
+    ROA = models.FloatField(null=True, blank=True)
+    ROE = models.FloatField(null=True, blank=True)
     
     def __str__(self):
         return self.lob

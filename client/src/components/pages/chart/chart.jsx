@@ -14,17 +14,40 @@ function Chart(props){
 
   const options = {
     title: {
-      text: 'My chart'
+      text: 'Stock Chart'
+    },
+    yAxis:{
+      title:{
+        text: "stock price"
+      }
+    },
+    xAxis:{
+      title:{
+        text: "date"
+      }
+    },
+    chart: {
+      type: 'line'
     },
     series: [
-      {data: [1, 2, 3]},
-      {data: [3, 2, 1]}
+      {
+        name:'삼성',
+        data: [1, 2, 3]
+      },
+      {
+        name: '네이버',
+        data: [3, 2, 1]
+      }
     ]
   }
 
+
   return (
     <>
+    <form onSubmit={props.getStockData}>
       <Search maxLength={4}></Search>
+      <button type="submit">확인</button>
+    </form>
 
       <HighchartsReact
         highcharts={Highcharts}
