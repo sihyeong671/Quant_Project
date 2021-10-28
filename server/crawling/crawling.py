@@ -1,5 +1,7 @@
 import time
 
+from django.db import transaction
+
 from stockmanage.models import *
 
 from crawling.krx_crawling import *
@@ -38,7 +40,9 @@ def Save_FS_Data(api_key):
                         # 정정공시 따로 함수 만들기
                 # ROE, ROA 계산 후 넣기
 
+
 # day에 시가총액, ohlcv, per, pbr 정보 가져와서 저장
+@transaction.atomic
 def Save_Price():
     """
     Daily_Price 모델에 ohlcv, per, pbr 저장
@@ -46,11 +50,11 @@ def Save_Price():
     corporations = Company.objects.all()
     for corp in corporations:
         # 시가총액, ohlvc, per, pbr 함수로 가져와서 저장하기
-        data = Daily_Crawling("20201201", "20210101", corp.short_code)
+        data = Daily_Crawling("20210101", "20210401", corp.stock_code)
         time.sleep(1)
         for row in data.itertuples():
             Daily_Data = Daily_Price()
-            Daily_Data.company = Company.objects.get(corp_name = corp.corp_name, short_code = corp.short_code)
+            Daily_Data.company = Company.objects.get(corp_name=corp.corp_name, stock_code=corp.stock_code)
             Daily_Data.date = row[0].to_pydatetime().date()
             Daily_Data.market_gap = row[1]
             Daily_Data.open = row[2]

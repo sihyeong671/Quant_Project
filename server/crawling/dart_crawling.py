@@ -77,7 +77,7 @@ def Dart_Unique_Key(api_key):
                 data[-1].append(child.find(item).text)
     return data
 
-@transaction.atomic
+# @transaction.atomic
 def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
     """
     기업코드, 년도, 분기, 연결/일반, link모델 매개변수
@@ -125,7 +125,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         fs_unit = bs_soup.find("table").find_all('p')[-1]
         link_model.unit = fs_unit.text
         link_model.save()
-
+        
         bs_tree = {}
         now = ''
         for a in bs_soup.find_all("p"):
@@ -141,7 +141,6 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                         bs_tree[now] = []
             if account == "자본과부채총계":
                 break
-
         
         BS = FS_Div(sj_div="BS", lob=link_model)
         BS.save()
@@ -162,9 +161,9 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         for fs_lst in json_dict['list']: # 한 행씩 가져오기
             money = FS_Account()
             if fs_lst["sj_div"] == "BS":
+                money.fs_div = BS
                 
                 if fs_lst["account_nm"] in bs_tree.keys():
-                    money.fs_div = BS
                     pre_money = money
 
                     if fs_lst["account_nm"] == "자산총계":
@@ -174,8 +173,9 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                 else:
                     for child in bs_tree.values():
                         if fs_lst["account_nm"] == child:
+                            print('create subaccount')
                             sub_money = SUB_Account()
-                            sub_money.pre_account = pre_money
+                            sub_money.pre_account = money
                             sub_money.account_name = fs_lst["account_nm"]
                             sub_money.account_detail = fs_lst["account_detail"]
                             
@@ -216,17 +216,14 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             else:
                 money.account_amount = fs_lst["thstrm_amount"]
             
-
             money.save()
         
-        link_model = FS_LoB.objects.all().last()
+        
         link_model.ROA = net_income / total_asset * 100 # %
         link_model.ROE = net_income / total_capital * 100 # %
         
         link_model.save()
         
-        
-
     else:
         Print_Error(json_dict['status'])
         
@@ -276,6 +273,9 @@ def Save_Corp_Info(api_key, code, company):
             
             company.save()
             
-            print("저장됨")
+            try:
+                print(company.corp_name + " 객체 저장됨")
+            except:
+                print("저장됨")
     except:
         print('error')

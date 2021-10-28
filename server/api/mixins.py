@@ -1,4 +1,4 @@
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from auth.authenticate import SafeJWTAuthentication, AdministratorAuthentication
 
