@@ -12,4 +12,7 @@ v1_patterns = [
 
 urlpatterns = [
     path('v1/', include((v1_patterns, 'v1'))),
+    path('', include('swagger.urls')),
+    path('manager/', include('stockmanage.urls')),
+    
 ]

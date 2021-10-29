@@ -7,11 +7,9 @@ const initState = {
 
 export default function reducer(state=initState, action){
   switch(action.type){
-
     case Constants.search.CREATE:
-      var result
-      
-      var corpArr = []
+      let result;
+      let corpArr = [];
       state.corpList?.map(item=>{
         corpArr.push(item.name)
       })

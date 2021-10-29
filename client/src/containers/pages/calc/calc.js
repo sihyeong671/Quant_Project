@@ -10,19 +10,35 @@ const mapStateToProps=(state)=>{
 
 const mapDispatchToProps=(dispatch)=>{
   return {
+    // 서버에서 재무상태표 (BS) 받아오기
     getFsData: async (corpName) => {
       try{
-        const res = await axios({
-          method:'post',
-          url: '/api/v1/',
-          data: {
-            corpName:corpName
-          }
+        const res = await axios.get('api/v1/');
+        console.log(res);
+        dispatch({
+          type: Constants.calc.GET,
+
         })
       }catch(error){
         console.log(error);
       }
-    }
+    },
+    // 서버로 사용자가 커스텀한 숫자 전송
+    sendCustom: async () => {
+      try{
+
+      }catch(error){
+        console.log(error);
+      }
+    },
+    changeCoef: (idx, coef) => {
+        dispatch({
+          type: Constants.calc.CHANGE,
+          coef: coef,
+          index: idx
+        });
+      }
+    
   }
 }
 

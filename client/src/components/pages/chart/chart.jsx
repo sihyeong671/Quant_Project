@@ -7,33 +7,31 @@ import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 import axios from 'axios';
 
-import Search from '../../search/search';
+import Search from '../../../containers/search/search';
 
 function Chart(props){
-    console.log("Chart rendering");
+  console.log("Chart rendering");
 
-    const options = {
-        title: {
-            text: 'My chart'
-        },
-        series: [
-            {data: [1, 2, 3]},
-            {data: [3, 2, 1]}
-        ]
-    }
+  const options = {
+    title: {
+      text: 'My chart'
+    },
+    series: [
+      {data: [1, 2, 3]},
+      {data: [3, 2, 1]}
+    ]
+  }
 
-    return (
-        <>
-            <Search
-                props={props}
-            ></Search>
+  return (
+    <>
+      <Search maxLength={4}></Search>
 
-            <HighchartsReact
-                highcharts={Highcharts}
-                options={options}
-            />
-        </>
-    );
+      <HighchartsReact
+        highcharts={Highcharts}
+        options={options}
+      />
+    </>
+  );
 }
 
 export default hot(module)(Chart);

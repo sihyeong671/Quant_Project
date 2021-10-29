@@ -20,10 +20,10 @@ import srcSet from "./assets/src";
 const authForm = (props) => (
   <div className="auth">
     <Switch>
-      <Route exact path='/auth/login' render={() => <Login basicLogin={props.basicLogin} />}></Route>
-      <Route path='/auth/search_id' render={() => <SearchId searchId={props.searchId} />}></Route>
-      <Route path='/auth/search_pwd' render={() => <SearchPwd searchPwd={props.searchPwd} sendCode={props.sendCode} />}></Route>
-      <Route path='/auth/signup' render={() => <SignUp basicSignUp={props.basicSignUp} />}></Route>
+      <Route exact path ='/auth/login' render={() => <Login basicLogin={props.basicLogin} getUserData={props.getUserData}/>}></Route>
+      <Route path ='/auth/search_id' render={() => <SearchId searchId={props.searchId}/>}></Route>
+      <Route path ='/auth/search_pwd' render={() => <SearchPwd searchPwd={props.searchPwd} sendCode={props.sendCode}/>}></Route>
+      <Route path ='/auth/signup'  render={() => <SignUp basicSignUp={props.basicSignUp} getUserData={props.getUserData}/>}></Route>
     </Switch>
 
     <div className='social-btn'>

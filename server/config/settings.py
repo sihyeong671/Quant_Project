@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'users',
     'boards',
     
+    'swagger',
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -62,6 +64,7 @@ INSTALLED_APPS = [
     # rest_framework
     'rest_framework',
     
+    'drf_yasg',
     'django_extensions',
     
     # corsheader
@@ -81,7 +84,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
-
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (

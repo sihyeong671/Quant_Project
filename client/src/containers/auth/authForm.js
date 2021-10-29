@@ -66,26 +66,11 @@ function mapDispatchToProps(dispatch){
       }
       try{
         const res = await axios.post('/api/v1/auth/login/', data);
-        console.log(res);
+        // console.log(res);
         const accessToken = res.data.access_token;
         axios.defaults.headers.common['Authorization'] = `JWT ${accessToken}`;
-        setTimeout(async () => {
-          try{
-            const res_refresh = await onSilentRefresh(accessToken);
-            const accessToken_refresh = res_refresh.data.access_token
-            dispatch({
-              type: Constants.user.LOGIN_SUCCESS,
-              username: username,
-              accessToken: accessToken_refresh
-            })
-          }catch(error){
-            console.log(error);
-          }
-        },
-        JWT_EXPIRE_TIME);
         dispatch({
           type: Constants.user.LOGIN_SUCCESS,
-          username: username,
           accessToken: accessToken,
           isAuthenticated:true
         })
@@ -131,14 +116,37 @@ function mapDispatchToProps(dispatch){
         })
         console.log(res);
         dispatch({
-          type: Constants.user.LOGIN_SUCCESS,
+          type: Constants.user.REGISTER_SUCCESS,
           accessToken: res.data.access_token,
           isAuthenticated:true
         })
+
         return true;
       }catch(error){
         console.log(error);
         return false;
+      }
+    },
+    getUserData: async () => {
+      try{
+        const profileRes = await axios.get('api/v1/users/me');
+        const [dateJoined, email, lastLogin, userName] = [
+          profileRes.data.date_joined,
+          profileRes.data.email,
+          profileRes.data.last_login,
+          profileRes.data.username
+          //profile 추가 필요
+        ];
+        dispatch({
+          type:Constants.user.GETALL_SUCCESS,
+          dateJoined: dateJoined,
+          email: email,
+          lastLogin: lastLogin,
+          userName: userName
+          //profile
+       })
+      }catch(error){
+        console.log(error);
       }
     },
     searchId: async (email) => {

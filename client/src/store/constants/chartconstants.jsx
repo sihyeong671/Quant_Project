@@ -1,3 +1,3 @@
 export const chartConstants = {
-  UPDATE: 'chart/UPDATE'
+  GET: 'chart/GET'
 } 

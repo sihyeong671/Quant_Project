@@ -1,3 +1,4 @@
 export const calcConstants = {
-  CREATE: 'calc/CREATE',
+  GET: 'calc/GET',
+  CHANGE: 'calc/CAHNGE'
 };

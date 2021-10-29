@@ -2,39 +2,28 @@ import Chart from '../../../components/pages/chart/chart';
 import React from 'react';
 import {connect}  from 'react-redux';
 import Constants from '../../../store/constants';
+import axios from 'axios';
 
 function mapStateToProps(state){
-  return state
+  return state.chart
 }
 
 function mapDispatchToProps(dispatch){
   return {
-    onClickCreate: function(id, name, l){
-      if (l >= 4){
-        return;
+    // 서버에서 주가 정보 받아오기
+    getStockData: async () => {
+      try{
+        const res = await axios.get('api/v1/');
+        console.log(res);
+        dispatch({
+          type: Constants.chart.GET,
+          
+        })
+      }catch(error){
+        console.log(error);
       }
-      
-      dispatch({
-        type:Constants.search.CREATE,
-        corpName :name,
-        id: id
-      })
-    },
-    onClickDelete: function(id){
-      dispatch({
-        type:Constants.search.DELETE,
-        id: id
-      })
-    },
-    onClickGetData: function(data){
-      dispatch({
-        type:Constants.chart.UPDATE
-      })
     }
   }
-    // input 안의 값 조정
-    // 제출시 corpList에 value 추가
-    // input 초기화
 }
 
 
