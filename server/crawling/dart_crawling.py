@@ -7,9 +7,11 @@ from io import BytesIO
 from bs4 import BeautifulSoup
 import re
 
+from django.db import transaction
+
 from crawling.krx_crawling import Get_Krx_Short_Code
 
-from stockmanage.models import FS_Div, FS_Account, SUB_Account, Dart, Company
+from stockmanage.models import FS_Div, FS_Account, FS_LoB, SUB_Account, Dart, Company
 
 
 #  개별로 실행하면 생기기는 문제 해결을 위한 코드
@@ -18,7 +20,6 @@ from stockmanage.models import FS_Div, FS_Account, SUB_Account, Dart, Company
 
 # print(datetime.today().strftime("%Y%m%d"))
 
-# 재무제표 viewDoc파라미터 찾기
 def find_parameter(string: str, fs_name: str) -> list:
     p = re.compile('"[a-zA-Z0-9]*"')
     idx_start = string.find(fs_name)
@@ -31,8 +32,28 @@ def find_parameter(string: str, fs_name: str) -> list:
     return lst
 
 
+def Print_Error(status: str):
+    if  status == "010":
+            print('등록되지 않은 키입니다.')
+    elif status == "011":
+        print('사용할 수 없는 키입니다')            
+    elif status == "013":
+        print('no data')
+    elif status == "020":
+        print('요청 제한을 초과하였습니다.')        
+    elif status == "100":
+        print('unvaild value')
+    elif status == "800":
+        print('원활한 공시서비스를 위하여 오픈API 서비스가 중지 중입니다.')
+    elif status == "900":
+        print('정의되지 않은 오류가 발생하였습니다.')
+
+
 # dart에서 고유번호 가져오기
 def Dart_Unique_Key(api_key):
+    """
+    Krx에서 상장한 회사들만 Dart에서 고유번호 가져오기 
+    """
 
     items = ["corp_code", "corp_name", "stock_code", "modify_date"]  # OpenApi에서 주는 정보
     # item_names = ["고유번호", "회사명", "종목코드", "최종변경일자"]
@@ -56,7 +77,7 @@ def Dart_Unique_Key(api_key):
                 data[-1].append(child.find(item).text)
     return data
 
-
+@transaction.atomic
 def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
     """
     기업코드, 년도, 분기, 연결/일반, link모델 매개변수
@@ -69,6 +90,11 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
     json_dict = json.loads(res.text)
 
     if json_dict['status'] == "000": # 정상적으로 데이터 가져옴
+
+        #ROE, ROA
+        net_income = 0
+        total_capital = 0
+        total_asset = 0
 
         link_model.exist = 1
 
@@ -99,7 +125,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         fs_unit = bs_soup.find("table").find_all('p')[-1]
         link_model.unit = fs_unit.text
         link_model.save()
-
+        
         bs_tree = {}
         now = ''
         for a in bs_soup.find_all("p"):
@@ -115,31 +141,20 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                         bs_tree[now] = []
             if account == "자본과부채총계":
                 break
-
         
-        BS = FS_Div()
-        BS.sj_div = "BS"
-        BS.lob = link_model
+        BS = FS_Div(sj_div="BS", lob=link_model)
         BS.save()
-
-        IS = FS_Div()
-        IS.sj_div = "IS"
-        IS.lob = link_model
+        
+        IS = FS_Div(sj_div="IS",lob=link_model)
         IS.save()
         
-        CIS = FS_Div()
-        CIS.sj_div = "CIS"
-        CIS.lob = link_model
+        CIS = FS_Div(sj_div="CIS",lob=link_model)
         CIS.save()
 
-        CF = FS_Div()
-        CF.sj_div = "CF"
-        CF.lob = link_model
+        CF = FS_Div(sj_div="CF",lob=link_model)
         CF.save()
-
-        SCE = FS_Div()
-        SCE.sj_div = "SCE"
-        SCE.lob = link_model
+        
+        SCE = FS_Div(sj_div="SCE",lob=link_model)
         SCE.save()
 
         pre_money = {}
@@ -149,25 +164,42 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                 if fs_lst["account_nm"] in bs_tree.keys():
                     money.fs_div = BS
                     pre_money = money
+
+                    if fs_lst["account_nm"] == "자산총계":
+                        total_asset = int(fs_lst["thstrm_amount"])
+                    elif fs_lst["account_nm"] == "자본총계":
+                        total_capital = int(fs_lst["thstrm_amount"])
                 else:
-                    for child in bs_tree.values():
-                        if fs_lst["account_nm"] in child:
-                            sub_money = SUB_Account()
-                            sub_money.pre_account = pre_money
-                            sub_money.account_name = fs_lst["account_nm"]
-                            sub_money.account_detail = fs_lst["account_detail"]
-                            if fs_lst["thstrm_amount"] == '':
-                                sub_money.account_amount = 0
-                            else:
-                                sub_money.account_amount = fs_lst["thstrm_amount"]
-                            sub_money.save()
-                            break
+                    for childs in bs_tree.values():
+                        for child in childs:
+                            if fs_lst["account_nm"] == child:
+                                sub_money = SUB_Account()
+                                sub_money.pre_account = pre_money
+                                sub_money.account_name = fs_lst["account_nm"]
+                                sub_money.account_detail = fs_lst["account_detail"]
+                                
+                                if fs_lst["thstrm_amount"] == '':
+                                    sub_money.account_amount = 0
+                                else:
+                                    sub_money.account_amount = fs_lst["thstrm_amount"]
+                                    
+                                sub_money.save()
+                                break
+                        break
                     continue
+
             elif fs_lst["sj_div"] == "IS":
                 money.fs_div = IS
 
-            elif fs_lst["sj_div"] == "CIS":
+            elif fs_lst["sj_div"] == "CIS": # 포괄 손익 계산서
                 money.fs_div = CIS
+                if "당기순이익" in fs_lst["account_nm"]:
+                    net_income = int(fs_lst["thstrm_amount"])
+
+                if fs_lst["thstrm_add_amount"] == '': # 누적 금액
+                    money.account_add_amount = 0
+                else:
+                    money.account_add_amount = fs_lst["thstrm_add_amount"]
 
             elif fs_lst["sj_div"] == "CF":
                 money.fs_div = CF
@@ -179,46 +211,22 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             money.account_detail = fs_lst["account_detail"]
             
 
-            if fs_lst["thstrm_amount"] == '':
+            if fs_lst["thstrm_amount"] == '': # 당기 금액
                 money.account_amount = 0
             else:
                 money.account_amount = fs_lst["thstrm_amount"]
-
-            if fs_lst["thstrm_add_amount"] == '':
-                money.account_add_amount = 0
-            else:
-                money.account_add_amount = fs_lst["thstrm_add_amount"]
-
-            money.save()
-    
-    else:
-        if json_dict['status'] == "010":
-            print('등록되지 않은 키입니다.')
-            print(corp_code, year, quarter, link_state)
-
-        elif json_dict['status'] == "011":
-            print('사용할 수 없는 키입니다')
-            print(corp_code, year, quarter, link_state)
             
-        elif json_dict['status'] == "013":
-            print('no data')
-            print(corp_code, year, quarter, link_state)
-
-        elif json_dict['status'] == "020":
-            print('요청 제한을 초과하였습니다.')
-            print(corp_code, year, quarter, link_state)
+            money.save()
         
-        elif json_dict['status'] == "100":
-            print('unvaild value')
-            print(corp_code, year, quarter, link_state)
-
-        elif json_dict['status'] == "800":
-            print('원활한 공시서비스를 위하여 오픈API 서비스가 중지 중입니다.')
-            print(corp_code, year, quarter, link_state)
-
-        elif json_dict['status'] == "900":
-            print('정의되지 않은 오류가 발생하였습니다.')
-            print(corp_code, year, quarter, link_state)
+        
+        link_model.ROA = net_income / total_asset * 100 # %
+        link_model.ROE = net_income / total_capital * 100 # %
+        
+        link_model.save()
+        
+    else:
+        Print_Error(json_dict['status'])
+        
 
 
 
@@ -265,6 +273,9 @@ def Save_Corp_Info(api_key, code, company):
             
             company.save()
             
-            print("저장됨")
+            try:
+                print(company.corp_name + " 객체 저장됨")
+            except:
+                print("저장됨")
     except:
         print('error')

@@ -20,22 +20,11 @@ const Profile=(props)=>{
       method:'GET',
       url: '/api/v1/users/me',
     })
-    await console.log(res);
+    console.log(res);
   }
   
-  useEffect(async ()=>{
-    try{
-      const res = await axios({
-        method:'GET',
-        url: '/api/v1/users/me',
-      })
-      await console.log(res);
-      await setUserInfo(res.data)
-      await console.log('user: ',userInfo);
-    }catch(err){
-      console.log(err);
-    }
-  },[])
+  // useEffect(async ()=>{
+  // })
 
   return(
     <article className="profile_manage">
