@@ -1,186 +1,186 @@
 import Constants from "../constants"
 
-const initState ={
-  "account": [
-      {
-          "fsname": "유동자산",
-          "sub_account": [
-              {
-                  "name": "현금및현금성자산",
-                  "amount": 4604291.0,
-                  "coef": 1
-              },
-              {
-                  "name": "매출채권 및 기타유동채권",
-                  "amount": 9202795.0,
-                  "coef": 1
-              },
-              {
-                  "name": "기타유동금융자산",
-                  "amount": 7524990.0,
-                  "coef": 1
-              },
-              {
-                  "name": "재고자산",
-                  "amount": 10864800.0,
-                  "coef": 1
-              },
-              {
-                  "name": "기타유동자산",
-                  "amount": 4022366.0,
-                  "coef": 1
-              }
-          ]
-      },
-      {
-          "fsname": "비유동자산",
-          "sub_account": [
-              {
-                  "name": "장기매출채권 및 기타비유동채권",
-                  "amount": 1800380.0,
-                  "coef": 1
-              },
-              {
-                  "name": "기타비유동금융자산",
-                  "amount": 4586505.0,
-                  "coef": 1
-              },
-              {
-                  "name": "비유동 기타포괄손익-공정가치 측정 금융자산",
-                  "amount": 2770217.0,
-                  "coef": 1
-              },
-              {
-                  "name": "비유동매도가능금융자산",
-                  "amount": 0.0,
-                  "coef": 1
-              },
-              {
-                  "name": "종속기업, 조인트벤처와 관계기업에 대한 투자자산",
-                  "amount": 2941828.0,
-                  "coef": 1
-              },
-              {
-                  "name": "유형자산",
-                  "amount": 27170043.0,
-                  "coef": 1
-              },
-              {
-                  "name": "영업권 이외의 무형자산",
-                  "amount": 9174606.0,
-                  "coef": 1
-              },
-              {
-                  "name": "기타비유동자산",
-                  "amount": 159671.0,
-                  "coef": 1
-              }
-          ]
-      },
-      {
-          "fsname": "자산총계",
-          "sub_account": []
-      },
-      {
-          "fsname": "유동부채",
-          "sub_account": [
-              {
-                  "name": "매입채무 및 기타유동채무",
-                  "amount": 3146612.0,
-                  "coef": 1
-              },
-              {
-                  "name": "단기차입금",
-                  "amount": 17185978.0,
-                  "coef": 1
-              },
-              {
-                  "name": "유동파생상품부채",
-                  "amount": 188613.0,
-                  "coef": 1
-              },
-              {
-                  "name": "기타유동부채",
-                  "amount": 219238.0,
-                  "coef": 1
-              }
-          ]
-      },
-      {
-          "fsname": "비유동부채",
-          "sub_account": [
-              {
-                  "name": "장기매입채무 및 기타비유동채무",
-                  "amount": 351974.0,
-                  "coef": 1
-              },
-              {
-                  "name": "장기차입금",
-                  "amount": 21614245.0,
-                  "coef": 1
-              },
-              {
-                  "name": "비유동파생상품부채",
-                  "amount": 278451.0,
-                  "coef": 1
-              },
-              {
-                  "name": "기타비유동부채",
-                  "amount": 2396274.0,
-                  "coef": 1
-              },
-              {
-                  "name": "이연법인세부채",
-                  "amount": 612215.0,
-                  "coef": 1
-              }
-          ]
-      },
-      {
-          "fsname": "부채총계",
-          "sub_account": []
-      },
-      {
-          "fsname": "지배기업의 소유주에게 귀속되는 자본",
-          "sub_account": [
-              {
-                  "name": "자본금",
-                  "amount": 1366450.0,
-                  "coef": 1
-              },
-              {
-                  "name": "자본잉여금",
-                  "amount": 28073533.0,
-                  "coef": 1
-              },
-              {
-                  "name": "기타포괄손익누계액",
-                  "amount": 383409.0,
-                  "coef": 1
-              },
-              {
-                  "name": "기타자본구성요소",
-                  "amount": -2175125.0,
-                  "coef": 1
-              },
-              {
-                  "name": "이익잉여금(결손금)",
-                  "amount": 5772230.0,
-                  "coef": 1
-              }
-          ]
-      },
-      {
-          "fsname": "비지배지분",
-          "sub_account": []
-      },
-      {
-          "fsname": "자본총계",
-          "sub_account": []
-      }
-  ]
+const initState = {
+    "account": [
+        {
+            "fsname": "유동자산",
+            "amount": 36268771.0,
+            "sub_account": [
+                {
+                    "name": "현금및현금성자산",
+                    "amount": 5925140.0,
+                    "coef": 1
+                },
+                {
+                    "name": "매출채권 및 기타유동채권",
+                    "amount": 8163169.0,
+                    "coef": 1
+                },
+                {
+                    "name": "재고자산",
+                    "amount": 10800282.0,
+                    "coef": 1
+                },
+                {
+                    "name": "기타유동금융자산",
+                    "amount": 6443917.0,
+                    "coef": 1
+                },
+                {
+                    "name": "기타유동자산",
+                    "amount": 4936263.0,
+                    "coef": 1
+                }
+            ]
+        },
+        {
+            "fsname": "비유동자산",
+            "amount": 50798431.0,
+            "sub_account": [
+                {
+                    "name": "장기매출채권 및 기타비유동채권",
+                    "amount": 1911233.0,
+                    "coef": 1
+                },
+                {
+                    "name": "유형자산",
+                    "amount": 29490596.0,
+                    "coef": 1
+                },
+                {
+                    "name": "영업권 이외의 무형자산",
+                    "amount": 9051848.0,
+                    "coef": 1
+                },
+                {
+                    "name": "종속기업, 조인트벤처와 관계기업에 대한 투자자산",
+                    "amount": 0.0,
+                    "coef": 1
+                },
+                {
+                    "name": "기타비유동금융자산",
+                    "amount": 6399794.0,
+                    "coef": 1
+                },
+                {
+                    "name": "비유동매도가능금융자산",
+                    "amount": 3702560.0,
+                    "coef": 1
+                },
+                {
+                    "name": "기타비유동자산",
+                    "amount": 242400.0,
+                    "coef": 1
+                }
+            ]
+        },
+        {
+            "fsname": "자산총계",
+            "amount": 87067202.0,
+            "sub_account": []
+        },
+        {
+            "fsname": "유동부채",
+            "amount": 18648083.0,
+            "sub_account": [
+                {
+                    "name": "매입채무 및 기타유동채무",
+                    "amount": 2663206.0,
+                    "coef": 1
+                },
+                {
+                    "name": "단기차입금",
+                    "amount": 12140595.0,
+                    "coef": 1
+                },
+                {
+                    "name": "기타유동금융부채",
+                    "amount": 3611689.0,
+                    "coef": 1
+                },
+                {
+                    "name": "기타유동부채",
+                    "amount": 232593.0,
+                    "coef": 1
+                }
+            ]
+        },
+        {
+            "fsname": "비유동부채",
+            "amount": 19842071.0,
+            "sub_account": [
+                {
+                    "name": "장기차입금",
+                    "amount": 17365164.0,
+                    "coef": 1
+                },
+                {
+                    "name": "기타비유동금융부채",
+                    "amount": 212884.0,
+                    "coef": 1
+                },
+                {
+                    "name": "이연법인세부채",
+                    "amount": 436492.0,
+                    "coef": 1
+                },
+                {
+                    "name": "기타비유동부채",
+                    "amount": 1827531.0,
+                    "coef": 1
+                }
+            ]
+        },
+        {
+            "fsname": "부채총계",
+            "amount": 38490154.0,
+            "sub_account": []
+        },
+        {
+            "fsname": "지배기업의 소유주에게 귀속되는 자본",
+            "amount": 40370561.0,
+            "sub_account": [
+                {
+                    "name": "자본금",
+                    "amount": 1366450.0,
+                    "coef": 1
+                },
+                {
+                    "name": "자본잉여금",
+                    "amount": 34575747.0,
+                    "coef": 1
+                },
+                {
+                    "name": "기타자본구성요소",
+                    "amount": -2335863.0,
+                    "coef": 1
+                },
+                {
+                    "name": "기타포괄손익누계액",
+                    "amount": -1621787.0,
+                    "coef": 1
+                },
+                {
+                    "name": "이익잉여금(결손금)",
+                    "amount": 8386014.0,
+                    "coef": 1
+                }
+            ]
+        },
+        {
+            "fsname": "비지배지분",
+            "amount": 8206487.0,
+            "sub_account": []
+        },
+        {
+            "fsname": "자본총계",
+            "amount": 48577048.0,
+            "sub_account": []
+        }
+    ]
 }
-  
+// sub_account의 amount는 그대로 -> 프론트에서 amount와 coef를 곱해 바로 보여준다.
+// account의 amount는 나머지를 더해서 실제 데이터를 변경
 
 export default function reducer(state=initState, action){
   switch(action.type){
@@ -190,10 +190,41 @@ export default function reducer(state=initState, action){
 
     case Constants.calc.CHANGE:
       let newState = {...state};
-      newState.account[action.index[0]].subAccount[action.index[1]].coef = action.coef;
+      let account =  newState.account[action.index[0]];
+
+      account.sub_account[action.index[1]].coef = action.coef;
+
+      let account_sum = 0;
+      account.sub_account.forEach(element => {
+        console.log(element.amount, element.coef)
+        account_sum += (element.amount * element.coef);
+      });
+      account.amount = account_sum;
+
+
       console.log(newState);
       return newState;
   }
 
   return state
 }
+
+    //  // 유동 자산
+    //  let current_asset = 0;
+    //  // 비유동 자산
+    //  let non_current_asset = 0;
+    //  // 자산 총계
+    //  let total_asset = 0;
+    //  // 유동 부채
+    //  let current_debt = 0;
+    //  // 비유동 부채
+    //  let non_current_debt = 0;
+    //  // 부채 총계
+    //  let total_debt = 0;
+    //  // 지배 기업의 소유주에게 귀속되는 자본
+    //  let controlling_interset = 0;
+    //  // 비지배지분
+    //  let non_controlling_interset = 0;
+    //  // 자본 총계
+    //  let total_capital = 0;
+     

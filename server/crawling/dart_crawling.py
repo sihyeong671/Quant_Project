@@ -166,8 +166,6 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         SCE.lob = link_model
         SCE.save()
 
-        
-
         pre_money = {}
         for fs_lst in json_dict['list']: # 한 행씩 가져오기
             money = FS_Account()
@@ -182,19 +180,21 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                     elif fs_lst["account_nm"] == "자본총계":
                         total_capital = fs_lst["thstrm_amount"]
                 else:
-                    for child in bs_tree.values():
-                        if fs_lst["account_nm"] == child:
-                            sub_money = SUB_Account()
-                            sub_money.pre_account = pre_money
-                            sub_money.account_name = fs_lst["account_nm"]
-                            sub_money.account_detail = fs_lst["account_detail"]
-                            
-                            if fs_lst["thstrm_amount"] == '':
-                                sub_money.account_amount = 0
-                            else:
-                                sub_money.account_amount = fs_lst["thstrm_amount"]
+                    for childs in bs_tree.values():
+                        for child in childs:
+                            if fs_lst["account_nm"] == child:
+                                sub_money = SUB_Account()
+                                sub_money.pre_account = pre_money
+                                sub_money.account_name = fs_lst["account_nm"]
+                                sub_money.account_detail = fs_lst["account_detail"]
                                 
-                            sub_money.save()
+                                if fs_lst["thstrm_amount"] == '':
+                                    sub_money.account_amount = 0
+                                else:
+                                    sub_money.account_amount = fs_lst["thstrm_amount"]
+                                    
+                                sub_money.save()
+                                break
                             break
                     continue
 

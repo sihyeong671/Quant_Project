@@ -30,12 +30,10 @@ const Input = ({index, coef, changeCoef, pre_value}) => {
 const SubAccount = ({idx_1, subAccount, changeCoef}) => {
   console.log('SubAccount rendering');
 
-  console.log(subAccount);
-  
   const subAccountList = subAccount.map((subacnt, idx_2) => {
     return(
       <div key={idx_2}>
-        <span>{subacnt.name}</span>
+        <span>/{subacnt.name}</span>
         <span>{subacnt.amount}</span>
         <Input coef={subacnt.coef} changeCoef={changeCoef} index={[idx_1, idx_2]} pre_value={subacnt.amount}/>
       </div>
@@ -48,13 +46,19 @@ const SubAccount = ({idx_1, subAccount, changeCoef}) => {
   )
 }
 
+// 비지배지분 input 값 넣어줘야함
 const Account = ({account, changeCoef}) => {
-  console.log(account);
+
   const AccountList = account.map((acnt, idx_1)=>{
-    console.log(acnt, idx_1);
+    let amount = ''
+    if(acnt.sub_account.length == 0){
+      amount = <span>{acnt.amount}</span>
+    }
     return(
       <div key={idx_1}>
         <span>{acnt.fsname}</span>
+        <span>{acnt.amount}</span>
+        {/* {amount} */}
         <SubAccount subAccount={acnt.sub_account} changeCoef={changeCoef} idx_1={idx_1}/>
       </div>
     )
@@ -74,16 +78,6 @@ function Calc(props){
 
   const [parameter, setParameter] = useState({});
 
-
-  // for문으로 삽입
-  // 자산 총계
-  const total_asset = 0;
-  // 자본 총계
-  const total_capital = 0;
-  // 부채 총계
-  const total_debt = 0;
-
-  console.log(LV);
 
   let years = [];
   for(let i = 2015; i < 2022; i ++){
@@ -175,3 +169,4 @@ function Calc(props){
 }
 
 export default hot(module)(Calc);
+
