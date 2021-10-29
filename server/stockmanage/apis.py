@@ -33,79 +33,6 @@ class CompanyNameApi(PublicApiMixin, APIView):
 
 
 class AccountApi(PublicApiMixin, APIView):
-    def get(self, request, *args, **kwargs):
-        {
-            "id":"950130",
-            "name":"pdf",
-            "year": "2018",
-            "quarter": "11011",
-            "link": "CFS",
-            "fs": "BS"
-        }
-        stock_code = "950130"
-        year = 2018
-        quarter = "11011"
-        link = "CFS"
-        fs = "BS"
-        
-        account_list = FS_Account.objects\
-            .prefetch_related('sub_account')\
-            .filter(
-                Q(fs_div__sj_div=fs) &
-                Q(fs_div__lob__lob=link) & 
-                Q(fs_div__lob__quarter__qt_name=quarter) & 
-                Q(fs_div__lob__quarter__year__bs_year=year) & 
-                Q(fs_div__lob__quarter__year__company__stock_code=stock_code)
-            )
-        
-        fs_account_list = []
-        
-        for ac in account_list:
-            sub_account_list = []
-            for sub in ac.sub_account.all():
-                subaccount = {
-                    'name': sub.account_name,
-                    'amount': sub.account_amount,
-                    'coef': 1,
-                }
-                sub_account_list.append(subaccount)
-            
-            fsaccount = {
-                'fsname': ac.account_name,
-                'sub_account': sub_account_list,
-            }
-            fs_account_list.append(fsaccount)
-        
-        data = {
-            'account': fs_account_list
-        }
-        
-        
-        return Response(data, status=status.HTTP_200_OK)
-        
-    #     fs_account_list = []
-        
-    #     for ac in account_list:
-    #         sub_account_list = []
-    #         for sub in ac.sub_account.all():
-    #             subaccount = {
-    #                 'name': sub.account_name,
-    #                 'amount': sub.account_amount
-    #             }
-    #             sub_account_list.append(subaccount)
-            
-    #         fsaccount = {
-    #             'fsname': ac.account_name,
-    #             'sub_account': sub_account_list,
-    #         }
-    #         fs_account_list.append(fsaccount)
-        
-    #     data = {
-    #         'account': fs_account_list
-    #     }
-        
-    #     return Response(data, status=status.HTTP_200_OK)
-    
     def post(self, request, *args, **kwargs):
         stock_code = request.data.get('id', '')
         year = request.data.get('year', '')
@@ -138,6 +65,7 @@ class AccountApi(PublicApiMixin, APIView):
             
             fsaccount = {
                 'fsname': ac.account_name,
+                'amount': ac.account_amount,
                 'sub_account': sub_account_list,
             }
             fs_account_list.append(fsaccount)
@@ -147,13 +75,27 @@ class AccountApi(PublicApiMixin, APIView):
         }
         
         return Response(data, status=status.HTTP_200_OK)
-        
 
 
 class DailyPriceApi(PublicApiMixin, APIView):
-    def get(self, request, *args, **kwargs):
-        com = get_object_or_404(Company, stock_code=kwargs['code'])
-        stocks = Daily_Price.objects.filter(company__id=com.id).order_by('date')
-        data = getData(stocks)
-        return Response(data)
+    def post(self, request, *args, **kwargs):
+        company_code = request.data.getlist('code')
+        data = {}
+        
+        for code in company_code:
+            company = Company.objects.filter(stock_code=code)
+            
+            if not company.exists():
+                return Response({
+                    "message": "Company not exists"
+                }, status=status.HTTP_404_NOT_FOUND)
+            
+            company = company.first()
+            
+            stocks = Daily_Price.objects.filter(company__id=company.id).order_by('date')
+            
+            data[company.corp_name] = getData(stocks)
+        
+        return Response(data, status=status.HTTP_200_OK)
+        
     
