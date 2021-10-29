@@ -161,9 +161,8 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         for fs_lst in json_dict['list']: # 한 행씩 가져오기
             money = FS_Account()
             if fs_lst["sj_div"] == "BS":
-                money.fs_div = BS
-                
                 if fs_lst["account_nm"] in bs_tree.keys():
+                    money.fs_div = BS
                     pre_money = money
 
                     if fs_lst["account_nm"] == "자산총계":
@@ -171,21 +170,22 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                     elif fs_lst["account_nm"] == "자본총계":
                         total_capital = int(fs_lst["thstrm_amount"])
                 else:
-                    for child in bs_tree.values():
-                        if fs_lst["account_nm"] == child:
-                            print('create subaccount')
-                            sub_money = SUB_Account()
-                            sub_money.pre_account = money
-                            sub_money.account_name = fs_lst["account_nm"]
-                            sub_money.account_detail = fs_lst["account_detail"]
-                            
-                            if fs_lst["thstrm_amount"] == '':
-                                sub_money.account_amount = 0
-                            else:
-                                sub_money.account_amount = fs_lst["thstrm_amount"]
+                    for childs in bs_tree.values():
+                        for child in childs:
+                            if fs_lst["account_nm"] == child:
+                                sub_money = SUB_Account()
+                                sub_money.pre_account = pre_money
+                                sub_money.account_name = fs_lst["account_nm"]
+                                sub_money.account_detail = fs_lst["account_detail"]
                                 
-                            sub_money.save()
-                            break
+                                if fs_lst["thstrm_amount"] == '':
+                                    sub_money.account_amount = 0
+                                else:
+                                    sub_money.account_amount = fs_lst["thstrm_amount"]
+                                    
+                                sub_money.save()
+                                break
+                        break
                     continue
 
             elif fs_lst["sj_div"] == "IS":
