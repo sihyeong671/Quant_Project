@@ -13,6 +13,6 @@ urlpatterns = [
     
     path('company', CompanyNameApi.as_view(), name="company_info"),
     path('account', AccountApi.as_view()),
-    path('daily/<str:code>', DailyPriceApi.as_view(), name="daily_price"),
+    path('daily', DailyPriceApi.as_view(), name="daily_price"),
     
 ]

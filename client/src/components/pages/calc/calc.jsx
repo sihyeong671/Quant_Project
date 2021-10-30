@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import Search from '../../../containers/search/search';
 
+import './assets/css/style.scss';
+
 const Input = ({index, coef, changeCoef, pre_value}) => {
 
   console.log("Input rendering")
@@ -20,10 +22,11 @@ const Input = ({index, coef, changeCoef, pre_value}) => {
   const changedValue = coefficient * pre_value;
 
   return(
-    <>
+    <div className='subAccount_value'>
       <input type="number" step='0.1' min="-10" max = '10' value={coefficient} onChange={(e) => onChange(e)}></input>
+      <h3>=</h3>
       <span>{changedValue}</span>
-    </>
+    </div>
   );
 }
 
@@ -32,9 +35,12 @@ const SubAccount = ({idx_1, subAccount, changeCoef}) => {
 
   const subAccountList = subAccount.map((subacnt, idx_2) => {
     return(
-      <div key={idx_2}>
-        <span>/{subacnt.name}</span>
-        <span>{subacnt.amount}</span>
+      <div className='subAccount' key={idx_2}>
+        <div className='subAccount_info'>
+          <span className='subAccount-name'>{subacnt.name}</span>
+          <span className='subAccount-amount'>{subacnt.amount}</span>
+          <h3>x</h3>
+        </div>
         <Input coef={subacnt.coef} changeCoef={changeCoef} index={[idx_1, idx_2]} pre_value={subacnt.amount}/>
       </div>
     )
@@ -55,10 +61,8 @@ const Account = ({account, changeCoef}) => {
       amount = <span>{acnt.amount}</span>
     }
     return(
-      <div key={idx_1}>
-        <span>{acnt.fsname}</span>
-        <span>{acnt.amount}</span>
-        {/* {amount} */}
+      <div className='account-wrapper' key={idx_1}>
+        <span className='account-name'>{acnt.fsname}</span>
         <SubAccount subAccount={acnt.sub_account} changeCoef={changeCoef} idx_1={idx_1}/>
       </div>
     )

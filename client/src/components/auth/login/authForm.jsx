@@ -36,7 +36,7 @@ const authForm = (props) => (
         <img src={srcSet.google} alt="googlelogin" />
         <span>구글로 로그인</span>
       </a>
-      
+
       <a className="social-naver" href='http://localhost:8000/api/v1/auth/login/naver'>
         <img src={srcSet.naver} alt="naverlogin" />
         <span>네이버로 로그인</span>
@@ -45,8 +45,8 @@ const authForm = (props) => (
 
     <div>
       <ul>
-        <li><Link to ='/auth/search_id'>아이디 찾기</Link></li>
-        <li><Link to ='/auth/search_pwd'>비밀번호 찾기</Link></li>
+        <li><Link to='/auth/search_id'>아이디 찾기</Link></li>
+        <li><Link to='/auth/search_pwd'>비밀번호 찾기</Link></li>
         <li><Link to='/auth/signup'>회원가입</Link></li>
       </ul>
     </div>

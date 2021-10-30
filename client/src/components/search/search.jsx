@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { hot } from 'react-hot-loader';
 import './assets/css/style.scss';
 
