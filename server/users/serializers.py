@@ -9,6 +9,7 @@ from stockmanage.serializers import CompanySerializer
 
 User = get_user_model()
 
+
 class ProfileSerializer(serializers.ModelSerializer):
     # favorite_company = PostListSerializer(read_only=True)
     favorite_category = CategorySerializer(read_only=True, many=True)
@@ -53,6 +54,33 @@ class UserSerializer(serializers.ModelSerializer):
         ]
 
 
+def validate_password12(password1, password2):
+    validate_condition = [
+        lambda s: all(x.islower() or x.isupper() or x.isdigit() or (x in ['!', '@', '#', '$', '%', '^', '&', '*', '_']) for x in s), ## 영문자 대소문자, 숫자, 특수문자(리스트)만 허용
+        lambda s: any(x.islower() or x.isupper() for x in s), ## 영어 대소문자 필수
+        lambda s: any((x in ['!', '@', '#', '$', '%', '^', '&', '*', '_']) for x in s), ## 특수문자 필수
+        lambda s: len(s) == len(s.replace(" ","")),
+        lambda s: len(s) >= 6, ## 글자수 제한
+        lambda s: len(s) <= 20, ## 글자수 제한
+    ]
+
+    for validator in validate_condition:
+        if not validator(password1):
+            raise serializers.ValidationError(
+            _("password ValidationError")
+        )
+    
+    if not password1 or not password2:
+        raise serializers.ValidationError(
+            _("need two password fields")
+        )
+    if password1 != password2:
+        raise serializers.ValidationError(
+            _("password fields didn't match!"))
+    
+    return password1
+
+
 class RegisterSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=150, write_only=True)
     email = serializers.EmailField(write_only=True)
@@ -70,32 +98,6 @@ class RegisterSerializer(serializers.Serializer):
                 _("A user is already registered with this e-mail address."))
         
         return email
-    
-    def validate_password12(self, password1, password2):
-        validate_condition = [
-            lambda s: all(x.islower() or x.isupper() or x.isdigit() or (x in ['!', '@', '#', '$', '%', '^', '&', '*', '_']) for x in s), ## 영문자 대소문자, 숫자, 특수문자(리스트)만 허용
-            lambda s: any(x.islower() or x.isupper() for x in s), ## 영어 대소문자 필수
-            lambda s: any((x in ['!', '@', '#', '$', '%', '^', '&', '*', '_']) for x in s), ## 특수문자 필수
-            lambda s: len(s) == len(s.replace(" ","")),
-            lambda s: len(s) >= 6, ## 글자수 제한
-            lambda s: len(s) <= 20, ## 글자수 제한
-        ]
-
-        for validator in validate_condition:
-            if not validator(password1):
-                raise serializers.ValidationError(
-                _("password ValidationError")
-            )
-        
-        if not password1 or not password2:
-            raise serializers.ValidationError(
-                _("need two password fields")
-            )
-        if password1 != password2:
-            raise serializers.ValidationError(
-                _("password fields didn't match!"))
-        
-        return password1
     
     def validate_username(self, username):
         validate_condition = [
@@ -125,7 +127,7 @@ class RegisterSerializer(serializers.Serializer):
         return username
     
     def validate(self, data):
-        data['password1'] = self.validate_password12(data['password1'], data['password2'])
+        data['password1'] = validate_password12(data['password1'], data['password2'])
         data['email'] = self.validate_email(data['email'])
         data['username'] = self.validate_username(data['username'])
         print("check validate ALL")
@@ -158,13 +160,10 @@ class PasswordChangeSerializer(serializers.Serializer):
         if oldpassword == newpassword1 or oldpassword == newpassword2:
             raise serializers.ValidationError(
                 _("oldpw and newpw are same either"))
-        if not newpassword1 or not newpassword2:
-            raise serializers.ValidationError(
-                _("need two password fields"))
-        if newpassword1 != newpassword2:
-            raise serializers.ValidationError(_("password fields didn't match!"))
         
-        return newpassword1
+        newpassword = validate_password12(newpassword1, newpassword2)
+        
+        return newpassword
     
     def validate(self, data):
         data['newpassword1'] = self.validate_password(

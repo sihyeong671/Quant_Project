@@ -1,23 +1,24 @@
-from django.core import exceptions
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from django.db import transaction
-from django.shortcuts import redirect
 from django.conf import settings
 from django.contrib.auth.hashers import check_password
 from django.core.management.utils import get_random_secret_key
-from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.template.loader import render_to_string
 from django.contrib.auth import get_user_model
+from django.http import FileResponse
+from django.http.response import Http404
 
 from api.mixins import ApiAuthMixin, PublicApiMixin
 
 from auth.authenticate import jwt_login
+from config.settings import BASE_DIR
 
-from users.serializers import RegisterSerializer, UserSerializer, PasswordChangeSerializer
+from users.serializers import RegisterSerializer, UserSerializer,\
+    PasswordChangeSerializer, validate_password12
 from users.models import Profile
 from users.services import send_mail, email_auth_string
 
@@ -121,7 +122,7 @@ class SendPasswordEmailApi(PublicApiMixin, APIView):
             target_user.profile.save()
             
             send_mail(
-                '[PROJECT:QUANT] 비밀번호 찾기 인증 메일입니다.',
+                'QUANTmanager 비밀번호 찾기 인증 메일입니다.',
                 recipient_list=[target_email],
                 html=render_to_string('recovery_email.html', {
                     'auth_string': auth_string,
@@ -166,8 +167,7 @@ class ResetPasswordApi(ApiAuthMixin, APIView):
         password2 = request.data.get('password2', '')
         user = request.user
         
-        if password1 != password2 or not password1 or not password2:
-            raise ValidationError(_("password error"))
+        newpassword = validate_password12(password1, password2)
         
         user.set_password(password1)
         user.save()
@@ -178,4 +178,4 @@ class ResetPasswordApi(ApiAuthMixin, APIView):
         response.delete_cookie(settings.JWT_AUTH['JWT_AUTH_COOKIE'])
 
         return response
-    
+
