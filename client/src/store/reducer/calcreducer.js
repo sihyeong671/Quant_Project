@@ -209,22 +209,5 @@ export default function reducer(state=initState, action){
   return state
 }
 
-    //  // 유동 자산
-    //  let current_asset = 0;
-    //  // 비유동 자산
-    //  let non_current_asset = 0;
-    //  // 자산 총계
-    //  let total_asset = 0;
-    //  // 유동 부채
-    //  let current_debt = 0;
-    //  // 비유동 부채
-    //  let non_current_debt = 0;
-    //  // 부채 총계
-    //  let total_debt = 0;
-    //  // 지배 기업의 소유주에게 귀속되는 자본
-    //  let controlling_interset = 0;
-    //  // 비지배지분
-    //  let non_controlling_interset = 0;
-    //  // 자본 총계
-    //  let total_capital = 0;
+    
      

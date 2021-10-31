@@ -54,7 +54,24 @@ const SubAccount = ({idx_1, subAccount, changeCoef}) => {
 
 // 비지배지분 input 값 넣어줘야함
 const Account = ({account, changeCoef}) => {
-
+  //  // 유동 자산
+    //  let current_asset = 0;
+    //  // 비유동 자산
+    //  let non_current_asset = 0;
+    //  // 자산 총계
+    //  let total_asset = 0;
+    //  // 유동 부채
+    //  let current_debt = 0;
+    //  // 비유동 부채
+    //  let non_current_debt = 0;
+    //  // 부채 총계
+    //  let total_debt = 0;
+    //  // 지배 기업의 소유주에게 귀속되는 자본
+    //  let controlling_interset = 0;
+    //  // 비지배지분
+    //  let non_controlling_interset = 0;
+    //  // 자본 총계
+    //  let total_capital = 0;
   const AccountList = account.map((acnt, idx_1)=>{
     let amount = ''
     if(acnt.sub_account.length == 0){
@@ -63,6 +80,7 @@ const Account = ({account, changeCoef}) => {
     return(
       <div className='account-wrapper' key={idx_1}>
         <span className='account-name'>{acnt.fsname}</span>
+        <span className='account-amount'>{amount}</span>
         <SubAccount subAccount={acnt.sub_account} changeCoef={changeCoef} idx_1={idx_1}/>
       </div>
     )
