@@ -1,5 +1,16 @@
 import Constants from "../constants"
+import _ from "lodash";
 
+
+// 유동자산
+// 비유동자산
+//  자산총계
+// 유동부채
+// 비유동부채
+//  부채총계
+// 지배기업
+// 비지배지분
+//  자본총계
 const initState = {
     "account": [
         {
@@ -189,25 +200,24 @@ export default function reducer(state=initState, action){
       return action.data;
 
     case Constants.calc.CHANGE:
-      let newState = {...state};
-      let account =  newState.account[action.index[0]];
+      let newState = _.cloneDeep(state);
+      let changed_account =  newState.account[action.index[0]];
 
-      account.sub_account[action.index[1]].coef = action.coef;
+      changed_account.sub_account[action.index[1]].coef = action.coef;
 
       let account_sum = 0;
-      account.sub_account.forEach(element => {
-        console.log(element.amount, element.coef)
+      changed_account.sub_account.forEach(element => {
         account_sum += (element.amount * element.coef);
       });
-      account.amount = account_sum;
+      changed_account.amount = account_sum;
+    
+      newState.account[2].amount = newState.account[0].amount + newState.account[1].amount;
+      newState.account[5].amount = newState.account[3].amount + newState.account[4].amount;
+      newState.account[8].amount = newState.account[6].amount + newState.account[7].amount;
 
-
-      console.log(newState);
       return newState;
   }
 
   return state
 }
 
-    
-     

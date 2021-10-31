@@ -73,9 +73,10 @@ const Account = ({account, changeCoef}) => {
     //  // 자본 총계
     //  let total_capital = 0;
   const AccountList = account.map((acnt, idx_1)=>{
+    console.log(acnt.amount);
     let amount = ''
     if(acnt.sub_account.length == 0){
-      amount = <span>{acnt.amount}</span>
+      amount = acnt.amount
     }
     return(
       <div className='account-wrapper' key={idx_1}>
@@ -191,4 +192,6 @@ function Calc(props){
 }
 
 export default hot(module)(Calc);
+// export default Calc;
+
 
