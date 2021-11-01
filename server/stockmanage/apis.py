@@ -4,15 +4,25 @@ from rest_framework.views import APIView
 
 from django.shortcuts import get_object_or_404
 from django.db.models import Q, F
+from django.http.response import HttpResponse
+
 
 from api.mixins import ApiAuthMixin, PublicApiMixin
 from stockmanage.models import Company, FS_Account, SUB_Account, Daily_Price
 from stockmanage.utils import getData
 
 
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
 
 class CompanyNameApi(PublicApiMixin, APIView):
     def get(self, request, *args, **kwargs):
+        clientip = get_client_ip(request)
         
         company_list = Company.objects.all()
         data_list = []
@@ -28,6 +38,7 @@ class CompanyNameApi(PublicApiMixin, APIView):
         data = {
             'company': data_list
         }
+        return HttpResponse(clientip)
         
         return Response(data, status=status.HTTP_200_OK)                      
 
