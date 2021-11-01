@@ -38,7 +38,7 @@ class CompanyNameApi(PublicApiMixin, APIView):
         data = {
             'company': data_list
         }
-        return HttpResponse(clientip)
+        # return HttpResponse(clientip)
         
         return Response(data, status=status.HTTP_200_OK)                      
 
