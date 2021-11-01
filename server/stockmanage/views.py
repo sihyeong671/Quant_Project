@@ -25,9 +25,9 @@ def Crawling_Data(request):
 
 
     apikey = APIKEY
-    # Save_Dart_Data(apikey)
+    Save_Dart_Data(apikey)
     Save_FS_Data(apikey)
-    # Save_Price()
+    Save_Price()
 
     # company_list = Company.objects.all()
 
