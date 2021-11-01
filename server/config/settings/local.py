@@ -9,6 +9,9 @@ ALLOWED_HOSTS = ['*']
 BASE_BACKEND_URL = 'http://localhost:8000'
 BASE_FRONTEND_URL = 'http://localhost:3000'
 
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 
 # CORS SETTINGS
 CORS_ORIGIN_ALLOW_ALL = True
