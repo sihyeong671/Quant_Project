@@ -82,7 +82,7 @@ MIDDLEWARE = [
 
 INTERNAL_IPS = [
     '127.0.0.1',
-    '54.180.200.164',
+    'http://quant.or.kr',
 ]
 
 
