@@ -66,6 +66,7 @@ class AccountApi(PublicApiMixin, APIView):
             fsaccount = {
                 'fsname': ac.account_name,
                 'amount': ac.account_amount,
+                'coef': 1,
                 'sub_account': sub_account_list,
             }
             fs_account_list.append(fsaccount)
