@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { hot } from 'react-hot-loader';
 import './assets/css/style.scss';
 
@@ -17,18 +17,16 @@ const Search = (props) =>{
   console.log('Search rendering');
   const [corpName, setCorpName] = useState('');
 
-  // API로 회사들 가져와야 함
   const [corpList, setCorpList] = useState();
-  console.log(corpList);
+  useEffect(()=>{
+    console.log(props.getFsData());
+  },[]);
+  console.log("list", corpList);
   // 연관 검색어 리스트
   const [relList, setRelList] = useState([]);
 
   // 스타일
   const [listStyle, setStyle] = useState({});
-
-  useEffect(async ()=>{
-    await setCorpList(props.getFsData());
-  },[]);
 
   useEffect(async () => {
       await filterRelList();
@@ -41,7 +39,7 @@ const Search = (props) =>{
           item.name.toLowerCase().includes(corpName.toLowerCase()) 
       )
     });
-    console.log(filterList);
+    // console.log(filterList);
     (corpName.length > 0 && filterList.length > 0) ? ( 
         setRelList(filterList),
         setStyle({display: 'block'})
@@ -95,7 +93,7 @@ const Search = (props) =>{
 
           <div className="search_list">
               {props.corpList.map((data) => (
-                  <List 
+                  <List
                       onClick={props.onClickDelete}
                       name={data.name}
                       id = {data.id}

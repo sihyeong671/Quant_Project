@@ -5,34 +5,44 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import Search from '../../../containers/search/search';
 
-const Input = ({index, coef, changeCoef, pre_value}) => {
+import './assets/css/style.scss';
+
+// index : 리스트
+const Input = ({index, coef, changeFunction, pre_value}) => {
+
   console.log("Input rendering")
+
   const [coefficient, setCoefficient] = useState(coef);
+
   const onChange = (e) => {
     e.preventDefault();
-    setCoefficient(e.target.value);
-    changeCoef([index[0], index[1]], e.target.value);
+    setCoefficient(e.target.value); // 이거 지우고 하면 왜 값이 안바뀔까?
+    changeFunction(index, e.target.value);
   }
+
   const changedValue = coefficient * pre_value;
+
   return(
-    <>
+    <div className='subAccount_value'>
       <input type="number" step='0.1' min="-10" max = '10' value={coefficient} onChange={(e) => onChange(e)}></input>
+      <h3>=</h3>
       <span>{changedValue}</span>
-    </>
+    </div>
   );
 }
 
-const SubAccount = ({idx_1, subAccount, changeCoef}) => {
+const SubAccount = ({idx_1, subAccount, changeSubCoef}) => {
   console.log('SubAccount rendering');
 
-  console.log(subAccount);
-  
   const subAccountList = subAccount.map((subacnt, idx_2) => {
     return(
-      <div key={idx_2}>
-        <span>{subacnt.name}</span>
-        <span>{subacnt.amount}</span>
-        <Input coef={subacnt.coef} changeCoef={changeCoef} index={[idx_1, idx_2]} pre_value={subacnt.amount}/>
+      <div className='subAccount' key={idx_2}>
+        <div className='subAccount_info'>
+          <span className='subAccount-name'>{subacnt.name}</span>
+          <span className='subAccount-amount'>{subacnt.amount}</span>
+          <h3>x</h3>
+        </div>
+        <Input coef={subacnt.coef} changeFunction={changeSubCoef} index={[idx_1, idx_2]} pre_value={subacnt.amount}/>
       </div>
     )
   });
@@ -43,14 +53,28 @@ const SubAccount = ({idx_1, subAccount, changeCoef}) => {
   )
 }
 
-const Account = ({account, changeCoef}) => {
-  console.log(account);
+// 비지배지분 input 값 넣어줘야함
+const Account = ({account, changeCoef, changeSubCoef}) => {
+
+  let exception;
+
   const AccountList = account.map((acnt, idx_1)=>{
-    console.log(acnt, idx_1);
+
+    if(acnt.fsname == "비지배지분"){
+      exception = <Input index={[idx_1]} coef={acnt.coef} changeFunction={changeCoef} pre_value={acnt.amount}></Input>
+    }
+
+    let amount;
+    if(acnt.sub_account.length == 0){
+      amount = acnt.amount
+    }
+
     return(
-      <div key={idx_1}>
-        <span>{acnt.fsname}</span>
-        <SubAccount subAccount={acnt.sub_account} changeCoef={changeCoef} idx_1={idx_1}/>
+      <div className='account-wrapper' key={idx_1}>
+        <span className='account-name'>{acnt.fsname}</span>
+        <span className='account-amount'>{amount}</span>
+        {exception}
+        <SubAccount subAccount={acnt.sub_account} changeSubCoef={changeSubCoef} idx_1={idx_1}/>
       </div>
     )
   })
@@ -65,13 +89,26 @@ const Account = ({account, changeCoef}) => {
 
 function Calc(props){
   console.log('Calc rendering');
-  const [customTitle, setCustomTitle] = useState('');
-
+  // 값이 바뀌었을 때 리렌더링이 필요한 변수만 useState를 이용해 선언해줌 
   const [parameter, setParameter] = useState({});
 
-  // 청산가치 
-  // const LV = props.account;
-  // console.log(LV);
+  // 유동 자산
+  let currentAsset;
+
+  // 비유동 자산
+  let nonCurrentAsset;
+
+  // 부채 총계
+  let totalDebt;
+
+  props.account.forEach(acnt => {
+    if(acnt.fsname == "유동자산") currentAsset = acnt.amount;
+    else if(acnt.fsname == "비유동자산") nonCurrentAsset = acnt.amount;
+    else if(acnt.fsname == "부채총계") totalDebt = acnt.amount;
+  });
+
+
+  
 
   let years = [];
   for(let i = 2015; i < 2022; i ++){
@@ -81,15 +118,16 @@ function Calc(props){
   const onSubmitGet = (e) => {
     e.preventDefault();
     const param = {
-      id: props.corpList[0].id, //stock_code
-      name: props.corpList[0].name,
+      // id: props.corpList[0].id, //stock_code
+      // name: props.corpList[0].name,
       year: e.target.year.value,
       quarter: e.target.quarter.value,
       link: e.target.FS.value,
       fs: "BS",
     }
+
     setParameter(param);
-    // props.getFsData(param);
+    // props.getBsData(param);
 
     // console.log(props.corpList[0].id);
     // console.log(props.corpList[0].name);
@@ -100,7 +138,9 @@ function Calc(props){
 
   const onSubmitSave = (e) => {
     e.preventDefault();
-    console.log(e);
+    console.log(props.account);
+    console.log(parameter);
+
     //서버로 보내기
     // props.sendCustom({
     //   ...parameter,
@@ -139,7 +179,7 @@ function Calc(props){
     </div>
     
     <form onSubmit={onSubmitSave}>
-      <Account account={props.account} changeCoef={props.changeCoef}/>
+      <Account account={props.account} changeCoef={props.changeCoef} changeSubCoef={props.changeSubCoef}/>
       <input type="text" name="title"/>
       <button type='submit'>저장하기</button>
     </form>
@@ -150,15 +190,21 @@ function Calc(props){
       보수적 계산법(벤자민 그레이엄) = 유동자산 - 부채총계 
     */}
     <div>
-      청산가치(Liquidation Value)
-    </div>
-
-    {/* 수정 후 */}
-    <div>
-      수정 후 청산가치
+      <div>
+        청산가치(Liquidation Value)
+        <span>{currentAsset + nonCurrentAsset - totalDebt}</span>
+      </div>
+      <div>
+        보수적 청산 가치
+        <span>{currentAsset - totalDebt}</span>
+      </div>
+      
     </div>
     </>
   )
 }
 
 export default hot(module)(Calc);
+// export default Calc;
+
+
