@@ -17,18 +17,17 @@ const Search = (props) =>{
   console.log('Search rendering');
   const [corpName, setCorpName] = useState('');
 
-  // API로 회사들 가져와야 함
   const [corpList, setCorpList] = useState();
+  useEffect(async ()=>{
+    await setCorpList(props.getFsData());
+  },[]);
+
   console.log(corpList);
   // 연관 검색어 리스트
   const [relList, setRelList] = useState([]);
 
   // 스타일
   const [listStyle, setStyle] = useState({});
-
-  useEffect(async ()=>{
-    await setCorpList(props.getFsData());
-  },[]);
 
   useEffect(async () => {
       await filterRelList();
@@ -95,7 +94,7 @@ const Search = (props) =>{
 
           <div className="search_list">
               {props.corpList.map((data) => (
-                  <List 
+                  <List
                       onClick={props.onClickDelete}
                       name={data.name}
                       id = {data.id}

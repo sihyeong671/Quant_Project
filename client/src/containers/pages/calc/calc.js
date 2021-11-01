@@ -37,13 +37,20 @@ const mapDispatchToProps=(dispatch)=>{
         console.log(error);
       }
     },
-    changeCoef: (idx, coef) => {
+    changeSubCoef: (idx, coef) => { // idx는 리스트
         dispatch({
-          type: Constants.calc.CHANGE,
+          type: Constants.calc.CHANGESUB,
           coef: coef,
           index: idx
         });
-      }
+      },
+    changeCoef: (idx, coef) => { // idx 는 number
+      dispatch({
+        type: Constants.calc.CHANGE,
+        coef: coef,
+        index: idx
+      })
+    }
     
   }
 }

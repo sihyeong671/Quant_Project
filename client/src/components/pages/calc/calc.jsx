@@ -7,7 +7,8 @@ import Search from '../../../containers/search/search';
 
 import './assets/css/style.scss';
 
-const Input = ({index, coef, changeCoef, pre_value}) => {
+// index : 리스트
+const Input = ({index, coef, changeFunction, pre_value}) => {
 
   console.log("Input rendering")
 
@@ -15,8 +16,8 @@ const Input = ({index, coef, changeCoef, pre_value}) => {
 
   const onChange = (e) => {
     e.preventDefault();
-    setCoefficient(e.target.value);
-    changeCoef([index[0], index[1]], e.target.value);
+    setCoefficient(e.target.value); // 이거 지우고 하면 왜 값이 안바뀔까?
+    changeFunction(index, e.target.value);
   }
 
   const changedValue = coefficient * pre_value;
@@ -30,7 +31,7 @@ const Input = ({index, coef, changeCoef, pre_value}) => {
   );
 }
 
-const SubAccount = ({idx_1, subAccount, changeCoef}) => {
+const SubAccount = ({idx_1, subAccount, changeSubCoef}) => {
   console.log('SubAccount rendering');
 
   const subAccountList = subAccount.map((subacnt, idx_2) => {
@@ -41,7 +42,7 @@ const SubAccount = ({idx_1, subAccount, changeCoef}) => {
           <span className='subAccount-amount'>{subacnt.amount}</span>
           <h3>x</h3>
         </div>
-        <Input coef={subacnt.coef} changeCoef={changeCoef} index={[idx_1, idx_2]} pre_value={subacnt.amount}/>
+        <Input coef={subacnt.coef} changeFunction={changeSubCoef} index={[idx_1, idx_2]} pre_value={subacnt.amount}/>
       </div>
     )
   });
@@ -53,11 +54,17 @@ const SubAccount = ({idx_1, subAccount, changeCoef}) => {
 }
 
 // 비지배지분 input 값 넣어줘야함
-const Account = ({account, changeCoef}) => {
+const Account = ({account, changeCoef, changeSubCoef}) => {
+
+  let exception;
 
   const AccountList = account.map((acnt, idx_1)=>{
 
-    let amount = ''
+    if(acnt.fsname == "비지배지분"){
+      exception = <Input index={[idx_1]} coef={acnt.coef} changeFunction={changeCoef} pre_value={acnt.amount}></Input>
+    }
+
+    let amount;
     if(acnt.sub_account.length == 0){
       amount = acnt.amount
     }
@@ -66,7 +73,8 @@ const Account = ({account, changeCoef}) => {
       <div className='account-wrapper' key={idx_1}>
         <span className='account-name'>{acnt.fsname}</span>
         <span className='account-amount'>{amount}</span>
-        <SubAccount subAccount={acnt.sub_account} changeCoef={changeCoef} idx_1={idx_1}/>
+        {exception}
+        <SubAccount subAccount={acnt.sub_account} changeSubCoef={changeSubCoef} idx_1={idx_1}/>
       </div>
     )
   })
@@ -81,24 +89,24 @@ const Account = ({account, changeCoef}) => {
 
 function Calc(props){
   console.log('Calc rendering');
-  const [customTitle, setCustomTitle] = useState('');
-
+  // 값이 바뀌었을 때 리렌더링이 필요한 변수만 useState를 이용해 선언해줌 
   const [parameter, setParameter] = useState({});
 
   // 유동 자산
-  const [currentAsset, setCurrentAsset] = useState(0);
+  let currentAsset;
 
   // 비유동 자산
-  const [nonCurrentAsset, setNonCurrentAsset] = useState(0);
+  let nonCurrentAsset;
 
   // 부채 총계
-  const [totalDebt, setTotalDebt] = useState(0);
+  let totalDebt;
 
-  // props.account.forEach(acnt => {
-  //   if(acnt.fsname == "유동자산") setCurrentAsset(acnt.amount);
-  //   else if(acnt.fsname == "비유동자산") setNonCurrentAsset(acnt.amount);
-  //   else if(acnt.fsname == "부채총계") setTotalDebt(acnt.amount);
-  // })
+  props.account.forEach(acnt => {
+    if(acnt.fsname == "유동자산") currentAsset = acnt.amount;
+    else if(acnt.fsname == "비유동자산") nonCurrentAsset = acnt.amount;
+    else if(acnt.fsname == "부채총계") totalDebt = acnt.amount;
+  });
+
 
   
 
@@ -110,8 +118,8 @@ function Calc(props){
   const onSubmitGet = (e) => {
     e.preventDefault();
     const param = {
-      id: props.corpList[0].id, //stock_code
-      name: props.corpList[0].name,
+      // id: props.corpList[0].id, //stock_code
+      // name: props.corpList[0].name,
       year: e.target.year.value,
       quarter: e.target.quarter.value,
       link: e.target.FS.value,
@@ -130,7 +138,9 @@ function Calc(props){
 
   const onSubmitSave = (e) => {
     e.preventDefault();
-    console.log(e);
+    console.log(props.account);
+    console.log(parameter);
+
     //서버로 보내기
     // props.sendCustom({
     //   ...parameter,
@@ -169,7 +179,7 @@ function Calc(props){
     </div>
     
     <form onSubmit={onSubmitSave}>
-      <Account account={props.account} changeCoef={props.changeCoef}/>
+      <Account account={props.account} changeCoef={props.changeCoef} changeSubCoef={props.changeSubCoef}/>
       <input type="text" name="title"/>
       <button type='submit'>저장하기</button>
     </form>
