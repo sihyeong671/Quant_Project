@@ -5,7 +5,7 @@ import axios from 'axios';
 import React from 'react';
 
 function mapStateToProps(state){
-  return state;
+  return state.user;
 }
 
 function mapDispatchToProps(dispatch){
@@ -24,7 +24,6 @@ function mapDispatchToProps(dispatch){
       }catch(error){
         console.log(error);
       }
-
     }
   }
 }

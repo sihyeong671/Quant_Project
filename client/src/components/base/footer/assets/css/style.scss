@@ -1,11 +1,6 @@
-$color-green1: #cff09e;
-$color-green2: #a8dba8;
-$color-green3: #79bd9a;
-$color-green4: #3b8686;
-
 .footer{
-  background-color: $color-green4;
-  color: $color-green1;
+  background-color: rgb(68, 68, 68);
+  color: #fff;
   display:grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(8, minmax(2rem, auto));

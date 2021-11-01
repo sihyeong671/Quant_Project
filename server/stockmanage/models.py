@@ -104,7 +104,14 @@ class FS_LoB(models.Model):
     unit = models.CharField(max_length=30, null=True, blank=True)
     ROA = models.FloatField(null=True, blank=True)
     ROE = models.FloatField(null=True, blank=True)
-    
+
+    # 부채비율
+    # 기업가치
+    # EBIT
+    # EBIDTA
+
+
+
     def __str__(self):
         return self.lob
     

@@ -13,7 +13,7 @@ const mapStateToProps=(state)=>{
 const mapDispatchToProps=(dispatch)=>{
   return {
     // 서버에서 재무상태표 (BS) 받아오기
-    getFsData: async (parameter) => {
+    getBsData: async (parameter) => {
       try{
         const res = await axios.post('api/v1/stock/account', parameter);
         console.log(res);
@@ -30,20 +30,27 @@ const mapDispatchToProps=(dispatch)=>{
 
       try{
         //const res = axios.post('api/v1/', parameter);
-        console.log(res);
+        // console.log(res);
         // 디스패치
 
       }catch(error){
         console.log(error);
       }
     },
-    changeCoef: (idx, coef) => {
+    changeSubCoef: (idx, coef) => { // idx는 리스트
         dispatch({
-          type: Constants.calc.CHANGE,
+          type: Constants.calc.CHANGESUB,
           coef: coef,
           index: idx
         });
-      }
+      },
+    changeCoef: (idx, coef) => { // idx 는 number
+      dispatch({
+        type: Constants.calc.CHANGE,
+        coef: coef,
+        index: idx
+      })
+    }
     
   }
 }
