@@ -14,7 +14,6 @@ import os
 import environ
 
 from pathlib import Path
-from django.core.management.utils import get_random_secret_key
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
