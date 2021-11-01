@@ -14,7 +14,7 @@ def read_secret(secret_name):
 DEBUG = True
 
 # ALLOWED_HOSTS = ['54.180.200.164']
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['quant.or.kr']
 
 BASE_BACKEND_URL = env.str('DJANGO_BASE_BACKEND_URL')
 BASE_FRONTEND_URL = env.str('DJANGO_BASE_FRONTEND_URL')
