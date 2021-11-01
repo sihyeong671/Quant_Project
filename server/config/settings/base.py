@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-import datetime
 import os
 import environ
 
@@ -19,7 +18,7 @@ from django.core.management.utils import get_random_secret_key
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 env = environ.Env(
     DEBUG=(bool, False)
@@ -29,31 +28,24 @@ environ.Env.read_env(
     env_file=os.path.join(BASE_DIR, '.env')
 )
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-
 
 SECRET_KEY = env('SECRET_KEY')
 REFRESH_TOKEN_SECRET = env('REFRESH_TOKEN_SECRET')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-ALLOWED_HOSTS = ['*']
-
-BASE_BACKEND_URL = env.str('DJANGO_BASE_BACKEND_URL', default='http://localhost:8000')
-BASE_FRONTEND_URL = env.str('DJANGO_BASE_FRONTEND_URL', default='http://localhost:3000')
-
 
 # Application definition
-
 INSTALLED_APPS = [
     'stockmanage',
     'users',
     'boards',
     'logapp',
     
+    # api 명세
     'swagger',
+    'drf_yasg',
+    
+    # 마크다운 에디터
+    'django_summernote',
     
     'django.contrib.admin',
     'django.contrib.auth',
@@ -65,7 +57,6 @@ INSTALLED_APPS = [
     # rest_framework
     'rest_framework',
     
-    'drf_yasg',
     'django_extensions',
     
     # corsheader
@@ -103,15 +94,6 @@ REST_FRAMEWORK = {
 }
 
 
-# CORS SETTINGS
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = env.list(
-    'DJANGO_CORS_ORIGIN_WHITELIST',
-    default=[BASE_FRONTEND_URL]
-)
-
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -130,36 +112,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'quant',
-    #     'USER': 'root',
-    #     'PASSWORD': env('MARIADB_ROOT_PASSWORD'),
-    #     'HOST': 'mariadbquant',
-    #     'PORT': '3306',
-    # }
-}
-
-# ---deploy database format---
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'quant',
-#         'USER': 'root',
-#         'PASSWORD': env('MARIADB_ROOT_PASSWORD'),
-#         'HOST': 'mariadb',
-#         'PORT': '3306',
-#     }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -240,6 +192,12 @@ NAVER_OAUTH2_CLIENT_ID = env.str('DJANGO_NAVER_OAUTH2_CLIENT_ID')
 NAVER_OAUTH2_CLIENT_SECRET = env.str('DJANGO_NAVER_OAUTH2_CLIENT_SECRET')
 KAKAO_REST_API_KEY = env.str('DJANGO_KAKAO_REST_API_KEY')
 
+
+# Summernote Customize
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+SUMMERNOTE_CONFIG = {}
+SUMMERNOTE_THEME = 'bs4'
 
 
 LOGGING = {
