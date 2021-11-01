@@ -10,6 +10,7 @@ from api.mixins import PublicApiMixin
 
 BASE_DIR = settings.BASE_DIR
 
+
 class GetLogApi(PublicApiMixin, APIView):
     def get(self, request):
         file_path = os.path.join(BASE_DIR, 'logs/quantlog.log')
