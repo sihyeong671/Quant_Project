@@ -15,14 +15,14 @@ from django.http.response import Http404
 from api.mixins import ApiAuthMixin, PublicApiMixin
 
 from auth.authenticate import jwt_login
-from config.settings import BASE_DIR
+
 
 from users.serializers import RegisterSerializer, UserSerializer,\
     PasswordChangeSerializer, validate_password12
 from users.models import Profile
 from users.services import send_mail, email_auth_string
 
-
+BASE_DIR = settings.BASE_DIR
 User = get_user_model()
 
 
