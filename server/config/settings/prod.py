@@ -13,7 +13,8 @@ def read_secret(secret_name):
 # 실제 배포시 바꿀 예정 -> False
 DEBUG = True
 
-ALLOWED_HOSTS = ['54.180.200.164']
+# ALLOWED_HOSTS = ['54.180.200.164']
+ALLOWED_HOSTS = ['*']
 
 BASE_BACKEND_URL = env.str('DJANGO_BASE_BACKEND_URL')
 BASE_FRONTEND_URL = env.str('DJANGO_BASE_FRONTEND_URL')
