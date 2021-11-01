@@ -10,16 +10,6 @@ from crawling.API_KEY import *
 from stockmanage.models import *
 
 
-class View_All_Data(ListView):
-    model = Company
-    context_object_name = "company_data"
-    template_name='stockmanage/manager.html'
-    paginat_by = 30
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context["company_temp"] = Company.objects.get(company_name="엑세스바이오")
-    #     return context
 
 def Crawling_Data(request):
 
