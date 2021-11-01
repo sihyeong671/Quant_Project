@@ -23,7 +23,6 @@ class View_All_Data(ListView):
 
 def Crawling_Data(request):
 
-
     apikey = APIKEY
     Save_Dart_Data(apikey)
     Save_FS_Data(apikey)
