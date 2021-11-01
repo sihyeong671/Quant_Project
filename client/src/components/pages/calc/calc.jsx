@@ -54,30 +54,14 @@ const SubAccount = ({idx_1, subAccount, changeCoef}) => {
 
 // 비지배지분 input 값 넣어줘야함
 const Account = ({account, changeCoef}) => {
-  //  // 유동 자산
-    //  let current_asset = 0;
-    //  // 비유동 자산
-    //  let non_current_asset = 0;
-    //  // 자산 총계
-    //  let total_asset = 0;
-    //  // 유동 부채
-    //  let current_debt = 0;
-    //  // 비유동 부채
-    //  let non_current_debt = 0;
-    //  // 부채 총계
-    //  let total_debt = 0;
-    //  // 지배 기업의 소유주에게 귀속되는 자본
-    //  let controlling_interset = 0;
-    //  // 비지배지분
-    //  let non_controlling_interset = 0;
-    //  // 자본 총계
-    //  let total_capital = 0;
+
   const AccountList = account.map((acnt, idx_1)=>{
-    console.log(acnt.amount);
+
     let amount = ''
     if(acnt.sub_account.length == 0){
       amount = acnt.amount
     }
+
     return(
       <div className='account-wrapper' key={idx_1}>
         <span className='account-name'>{acnt.fsname}</span>
@@ -101,6 +85,22 @@ function Calc(props){
 
   const [parameter, setParameter] = useState({});
 
+  // 유동 자산
+  const [currentAsset, setCurrentAsset] = useState(0);
+
+  // 비유동 자산
+  const [nonCurrentAsset, setNonCurrentAsset] = useState(0);
+
+  // 부채 총계
+  const [totalDebt, setTotalDebt] = useState(0);
+
+  // props.account.forEach(acnt => {
+  //   if(acnt.fsname == "유동자산") setCurrentAsset(acnt.amount);
+  //   else if(acnt.fsname == "비유동자산") setNonCurrentAsset(acnt.amount);
+  //   else if(acnt.fsname == "부채총계") setTotalDebt(acnt.amount);
+  // })
+
+  
 
   let years = [];
   for(let i = 2015; i < 2022; i ++){
@@ -180,12 +180,15 @@ function Calc(props){
       보수적 계산법(벤자민 그레이엄) = 유동자산 - 부채총계 
     */}
     <div>
-      청산가치(Liquidation Value)
-    </div>
-
-    {/* 수정 후 */}
-    <div>
-      수정 후 청산가치
+      <div>
+        청산가치(Liquidation Value)
+        <span>{currentAsset + nonCurrentAsset - totalDebt}</span>
+      </div>
+      <div>
+        보수적 청산 가치
+        <span>{currentAsset - totalDebt}</span>
+      </div>
+      
     </div>
     </>
   )

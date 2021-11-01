@@ -11,6 +11,7 @@ import _ from "lodash";
 // 지배기업
 // 비지배지분
 //  자본총계
+// coef 추가할 필요 있음
 const initState = {
     "account": [
         {
