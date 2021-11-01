@@ -127,7 +127,7 @@ function Calc(props){
     }
 
     setParameter(param);
-    // props.getFsData(param);
+    // props.getBsData(param);
 
     // console.log(props.corpList[0].id);
     // console.log(props.corpList[0].name);

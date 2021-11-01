@@ -11,7 +11,6 @@ import _ from "lodash";
 // 지배기업
 // 비지배지분
 //  자본총계
-// coef 추가할 필요 있음
 const initState = {
     "account": [
         {
@@ -235,7 +234,7 @@ export default function reducer(state=initState, action){
     case Constants.calc.CHANGE:{
       let newState = _.cloneDeep(state);
       newState.account[action.index[0]].coef = action.coef;
-       
+
       return newState;
     }
       

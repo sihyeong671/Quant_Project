@@ -13,7 +13,7 @@ const mapStateToProps=(state)=>{
 const mapDispatchToProps=(dispatch)=>{
   return {
     // 서버에서 재무상태표 (BS) 받아오기
-    getFsData: async (parameter) => {
+    getBsData: async (parameter) => {
       try{
         const res = await axios.post('api/v1/stock/account', parameter);
         console.log(res);
@@ -30,7 +30,7 @@ const mapDispatchToProps=(dispatch)=>{
 
       try{
         //const res = axios.post('api/v1/', parameter);
-        console.log(res);
+        // console.log(res);
         // 디스패치
 
       }catch(error){

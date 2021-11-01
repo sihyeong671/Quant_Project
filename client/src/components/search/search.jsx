@@ -18,11 +18,10 @@ const Search = (props) =>{
   const [corpName, setCorpName] = useState('');
 
   const [corpList, setCorpList] = useState();
-  useEffect(async ()=>{
-    await setCorpList(props.getFsData());
+  useEffect(()=>{
+    console.log(props.getFsData());
   },[]);
-
-  console.log(corpList);
+  console.log("list", corpList);
   // 연관 검색어 리스트
   const [relList, setRelList] = useState([]);
 
@@ -40,7 +39,7 @@ const Search = (props) =>{
           item.name.toLowerCase().includes(corpName.toLowerCase()) 
       )
     });
-    console.log(filterList);
+    // console.log(filterList);
     (corpName.length > 0 && filterList.length > 0) ? ( 
         setRelList(filterList),
         setStyle({display: 'block'})
