@@ -5,18 +5,16 @@ import axios from 'axios';
 import React from 'react';
 
 function mapStateToProps(state){
-  return state.user;
+  return {
+    user: state.user
+  };
 }
 
 function mapDispatchToProps(dispatch){
   return {
     basicLogOut: async function(){
       try{
-        // axios.post 로 하니 문제 생김
-        const res = await axios({
-          method:'post',
-          url:'/api/v1/auth/logout'
-        })
+        const res = await axios.post('/api/v1/auth/logout')
         console.log(res);
         dispatch({
           type: Constants.user.LOGOUT

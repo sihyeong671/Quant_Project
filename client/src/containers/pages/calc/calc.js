@@ -6,7 +6,16 @@ import axios from 'axios';
 import { offset } from 'highcharts';
 
 const mapStateToProps=(state)=>{
-  const newState = Object.assign({}, state.calc, state.search);
+
+  const newState = {
+    calc: state.calc,
+    search: [
+      {
+        name: "네이버",
+        code: 1234
+      }
+    ]
+  }
   return newState;
 }
 

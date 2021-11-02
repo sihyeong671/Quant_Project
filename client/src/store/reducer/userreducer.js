@@ -3,7 +3,7 @@ import Constants from "../constants";
 const initState = {
   isAuthenticated:false,
   accessToken:null,
-  user:{}
+  userData:{}
 }
 
 export default function reducer(state=initState, action){
@@ -19,7 +19,7 @@ export default function reducer(state=initState, action){
       return{
         isAuthenticated:false,
         accessToken:null,
-        user: {}
+        userData: {}
       }
     case Constants.user.GETALL_SUCCESS:
       return{

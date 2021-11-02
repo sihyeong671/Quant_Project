@@ -101,7 +101,7 @@ function Calc(props){
   // 부채 총계
   let totalDebt;
 
-  props.account.forEach(acnt => {
+  props.calc.account.forEach(acnt => {
     if(acnt.fsname == "유동자산") currentAsset = acnt.amount;
     else if(acnt.fsname == "비유동자산") nonCurrentAsset = acnt.amount;
     else if(acnt.fsname == "부채총계") totalDebt = acnt.amount;
@@ -118,8 +118,8 @@ function Calc(props){
   const onSubmitGet = (e) => {
     e.preventDefault();
     const param = {
-      // id: props.corpList[0].id, //stock_code
-      // name: props.corpList[0].name,
+      // id: props.search.corpList[0].code, //stock_code
+      // name: props.search.corpList[0].name,
       year: e.target.year.value,
       quarter: e.target.quarter.value,
       link: e.target.FS.value,
@@ -138,7 +138,7 @@ function Calc(props){
 
   const onSubmitSave = (e) => {
     e.preventDefault();
-    console.log(props.account);
+    console.log(props.calc.account);
     console.log(parameter);
 
     //서버로 보내기
@@ -179,7 +179,7 @@ function Calc(props){
     </div>
     
     <form onSubmit={onSubmitSave}>
-      <Account account={props.account} changeCoef={props.changeCoef} changeSubCoef={props.changeSubCoef}/>
+      <Account account={props.calc.account} changeCoef={props.changeCoef} changeSubCoef={props.changeSubCoef}/>
       <input type="text" name="title"/>
       <button type='submit'>저장하기</button>
     </form>
