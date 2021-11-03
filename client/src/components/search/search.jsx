@@ -18,8 +18,8 @@ const Search = (props) =>{
   const [corpName, setCorpName] = useState('');
 
   const [corpList, setCorpList] = useState();
-  useEffect(()=>{
-    console.log(props.getFsData());
+  useEffect(async ()=>{
+    console.log(await props.getFsData());
   },[]);
   console.log("list", corpList);
   // 연관 검색어 리스트
