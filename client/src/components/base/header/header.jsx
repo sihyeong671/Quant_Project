@@ -11,7 +11,6 @@ function Header(props){
 
 	console.log("Header rendering");
 
-	console.log(props);
 	let authHeader;
 
 	const history = useHistory();
