@@ -23,7 +23,7 @@ function Login({basicLogin, getUserData}){
   const onSubmit = async (e) => {
     e.preventDefault();
     const check = await basicLogin(username ,pwd);
-    // await getUserData();
+    await getUserData();
     if(check) history.push('/');
   }
 

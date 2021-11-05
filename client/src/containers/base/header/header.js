@@ -4,6 +4,7 @@ import Constants from '../../../store/constants';
 import axios from 'axios';
 import React from 'react';
 
+
 function mapStateToProps(state){
   return {
     user: state.user
@@ -14,8 +15,8 @@ function mapDispatchToProps(dispatch){
   return {
     basicLogOut: async function(){
       try{
-        const res = await axios.post('/api/v1/auth/logout')
-        console.log(res);
+        await axios.post('/api/v1/auth/logout');
+        
         dispatch({
           type: Constants.user.LOGOUT
         })

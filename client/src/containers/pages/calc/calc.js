@@ -9,12 +9,8 @@ const mapStateToProps=(state)=>{
 
   const newState = {
     calc: state.calc,
-    search: [
-      {
-        name: "네이버",
-        code: 1234
-      }
-    ]
+    search: state.search,
+    user: state.user
   }
   return newState;
 }
@@ -34,13 +30,13 @@ const mapDispatchToProps=(dispatch)=>{
         console.log(error);
       }
     },
+
     // 서버로 사용자가 커스텀한 숫자 전송
     sendCustom: async (parameter) => {
 
       try{
         //const res = axios.post('api/v1/', parameter);
-        // console.log(res);
-        // 디스패치
+        //console.log(res);
 
       }catch(error){
         console.log(error);

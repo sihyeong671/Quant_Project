@@ -4,9 +4,7 @@ import AuthForm from '../../components/auth/login/authForm';
 import Constants from '../../store/constants';
 import axios from 'axios';
 
-axios.defaults.withCredentials = true;
 
-const JWT_EXPIRE_TIME = 4*60*1000;
 
 const onSilentRefresh = async(token) => {
   const res = await axios.post('/api/v1/auth/login/refresh', data={token});
