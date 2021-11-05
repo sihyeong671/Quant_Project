@@ -51,7 +51,8 @@ def Save_Price():
     for corp in corporations:
         # 시가총액, ohlvc, per, pbr 함수로 가져와서 저장하기
         data = Daily_Crawling("20210101", "20210401", corp.stock_code)
-        time.sleep(1)
+        time.sleep(0.1)
+        
         for row in data.itertuples():
             Daily_Data = Daily_Price()
             Daily_Data.company = Company.objects.get(corp_name=corp.corp_name, stock_code=corp.stock_code)

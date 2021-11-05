@@ -13,6 +13,7 @@ def read_secret(secret_name):
 # 실제 배포시 바꿀 예정 -> False
 DEBUG = True
 
+ALLOWED_HOSTS = ['quant.or.kr']
 
 BASE_BACKEND_URL = env.str('DJANGO_BASE_BACKEND_URL')
 BASE_FRONTEND_URL = env.str('DJANGO_BASE_FRONTEND_URL')
@@ -25,8 +26,6 @@ CORS_ORIGIN_WHITELIST = env.list(
     'DJANGO_CORS_ORIGIN_WHITELIST',
     default=[BASE_FRONTEND_URL]
 )
-
-ALLOWED_HOSTS = ['*']
 
 DATABASES = {
     'default': {

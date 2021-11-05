@@ -14,7 +14,6 @@ import os
 import environ
 
 from pathlib import Path
-from django.core.management.utils import get_random_secret_key
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -80,7 +79,6 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
-INTERNAL_IPS = ('127.0.0.1')
 
 ROOT_URLCONF = 'config.urls'
 
@@ -261,7 +259,7 @@ LOGGING = {
         },
         'quant': {
             'handlers': ['console', 'file'],
-            'level': 'WARNING',
+            'level': 'INFO',
         },
     }
 }

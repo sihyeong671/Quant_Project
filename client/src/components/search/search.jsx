@@ -19,9 +19,11 @@ const Search = (props) =>{
   const [corpName, setCorpName] = useState('');
 
   const [corpList, setCorpList] = useState();
+
   useEffect(async () => {
     // await를 안으로 옮겨야 함 실제적으로 쓰이는 곳 앞에 위치해야한다.
     setCorpList(await props.getFsData());
+
   },[]);
 
   // 연관 검색어 리스트
