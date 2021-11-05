@@ -12,29 +12,27 @@ const mapStateToProps=(state)=>{
 // async 는 promise를 반환
 const mapDispatchToProps=(dispatch)=>{
   return {
-    getFsData: async (corpName) => {
+    getFsData: async () => {
       try{
         // api만들면 수정
         const res = await axios.get('api/v1/stock/company');
-        console.log(res.data);
-        console.log(typeof(res.data));
-        
+        console.log(res)
         return res.data.company;
       }catch(error){
         console.log(error);
       }
     },
-    onClickCreate: function(id, name){
+    onClickCreate: function(code, name){
       dispatch({
         type:Constants.search.CREATE,
         corpName :name,
-        id: id
+        code: code
       })
     },
-    onClickDelete: function(id){
+    onClickDelete: function(code){
       dispatch({
         type:Constants.search.DELETE,
-        id: id
+        code: code
       })
     }
   }

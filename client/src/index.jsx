@@ -14,6 +14,7 @@ import './index.scss'
 axios.defaults.baseURL = "http://quant.or.kr/";
 axios.defaults.withCredentials = true;
 
+
 const rootElement = document.getElementById('root');
 ReactDOM.render(
     <Provider store={store}>

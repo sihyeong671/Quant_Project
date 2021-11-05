@@ -16,6 +16,11 @@ const Input = ({index, coef, changeFunction, pre_value}) => {
 
   const onChange = (e) => {
     e.preventDefault();
+    if(e.target.value == ''){ // 빈 값을 넣으면 0이 되도록 함
+      setCoefficient(0);
+      changeFunction(index, 0);
+      return;
+    }
     setCoefficient(e.target.value); // 이거 지우고 하면 왜 값이 안바뀔까?
     changeFunction(index, e.target.value);
   }
@@ -90,8 +95,7 @@ const Account = ({account, changeCoef, changeSubCoef}) => {
 function Calc(props){
   console.log('Calc rendering');
   // 값이 바뀌었을 때 리렌더링이 필요한 변수만 useState를 이용해 선언해줌 
-  const [parameter, setParameter] = useState({});
-
+  const[parameter, setParamter] = useState({});
   // 유동 자산
   let currentAsset;
 
@@ -101,7 +105,7 @@ function Calc(props){
   // 부채 총계
   let totalDebt;
 
-  props.account.forEach(acnt => {
+  props.calc.account.forEach(acnt => {
     if(acnt.fsname == "유동자산") currentAsset = acnt.amount;
     else if(acnt.fsname == "비유동자산") nonCurrentAsset = acnt.amount;
     else if(acnt.fsname == "부채총계") totalDebt = acnt.amount;
@@ -118,33 +122,31 @@ function Calc(props){
   const onSubmitGet = (e) => {
     e.preventDefault();
     const param = {
-      // id: props.corpList[0].id, //stock_code
-      // name: props.corpList[0].name,
+      id: props.search.corpList[0].code,
+      name: props.search.corpList[0].name,
       year: e.target.year.value,
       quarter: e.target.quarter.value,
       link: e.target.FS.value,
       fs: "BS",
     }
-
-    setParameter(param);
+    setParamter(param);
     // props.getBsData(param);
-
-    // console.log(props.corpList[0].id);
-    // console.log(props.corpList[0].name);
-    // console.log(e.target.year.value);
-    // console.log(e.target.quarter.value);
-    // console.log(e.target.FS.value);
   }
 
   const onSubmitSave = (e) => {
     e.preventDefault();
-    console.log(props.account);
-    console.log(parameter);
+    
+    console.log({
+      ...parameter,
+      account: props.calc.account,
+      title: e.target.title.value
+    });
 
     //서버로 보내기
     // props.sendCustom({
-    //   ...parameter,
-    //   title: e.target.title.value
+    // ...parameter,
+    // account: props.calc.account,
+    // title: e.target.title.value
     // });
   }
 
@@ -178,8 +180,12 @@ function Calc(props){
       </form>
     </div>
     
+    <div>저장 데이터1</div>
+    <div>저장 데이터2</div>
+    <div>저장 데이터3</div>
+
     <form onSubmit={onSubmitSave}>
-      <Account account={props.account} changeCoef={props.changeCoef} changeSubCoef={props.changeSubCoef}/>
+      <Account account={props.calc.account} changeCoef={props.changeCoef} changeSubCoef={props.changeSubCoef}/>
       <input type="text" name="title"/>
       <button type='submit'>저장하기</button>
     </form>

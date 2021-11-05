@@ -4,10 +4,7 @@ import AuthForm from '../../components/auth/login/authForm';
 import Constants from '../../store/constants';
 import axios from 'axios';
 
-axios.defaults.baseURL = "http://localhost:8000";
-axios.defaults.withCredentials = true;
 
-const JWT_EXPIRE_TIME = 4*60*1000;
 
 const onSilentRefresh = async(token) => {
   const res = await axios.post('/api/v1/auth/login/refresh', data={token});
@@ -61,12 +58,12 @@ function mapDispatchToProps(dispatch){
     // local 로그인 함수
     basicLogin: async function(username, pwd){
       const data = {
-        username:username,
-        password:pwd
+        "username":username,
+        "password":pwd
       }
       try{
         const res = await axios.post('/api/v1/auth/login/', data);
-        // console.log(res);
+        console.log(res);
         const accessToken = res.data.access_token;
         axios.defaults.headers.common['Authorization'] = `JWT ${accessToken}`;
         // 만료시간 3분 이기 때문에 서버에서 201오류 날때 refresh토큰으로 갱신 필요
@@ -76,9 +73,10 @@ function mapDispatchToProps(dispatch){
           accessToken: accessToken,
           isAuthenticated:true
         })
-
+        return true;
       }catch(error){
         console.log(error);
+        return false;
       }
     },
     // local 회원가입 함수
