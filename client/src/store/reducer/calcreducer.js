@@ -231,10 +231,10 @@ export default function reducer(state=initState, action){
 
       return newState;
     }
-    case Constants.calc.CHANGE:{
+    case Constants.calc.CHANGE:{ // 비지배 지분의 경우 sub가 없어서 이 함수 사용
       let newState = _.cloneDeep(state);
       newState.account[action.index[0]].coef = action.coef;
-
+      newState.account[8].amount = newState.account[6].amount + newState.account[7].amount * newState.account[7].coef;
       return newState;
     }
       

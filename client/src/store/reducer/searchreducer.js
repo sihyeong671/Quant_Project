@@ -1,7 +1,7 @@
 import Constants from "../constants";
 
 const initState = {
-   corpList: []
+  corpList: []
 };
 
 export default function reducer(state=initState, action){

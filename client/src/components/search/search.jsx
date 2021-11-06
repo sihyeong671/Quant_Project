@@ -5,7 +5,6 @@ import './assets/css/style.scss';
 // 검색할 기업 보여주는 컴포넌트
 const List = (props) => {
   console.log('list rendering');
-  console.log(props);
   return(
     <li>
       {props.name}

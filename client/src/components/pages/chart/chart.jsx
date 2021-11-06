@@ -6,18 +6,17 @@ import { Helmet } from 'react-helmet';
 import HighchartsReact from 'highcharts-react-official';
 import HighStock from 'highcharts/highstock';
 import axios from 'axios';
-
+import newLst from '../../../../data';
 import Search from '../../../containers/search/search';
 
-function Chart(props){
-  console.log("Chart rendering");
+function getCode(list){
+  return list.map(corp => corp.code);
+}
 
-  const data1 = []
-  const data2 = []
-  for(let i = 0; i < 100; ++i){
-    data1.push(i);
-    data2.push(i**2);
-  }
+function Chart(props){
+
+  console.log("Chart rendering");
+  
 
   const options = {
     title: {
@@ -41,16 +40,7 @@ function Chart(props){
     chart: {
       type: 'line'
     },
-    series: [
-      {
-        name:'삼성',
-        data: [...data1] 
-      },
-      {
-        name: '네이버',
-        data: [...data2] 
-      }
-    ],
+    series: [stockData],
     plotOption:{
       series: {
         showInNavigator: true
@@ -69,10 +59,13 @@ function Chart(props){
 
   return (
     <>
-    <form onSubmit={props.getStockData}>
-      <Search maxLength={4}></Search>
-      <button type="submit">확인</button>
-    </form>
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        const codeList = getCode(props.search.corpList);
+        props.getStockData(codeList)}}>
+        <Search maxLength={4}></Search>
+        <button type="submit">확인</button>
+      </form>
 
       <HighchartsReact
         highcharts={HighStock}

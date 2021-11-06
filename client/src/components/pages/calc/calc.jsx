@@ -64,13 +64,13 @@ const Account = ({account, changeCoef, changeSubCoef}) => {
   let exception;
 
   const AccountList = account.map((acnt, idx_1)=>{
-
-    if(acnt.fsname == "비지배지분"){
+    exception = null;
+    if(acnt.fsname === "비지배지분"){
       exception = <Input index={[idx_1]} coef={acnt.coef} changeFunction={changeCoef} pre_value={acnt.amount}></Input>
     }
 
     let amount;
-    if(acnt.sub_account.length == 0){
+    if(acnt.sub_account.length === 0){
       amount = acnt.amount
     }
 
@@ -106,9 +106,9 @@ function Calc(props){
   let totalDebt;
 
   props.calc.account.forEach(acnt => {
-    if(acnt.fsname == "유동자산") currentAsset = acnt.amount;
-    else if(acnt.fsname == "비유동자산") nonCurrentAsset = acnt.amount;
-    else if(acnt.fsname == "부채총계") totalDebt = acnt.amount;
+    if(acnt.fsname === "유동자산") currentAsset = acnt.amount;
+    else if(acnt.fsname === "비유동자산") nonCurrentAsset = acnt.amount;
+    else if(acnt.fsname === "부채총계") totalDebt = acnt.amount;
   });
 
 
@@ -188,6 +188,8 @@ function Calc(props){
       <Account account={props.calc.account} changeCoef={props.changeCoef} changeSubCoef={props.changeSubCoef}/>
       <input type="text" name="title"/>
       <button type='submit'>저장하기</button>
+      {/* // 타이틀 변경함수 넣기 */}
+      {/* <input type='button' onClick={}>변경하기</input> */}
     </form>
 
     {/*
