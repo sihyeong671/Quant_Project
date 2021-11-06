@@ -83,6 +83,7 @@ function Chart(props){
       <form onSubmit={(e) => {
         e.preventDefault();
         const codeList = getCode(props.search.corpList);
+        console.log(codeList);
         props.getStockData(codeList)}}>
         <Search maxLength={4}></Search>
         <button type="submit">확인</button>
