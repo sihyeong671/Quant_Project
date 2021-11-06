@@ -178,7 +178,10 @@ class DailyPriceApi(PublicApiMixin, APIView):
         """
         'code': ['원하는 stock_code 1', '원하는 stock_code 2', ...]
         """
-        company_code = request.data.getlist('code[]')
+        company_code = request.data.get('code')
+        if not isinstance(company_code, list):
+            company_code = list(company_code)
+        
         data = {}
         
         for code in company_code:
