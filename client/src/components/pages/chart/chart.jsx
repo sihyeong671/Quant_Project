@@ -4,7 +4,7 @@ import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import HighchartsReact from 'highcharts-react-official';
-import Highcharts from 'highcharts';
+import HighStock from 'highcharts/highstock';
 import axios from 'axios';
 
 import Search from '../../../containers/search/search';
@@ -57,7 +57,6 @@ function Chart(props){
       }
     },
     tooltip: {
-      
       split: true,
       valueDecimals: 2
     },
@@ -76,7 +75,8 @@ function Chart(props){
     </form>
 
       <HighchartsReact
-        highcharts={Highcharts}
+        highcharts={HighStock}
+        constructorType={"stockChart"}
         options={options}
       />
     </>
