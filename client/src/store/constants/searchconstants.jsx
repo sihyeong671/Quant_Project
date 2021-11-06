@@ -1,4 +1,5 @@
 export const searchConstants = {
   CREATE: 'search/CREATE',
-  DELETE: 'search/DELETE'
+  DELETE: 'search/DELETE',
+  INIT: 'search/INIT',
 }
