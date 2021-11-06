@@ -2,18 +2,19 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from django.shortcuts import get_object_or_404
+from django.db.models.query import Prefetch
 from django.db.models import Q, F
-from django.http.response import HttpResponse
 
 
 from api.mixins import ApiAuthMixin, PublicApiMixin, SuperUserMixin
-from stockmanage.models import Company, FS_Account, SUB_Account, Daily_Price
+from stockmanage.models import Company, FS_Account, SUB_Account, Daily_Price,\
+    CustomFS_Account, CustomSUB_Account, UserCustomBS
 from stockmanage.utils import getData
+from stockmanage.serializers import UserCustomBSSerializer
+from stockmanage.models import *
 
 from crawling.crawling import *
 from crawling.API_KEY import *
-from stockmanage.models import *
 
 
 class CompanyNameApi(PublicApiMixin, APIView):
@@ -36,7 +37,7 @@ class CompanyNameApi(PublicApiMixin, APIView):
         return Response(data, status=status.HTTP_200_OK)                      
 
 
-class AccountApi(PublicApiMixin, APIView):
+class AccountSearchApi(PublicApiMixin, APIView):
     def post(self, request, *args, **kwargs):
         stock_code = request.data.get('id', '')
         year = request.data.get('year', '')
@@ -82,8 +83,101 @@ class AccountApi(PublicApiMixin, APIView):
         return Response(data, status=status.HTTP_200_OK)
 
 
-class DailyPriceApi(PublicApiMixin, APIView):
+class CustomBSApi(ApiAuthMixin, APIView):
+    def get(self, request, *args, **kwargs):
+        custom_title = request.GET["title"]
+        user = request.user
+        bs_queryset = UserCustomBS.objects\
+            .prefetch_related(
+                Prefetch('fs_account', queryset=CustomFS_Account.objects.all()),
+                Prefetch('fs_account__sub_account', queryset=CustomSUB_Account.objects.all()))\
+            .filter(
+                Q(user=user) &
+                Q(title=custom_title)
+            )
+        
+        serializer = UserCustomBSSerializer(bs_queryset, many=True)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
+    @transaction.atomic
     def post(self, request, *args, **kwargs):
+        stock_code = request.data.get('code', '')
+        year = request.data.get('year', '')
+        custom_title = request.data.get('title', '')
+        quarter = request.data.get('quarter', '')
+        fs = request.data.get('fs', '')
+        link = request.data.get('link', '')
+        account_list = request.data.getlist('account')
+        
+        profile = request.user.profile
+        
+        try:
+            userbs = UserCustomBS(
+                custom_title=custom_title,
+                stock_code=stock_code,
+                bs_year=year,
+                qt_name=quarter,
+                lob=link,
+                sj_div=fs
+            )
+            userbs.save()
+            profile.custom_bs = userbs
+            
+            for account in account_list:
+                fsname = account['fsname']
+                amount = account['amount']
+                coef = account['coef']
+                if coef == '':
+                    coef = 1
+                
+                custom_fsaccount = CustomFS_Account(
+                    custom_bs=userbs,
+                    account_name=fsname,
+                    account_amount=amount,
+                    coef=coef
+                )
+                custom_fsaccount.save()
+                
+                for sub in account['sub_account']:
+                    subname = sub['name']
+                    subamount = sub['amount']
+                    subcoef = sub['coef']
+                    if subcoef == '':
+                        subcoef = 1
+                    
+                    custom_subaccount = CustomSUB_Account(
+                        account_name=subname,
+                        account_amount=subamount,
+                        coef=subcoef
+                    )
+                    custom_subaccount.save()
+            
+            return Response({
+                'message': 'Recieved succesfully',
+                }, status=status.HTTP_200_OK)
+        except:
+            return Response({
+                'message': "Recieve failed",
+            }, status=status.HTTP_402_PAYMENT_REQUIRED)
+
+
+class DailyPriceApi(PublicApiMixin, APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            Save_Price()
+        except:
+            return Response({
+                "message": "failed save daily price"
+            }, status=status.HTTP_409_CONFLICT)
+        return Response({
+            "message": "successed save daily price"
+        })
+        
+    def post(self, request, *args, **kwargs):
+        """
+        'code': ['원하는 stock_code 1', '원하는 stock_code 2', ...]
+        """
         company_code = request.data.getlist('code')
         data = {}
         
@@ -104,22 +198,65 @@ class DailyPriceApi(PublicApiMixin, APIView):
         return Response(data, status=status.HTTP_200_OK)
         
 
+class Crawling_Dart(SuperUserMixin, APIView):
+    def get(self, request):
+        try:
+            apikey = APIKEY
+            Save_Dart_Data(apikey)
+        except:
+            return Response({
+                "message": "failed save dart data"
+            }, status=status.HTTP_409_CONFLICT)
+        
+        return Response({
+            "message": "success save dart data"
+        },status=status.HTTP_200_OK)
+    
+    def delete(self, request):
+        try:
+            Dart.objects.all().delete()
+        except:
+            return Response({
+                "message": "failed delete dart data"
+            }, status=status.HTTP_409_CONFLICT)
+        
+        return Response({
+            "message": "success delete dart data"
+        },status=status.HTTP_200_OK)
+    
+
 class Crawling_Data(SuperUserMixin, APIView):
     def get(self, request):
-        apikey = APIKEY
-        
-        Save_FS_Data(apikey)
-        Save_Price()
-        
-        queryset = Company.objects.all()
-        
-        companies = []
-        
-        for com in queryset:
-            companies.append(com.corp_name)
+        try:
+            apikey = APIKEY
+            Save_FS_Data(apikey)
+            Save_Price()
             
-        data = {
-            'company': companies,
-        }
-
-        return Response(data, status=status.HTTP_200_OK)
+            queryset = Company.objects.all().values('corp_name')
+            
+            companies = []
+            
+            for com in queryset:
+                companies.append(com.corp_name)
+                
+            data = {
+                'company': companies,
+            }
+            return Response(data, status=status.HTTP_200_OK)
+        except:
+            return Response({
+                "message": "failed save fs data"
+            },status=status.HTTP_409_CONFLICT)
+    
+    def delete(self, request):
+        try:
+            Company.objects.all().delete()
+        except:
+            return Response({
+                "message": "failed delete company"
+            }, status=status.HTTP_409_CONFLICT)
+        
+        return Response({
+            "message": "success delete company"
+        },status=status.HTTP_200_OK)
+    
