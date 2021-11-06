@@ -1,9 +1,11 @@
 from os import stat
+from bs4.element import PreformattedString
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from django.shortcuts import get_object_or_404
+from django.db.models.query import Prefetch
 from django.db.models import Q, F
 from django.http.response import HttpResponse
 
@@ -12,10 +14,11 @@ from api.mixins import ApiAuthMixin, PublicApiMixin, SuperUserMixin
 from stockmanage.models import Company, FS_Account, SUB_Account, Daily_Price,\
     CustomFS_Account, CustomSUB_Account, UserCustomBS
 from stockmanage.utils import getData
+from stockmanage.serializers import UserCustomBSSerializer
+from stockmanage.models import *
 
 from crawling.crawling import *
 from crawling.API_KEY import *
-from stockmanage.models import *
 
 
 class CompanyNameApi(PublicApiMixin, APIView):
@@ -89,15 +92,18 @@ class CustomBSApi(ApiAuthMixin, APIView):
         custom_title = request.GET["title"]
         user = request.user
         bs_queryset = UserCustomBS.objects\
-            .prefetch_related('custom_bs')\
+            .prefetch_related(
+                Prefetch('fs_account', queryset=CustomFS_Account.objects.all()),
+                Prefetch('fs_account__sub_account', queryset=CustomSUB_Account.objects.all()))\
             .filter(
-                Q(user=user)
-            )\
-            .prefetch_related('custom_bs__')
+                Q(user=user) &
+                Q(title=custom_title)
+            )
         
-        queryset = UserCustomBS.objects.get(user==)
+        serializer = UserCustomBSSerializer(bs_queryset, many=True)
         
-    
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
     @transaction.atomic
     def post(self, request, *args, **kwargs):
         stock_code = request.data.get('code', '')
@@ -162,6 +168,9 @@ class CustomBSApi(ApiAuthMixin, APIView):
 
 class DailyPriceApi(PublicApiMixin, APIView):
     def post(self, request, *args, **kwargs):
+        """
+        'code': ['원하는 stock_code 1', '원하는 stock_code 2', ...]
+        """
         company_code = request.data.getlist('code')
         data = {}
         
@@ -182,9 +191,17 @@ class DailyPriceApi(PublicApiMixin, APIView):
         return Response(data, status=status.HTTP_200_OK)
         
 
+class Crawling_Dart(PublicApiMixin, APIView):
+    def get(self, request):
+        apikey = APIKEY
+        Save_Dart_Data(apikey)
+        return Response(status=status.HTTP_200_OK)
+
+
 class Crawling_Data(SuperUserMixin, APIView):
     def get(self, request):
         apikey = APIKEY
+        # Save_Dart_Data(apikey)
         
         Save_FS_Data(apikey)
         Save_Price()
@@ -201,3 +218,4 @@ class Crawling_Data(SuperUserMixin, APIView):
         }
 
         return Response(data, status=status.HTTP_200_OK)
+    

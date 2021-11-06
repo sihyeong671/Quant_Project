@@ -199,7 +199,7 @@ class UserCustomBS(models.Model):
 
 
 class CustomFS_Account(models.Model):
-    custom_bs = models.ForeignKey(UserCustomBS, on_delete=models.CASCADE, related_name="custom_bs")
+    custom_bs = models.ForeignKey(UserCustomBS, on_delete=models.CASCADE, related_name="fs_account")
     account_name = models.CharField(help_text="계정명", max_length=255, blank=True, null=True)
     account_amount = models.FloatField(help_text="계정명에 대한 자산", blank=True, null=True)
     coef = models.IntegerField(default=1, null=True, blank=True)
