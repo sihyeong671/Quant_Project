@@ -18,6 +18,7 @@ function Chart(props){
   console.log("Chart rendering");
   
 
+  let stockData = props.chart
   const options = {
     rangeSelector: {
       selected: 1
@@ -68,6 +69,8 @@ function Chart(props){
       y: 0
     }
   }
+
+
 
   return (
     <>
