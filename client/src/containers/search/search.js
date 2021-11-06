@@ -1,38 +1,45 @@
-import { connect } from 'react-redux';
+import {
+  connect
+} from 'react-redux';
 import React from 'react';
 import Search from '../../components/search/search';
 import Constants from '../../store/constants';
 import axios from 'axios';
 
-const mapStateToProps=(state)=>{
+const mapStateToProps = (state) => {
 
   return state.search;
 }
 
 // async 는 promise를 반환
-const mapDispatchToProps=(dispatch)=>{
+const mapDispatchToProps = (dispatch) => {
   return {
     getFsData: async () => {
-      try{
+      try {
         // api만들면 수정
         const res = await axios.get('api/v1/stock/company');
-        console.log(res)
+        console.log(res);
         return res.data.company;
-      }catch(error){
+      } catch (error) {
         console.log(error);
       }
     },
-    onClickCreate: function(code, name){
+    onClickCreate: function (code, name) {
       dispatch({
-        type:Constants.search.CREATE,
-        corpName :name,
+        type: Constants.search.CREATE,
+        corpName: name,
         code: code
       })
     },
-    onClickDelete: function(code){
+    onClickDelete: function (code) {
       dispatch({
-        type:Constants.search.DELETE,
+        type: Constants.search.DELETE,
         code: code
+      })
+    },
+    onClickInit: function () {
+      dispatch({
+        type: Constants.search.INIT,
       })
     }
   }
