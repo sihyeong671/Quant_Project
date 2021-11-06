@@ -15,22 +15,24 @@ const Profile=(props)=>{
 
   const [userInfo, setUserInfo] = useState();
 
-  const check = async ()=>{
-    const res = await axios({
-      method:'GET',
-      url: '/api/v1/users/me',
-    })
-    console.log(res);
-  }
-  
-  // useEffect(async ()=>{
-  // })
+  // const check = async ()=>{
+  //   const res = await axios({
+  //     method:'GET',
+  //     url: '/api/v1/users/me',
+  //   })
+  //   console.log(res);
+  // }
 
   return(
-    <article className="profile_manage">
+    <article className="profile">
 
-      <section className="profile-info"></section>
-      {/* <button onClick={check}>Click Me!</button> */}
+      <section className="profile_user-info">
+        <img className='info-img' src="" alt=""/>
+        <h2></h2>
+      </section>
+
+
+
     </article>
   );
 }

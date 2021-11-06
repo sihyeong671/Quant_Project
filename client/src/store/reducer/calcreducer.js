@@ -12,13 +12,11 @@ import _ from "lodash";
 // 비지배지분
 //  자본총계
 const initState = {
-    "account": [
-        {
+    "account": [{
             "fsname": "유동자산",
             "amount": 36268771.0,
             "coef": 1,
-            "sub_account": [
-                {
+            "sub_account": [{
                     "name": "현금및현금성자산",
                     "amount": 5925140.0,
                     "coef": 1
@@ -48,9 +46,8 @@ const initState = {
         {
             "fsname": "비유동자산",
             "amount": 50798431.0,
-            "coef" : 1,
-            "sub_account": [
-                {
+            "coef": 1,
+            "sub_account": [{
                     "name": "장기매출채권 및 기타비유동채권",
                     "amount": 1911233.0,
                     "coef": 1
@@ -97,8 +94,7 @@ const initState = {
             "fsname": "유동부채",
             "amount": 18648083.0,
             "coef": 1,
-            "sub_account": [
-                {
+            "sub_account": [{
                     "name": "매입채무 및 기타유동채무",
                     "amount": 2663206.0,
                     "coef": 1
@@ -123,9 +119,8 @@ const initState = {
         {
             "fsname": "비유동부채",
             "amount": 19842071.0,
-            "coef":1,
-            "sub_account": [
-                {
+            "coef": 1,
+            "sub_account": [{
                     "name": "장기차입금",
                     "amount": 17365164.0,
                     "coef": 1
@@ -150,15 +145,14 @@ const initState = {
         {
             "fsname": "부채총계",
             "amount": 38490154.0,
-            "coef" : 1,
+            "coef": 1,
             "sub_account": []
         },
         {
             "fsname": "지배기업의 소유주에게 귀속되는 자본",
             "amount": 40370561.0,
-            "coef" : 1,
-            "sub_account": [
-                {
+            "coef": 1,
+            "sub_account": [{
                     "name": "자본금",
                     "amount": 1366450.0,
                     "coef": 1
@@ -188,13 +182,13 @@ const initState = {
         {
             "fsname": "비지배지분",
             "amount": 8206487.0,
-            "coef" : 1,
+            "coef": 1,
             "sub_account": []
         },
         {
             "fsname": "자본총계",
             "amount": 48577048.0,
-            "coef" : 1,
+            "coef": 1,
             "sub_account": []
         }
     ]
@@ -202,44 +196,43 @@ const initState = {
 // sub_account의 amount는 그대로 -> 프론트에서 amount와 coef를 곱해 바로 보여준다.
 // account의 amount는 나머지를 더해서 실제 데이터를 변경
 
-export default function reducer(state=initState, action){
+export default function reducer(state = initState, action) {
 
-  // 선언부 위로 끌고 오기
+    // 선언부 위로 끌고 오기
 
 
 
-  switch(action.type){
-    
-    case Constants.calc.GET:
-      return action.data;
+    switch (action.type) {
 
-    case Constants.calc.CHANGESUB:{
-      let newState = _.cloneDeep(state);
-      let changed_account =  newState.account[action.index[0]];
+        case Constants.calc.GET:
+            return action.data;
 
-      changed_account.sub_account[action.index[1]].coef = action.coef;
+        case Constants.calc.CHANGESUB: {
+            let newState = _.cloneDeep(state);
+            let changed_account = newState.account[action.index[0]];
 
-      let account_sum = 0;
-      changed_account.sub_account.forEach(element => {
-        account_sum += (element.amount * element.coef);
-      });
-      changed_account.amount = account_sum;
-    
-      newState.account[2].amount = newState.account[0].amount + newState.account[1].amount;
-      newState.account[5].amount = newState.account[3].amount + newState.account[4].amount;
-      newState.account[8].amount = newState.account[6].amount + newState.account[7].amount;
+            changed_account.sub_account[action.index[1]].coef = action.coef;
 
-      return newState;
+            let account_sum = 0;
+            changed_account.sub_account.forEach(element => {
+                account_sum += (element.amount * element.coef);
+            });
+            changed_account.amount = account_sum;
+
+            newState.account[2].amount = newState.account[0].amount + newState.account[1].amount;
+            newState.account[5].amount = newState.account[3].amount + newState.account[4].amount;
+            newState.account[8].amount = newState.account[6].amount + newState.account[7].amount;
+
+            return newState;
+        }
+        case Constants.calc.CHANGE: {
+            let newState = _.cloneDeep(state);
+            newState.account[action.index[0]].coef = action.coef;
+            newState.account[8].amount = newState.account[6].amount + newState.account[7].amount * newState.account[7].coef;
+            return newState;
+        }
+
     }
-    case Constants.calc.CHANGE:{
-      let newState = _.cloneDeep(state);
-      newState.account[action.index[0]].coef = action.coef;
 
-      return newState;
-    }
-      
-  }
-
-  return state
+    return state
 }
-
