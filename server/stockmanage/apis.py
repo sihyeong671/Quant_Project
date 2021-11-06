@@ -1,13 +1,9 @@
-from os import stat
-from bs4.element import PreformattedString
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from django.shortcuts import get_object_or_404
 from django.db.models.query import Prefetch
 from django.db.models import Q, F
-from django.http.response import HttpResponse
 
 
 from api.mixins import ApiAuthMixin, PublicApiMixin, SuperUserMixin
@@ -167,6 +163,17 @@ class CustomBSApi(ApiAuthMixin, APIView):
 
 
 class DailyPriceApi(PublicApiMixin, APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            Save_Price()
+        except:
+            return Response({
+                "message": "failed save daily price"
+            }, status=status.HTTP_409_CONFLICT)
+        return Response({
+            "message": "successed save daily price"
+        })
+        
     def post(self, request, *args, **kwargs):
         """
         'code': ['원하는 stock_code 1', '원하는 stock_code 2', ...]
@@ -191,31 +198,65 @@ class DailyPriceApi(PublicApiMixin, APIView):
         return Response(data, status=status.HTTP_200_OK)
         
 
-class Crawling_Dart(PublicApiMixin, APIView):
+class Crawling_Dart(SuperUserMixin, APIView):
     def get(self, request):
-        apikey = APIKEY
-        Save_Dart_Data(apikey)
-        return Response(status=status.HTTP_200_OK)
-
+        try:
+            apikey = APIKEY
+            Save_Dart_Data(apikey)
+        except:
+            return Response({
+                "message": "failed save dart data"
+            }, status=status.HTTP_409_CONFLICT)
+        
+        return Response({
+            "message": "success save dart data"
+        },status=status.HTTP_200_OK)
+    
+    def delete(self, request):
+        try:
+            Dart.objects.all().delete()
+        except:
+            return Response({
+                "message": "failed delete dart data"
+            }, status=status.HTTP_409_CONFLICT)
+        
+        return Response({
+            "message": "success delete dart data"
+        },status=status.HTTP_200_OK)
+    
 
 class Crawling_Data(SuperUserMixin, APIView):
     def get(self, request):
-        apikey = APIKEY
-        # Save_Dart_Data(apikey)
-        
-        Save_FS_Data(apikey)
-        Save_Price()
-        
-        queryset = Company.objects.all()
-        
-        companies = []
-        
-        for com in queryset:
-            companies.append(com.corp_name)
+        try:
+            apikey = APIKEY
+            Save_FS_Data(apikey)
+            Save_Price()
             
-        data = {
-            'company': companies,
-        }
-
-        return Response(data, status=status.HTTP_200_OK)
+            queryset = Company.objects.all().values('corp_name')
+            
+            companies = []
+            
+            for com in queryset:
+                companies.append(com.corp_name)
+                
+            data = {
+                'company': companies,
+            }
+            return Response(data, status=status.HTTP_200_OK)
+        except:
+            return Response({
+                "message": "failed save fs data"
+            },status=status.HTTP_409_CONFLICT)
+    
+    def delete(self, request):
+        try:
+            Company.objects.all().delete()
+        except:
+            return Response({
+                "message": "failed delete company"
+            }, status=status.HTTP_409_CONFLICT)
+        
+        return Response({
+            "message": "success delete company"
+        },status=status.HTTP_200_OK)
     
