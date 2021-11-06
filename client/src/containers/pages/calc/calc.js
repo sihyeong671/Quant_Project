@@ -6,14 +6,19 @@ import axios from 'axios';
 import { offset } from 'highcharts';
 
 const mapStateToProps=(state)=>{
-  const newState = Object.assign({}, state.calc, state.search);
+
+  const newState = {
+    calc: state.calc,
+    search: state.search,
+    user: state.user
+  }
   return newState;
 }
 
 const mapDispatchToProps=(dispatch)=>{
   return {
     // 서버에서 재무상태표 (BS) 받아오기
-    getFsData: async (parameter) => {
+    getBsData: async (parameter) => {
       try{
         const res = await axios.post('api/v1/stock/account', parameter);
         console.log(res);
@@ -25,25 +30,32 @@ const mapDispatchToProps=(dispatch)=>{
         console.log(error);
       }
     },
+
     // 서버로 사용자가 커스텀한 숫자 전송
     sendCustom: async (parameter) => {
 
       try{
         //const res = axios.post('api/v1/', parameter);
-        console.log(res);
-        // 디스패치
+        //console.log(res);
 
       }catch(error){
         console.log(error);
       }
     },
-    changeCoef: (idx, coef) => {
+    changeSubCoef: (idx, coef) => { // idx는 리스트
         dispatch({
-          type: Constants.calc.CHANGE,
+          type: Constants.calc.CHANGESUB,
           coef: coef,
           index: idx
         });
-      }
+      },
+    changeCoef: (idx, coef) => { // idx 는 number
+      dispatch({
+        type: Constants.calc.CHANGE,
+        coef: coef,
+        index: idx
+      })
+    }
     
   }
 }

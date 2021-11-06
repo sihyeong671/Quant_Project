@@ -16,6 +16,7 @@ const initState = {
         {
             "fsname": "유동자산",
             "amount": 36268771.0,
+            "coef": 1,
             "sub_account": [
                 {
                     "name": "현금및현금성자산",
@@ -47,6 +48,7 @@ const initState = {
         {
             "fsname": "비유동자산",
             "amount": 50798431.0,
+            "coef" : 1,
             "sub_account": [
                 {
                     "name": "장기매출채권 및 기타비유동채권",
@@ -88,11 +90,13 @@ const initState = {
         {
             "fsname": "자산총계",
             "amount": 87067202.0,
+            "coef": 1,
             "sub_account": []
         },
         {
             "fsname": "유동부채",
             "amount": 18648083.0,
+            "coef": 1,
             "sub_account": [
                 {
                     "name": "매입채무 및 기타유동채무",
@@ -119,6 +123,7 @@ const initState = {
         {
             "fsname": "비유동부채",
             "amount": 19842071.0,
+            "coef":1,
             "sub_account": [
                 {
                     "name": "장기차입금",
@@ -145,11 +150,13 @@ const initState = {
         {
             "fsname": "부채총계",
             "amount": 38490154.0,
+            "coef" : 1,
             "sub_account": []
         },
         {
             "fsname": "지배기업의 소유주에게 귀속되는 자본",
             "amount": 40370561.0,
+            "coef" : 1,
             "sub_account": [
                 {
                     "name": "자본금",
@@ -181,11 +188,13 @@ const initState = {
         {
             "fsname": "비지배지분",
             "amount": 8206487.0,
+            "coef" : 1,
             "sub_account": []
         },
         {
             "fsname": "자본총계",
             "amount": 48577048.0,
+            "coef" : 1,
             "sub_account": []
         }
     ]
@@ -194,12 +203,17 @@ const initState = {
 // account의 amount는 나머지를 더해서 실제 데이터를 변경
 
 export default function reducer(state=initState, action){
+
+  // 선언부 위로 끌고 오기
+
+
+
   switch(action.type){
     
     case Constants.calc.GET:
       return action.data;
 
-    case Constants.calc.CHANGE:
+    case Constants.calc.CHANGESUB:{
       let newState = _.cloneDeep(state);
       let changed_account =  newState.account[action.index[0]];
 
@@ -216,6 +230,14 @@ export default function reducer(state=initState, action){
       newState.account[8].amount = newState.account[6].amount + newState.account[7].amount;
 
       return newState;
+    }
+    case Constants.calc.CHANGE:{
+      let newState = _.cloneDeep(state);
+      newState.account[action.index[0]].coef = action.coef;
+
+      return newState;
+    }
+      
   }
 
   return state

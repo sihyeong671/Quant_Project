@@ -30,12 +30,3 @@ if settings.DEBUG:
     urlpatterns += [
         path('__debug__/', include(debug_toolbar.urls)),
     ]
-    
-# {
-#   "id":"950130",
-#   "name":"pdf",
-#   "year": "2018",
-#   "quarter": "11011",
-#   "link": "CFS",
-#   "fs": "BS"
-# }

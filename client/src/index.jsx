@@ -11,8 +11,9 @@ import {store, persistor} from './store/store';
 import App from './containers/App/App';
 import './index.scss'
 
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = "http://quant.or.kr/";
 axios.defaults.withCredentials = true;
+
 
 const rootElement = document.getElementById('root');
 ReactDOM.render(

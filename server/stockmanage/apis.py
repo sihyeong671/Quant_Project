@@ -4,16 +4,20 @@ from rest_framework.views import APIView
 
 from django.shortcuts import get_object_or_404
 from django.db.models import Q, F
+from django.http.response import HttpResponse
 
-from api.mixins import ApiAuthMixin, PublicApiMixin
+
+from api.mixins import ApiAuthMixin, PublicApiMixin, SuperUserMixin
 from stockmanage.models import Company, FS_Account, SUB_Account, Daily_Price
 from stockmanage.utils import getData
 
+from crawling.crawling import *
+from crawling.API_KEY import *
+from stockmanage.models import *
 
 
 class CompanyNameApi(PublicApiMixin, APIView):
     def get(self, request, *args, **kwargs):
-        
         company_list = Company.objects.all()
         data_list = []
         
@@ -66,6 +70,7 @@ class AccountApi(PublicApiMixin, APIView):
             fsaccount = {
                 'fsname': ac.account_name,
                 'amount': ac.account_amount,
+                'coef': 1,
                 'sub_account': sub_account_list,
             }
             fs_account_list.append(fsaccount)
@@ -98,4 +103,23 @@ class DailyPriceApi(PublicApiMixin, APIView):
         
         return Response(data, status=status.HTTP_200_OK)
         
-    
+
+class Crawling_Data(SuperUserMixin, APIView):
+    def get(self, request):
+        apikey = APIKEY
+        
+        Save_FS_Data(apikey)
+        Save_Price()
+        
+        queryset = Company.objects.all()
+        
+        companies = []
+        
+        for com in queryset:
+            companies.append(com.corp_name)
+            
+        data = {
+            'company': companies,
+        }
+
+        return Response(data, status=status.HTTP_200_OK)

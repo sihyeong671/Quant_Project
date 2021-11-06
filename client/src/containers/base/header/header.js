@@ -10,27 +10,23 @@ import React from 'react';
 // 다음에 써보도록 하자
 
 function mapStateToProps(state){
-  const newState = state.user;
-  return newState;
+  return {
+    user: state.user
+  };
 }
 
 function mapDispatchToProps(dispatch){
   return {
     basicLogOut: async function(){
       try{
-        // axios.post 로 하니 문제 생김
-        const res = await axios({
-          method:'post',
-          url:'/api/v1/auth/logout'
-        })
-        console.log(res);
+        await axios.post('/api/v1/auth/logout');
+        
         dispatch({
           type: Constants.user.LOGOUT
         })
       }catch(error){
         console.log(error);
       }
-
     }
   }
 }

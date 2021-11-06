@@ -5,10 +5,11 @@ import './assets/css/style.scss';
 // 검색할 기업 보여주는 컴포넌트
 const List = (props) => {
   console.log('list rendering');
+  console.log(props);
   return(
     <li>
       {props.name}
-      <button onClick={() => props.onClick(props.id)}>❌</button>
+      <button onClick={() => props.onClick(props.code)}>❌</button>
     </li>
   )
 };
@@ -17,31 +18,32 @@ const Search = (props) =>{
   console.log('Search rendering');
   const [corpName, setCorpName] = useState('');
 
-  // API로 회사들 가져와야 함
   const [corpList, setCorpList] = useState();
-  console.log(corpList);
+
+  useEffect(async () => {
+    // await를 안으로 옮겨야 함 실제적으로 쓰이는 곳 앞에 위치해야한다.
+    setCorpList(await props.getFsData());
+
+  },[]);
+
   // 연관 검색어 리스트
   const [relList, setRelList] = useState([]);
 
   // 스타일
   const [listStyle, setStyle] = useState({});
 
-  useEffect(async ()=>{
-    await setCorpList(props.getFsData());
-  },[]);
-
   useEffect(async () => {
-      await filterRelList();
+    await filterRelList();
   }, [corpName]);
 
   // 연관 검색어 필터링
   const filterRelList = async ()=>{
     const filterList = await corpList.filter(item=>{
-      return( 
-          item.name.toLowerCase().includes(corpName.toLowerCase()) 
-      )
+      return(item.name.toLowerCase().includes(corpName.toLowerCase()))
     });
-    console.log(filterList);
+
+
+
     (corpName.length > 0 && filterList.length > 0) ? ( 
         setRelList(filterList),
         setStyle({display: 'block'})
@@ -55,18 +57,22 @@ const Search = (props) =>{
   const renderRelList = () => {
     return(
       <ul className="search_relative-list" style={listStyle}>
-        {relList?.map((item, i)=>{
+        {relList?.map((item, idx)=>{
           return(
-            <li key={i}>
+            <li key={item.code}>
               {item.name}
               <button onClick={ e => {
-                if(props.corpList.length >= props.maxLength) return;
-                props.onClickCreate(
-                  (props.search.id) + 1, 
-                  item.name
-                );
+                console.log(e);
+                // 작동안함
                 setCorpName('');
                 setRelList([]);
+
+                props.onClickCreate(
+                  item.code, 
+                  item.name
+                );
+                
+                if(props.corpList.length >= props.maxLength) return;
               }}>추가</button>
             </li>
           )
@@ -95,12 +101,13 @@ const Search = (props) =>{
 
           <div className="search_list">
               {props.corpList.map((data) => (
-                  <List 
-                      onClick={props.onClickDelete}
-                      name={data.name}
-                      id = {data.id}
-                      key={data.id}>
-                  </List>
+                <List
+                  key={data.code}
+                  onClick={props.onClickDelete}
+                  name={data.name}
+                  code = {data.code}
+                >
+                </List>
               ))}
           </div>
       </section>

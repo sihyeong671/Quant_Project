@@ -84,7 +84,6 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
     
-
     @property
     def name(self):
         if not self.last_name:
@@ -107,6 +106,7 @@ class Profile(models.Model):
     signup_path = models.CharField(max_length=64, default='basic')
     
     favorite_company = models.ManyToManyField(Company, blank=True, related_name='favorite_user')
+     
     favorite_category = models.ManyToManyField(Category, blank=True, related_name='favorite_user')
     favorite_post = models.ManyToManyField(Post, blank=True, related_name='favorite_user')
     favorite_comment = models.ManyToManyField(Comment, blank=True, related_name='favorite_user')

@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
 function Rank(props){
+  console.log(props);
+
+  
   return (
     <>
       <div> 순위 </div>
