@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Route, Switch, Link } from "react-router-dom";
 import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
@@ -19,21 +19,31 @@ function Chart(props){
   
 
   const options = {
+    rangeSelector: {
+      selected: 1
+    },
+
+    legend: {
+      enabled: true
+    },
+
     title: {
       text: 'Stock Chart'
     },
-    yAxis:{
-      title:{
+
+    yAxis: {
+      title: {
         text: "stock price"
       },
-      plotLines:[{
+      plotLines: [{
         value: 0,
         width: 2,
         color: "silver"
       }]
     },
-    xAxis:{
-      title:{
+
+    xAxis: {
+      title: {
         text: "date"
       }
     },
@@ -46,14 +56,16 @@ function Chart(props){
         showInNavigator: true
       }
     },
+
     tooltip: {
       split: true,
       valueDecimals: 2
     },
+
     rangeSelector: {
       verticalAlign: 'top',
-      x : 0,
-      y : 0
+      x: 0,
+      y: 0
     }
   }
 
