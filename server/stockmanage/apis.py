@@ -1,3 +1,4 @@
+from os import stat
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -8,7 +9,8 @@ from django.http.response import HttpResponse
 
 
 from api.mixins import ApiAuthMixin, PublicApiMixin, SuperUserMixin
-from stockmanage.models import Company, FS_Account, SUB_Account, Daily_Price
+from stockmanage.models import Company, FS_Account, SUB_Account, Daily_Price,\
+    CustomFS_Account, CustomSUB_Account, UserCustomBS
 from stockmanage.utils import getData
 
 from crawling.crawling import *
@@ -36,7 +38,7 @@ class CompanyNameApi(PublicApiMixin, APIView):
         return Response(data, status=status.HTTP_200_OK)                      
 
 
-class AccountApi(PublicApiMixin, APIView):
+class AccountSearchApi(PublicApiMixin, APIView):
     def post(self, request, *args, **kwargs):
         stock_code = request.data.get('id', '')
         year = request.data.get('year', '')
@@ -80,6 +82,82 @@ class AccountApi(PublicApiMixin, APIView):
         }
         
         return Response(data, status=status.HTTP_200_OK)
+
+
+class CustomBSApi(ApiAuthMixin, APIView):
+    def get(self, request, *args, **kwargs):
+        custom_title = request.GET["title"]
+        user = request.user
+        bs_queryset = UserCustomBS.objects\
+            .prefetch_related('custom_bs')\
+            .filter(
+                Q(user=user)
+            )\
+            .prefetch_related('custom_bs__')
+        
+        queryset = UserCustomBS.objects.get(user==)
+        
+    
+    @transaction.atomic
+    def post(self, request, *args, **kwargs):
+        stock_code = request.data.get('code', '')
+        year = request.data.get('year', '')
+        custom_title = request.data.get('title', '')
+        quarter = request.data.get('quarter', '')
+        fs = request.data.get('fs', '')
+        link = request.data.get('link', '')
+        account_list = request.data.getlist('account')
+        
+        profile = request.user.profile
+        
+        try:
+            userbs = UserCustomBS(
+                custom_title=custom_title,
+                stock_code=stock_code,
+                bs_year=year,
+                qt_name=quarter,
+                lob=link,
+                sj_div=fs
+            )
+            userbs.save()
+            profile.custom_bs = userbs
+            
+            for account in account_list:
+                fsname = account['fsname']
+                amount = account['amount']
+                coef = account['coef']
+                if coef == '':
+                    coef = 1
+                
+                custom_fsaccount = CustomFS_Account(
+                    custom_bs=userbs,
+                    account_name=fsname,
+                    account_amount=amount,
+                    coef=coef
+                )
+                custom_fsaccount.save()
+                
+                for sub in account['sub_account']:
+                    subname = sub['name']
+                    subamount = sub['amount']
+                    subcoef = sub['coef']
+                    if subcoef == '':
+                        subcoef = 1
+                    
+                    custom_subaccount = CustomSUB_Account(
+                        account_name=subname,
+                        account_amount=subamount,
+                        coef=subcoef
+                    )
+                    custom_subaccount.save()
+            
+            return Response({
+                'message': 'Recieved succesfully',
+                }, status=status.HTTP_200_OK)
+        except:
+            return Response({
+                'message': "Recieve failed",
+            }, status=status.HTTP_402_PAYMENT_REQUIRED)
 
 
 class DailyPriceApi(PublicApiMixin, APIView):
