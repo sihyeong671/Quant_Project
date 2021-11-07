@@ -185,8 +185,7 @@ class DailyPriceApi(PublicApiMixin, APIView):
             company_code = list(company_code)
         
         data = {}
-        data['code'] = company_code
-        return HttpResponse(company_code[0], status=status.HTTP_200_OK)
+        
         for code in company_code:
             company = Company.objects.filter(stock_code=code)
             
