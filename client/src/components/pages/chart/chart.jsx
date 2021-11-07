@@ -20,11 +20,15 @@ function Chart(props){
 
   let stockData = [];
   for(const [key, value] of Object.entries(props.chart)){
-    let tmp = {};
-    tmp["name"] = key;
-    tmp["data"] = value;
+    let tmp = {
+      name: '',
+      data: []
+    };
+    tmp.name = key;
+    tmp.data = value;
     stockData.push(tmp);
   }
+  console.log(stockData);
 
   const options = {
     rangeSelector: {
@@ -58,7 +62,7 @@ function Chart(props){
     chart: {
       type: 'line'
     },
-    series: [stockData],
+    series: stockData,
     plotOption:{
       series: {
         showInNavigator: true
