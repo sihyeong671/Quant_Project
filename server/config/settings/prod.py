@@ -37,3 +37,5 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
