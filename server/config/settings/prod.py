@@ -13,7 +13,7 @@ def read_secret(secret_name):
 # 실제 배포시 바꿀 예정 -> False
 DEBUG = True
 
-ALLOWED_HOSTS = ['quant.or.kr']
+ALLOWED_HOSTS = ['quant.or.kr', env.str("AWS_HOST")]
 
 BASE_BACKEND_URL = env.str('DJANGO_BASE_BACKEND_URL')
 BASE_FRONTEND_URL = env.str('DJANGO_BASE_FRONTEND_URL')
