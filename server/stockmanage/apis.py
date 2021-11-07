@@ -1,3 +1,4 @@
+from django.http.response import HttpResponse
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -178,12 +179,14 @@ class DailyPriceApi(PublicApiMixin, APIView):
         """
         'code': ['원하는 stock_code 1', '원하는 stock_code 2', ...]
         """
-        company_code = request.data.get('code')
+        company_code = request.data.get('code', '')
+        
         if not isinstance(company_code, list):
             company_code = list(company_code)
         
         data = {}
-        
+        data['code'] = company_code
+        return HttpResponse(data, status=status.HTTP_200_OK)
         for code in company_code:
             company = Company.objects.filter(stock_code=code)
             
