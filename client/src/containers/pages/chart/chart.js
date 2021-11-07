@@ -17,13 +17,12 @@ function mapDispatchToProps(dispatch){
     // 서버에서 주가 정보 받아오기
     getStockData: async (codeList) => {
       try{
-        const param = { code : codeList};
-        console.log(param);
-        const data = await axios.post('api/v1/stock/daily', param);
-        console.log(data);
+        const param = {code : codeList};
+        const res = await axios.post('api/v1/stock/daily', param);
+        console.log(res.data);
         dispatch({
           type: Constants.chart.GET,
-          data: data
+          data: res.data
         })
       }catch(error){
         console.log(error);
