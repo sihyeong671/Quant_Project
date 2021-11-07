@@ -23,6 +23,7 @@ function Chart(props){
     let tmp = {};
     tmp["name"] = key;
     tmp["data"] = value;
+    stockData.push(tmp);
   }
 
   const options = {
