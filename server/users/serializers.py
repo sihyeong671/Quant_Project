@@ -51,6 +51,7 @@ class UserSerializer(serializers.ModelSerializer):
             'profile',
             'last_login',
             'date_joined',
+            'is_superuser',
         ]
 
 

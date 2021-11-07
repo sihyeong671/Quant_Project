@@ -2,9 +2,9 @@ FROM python:3.9.0
 
 WORKDIR /home/
 
-RUN git clone https://github.com/sihyeong671/Quant_Project.git
+COPY ./ /home/ubuntu/quant_server
 
-WORKDIR /home/Quant_Project/server/
+WORKDIR /home/ubuntu/quant_server/
 
 RUN apt-get upgrade && pip3 install --upgrade pip
 
