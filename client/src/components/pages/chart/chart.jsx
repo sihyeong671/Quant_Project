@@ -18,7 +18,13 @@ function Chart(props){
   console.log("Chart rendering");
   
 
-  let stockData = props.chart
+  let stockData = [];
+  for(const [key, value] of Object.entries(props.chart)){
+    let tmp = {};
+    tmp["name"] = key;
+    tmp["data"] = value;
+  }
+
   const options = {
     rangeSelector: {
       selected: 1
@@ -77,6 +83,7 @@ function Chart(props){
       <form onSubmit={(e) => {
         e.preventDefault();
         const codeList = getCode(props.search.corpList);
+        console.log(codeList);
         props.getStockData(codeList)}}>
         <Search maxLength={4}></Search>
         <button type="submit">확인</button>
