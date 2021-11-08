@@ -36,7 +36,6 @@ function Login({basicLogin, getUserData}){
   return(
     <>
       <h1>Login</h1>
-
       <div className='login-form'>
         <form onSubmit={onSubmit}>
           <div className="input-area">
