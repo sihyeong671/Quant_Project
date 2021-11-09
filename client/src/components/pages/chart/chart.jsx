@@ -28,7 +28,6 @@ function Chart(props){
     tmp.data = value;
     stockData.push(tmp);
   }
-  console.log(stockData);
 
   const options = {
     rangeSelector: {

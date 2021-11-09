@@ -17,29 +17,24 @@ import './assets/css/style.scss';
 
 import srcSet from "./assets/src";
 
-const authForm = (props) => (
+const AuthForm = (props) => (
   <div className="auth">
     <Switch>
-      <Route exact path ='/auth/login' render={() => <Login basicLogin={props.basicLogin} getUserData={props.getUserData}/>}></Route>
-      <Route path ='/auth/search_id' render={() => <SearchId searchId={props.searchId}/>}></Route>
-      <Route path ='/auth/search_pwd' render={() => <SearchPwd searchPwd={props.searchPwd} sendCode={props.sendCode}/>}></Route>
-      <Route path ='/auth/signup'  render={() => <SignUp basicSignUp={props.basicSignUp} getUserData={props.getUserData}/>}></Route>
+      <Route path='/auth/login' render={() => <Login basicLogin={props.basicLogin} getUserData={props.getUserData}/>}></Route>
+      <Route path='/auth/search_id' render={() => <SearchId searchId={props.searchId} />}></Route>
+      <Route path='/auth/search_pwd' render={() => <SearchPwd searchPwd={props.searchPwd} sendCode={props.sendCode}/>}></Route>
+      <Route path='/auth/signup' render={() => <SignUp basicSignUp={props.basicSignUp} getUserData={props.getUserData}/>}></Route>
     </Switch>
 
     <div className='social-btn'>
-      <a className="social-kakao" href='http://localhost:8000/api/v1/auth/login/kakao'>
+      <a className="social-kakao" onClick={props.kakaoLogin}>
         <img src={srcSet.kakao} alt="kakaologin" />
         <span>카카오로 로그인</span>
       </a>
 
-      <a className="social-google" href='http://localhost:8000/api/v1/auth/login/google'>
+      <a className="social-google" onClick={props.googleLogin}>
         <img src={srcSet.google} alt="googlelogin" />
         <span>구글로 로그인</span>
-      </a>
-
-      <a className="social-naver" href='http://localhost:8000/api/v1/auth/login/naver'>
-        <img src={srcSet.naver} alt="naverlogin" />
-        <span>네이버로 로그인</span>
       </a>
     </div>
 
@@ -53,4 +48,4 @@ const authForm = (props) => (
   </div>
 );
 
-export default hot(module)(authForm);
+export default hot(module)(AuthForm);

@@ -5,8 +5,9 @@ import './assets/css/style.scss';
 // 검색할 기업 보여주는 컴포넌트
 const List = (props) => {
   console.log('list rendering');
-  return(
-    <li>
+  console.log(props);
+  return (
+    <li key={props.key+'searchList'}>
       {props.name}
       <button onClick={() => props.onClick(props.code)}>❌</button>
     </li>
@@ -37,7 +38,7 @@ const Search = (props) => {
 
   // 연관 검색어 필터링
   const filterRelList = async () => {
-    const filterList = await corpList.filter(item => {
+    const filterList = await corpList?.filter(item => {
       return (item.name.toLowerCase().includes(corpName.toLowerCase()))
     });
 
@@ -95,6 +96,7 @@ const Search = (props) => {
         type="text"
         placeholder="기업명"
         onChange={onChange}
+        onBlur={()=>{ setStyle({display: 'none'}) }}
         // onFocus={setStyle({display: 'none'})}
         value={corpName}
       />

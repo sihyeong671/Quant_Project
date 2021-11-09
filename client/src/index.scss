@@ -18,6 +18,12 @@
   font-family: 'GmarketSans' !important;
   box-sizing: border-box;
   outline: none;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+
+.material-icons{
+  font-family: 'Material Icons' !important;
 }
 
 html, body, div, span, applet, object, iframe,
@@ -33,14 +39,11 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-  font-family: 'GmarketSans';
-margin: 0;
-padding: 0;
-border: 0;
-font-size: 100%;
-font: inherit;
-vertical-align: baseline;
-text-decoration: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  text-decoration: none;
   list-style: none;
 }
 /* HTML5 display-role reset for older browsers */
