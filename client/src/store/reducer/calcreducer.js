@@ -205,6 +205,8 @@ export default function reducer(state = initState, action) {
     switch (action.type) {
 
         case Constants.calc.GET:
+            action.data.account.reverse();
+
             return action.data;
 
         case Constants.calc.CHANGESUB: {

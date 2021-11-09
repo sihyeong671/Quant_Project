@@ -141,15 +141,15 @@ function Calc(props) {
   const onSubmitGet = (e) => {
     e.preventDefault();
     const param = {
-      id: props.search.corpList[0].code,
-      name: props.search.corpList[0].name,
+      code: props.search.corpList[0].code,
+      name: props.search.corpList[0].name, // 필요없음
       year: e.target.year.value,
       quarter: e.target.quarter.value,
       link: e.target.FS.value,
       fs: "BS",
     }
     setParamter(param);
-    // props.getBsData(param);
+    props.getBsData(param);
   }
 
   const onSubmitSave = (e) => {
@@ -161,12 +161,12 @@ function Calc(props) {
       title: e.target.title.value
     });
 
-    //서버로 보내기
-    // props.sendCustom({
-    // ...parameter,
-    // account: props.calc.account,
-    // title: e.target.title.value
-    // });
+    
+    props.sendCustom({ // 커스텀 변수 보내서 사용자 정보에 저장
+    ...parameter,
+    account: props.calc.account,
+    title: e.target.title.value
+    });
   }
 
 

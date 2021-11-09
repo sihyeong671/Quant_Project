@@ -25,8 +25,8 @@ function Login({basicLogin, getUserData}){
     const check = await basicLogin(username ,pwd);
     
     if(check) {
-      history.push('/');
       await getUserData();
+      history.push('/');
     }
     else alert("다시")
 

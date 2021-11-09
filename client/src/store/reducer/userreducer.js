@@ -28,7 +28,8 @@ export default function reducer(state=initState, action){
           dateJoined: action.dateJoined,
           email: action.email,
           lastLogin: action.lastLogin,
-          userName: action.userName
+          userName: action.userName,
+          profile: action.profile
         }
       }
   }

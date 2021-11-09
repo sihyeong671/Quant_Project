@@ -5,13 +5,38 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import './assets/css/style.scss';
 
-const rankCondiion = () => {
+const RankCondtion = (props) => {
+
+  const [fsIndicators, setFsIndicators] = useState();
   //userEffect api로 정보 한번만 가져오기
-  
+
+
+  return(
+    <div className = "popUp">
+      순위 추가하기
+      <div>
+        <input type="text"/>
+      </div>
+      <button onClick={props.hideRank}>❌</button>
+      <button onClick={props.hideRank}>확인</button>
+      {/* 확인하면 오른쪽 창에 추가 후 조건 창 생성 */}
+    </div>
+  )
 }
 
-const Condition = () => {
+const Condition = (props) => {
   //userEffect 정보 한번만 가져오기
+
+  return(
+    <div className = "popUp">
+      조건추가하기
+      <div>
+        검색 창
+      </div>
+      <button onClick={props.hideCondition}>❌</button>
+      <button onClick={props.hideCondition}>확인</button>
+    </div>
+  )
 }
 
 
@@ -54,25 +79,10 @@ function Rank(props){
       </div>
       
       {conditionPopUp? (
-          <div className = "popUp">
-            조건추가하기
-            <div>
-              검색 창
-            </div>
-            <button onClick={hideCondition}>❌</button>
-            <button onClick={hideCondition}>확인</button>
-          </div>
+        <Condition hideCondition={hideCondition}></Condition>
       ): null}
       {rankPopUp? (
-        <div className = "popUp">
-          순위 추가하기
-          <div>
-            검색 창
-          </div>
-          <button onClick={hideRank}>❌</button>
-          <button onClick={hideRank}>확인</button>
-          {/* 확인하면 오른쪽 창에 추가 후 조건 창 생성 */}
-        </div>
+        <RankCondtion hideRank={hideRank}></RankCondtion>
       ): null}
     </>
   )

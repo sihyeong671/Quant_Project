@@ -21,10 +21,10 @@ const mapDispatchToProps=(dispatch)=>{
     getBsData: async (parameter) => {
       try{
         const res = await axios.post('api/v1/stock/account', parameter);
-        console.log(res);
+        console.log(res.data);
         dispatch({
           type: Constants.calc.GET,
-          //data: res
+          data: res.data
         })
       }catch(error){
         console.log(error);
@@ -35,8 +35,8 @@ const mapDispatchToProps=(dispatch)=>{
     sendCustom: async (parameter) => {
 
       try{
-        //const res = axios.post('api/v1/', parameter);
-        //console.log(res);
+        const res = await axios.post('api/v1/stock/custombs', parameter);
+        console.log(res);
 
       }catch(error){
         console.log(error);
@@ -56,7 +56,6 @@ const mapDispatchToProps=(dispatch)=>{
         index: idx
       })
     }
-    
   }
 }
 
