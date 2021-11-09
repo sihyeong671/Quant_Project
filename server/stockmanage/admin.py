@@ -16,7 +16,7 @@ from stockmanage.models import *
 # admin.site.register(SUB_Account)
 admin.site.register(CustomFS_Account)
 admin.site.register(CustomSUB_Account)
-admin.site.register(CustomBSApi)
+admin.site.register(UserCustomBS)
 admin.site.register(Daily_Price)
 
 
