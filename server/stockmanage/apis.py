@@ -121,10 +121,10 @@ class CustomBSApi(ApiAuthMixin, APIView):
                 bs_year=year,
                 qt_name=quarter,
                 lob=link,
-                sj_div=fs
+                sj_div=fs,
+                user=profile
             )
             userbs.save()
-            profile.custom_bs = userbs
             
             for account in account_list:
                 fsname = account['fsname']
@@ -149,6 +149,7 @@ class CustomBSApi(ApiAuthMixin, APIView):
                         subcoef = 1
                     
                     custom_subaccount = CustomSUB_Account(
+                        pre_account=custom_fsaccount,
                         account_name=subname,
                         account_amount=subamount,
                         coef=subcoef
