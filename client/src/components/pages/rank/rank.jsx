@@ -59,7 +59,12 @@ const Condition = (props) => {
               rlist?.map((item, j)=>{
                 return(
                   <li key={j}>
-                    {item}
+                    <h3>{item}</h3>
+                    <div className=''>
+                      <input type="text"/>
+                      <button>이상</button>
+                      <button>이하</button>
+                    </div>
                   </li>
                 )
               })

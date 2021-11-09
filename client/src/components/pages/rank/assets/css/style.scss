@@ -141,9 +141,13 @@
       .condition_main-rlist{
         width: 45%;
         li{
-          &:last-child{border-bottom: 2px solid #0075F2;}
-          padding: 10px;
-          border-top: 2px solid #0075F2;
+          // &:last-child{border-bottom: 2px solid #0075F2;}
+          height: 50px;
+          line-height: 50px;
+          margin: 10px 0;
+          border-radius: 40px;
+          padding: 0 30px;
+          border: 2px solid #0075F2;
           font-size: 20px;
           font-weight: 500;
         }

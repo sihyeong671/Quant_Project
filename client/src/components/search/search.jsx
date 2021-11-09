@@ -96,7 +96,7 @@ const Search = (props) => {
         type="text"
         placeholder="기업명"
         onChange={onChange}
-        onBlur={()=>{ setStyle({display: 'none'}) }}
+        // onBlur={()=>{ setStyle({display: 'none'}) }}
         // onFocus={setStyle({display: 'none'})}
         value={corpName}
       />
