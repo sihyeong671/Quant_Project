@@ -44,7 +44,7 @@ class UserMeApi(ApiAuthMixin, APIView):
                 'profile__favorite_company',
             )\
             .annotate(
-                mybstitle=F('profile__custom_bs__custom_title')
+                mybstitle=F('custom_bs__custom_title')
             )\
             .filter(Q(username=username))
             
