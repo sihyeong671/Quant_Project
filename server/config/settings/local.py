@@ -29,3 +29,5 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 4000

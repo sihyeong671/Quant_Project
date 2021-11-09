@@ -24,7 +24,7 @@ export default function reducer(state=initState, action){
     case Constants.user.GETALL_SUCCESS:
       return{
         ...state,
-        user:{
+        userData:{
           dateJoined: action.dateJoined,
           email: action.email,
           lastLogin: action.lastLogin,

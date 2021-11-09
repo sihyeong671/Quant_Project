@@ -1,6 +1,7 @@
 from django.db import models
-from django.db.models.fields import BLANK_CHOICE_DASH
+from django.conf import settings
 
+User = settings.AUTH_USER_MODEL
 
 class Company(models.Model):
     corp_name = models.CharField(max_length=100, null=True, blank=True)
@@ -178,3 +179,35 @@ class Dart(models.Model):
     class Meta:
         verbose_name = "dart info"
         verbose_name_plural = "dart info"
+
+
+class UserCustomBS(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='custom_bs')
+    custom_title = models.CharField(max_length=100, null=True, blank=True)
+    stock_code = models.CharField(max_length=100, null=True, blank=True)
+    bs_year = models.IntegerField(help_text="사업연도", blank=True, null=True)
+    qt_name = models.CharField(
+        help_text="1분기:11013 2분기:11012 3분기보고서:11014 사업보고서:11011",
+        max_length=30, blank=True, null=True
+    )
+    lob = models.CharField(help_text="연결(CFS)/일반(OFS)", max_length=30, blank=True, null=True)
+    sj_div = models.CharField(
+        help_text="재무제표구분(BS:재무상태표, IS:손익계산서, CIS:포괄손익계산서, CF:현금흐름표, SCE:자본변동표)",
+        max_length=255, 
+        blank=True, null=True
+    )
+
+
+class CustomFS_Account(models.Model):
+    custom_bs = models.ForeignKey(UserCustomBS, on_delete=models.CASCADE, related_name="fs_account")
+    account_name = models.CharField(help_text="계정명", max_length=255, blank=True, null=True)
+    account_amount = models.FloatField(help_text="계정명에 대한 자산", blank=True, null=True)
+    coef = models.IntegerField(default=1, null=True, blank=True)
+
+
+class CustomSUB_Account(models.Model):
+    pre_account = models.ForeignKey(CustomFS_Account, on_delete=models.CASCADE, related_name="sub_account")
+    account_name = models.CharField(help_text="계정명", max_length=255, blank=True, null=True)
+    account_amount = models.FloatField(help_text="계정명에 대한 금액", blank=True, null=True)
+    coef = models.IntegerField(default=1, null=True, blank=True)
+

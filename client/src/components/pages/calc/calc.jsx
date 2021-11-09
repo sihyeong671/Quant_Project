@@ -124,9 +124,9 @@ function Calc(props) {
   let totalDebt;
 
   props.calc.account.forEach(acnt => {
-    if (acnt.fsname == "유동자산") currentAsset = acnt.amount;
-    else if (acnt.fsname == "비유동자산") nonCurrentAsset = acnt.amount;
-    else if (acnt.fsname == "부채총계") totalDebt = acnt.amount;
+    if(acnt.fsname === "유동자산") currentAsset = acnt.amount;
+    else if(acnt.fsname === "비유동자산") nonCurrentAsset = acnt.amount;
+    else if(acnt.fsname === "부채총계") totalDebt = acnt.amount;
   });
 
   let years = [];
@@ -253,6 +253,4 @@ function Calc(props) {
 }
 
 export default hot(module)(Calc);
-// export default Calc;
-
 

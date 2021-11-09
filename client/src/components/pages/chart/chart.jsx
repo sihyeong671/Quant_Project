@@ -4,23 +4,31 @@ import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import HighchartsReact from 'highcharts-react-official';
-import Highcharts from 'highcharts';
 import HighStock from 'highcharts/highstock';
 import axios from 'axios';
-
+import newLst from '../../../../data';
 import Search from '../../../containers/search/search';
 
-import mockData from './data';
+function getCode(list){
+  return list.map(corp => corp.code);
+}
 
-function Chart(props) {
+function Chart(props){
+
   console.log("Chart rendering");
+  
 
-  const data1 = []
-  const data2 = []
-  for (let i = 0; i < 100; ++i) {
-    data1.push(i);
-    data2.push(i ** 2);
+  let stockData = [];
+  for(const [key, value] of Object.entries(props.chart)){
+    let tmp = {
+      name: '',
+      data: []
+    };
+    tmp.name = key;
+    tmp.data = value;
+    stockData.push(tmp);
   }
+  console.log(stockData);
 
   const options = {
     rangeSelector: {
@@ -51,19 +59,11 @@ function Chart(props) {
         text: "date"
       }
     },
-
-    series: [
-      {
-        name: '삼성',
-        data: [...data1],
-      },
-      {
-        name: '네이버',
-        data: [...data2]
-      }
-    ],
-
-    plotOption: {
+    chart: {
+      type: 'line'
+    },
+    series: stockData,
+    plotOption:{
       series: {
         showInNavigator: true
       }
@@ -81,9 +81,15 @@ function Chart(props) {
     }
   }
 
+
+
   return (
     <>
-      <form onSubmit={props.getStockData}>
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        const codeList = getCode(props.search.corpList);
+        console.log(codeList);
+        props.getStockData(codeList)}}>
         <Search maxLength={4}></Search>
         <button type="submit">확인</button>
       </form>

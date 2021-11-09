@@ -10,30 +10,37 @@ import axios from 'axios';
 // import axios from 'axios';
 
 
+// 데이터 전체 삭제
+// 데일리 데이터 주가 크롤링
+// 다트 크롤링
+// 재무제표 크롤링
+
+const deleteAllCompany = () => {
+  axios.delete('api/v1/stock/crawling/'); // 모든 데이터 삭제
+}
+
+const dailyCrawling = () => {
+  axios.get('api/v1/stock/daily'); // 현재 존재하는 기업들 주가 가져오기(get)
+}
+
+const dartCrawling = () => {
+  axios.get('api/v1/crawlingdart');
+}
+
+const fsCrawling = () => {
+  axios.get('api/v1/crawlingfs');
+}
+
+
 const Profile=(props)=>{
   console.log('Profile rendering');
-
-  const [userInfo, setUserInfo] = useState();
-
-  // const check = async ()=>{
-  //   const res = await axios({
-  //     method:'GET',
-  //     url: '/api/v1/users/me',
-  //   })
-  //   console.log(res);
-  // }
-
   return(
-    <article className="profile">
-
-      <section className="profile_user-info">
-        <img className='info-img' src="" alt=""/>
-        <h2></h2>
-      </section>
-
-
-
-    </article>
+    <div>
+      <button onClick={deleteAllCompany}>데이터 전체 삭제</button>
+      <button onClick={dailyCrawling}>데일리 데이터 주가 크롤링</button>
+      <button onClick={dartCrawling}>다트 크롤링</button>
+      <button onClick={fsCrawling}>재무제표</button>
+    </div>
   );
 }
 

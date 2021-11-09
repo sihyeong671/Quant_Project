@@ -8,10 +8,8 @@ import { useHistory } from 'react-router';
 import './assets/css/style.scss'
 
 function Header(props){
-
 	console.log("Header rendering");
 
-	console.log(props);
 	let authHeader;
 
 	const history = useHistory();

@@ -5,7 +5,7 @@ from stockmanage.models import *
 
 
 
-admin.site.register(Dart)
+# admin.site.register(Dart)
 # admin.site.register(Company)
 # admin.site.register(Year)
 # admin.site.register(Quarter)
@@ -15,6 +15,23 @@ admin.site.register(Dart)
 # admin.site.register(SUB_Account)
 admin.site.register(Daily_Price)
 
+
+@admin.register(Dart)
+class CompanyAdmin(admin.ModelAdmin):
+    ordering = ('company_name_dart', )
+    list_display = (
+        'dart_code', 'company_name_dart', 'short_code', 
+        'recent_modify',
+    )
+    list_display_links = (
+        'dart_code', 'company_name_dart', 'short_code', 
+        'recent_modify',
+    )
+    search_fields = (
+        'dart_code', 'company_name_dart', 'short_code', 
+        'recent_modify',
+    )
+    inlines = ()
 
 
 @admin.register(Company)
