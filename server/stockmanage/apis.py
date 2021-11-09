@@ -94,7 +94,7 @@ class CustomBSApi(ApiAuthMixin, APIView):
                 Prefetch('fs_account__sub_account', queryset=CustomSUB_Account.objects.all()))\
             .filter(
                 Q(user=user) &
-                Q(title=custom_title)
+                Q(custom_title=custom_title)
             )
         
         serializer = UserCustomBSSerializer(bs_queryset, many=True)
