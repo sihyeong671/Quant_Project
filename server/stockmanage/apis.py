@@ -109,7 +109,7 @@ class CustomBSApi(ApiAuthMixin, APIView):
         quarter = request.data.get('quarter', '')
         fs = request.data.get('fs', '')
         link = request.data.get('link', '')
-        account_list = request.data.getlist('account')
+        account_list = request.data.get('account')
         
         profile = request.user.profile
         
