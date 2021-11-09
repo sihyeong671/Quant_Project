@@ -198,10 +198,7 @@ function mapDispatchToProps(dispatch){
     },
     kakaoLogin: async () => {
       try{
-        await axios({
-          method: 'get',
-          url:'/api/v1/auth/login/kakao'
-        })
+        await axios.get('/api/v1/auth/login/kakao')
         // dispatch
       }catch(error){
         console.log(error);
@@ -209,20 +206,12 @@ function mapDispatchToProps(dispatch){
     },
     googleLogin: async () => {
       try{
-        await axios({
-          method: 'post',
-          url:'/api/v1/auth/login/google'
-        })
+        await axios.get('/api/v1/auth/login/google');
         // dispatch
       }catch(error){
         console.log(error);
       }
-    },
-    naverLogin: async () => {
-
-    },
-
-
+    }
   }
 }
 

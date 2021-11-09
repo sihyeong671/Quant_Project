@@ -27,20 +27,16 @@ const authForm = (props) => (
     </Switch>
 
     <div className='social-btn'>
-      <a className="social-kakao" href='http://localhost:8000/api/v1/auth/login/kakao'>
+      <a className="social-kakao" onClick={props.kakaoLogin}>
         <img src={srcSet.kakao} alt="kakaologin" />
         <span>카카오로 로그인</span>
       </a>
 
-      <a className="social-google" href='http://localhost:8000/api/v1/auth/login/google'>
+      <a className="social-google" onClick={props.googleLogin}>
         <img src={srcSet.google} alt="googlelogin" />
         <span>구글로 로그인</span>
       </a>
 
-      <a className="social-naver" href='http://localhost:8000/api/v1/auth/login/naver'>
-        <img src={srcSet.naver} alt="naverlogin" />
-        <span>네이버로 로그인</span>
-      </a>
     </div>
 
     <div>

@@ -11,7 +11,7 @@ import {store, persistor} from './store/store';
 import App from './containers/App/App';
 import './index.scss'
 
-axios.defaults.baseURL = "http://quant.or.kr/";
+axios.defaults.baseURL = "http://quant.or.kr";
 axios.defaults.withCredentials = true;
 
 

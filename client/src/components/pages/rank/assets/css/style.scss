@@ -1,0 +1,25 @@
+.container{
+  border:  1px solid #000;
+  display: flex;
+  justify-content:space-around;
+  .verticalLine{
+    height: 100px;
+    width: 1px;
+    background-color: #000;
+  }
+  .container-box{
+    
+    width:100px;
+    height:100px;
+    background-color: aqua;
+    button{
+      position: relative;
+      top:70px;
+      left:20px;
+    }
+  }
+}
+
+.popUp{
+  border: 1px solid black;
+}
