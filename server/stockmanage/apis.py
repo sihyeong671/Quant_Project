@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.http.response import HttpResponse
 from rest_framework import status
 from rest_framework.response import Response
@@ -100,7 +101,7 @@ class CustomBSApi(ApiAuthMixin, APIView):
         serializer = UserCustomBSSerializer(bs_queryset, many=True)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
-        
+    
     @transaction.atomic
     def post(self, request, *args, **kwargs):
         stock_code = request.data.get('code', '')
