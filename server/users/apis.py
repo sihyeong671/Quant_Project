@@ -42,16 +42,13 @@ class UserMeApi(ApiAuthMixin, APIView):
                 'profile__favorite_category',
                 'profile__favorite_category__favorite_user',
                 'profile__favorite_company',
-            )\
-            .annotate(
-                mybstitle=F('custom_bs__custom_title')
+                'custom_bs',
             )\
             .filter(Q(username=username))
             
         data = UserSerializer(user_query, many=True, context={'request':request}).data
-        data["mybstitle"] = data.mybstitle
         
-        return Response(data)
+        return Response(data, status=status.HTTP_200_OK)
     
     def put(self, request, *args, **kwargs):
         user = request.user
