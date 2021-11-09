@@ -11,7 +11,6 @@ User = get_user_model()
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    # favorite_company = PostListSerializer(read_only=True)
     favorite_category = CategorySerializer(read_only=True, many=True)
     favorite_post = PostListSerializer(read_only=True, many=True)
     favorite_company = CompanySerializer(read_only=True, many=True)
@@ -41,6 +40,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(read_only=True)
+    mybstitles = serializers.SerializerMethodField(read_only=True)
     
     class Meta:
         model = User
@@ -49,10 +49,19 @@ class UserSerializer(serializers.ModelSerializer):
             'username',
             'email',
             'profile',
+            'mybstitles',
             'last_login',
             'date_joined',
             'is_superuser',
         ]
+        
+    def get_mybstitles(self, obj):
+        custombs = obj.custom_bs.all()
+        mybstitles = []
+        for bs in custombs:
+            mybstitles.append(bs.custom_title)
+        
+        return mybstitles
 
 
 def validate_password12(password1, password2):

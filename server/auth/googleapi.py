@@ -20,6 +20,7 @@ class GoogleLoginApi(PublicApiMixin, APIView):
                 "https://www.googleapis.com/auth/userinfo.profile"
         
         redirect_uri = settings.BASE_BACKEND_URL + "/api/v1/auth/login/google/callback"
+        print("@@redirect uri : " + redirect_uri)
         google_auth_api = "https://accounts.google.com/o/oauth2/v2/auth"
         
         response = redirect(
