@@ -40,7 +40,7 @@ class CompanyNameApi(PublicApiMixin, APIView):
 
 class AccountSearchApi(PublicApiMixin, APIView):
     def post(self, request, *args, **kwargs):
-        stock_code = request.data.get('id', '')
+        stock_code = request.data.get('code', '')
         year = request.data.get('year', '')
         year = int(year)
         quarter = request.data.get('quarter', '')
