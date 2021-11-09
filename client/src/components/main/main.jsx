@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import { Route, Switch } from "react-router-dom";
 import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
@@ -21,9 +21,9 @@ import NotFound from '../notfound';
 
 import './assets/css/style.scss'
 
-const Main=()=>{
+const Main = () => {
     console.log("main rendering")
-	return(
+    return (
         <main className="main">
             <Switch>
                 <Route exact path="/" component={Home}></Route>
@@ -38,7 +38,7 @@ const Main=()=>{
                 <Route component={NotFound}></Route>
             </Switch>
         </main>
-	);
+    );
 }
 
 export default hot(module)(Main);
