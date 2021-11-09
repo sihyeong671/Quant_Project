@@ -48,8 +48,10 @@ class UserMeApi(ApiAuthMixin, APIView):
             )\
             .filter(Q(username=username))
             
+        data = UserSerializer(user_query, many=True, context={'request':request}).data
+        data["mybstitle"] = data.mybstitle
         
-        return Response(UserSerializer(user_query, many=True, context={'request':request}).data)
+        return Response(data)
     
     def put(self, request, *args, **kwargs):
         user = request.user
