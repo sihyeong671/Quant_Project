@@ -96,6 +96,7 @@
 
       .condition_main-slist{
         width: 45%;
+        height: 45vh;
         // display: flex;
         // justify-content: space-between;
         // flex-wrap: wrap;
@@ -133,23 +134,63 @@
             font-size: 22px;
             font-weight: 500;
             margin-left: 2px;
-            font-smooth: antialiased;
           }
         }
       }
 
       .condition_main-rlist{
         width: 45%;
+        height: 45vh;
+        overflow-y: scroll;
         li{
           // &:last-child{border-bottom: 2px solid #0075F2;}
           height: 50px;
           line-height: 50px;
           margin: 10px 0;
           border-radius: 40px;
-          padding: 0 30px;
+          padding: 0 10px 0 30px;
           border: 2px solid #0075F2;
           font-size: 20px;
           font-weight: 500;
+          display: flex;
+          justify-content: space-between;
+          .input-wrapper{
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            div{
+              width: 40%;
+              position: relative;
+              right: 0;
+              display: flex;
+              justify-content: flex-end;
+              align-items: center;
+              line-height: 50px;
+              input{
+                height: 30px;
+                width: 45%;
+                border-radius: 20px 0 0 20px;
+                padding-left: 10px;
+                font-weight: 500;
+                border: 2px solid #0075F2;
+                border-right: none;
+              }
+              button{
+                cursor: pointer;
+                height: 30px;
+                color: #fff;
+                border: none;
+                font-weight: 500;
+                padding: 0 8px;
+                // border: 2px solid #0075F2;
+                &.up{background-color: #0075F2;}
+                &.down{
+                  border-radius: 0px 20px 20px 0px;
+                  background-color: #E94F37;
+                }
+              }
+            }
+          }
         }
       }
 
@@ -173,4 +214,27 @@
     background-color: rgba(0, 0, 0, 0.274);
   }
 
+}
+
+.endBtn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  button{
+    cursor: pointer;
+    border: none;
+    width: 50px;
+    height: 30px;
+    color: #fff;
+    font-weight: 500;
+    &:first-child{
+      border-radius: 20px 0px 0px 20px;
+      background-color: #E94F37;
+    }
+    &:last-child{
+      border-radius: 0px 20px 20px 0px;
+      background-color: #0075F2;
+    }
+  }
 }
