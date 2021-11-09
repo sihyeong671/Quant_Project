@@ -11,7 +11,6 @@ User = get_user_model()
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    # favorite_company = PostListSerializer(read_only=True)
     favorite_category = CategorySerializer(read_only=True, many=True)
     favorite_post = PostListSerializer(read_only=True, many=True)
     favorite_company = CompanySerializer(read_only=True, many=True)

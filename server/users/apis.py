@@ -3,14 +3,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from django.db import transaction
+from django.db.models import Q, F
 from django.conf import settings
+from django.core import exceptions
 from django.contrib.auth.hashers import check_password
 from django.core.management.utils import get_random_secret_key
 from django.utils.translation import gettext_lazy as _
 from django.template.loader import render_to_string
 from django.contrib.auth import get_user_model
-from django.http import FileResponse
-from django.http.response import Http404
 
 from api.mixins import ApiAuthMixin, PublicApiMixin
 
@@ -28,9 +28,28 @@ User = get_user_model()
 
 class UserMeApi(ApiAuthMixin, APIView):
     def get(self, request, *args, **kwargs):
-        # if request.user is None:
-        #     raise exceptions.PermissionDenied('PermissionDenied')
-        return Response(UserSerializer(request.user, context={'request':request}).data)
+        if request.user is None:
+            raise exceptions.PermissionDenied('PermissionDenied')
+        
+        username = request.user.username
+        
+        user_query = User.objects\
+            .prefetch_related(
+                'profile__favorite_post',
+                'profile__favorite_post__favorite_user',
+                'profile__favorite_post__creator',
+                'profile__favorite_post__category',
+                'profile__favorite_category',
+                'profile__favorite_category__favorite_user',
+                'profile__favorite_company',
+            )\
+            .annotate(
+                mybstitle=F('profile__custom_bs__custom_title')
+            )\
+            .filter(Q(username=username))
+            
+        
+        return Response(UserSerializer(user_query, many=True, context={'request':request}).data)
     
     def put(self, request, *args, **kwargs):
         user = request.user
