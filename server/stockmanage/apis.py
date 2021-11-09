@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.http.response import HttpResponse
 from rest_framework import status
 from rest_framework.response import Response
@@ -40,7 +41,7 @@ class CompanyNameApi(PublicApiMixin, APIView):
 
 class AccountSearchApi(PublicApiMixin, APIView):
     def post(self, request, *args, **kwargs):
-        stock_code = request.data.get('id', '')
+        stock_code = request.data.get('code', '')
         year = request.data.get('year', '')
         year = int(year)
         quarter = request.data.get('quarter', '')
@@ -94,13 +95,13 @@ class CustomBSApi(ApiAuthMixin, APIView):
                 Prefetch('fs_account__sub_account', queryset=CustomSUB_Account.objects.all()))\
             .filter(
                 Q(user=user) &
-                Q(title=custom_title)
+                Q(custom_title=custom_title)
             )
         
         serializer = UserCustomBSSerializer(bs_queryset, many=True)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
-        
+    
     @transaction.atomic
     def post(self, request, *args, **kwargs):
         stock_code = request.data.get('code', '')
@@ -109,7 +110,7 @@ class CustomBSApi(ApiAuthMixin, APIView):
         quarter = request.data.get('quarter', '')
         fs = request.data.get('fs', '')
         link = request.data.get('link', '')
-        account_list = request.data.getlist('account')
+        account_list = request.data.get('account')
         
         profile = request.user.profile
         
