@@ -26,6 +26,13 @@ const RankCondtion = (props) => {
 
 const Condition = (props) => {
   //userEffect 정보 한번만 가져오기
+  const [llist, setLlist] = useState([
+    'ROE',
+    'LOL',
+    'ROP',
+    'PER',
+  ]);
+
   const [rlist, setRlist] = useState([]);
 
   const pushVal = (i) =>{
@@ -47,10 +54,10 @@ const Condition = (props) => {
         <div className='condition_main'>
           <ul className='condition_main-slist'>
             {
-              [...Array(10)].map((item, i)=>{
+              llist?.map((item, i)=>{
                 return(
-                  <li onClick={e=>pushVal(i)} key={i}>
-                    <p>{i}</p>
+                  <li onClick={e=>pushVal(item)} key={i}>
+                    <p>{item}</p>
                     <span className="material-icons">add_circle_outline</span>
                   </li>
                 )
@@ -64,10 +71,17 @@ const Condition = (props) => {
                 return(
                   <li key={j}>
                     <h3>{item}</h3>
-                    <div className=''>
-                      <input type="text"/>
-                      <button>이상</button>
-                      <button>이하</button>
+                    <div className='input-wrapper'>
+                      <div className='uinput'>
+                        <input type="text"/>
+                        <button className='up'>이상</button>
+                        <button className='down'>이하</button>
+                      </div>
+                      <div className='pinput'>
+                        <input type="text"/>
+                        <button className='up'>초과</button>
+                        <button className='down'>미만</button>
+                      </div>
                     </div>
                   </li>
                 )
@@ -75,8 +89,10 @@ const Condition = (props) => {
             }
           </ul>
         </div>
-        <button onClick={props.hideCondition}>❌</button>
-        <button onClick={props.hideCondition}>확인</button>
+        <div className='endBtn'>
+          <button onClick={props.hideCondition}>취소</button>
+          <button onClick={props.hideCondition}>확인</button>
+        </div>
       </div>
       <div className='popUp-bg' onClick={props.hideCondition}></div>
     </div>
