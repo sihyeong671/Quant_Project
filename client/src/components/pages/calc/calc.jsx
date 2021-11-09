@@ -28,7 +28,7 @@ const Input = ({ index, coef, changeFunction, pre_value }) => {
   const changedValue = coefficient * pre_value;
 
   return (
-    <div className='subAccount_value'>
+    <div className='subAccount_value' key={"n" + index[0]}>
       <input type="number" step='0.1' min="-10" max='10' value={coefficient} onChange={(e) => onChange(e)}></input>
       <h3>=</h3>
       <span>{changedValue}</span>
@@ -65,10 +65,6 @@ const Account = ({ account, changeCoef, changeSubCoef }) => {
 
   const AccountList = account.map((acnt, idx_1) => {
 
-    // if (acnt.fsname == "비지배지분") {
-    //   exception = <Input index={[idx_1]} coef={acnt.coef} changeFunction={changeCoef} pre_value={acnt.amount}></Input>
-    // }
-
     let amount;
     if (acnt.sub_account.length == 0) {
       amount = acnt.amount
@@ -76,7 +72,7 @@ const Account = ({ account, changeCoef, changeSubCoef }) => {
 
     const acntForm = () => {
       return (
-        <div className='account-wrapper' key={idx_1}>
+        <div className='account-wrapper' key={idx_1 + "acntForm"}>
           {
             acnt.fsname == "비지배지분" ? (
               <div className='account-vi'>
@@ -133,9 +129,6 @@ function Calc(props) {
     else if (acnt.fsname == "부채총계") totalDebt = acnt.amount;
   });
 
-
-
-
   let years = [];
   for (let i = 2015; i < 2022; i++) {
     years.push(i.toString());
@@ -172,9 +165,31 @@ function Calc(props) {
     // });
   }
 
+  const [botFix, setBotFix] = useState({
+    // position: "fixed",
+    // bottom: 0
+  })
+  window.addEventListener('scroll', () => {
+    let cir = document.querySelector('.calc-form');
+    let target = cir.getBoundingClientRect().top - window.scrollY;
+
+    // console.log(target);
+    // if (target < 0) {
+    //   setBotFix({
+    //     position: "relative",
+    //     bottom: 0
+    //   });
+    // } else {
+    //   setBotFix({
+    //     position: "fixed",
+    //     bottom: 0
+    //   });
+    // }
+  })
+
 
   return (
-    <>
+    <section className='calcPage'>
       <div>
         <form onSubmit={onSubmitGet}>
 
@@ -208,7 +223,7 @@ function Calc(props) {
 
       <form onSubmit={onSubmitSave}>
         <Account account={props.calc.account} changeCoef={props.changeCoef} changeSubCoef={props.changeSubCoef} />
-        <input type="text" name="title" />
+        <input type="text" name="title" className='calc-form' />
         <button type='submit'>저장하기</button>
       </form>
 
@@ -217,7 +232,7 @@ function Calc(props) {
       청산가치 = 유동자산 + 비유동 자산 - 부채 총계
       보수적 계산법(벤자민 그레이엄) = 유동자산 - 부채총계 
     */}
-      <div className='resVal'>
+      <div className='resVal' style={botFix}>
         <div className='resVal-value'>
           <h3>청산가치(Liquidation Value)</h3>
           <div>
@@ -232,7 +247,8 @@ function Calc(props) {
           </div>
         </div>
       </div>
-    </>
+
+    </section>
   )
 }
 

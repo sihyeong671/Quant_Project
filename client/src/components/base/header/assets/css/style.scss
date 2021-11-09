@@ -14,8 +14,6 @@
             font-weight: bold;
             color: #000;
         }
-        
-
     }
     
     .nav {
@@ -35,17 +33,32 @@
                 color: #000;
             }
         }
+        
         a{
             color: #000;
             font-size: 20px;
-            margin: 0 10px;
+            // margin: 0 10px;
             transition: all .5s ease;
+
             &:last-child{
                 margin-right: 0;
             }
+
+            &::after{
+                position: relative;
+                content: "";
+                display: block;
+                width: 0;
+                height: 2px;
+                background-color: #000;
+                top: -60px;
+                transition: all .3s;
+            }
+
             &:hover{
-                font-size: 25px;
-                color: #000;
+                &::after{
+                    width: 100%;
+                }
             }
         }
     }
