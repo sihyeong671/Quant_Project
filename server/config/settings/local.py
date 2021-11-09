@@ -11,6 +11,7 @@ BASE_FRONTEND_URL = 'http://localhost:3000'
 
 INTERNAL_IPS = [
     '127.0.0.1',
+    '172.17.0.1',
 ]
 
 # CORS SETTINGS

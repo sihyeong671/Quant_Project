@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
+from stockmanage.apis import CustomBSApi
 
 from stockmanage.models import *
 
@@ -13,6 +14,9 @@ from stockmanage.models import *
 # admin.site.register(FS_Div)
 # admin.site.register(FS_Account)
 # admin.site.register(SUB_Account)
+admin.site.register(CustomFS_Account)
+admin.site.register(CustomSUB_Account)
+admin.site.register(UserCustomBS)
 admin.site.register(Daily_Price)
 
 
