@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+
 from users.models import Profile
 
 User = settings.AUTH_USER_MODEL
@@ -24,7 +25,9 @@ class Company(models.Model):
     est_dt = models.CharField(max_length=100, null=True, blank=True)
     # 결산월
     acc_mt = models.CharField(max_length=100, null=True, blank=True)
-
+    
+    favorite_user = models.ManyToManyField(Profile, blank=True, related_name='favorite_company')
+    
     
     def __str__(self):
         return self.corp_name
