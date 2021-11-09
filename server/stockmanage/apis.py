@@ -88,7 +88,7 @@ class AccountSearchApi(PublicApiMixin, APIView):
 class CustomBSApi(ApiAuthMixin, APIView):
     def get(self, request, *args, **kwargs):
         custom_title = request.GET["title"]
-        user = request.user
+        user = request.user.profile
         bs_queryset = UserCustomBS.objects\
             .prefetch_related(
                 Prefetch('fs_account', queryset=CustomFS_Account.objects.all()),
