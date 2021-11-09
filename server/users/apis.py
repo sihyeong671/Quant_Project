@@ -16,7 +16,6 @@ from api.mixins import ApiAuthMixin, PublicApiMixin
 
 from auth.authenticate import jwt_login
 
-
 from users.serializers import RegisterSerializer, UserSerializer,\
     PasswordChangeSerializer, validate_password12
 from users.models import Profile

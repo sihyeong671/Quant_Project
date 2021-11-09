@@ -1,6 +1,8 @@
 from django.db import models
 from django.conf import settings
 
+from users.models import Profile
+
 User = settings.AUTH_USER_MODEL
 
 class Company(models.Model):
@@ -23,7 +25,9 @@ class Company(models.Model):
     est_dt = models.CharField(max_length=100, null=True, blank=True)
     # 결산월
     acc_mt = models.CharField(max_length=100, null=True, blank=True)
-
+    
+    favorite_user = models.ManyToManyField(Profile, blank=True, related_name='favorite_company')
+    
     
     def __str__(self):
         return self.corp_name
@@ -183,7 +187,7 @@ class Dart(models.Model):
 
 
 class UserCustomBS(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='custom_bs')
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='custom_bs')
     custom_title = models.CharField(max_length=100, null=True, blank=True)
     stock_code = models.CharField(max_length=100, null=True, blank=True)
     bs_year = models.IntegerField(help_text="사업연도", blank=True, null=True)
@@ -197,6 +201,13 @@ class UserCustomBS(models.Model):
         max_length=255, 
         blank=True, null=True
     )
+    
+    def __str__(self):
+        return self.custom_title
+
+    class Meta:
+        verbose_name = "Custom BS"
+        verbose_name_plural = "Custom BS"
 
 
 class CustomFS_Account(models.Model):
