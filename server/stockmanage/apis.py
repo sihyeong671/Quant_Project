@@ -1,12 +1,11 @@
-from django.contrib.auth import get_user_model
-from django.http.response import HttpResponse
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.shortcuts import get_object_or_404
 from django.db.models.query import Prefetch
 from django.db.models import Q, F
-
 
 from api.mixins import ApiAuthMixin, PublicApiMixin, SuperUserMixin
 from stockmanage.models import Company, FS_Account, SUB_Account, Daily_Price,\
@@ -21,6 +20,9 @@ from crawling.API_KEY import *
 
 class CompanyNameApi(PublicApiMixin, APIView):
     def get(self, request, *args, **kwargs):
+        """
+        현재 DB에 저장된 모든 Company의 stock_code와 name을 반환
+        """
         company_list = Company.objects.all()
         data_list = []
         
@@ -41,6 +43,20 @@ class CompanyNameApi(PublicApiMixin, APIView):
 
 class AccountSearchApi(PublicApiMixin, APIView):
     def post(self, request, *args, **kwargs):
+        """[Search Company Financial State]
+        특정 회사의 연도, 분기, 재무제표 종류를 입력받아 검색.
+        해당하는 모든 계정명과 서브계정명과 이에 따른 금액을 전달한다.
+        
+        Args:
+            request (
+                'code',
+                'year',
+                'quarter',
+                'fs' = 'BS' 로 고정,
+                'link',
+                'fs',
+            ): [key값과 필요한 정보들]
+        """
         stock_code = request.data.get('code', '')
         year = request.data.get('year', '')
         year = int(year)
@@ -87,6 +103,14 @@ class AccountSearchApi(PublicApiMixin, APIView):
 
 class CustomBSApi(ApiAuthMixin, APIView):
     def get(self, request, *args, **kwargs):
+        """[retreive UserCustomBS]
+        현재 유저의 Custom BS중에서 GET 방식으로 요청받은 title값을 통해 
+        저장된 Custom BS 정보를 불러옴
+        
+        Args:
+            URL query : ...?title=입력받은title값
+        """
+        
         custom_title = request.GET["title"]
         user = request.user.profile
         bs_queryset = UserCustomBS.objects\
@@ -104,6 +128,21 @@ class CustomBSApi(ApiAuthMixin, APIView):
     
     @transaction.atomic
     def post(self, request, *args, **kwargs):
+        """[Create Custom BS]
+        계수를 임의로 설정한 BS값을 개인 저장소에 저장한다.
+        
+        Args:
+            request (
+                'code',
+                'year',
+                'title',
+                'quarter',
+                'fs' = 'BS' 로 고정,
+                'link',
+                'account',
+            ): [key값과 필요한 정보들]
+
+        """
         stock_code = request.data.get('code', '')
         year = request.data.get('year', '')
         custom_title = request.data.get('title', '')
@@ -163,10 +202,39 @@ class CustomBSApi(ApiAuthMixin, APIView):
             return Response({
                 'message': "Recieve failed",
             }, status=status.HTTP_402_PAYMENT_REQUIRED)
+        
+    def delete(self, request, *args, **kwargs):
+        target_title = request.data.get('title', '')
+        
+        if not target_title:
+            return Response({
+                'message': "Recieve failed",
+            }, status=status.HTTP_402_PAYMENT_REQUIRED)
+        
+        target = UserCustomBS.objects.filter(
+            Q(custom_title=target_title) &
+            Q(user=request.user.profile)
+        )
+        
+        if not target.exists():
+            return Response({
+                "message": "Custom BS not exists"
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        target.delete()
+        
+        return Response({
+            "message": "Delete succcess"
+        }, status=status.HTTP_200_OK)
+            
 
 
 class DailyPriceApi(PublicApiMixin, APIView):
     def get(self, request, *args, **kwargs):
+        """
+        주가 저장 API
+        자세한 사항은 Save_Price() 함수 참고
+        """
         try:
             Save_Price()
         except:
