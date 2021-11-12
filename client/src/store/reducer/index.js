@@ -6,6 +6,7 @@ import search from './searchreducer';
 import user from './userreducer';
 import board from './boardreducer';
 import calc from './calcreducer'
+import rank from './rankreducer';
 
 import storage from "redux-persist/lib/storage";
 
@@ -22,7 +23,8 @@ const rootReducer =  combineReducers({
   chart,
   search,
   user,
-  calc
+  calc,
+  rank
 });
 
 export default persistReducer(persistConfig, rootReducer);

@@ -158,7 +158,7 @@
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            div{
+            .uinput, .pinput{
               width: 40%;
               position: relative;
               right: 0;
@@ -166,7 +166,7 @@
               justify-content: flex-end;
               align-items: center;
               line-height: 50px;
-              input{
+              .updown, .percent{
                 height: 30px;
                 width: 45%;
                 border-radius: 20px 0 0 20px;
@@ -175,20 +175,8 @@
                 border: 2px solid #0075F2;
                 border-right: none;
               }
-              button{
-                cursor: pointer;
-                height: 30px;
-                color: #fff;
-                border: none;
-                font-weight: 500;
-                padding: 0 8px;
-                // border: 2px solid #0075F2;
-                &.up{background-color: #0075F2;}
-                &.down{
-                  border-radius: 0px 20px 20px 0px;
-                  background-color: #E94F37;
-                }
-              }
+
+              
             }
           }
         }
