@@ -7,6 +7,10 @@ import Search from '../../../containers/search/search';
 
 import './assets/css/style.scss';
 
+
+// 각 컴포넌트 따로 connect로 연결 해서 최적화 필요
+
+
 // index : 리스트
 const Input = ({ index, coef, changeFunction, pre_value }) => {
 
@@ -60,8 +64,6 @@ const SubAccount = ({ idx_1, subAccount, changeSubCoef }) => {
 
 // 비지배지분 input 값 넣어줘야함
 const Account = ({ account, changeCoef, changeSubCoef }) => {
-
-  let exception;
 
   const AccountList = account.map((acnt, idx_1) => {
 
@@ -139,7 +141,6 @@ const ResultValue = ({ currentAsset, nonCurrentAsset, totalDebt }) => {
   return (
     <>
       {/*
-      보여줄 것 : 시가총액, 청산가치
       청산가치 = 유동자산 + 비유동 자산 - 부채 총계
       보수적 계산법(벤자민 그레이엄) = 유동자산 - 부채총계 
     */}

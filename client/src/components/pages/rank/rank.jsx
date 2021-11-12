@@ -5,11 +5,12 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import './assets/css/style.scss';
 
-const RankCondtion = (props) => {
+const RankCondition = (props) => {
 
-  const [fsIndicators, setFsIndicators] = useState();
-  //userEffect api로 정보 한번만 가져오기
 
+  // useEffect(()=>{
+  //  api로 재무지표 정보 가져오기
+  // },[])
 
   return(
     <div className = "popUp">
@@ -37,7 +38,7 @@ const Condition = (props) => {
 
   const pushVal = (i) =>{
     console.log(i);
-    let tempList = [...rlist];
+    let tempList = [...rlist]; // concat 사용 가능?
     tempList.push(i);
     setRlist(tempList);
     console.log(rlist);
@@ -64,7 +65,9 @@ const Condition = (props) => {
               })
             }
           </ul>
-          <div className='condition_main-divLine'></div>
+
+          <div className='condition_main-divLine'></div> 
+          
           <ul className='condition_main-rlist'>
             {
               rlist?.map((item, j)=>{
@@ -132,7 +135,7 @@ function Rank(props) {
         <Condition hideCondition={hideCondition}></Condition>
       ) : null}
       {rankPopUp ? (
-        <RankCondiion hideRank={hideRank}></RankCondiion>
+        <RankCondition hideRank={hideRank}></RankCondition>
       ) : null}
 
     </>
