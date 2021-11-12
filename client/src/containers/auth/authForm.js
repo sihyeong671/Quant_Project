@@ -132,15 +132,15 @@ function mapDispatchToProps(dispatch){
       try{
         const profileRes = await axios.get('api/v1/users/me');
         console.log(profileRes.data);
-        const [dateJoined, email, lastLogin, userName, profile, mybstitles] = [
+        const [dateJoined, email, lastLogin, userName, profile, mybstitle] = [
           profileRes.data[0].date_joined,
           profileRes.data[0].email,
           profileRes.data[0].last_login,
           profileRes.data[0].username,
           profileRes.data[0].profile,
-          profileRes.data[0].mybstitles
+          profileRes.data[0].mybstitle,
         ];
-        console.log(dateJoined, email, lastLogin, userName, profile)
+        console.log(dateJoined, email, lastLogin, userName, profile, mybstitle)
         dispatch({
           type:Constants.user.GETALL_SUCCESS,
           dateJoined: dateJoined,
@@ -148,7 +148,7 @@ function mapDispatchToProps(dispatch){
           lastLogin: lastLogin,
           userName: userName,
           profile: profile,
-          mybstitles: mybstitles
+          mybstitle: mybstitle,
       })
       }catch(error){
         console.log(error);

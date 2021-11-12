@@ -113,30 +113,35 @@ const Account = ({ account, changeCoef, changeSubCoef }) => {
 
 const ResultValue = ({ currentAsset, nonCurrentAsset, totalDebt }) => {
 
-  const [botFix, setBotFix] = useState({
-    // position: "fixed",
-    // bottom: 0
-  })
+  const [botFix, setBotFix] = useState();
 
-  useEffect(()=>{
-    window.addEventListener('scroll', () => {
-      let cir = document.querySelector('.calc-form');
-      let target = cir.getBoundingClientRect().top - window.scrollY;
-  
-      // console.log(target);
-      if (target < 0) {
-        setBotFix({
-          position: "relative",
-          bottom: 0
-        });
-      } else {
-        setBotFix({
-          position: "fixed",
-          bottom: 0
-        });
-      }
-    })
-  },[])
+  const scrollAnim = () => {
+    let cir = document.querySelector('.calc-form');
+    let target = cir.getBoundingClientRect().top - window.scrollY;
+
+    console.log(target);
+    if (target < 0) {
+      setBotFix({
+        position: "relative",
+        bottom: 0,
+        padding: '20px 0'
+      });
+    } else {
+      setBotFix({
+        position: "fixed",
+        bottom: 0
+      });
+    }
+  };
+
+  useEffect(() => {
+    console.log('remove')
+    window.removeEventListener('scroll', scrollAnim)
+    return(
+      console.log('add'),
+      window.addEventListener('scroll', scrollAnim)
+    )
+  }, []);
 
   return (
     <>
@@ -210,11 +215,11 @@ function Calc(props) {
       title: e.target.title.value
     });
 
-    
+
     props.sendCustom({ // 커스텀 변수 보내서 사용자 정보에 저장
-    ...parameter,
-    account: props.calc.account,
-    title: e.target.title.value
+      ...parameter,
+      account: props.calc.account,
+      title: e.target.title.value
     });
   }
 
