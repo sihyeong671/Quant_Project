@@ -9,9 +9,22 @@
   align-items: center;
 
   .footer-ico{
-    h1{
-      font-size: 50px;
-      font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .ico-img{
+      width: 80px;
+      height: 80px;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      margin-right: 10px;
+    }
+    p{
+      line-height: calc($line-height / 2);
+      font-size: 35px;
+      font-weight: 500;
+      color: #000;
     }
   }
 

@@ -20,13 +20,24 @@ $light-coral: rgba(254, 109, 115, 1);
     justify-content: space-between;
     box-shadow: 0px 1px 0px rgba(56, 56, 56, 0.3);
     font-weight: 500;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.98);
 
     .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .logo-img{
+            width: 50px;
+            height: 50px;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            margin-right: 5px;
+        }
         a {
-            line-height: $line-height;
-            font-size: 30px;
-            font-weight: bold;
+            line-height: calc($line-height / 2);
+            font-size: 22px;
+            font-weight: 500;
             color: #000;
         }
     }
@@ -99,6 +110,7 @@ $light-coral: rgba(254, 109, 115, 1);
                             display: flex;
                             align-items: center;
                             span {
+                                cursor: pointer;
                                 margin: 0 10px;
                                 font-weight: 500;
                                 font-size: 20px;

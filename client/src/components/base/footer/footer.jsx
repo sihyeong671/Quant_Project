@@ -1,16 +1,22 @@
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import { Link, Route, BrowserRouter as Router } from "react-router-dom";
 import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import './assets/css/style.scss';
 
-function Footer(){
+import logo from './assets/img/LOGO.png'
+
+function Footer() {
   console.log("Footer rendering")
-  return(
+  return (
     <footer className="footer">
       <div className='footer-ico'>
-        <h1>Qunat</h1>
+        <div className='ico-img' style={{ backgroundImage: `url(${logo})` }}></div>
+        <p>
+          <strong>Q</strong>uant <br/>
+          <strong>M</strong>anagement
+        </p>
       </div>
       <div className='footer-copyrights'>
         <p>박시형 | 조현우 | 허상원</p>

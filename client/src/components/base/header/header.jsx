@@ -38,7 +38,7 @@ function Header(props) {
 			});
 		}, 300);
 	};
-	
+
 	const navClose = () => {
 		setNavStyle({
 			right: '-30%',
@@ -60,7 +60,11 @@ function Header(props) {
 	return (
 		<header className="header">
 			<div className="logo">
-				<Link to='/'>Quant</Link>
+				<Link to='/' className='logo-img' style={{ backgroundImage: `url(${logo})` }}></Link>
+				<Link to='/'>
+					<strong>Q</strong>uant <br />
+					<strong>M</strong>anagement
+				</Link>
 			</div>
 			<nav className="nav">
 				<button className='nav-menuBar material-icons' onClick={navOpen}>menu</button>
@@ -78,9 +82,9 @@ function Header(props) {
 									<>
 										<div className='user-profile'>
 											<div className='profile_left'>
-												<Link 
-													to='/profile' 
-													className='profile-img' 
+												<Link
+													to='/profile'
+													className='profile-img'
 													style={{ backgroundImage: `url(${logo})` }}
 													onClick={navClose}
 												></Link>
