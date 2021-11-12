@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import './assets/css/style.scss';
 
-import logo from './assets/img/LOGO.png'
+import logo from './assets/img/logo_w.png'
 
 function Footer() {
   console.log("Footer rendering")
@@ -24,7 +24,7 @@ function Footer() {
           <span className='material-icons'>mail</span>
           <a href='mailto:projectquant@naver.com'>projectquant@naver.com</a>
         </div>
-        <span>@Copyright 2021 PROJECT All rights reserved</span>
+        <span>@Copyright 2021 QuantManagement All rights reserved</span>
       </div>
     </footer>
   );

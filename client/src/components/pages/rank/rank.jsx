@@ -91,7 +91,7 @@ const Condition = (props) => {
         </div>
         <div className='endBtn'>
           <button onClick={props.hideCondition}>취소</button>
-          <button onClick={props.hideCondition}>확인</button>
+          <button onClick={props.hideCondition}>추가</button>
         </div>
       </div>
       <div className='popUp-bg' onClick={props.hideCondition}></div>

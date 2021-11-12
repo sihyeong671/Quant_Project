@@ -9,11 +9,8 @@ import './assets/css/style.scss';
 
 // index : 리스트
 const Input = ({ index, coef, changeFunction, pre_value }) => {
-
   console.log("Input rendering")
-
   const [coefficient, setCoefficient] = useState(coef);
-
   const onChange = (e) => {
     e.preventDefault();
     if (e.target.value == '') { // 빈 값을 넣으면 0이 되도록 함
@@ -24,9 +21,7 @@ const Input = ({ index, coef, changeFunction, pre_value }) => {
     setCoefficient(e.target.value); // 이거 지우고 하면 왜 값이 안바뀔까?
     changeFunction(index, e.target.value);
   }
-
   const changedValue = coefficient * pre_value;
-
   return (
     <div className='subAccount_value' key={"n" + index[0]}>
       <input type="number" step='0.1' min="-10" max='10' value={coefficient} onChange={(e) => onChange(e)}></input>
@@ -38,7 +33,6 @@ const Input = ({ index, coef, changeFunction, pre_value }) => {
 
 const SubAccount = ({ idx_1, subAccount, changeSubCoef }) => {
   console.log('SubAccount rendering');
-
   const subAccountList = subAccount.map((subacnt, idx_2) => {
     return (
       <div className='subAccount' key={idx_2}>
@@ -51,31 +45,21 @@ const SubAccount = ({ idx_1, subAccount, changeSubCoef }) => {
       </div>
     )
   });
-  return (
-    <>
-      {subAccountList}
-    </>
-  )
+  return (<>{subAccountList}</>)
 }
 
 // 비지배지분 input 값 넣어줘야함
 const Account = ({ account, changeCoef, changeSubCoef }) => {
-
   let exception;
-
   const AccountList = account.map((acnt, idx_1) => {
-
     let amount;
-    if (acnt.sub_account.length == 0) {
-      amount = acnt.amount
-    }
-
+    if (acnt.sub_account.length == 0) { amount = acnt.amount }
     const acntForm = () => {
       return (
         <div className='account-wrapper' key={idx_1 + "acntForm"}>
           {
             acnt.fsname == "비지배지분" ? (
-              <div className='account-vi'>
+              <div className='account-vi' key={0}>
                 <div className='subAccount_info'>
                   <span className='subAccount-name'>{acnt.fsname}</span>
                   <span className='subAccount-amount'>{acnt.amount}</span>
@@ -84,29 +68,19 @@ const Account = ({ account, changeCoef, changeSubCoef }) => {
                 <Input index={[idx_1]} coef={acnt.coef} changeFunction={changeCoef} pre_value={acnt.amount}></Input>
               </div>
             ) : (
-              <>
+              <div key={1}>
                 <span className='account-name'>{acnt.fsname}</span>
                 <span className='account-amount'>{amount}</span>
                 <SubAccount subAccount={acnt.sub_account} changeSubCoef={changeSubCoef} idx_1={idx_1} />
-              </>
+              </div>
             )
           }
         </div>
       )
     }
-
-    return (
-      <>
-        {acntForm()}
-      </>
-    )
+    return (<>{acntForm()}</>)
   })
-
-  return (
-    <>
-      {AccountList}
-    </>
-  )
+  return (<>{AccountList}</>)
 }
 
 const ResultValue = ({ currentAsset, nonCurrentAsset, totalDebt }) => {
@@ -116,8 +90,7 @@ const ResultValue = ({ currentAsset, nonCurrentAsset, totalDebt }) => {
   const scrollAnim = () => {
     let cir = document.querySelector('.calc-form');
     let target = cir.getBoundingClientRect().top - window.scrollY;
-
-    console.log(target);
+    // console.log(target);
     if (target < 0) {
       setBotFix({
         position: "relative",
@@ -131,14 +104,14 @@ const ResultValue = ({ currentAsset, nonCurrentAsset, totalDebt }) => {
       });
     }
   };
-
+  
   useEffect(() => {
-    console.log('remove')
-    window.removeEventListener('scroll', scrollAnim)
-    return(
-      console.log('add'),
-      window.addEventListener('scroll', scrollAnim)
-    )
+    console.log('add'),
+    window.addEventListener('scroll', scrollAnim)
+    return ()=>{
+      console.log('remove')
+      window.removeEventListener('scroll', scrollAnim)
+    }
   }, []);
 
   return (
@@ -171,12 +144,11 @@ function Calc(props) {
   console.log('Calc rendering');
   // 값이 바뀌었을 때 리렌더링이 필요한 변수만 useState를 이용해 선언해줌 
   const [parameter, setParamter] = useState({});
+
   // 유동 자산
   let currentAsset;
-
   // 비유동 자산
   let nonCurrentAsset;
-
   // 부채 총계
   let totalDebt;
 
