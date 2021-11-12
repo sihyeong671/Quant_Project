@@ -109,6 +109,58 @@ const Account = ({ account, changeCoef, changeSubCoef }) => {
   )
 }
 
+const ResultValue = ({ currentAsset, nonCurrentAsset, totalDebt }) => {
+
+  const [botFix, setBotFix] = useState({
+    // position: "fixed",
+    // bottom: 0
+  })
+
+  useEffect(()=>{
+    window.addEventListener('scroll', () => {
+      let cir = document.querySelector('.calc-form');
+      let target = cir.getBoundingClientRect().top - window.scrollY;
+  
+      // console.log(target);
+      if (target < 0) {
+        setBotFix({
+          position: "relative",
+          bottom: 0
+        });
+      } else {
+        setBotFix({
+          position: "fixed",
+          bottom: 0
+        });
+      }
+    })
+  },[])
+
+  return (
+    <>
+      {/*
+      보여줄 것 : 시가총액, 청산가치
+      청산가치 = 유동자산 + 비유동 자산 - 부채 총계
+      보수적 계산법(벤자민 그레이엄) = 유동자산 - 부채총계 
+    */}
+      <div className='resVal' style={botFix}>
+        <div className='resVal-value'>
+          <h3>청산가치(Liquidation Value)</h3>
+          <div>
+            <span>{currentAsset + nonCurrentAsset - totalDebt}</span>
+          </div>
+        </div>
+
+        <div className='resVal-value'>
+          <h3>보수적 청산 가치</h3>
+          <div>
+            <span>{currentAsset - totalDebt}</span>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
 
 function Calc(props) {
   console.log('Calc rendering');
@@ -124,9 +176,9 @@ function Calc(props) {
   let totalDebt;
 
   props.calc.account.forEach(acnt => {
-    if(acnt.fsname === "유동자산") currentAsset = acnt.amount;
-    else if(acnt.fsname === "비유동자산") nonCurrentAsset = acnt.amount;
-    else if(acnt.fsname === "부채총계") totalDebt = acnt.amount;
+    if (acnt.fsname === "유동자산") currentAsset = acnt.amount;
+    else if (acnt.fsname === "비유동자산") nonCurrentAsset = acnt.amount;
+    else if (acnt.fsname === "부채총계") totalDebt = acnt.amount;
   });
 
   let years = [];
@@ -164,29 +216,6 @@ function Calc(props) {
     title: e.target.title.value
     });
   }
-
-  const [botFix, setBotFix] = useState({
-    // position: "fixed",
-    // bottom: 0
-  })
-  window.addEventListener('scroll', () => {
-    let cir = document.querySelector('.calc-form');
-    let target = cir.getBoundingClientRect().top - window.scrollY;
-
-    // console.log(target);
-    // if (target < 0) {
-    //   setBotFix({
-    //     position: "relative",
-    //     bottom: 0
-    //   });
-    // } else {
-    //   setBotFix({
-    //     position: "fixed",
-    //     bottom: 0
-    //   });
-    // }
-  })
-
 
   return (
     <section className='calcPage'>
@@ -227,26 +256,7 @@ function Calc(props) {
         <button type='submit'>저장하기</button>
       </form>
 
-      {/*
-      보여줄 것 : 시가총액, 청산가치
-      청산가치 = 유동자산 + 비유동 자산 - 부채 총계
-      보수적 계산법(벤자민 그레이엄) = 유동자산 - 부채총계 
-    */}
-      <div className='resVal' style={botFix}>
-        <div className='resVal-value'>
-          <h3>청산가치(Liquidation Value)</h3>
-          <div>
-            <span>{currentAsset + nonCurrentAsset - totalDebt}</span>
-          </div>
-        </div>
-
-        <div className='resVal-value'>
-          <h3>보수적 청산 가치</h3>
-          <div>
-            <span>{currentAsset - totalDebt}</span>
-          </div>
-        </div>
-      </div>
+      <ResultValue currentAsset={currentAsset} nonCurrentAsset={nonCurrentAsset} totalDebt={totalDebt}></ResultValue>
 
     </section>
   )
