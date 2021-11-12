@@ -117,6 +117,9 @@ const ConditionPopUp = (props) => {
 
   const addCondition = (e) => {
     e.preventDefault();
+    props.addCondition(rlist);
+    props.closePopUp();
+    setRlist([]);
     console.log(e);
   }
 
@@ -174,13 +177,8 @@ const ConditionPopUp = (props) => {
         </div>
         <div className='endBtn'>
           <button onClick={props.closePopUp}>취소</button>
-          <button type="submit" onClick={() => {
-            props.addCondition(rlist);
-            props.closePopUp();
-            setRlist([]);
-          }}>확인</button>
+          <button type="submit">확인</button>
         </div>
-        <button type="submit">네</button>
       </form>
       <div className='popUp-bg' onClick={props.closePopUp}></div>
     </div>
