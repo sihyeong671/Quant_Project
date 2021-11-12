@@ -47,7 +47,7 @@ function isVaildForm(username, pwd1, pwd2, email){
 
 //
 function mapStateToProps(state){
-  return state;
+  return state; // 수정 필요
 }
 
 
@@ -132,12 +132,13 @@ function mapDispatchToProps(dispatch){
       try{
         const profileRes = await axios.get('api/v1/users/me');
         console.log(profileRes.data);
-        const [dateJoined, email, lastLogin, userName, profile] = [
+        const [dateJoined, email, lastLogin, userName, profile, mybstitles] = [
           profileRes.data[0].date_joined,
           profileRes.data[0].email,
           profileRes.data[0].last_login,
           profileRes.data[0].username,
-          profileRes.data[0].profile
+          profileRes.data[0].profile,
+          profileRes.data[0].mybstitles
         ];
         console.log(dateJoined, email, lastLogin, userName, profile)
         dispatch({
@@ -146,7 +147,8 @@ function mapDispatchToProps(dispatch){
           email: email,
           lastLogin: lastLogin,
           userName: userName,
-          profile: profile
+          profile: profile,
+          mybstitles: mybstitles
       })
       }catch(error){
         console.log(error);
