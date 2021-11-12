@@ -207,7 +207,9 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             elif fs_lst["sj_div"] == "SCE":
                 money.fs_div = SCE
             
-            money.account_name = fs_lst["account_nm"]
+            account_name = fs_lst["account_nm"].split()
+            account_name = "".join(account_name)
+            money.account_name = account_name
             money.account_detail = fs_lst["account_detail"]
             
 
