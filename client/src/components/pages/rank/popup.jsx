@@ -77,7 +77,7 @@ const RankConditionPopUp = (props) => {
                 return(
                   <li key={j}>
                     <h3>{item}</h3>
-                    <button onClick={e => popVal(j)}>❌</button>
+                    <button type="button" onClick={e => popVal(j)}>❌</button>
                     <div className='input-wrapper'>
                       <div className='updown'>
                         <input type="radio" name={"rInfo"+(j).toString()} id={"up"+(j).toString()} value="1" defaultChecked="checked"/>
@@ -93,7 +93,7 @@ const RankConditionPopUp = (props) => {
           </ul>
         </div>
         <div className='endBtn'>
-          <button onClick={props.closePopUp}>취소</button>
+          <button type="button" onClick={props.closePopUp}>취소</button>
           <button type="submit">확인</button>
         </div>
       </form>
@@ -105,7 +105,7 @@ const RankConditionPopUp = (props) => {
 
 
 const ConditionPopUp = (props) => {
-
+  console.log("rendering ConditionPopUp");
   const [rlist, setRlist] = useState([]);
 
   const pushVal = (i) => {
@@ -122,6 +122,11 @@ const ConditionPopUp = (props) => {
 
   const addCondition = (e) => {
     e.preventDefault();
+
+    let newList = [];
+    for(let i = 0; i < rlist.length; ++i){
+      newList.push([rlist[i], e.target[""]])
+    }
     props.addCondition(rlist);
     props.closePopUp();
     setRlist([]);
@@ -139,7 +144,7 @@ const ConditionPopUp = (props) => {
             {
               props.fsInit?.map((item, i)=>{
                 return(
-                  <li onClick={e => pushVal(item)} key={i}>
+                  <li onClick={() => pushVal(item)} key={i}>
                     <p>{item}</p>
                     <span className="material-icons">add_circle_outline</span>
                   </li>
@@ -157,7 +162,7 @@ const ConditionPopUp = (props) => {
                 return(
                   <li key={j}>
                     <h3>{item}</h3>
-                    <button onClick={e => popVal(j)}>❌</button>
+                    <button type="button" onClick={e => popVal(j)}>❌</button>
                     <div className='input-wrapper'>
                       <div className='uinput'>
                         <input type="text" className="updown" name={"updown"+(j).toString()}/>
@@ -165,12 +170,9 @@ const ConditionPopUp = (props) => {
                         <label htmlFor={"up"+(j).toString()}>이상</label>
                         <input type="radio" id={"down"+(j).toString()} name={"uInfo"+(j).toString()} className='down' value="down"/>
                         <label htmlFor={"down"+(j).toString()}>이하</label>
-                      </div>
-                      <div className='pinput'>
-                        <input type="text" className="percent" name={"percent"+(j).toString()}/>
-                        <input type="radio" id={"pUp"+(j).toString()} name={"pInfo"+(j).toString()} value="pUp" className='pUp' defaultChecked="chekced"/>
+                        <input type="radio" id={"pUp"+(j).toString()} name={"uInfo"+(j).toString()} value="pUp" className='pUp' defaultChecked="chekced"/>
                         <label htmlFor={"pUp"+(j).toString()}>상위</label>
-                        <input type="radio" id={"pDown"+(j).toString()} name={"pInfo"+(j).toString()} value="pDown" className='pDown'/>
+                        <input type="radio" id={"pDown"+(j).toString()} name={"uInfo"+(j).toString()} value="pDown" className='pDown'/>
                         <label htmlFor={"pDown"+(j).toString()}>하위</label>
                       </div>
                     </div>
@@ -181,7 +183,7 @@ const ConditionPopUp = (props) => {
           </ul>
         </div>
         <div className='endBtn'>
-          <button onClick={props.closePopUp}>취소</button>
+          <button type="button" onClick={props.closePopUp}>취소</button>
           <button type="submit">확인</button>
         </div>
       </form>
