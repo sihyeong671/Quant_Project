@@ -58,8 +58,8 @@ class Daily_Price(models.Model):
         return str(self.date)
     
     class Meta:
-        verbose_name = "일별 데이터"
-        verbose_name_plural = "일별 데이터"
+        verbose_name = "주가"
+        verbose_name_plural = "주가"
 
 
 # 객체 7개 (2015 ~ 2017)
@@ -110,7 +110,9 @@ class FS_LoB(models.Model):
     
     ROA = models.FloatField(null=True, blank=True)
     ROE = models.FloatField(null=True, blank=True)
-
+    
+    GPA = models.FloatField(null=True, blank=True)
+    
     # 부채비율
     # 기업가치
     # EBIT
