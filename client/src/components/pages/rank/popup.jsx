@@ -36,15 +36,25 @@ const RankConditionPopUp = (props) => {
     setRlist(tempList);
   }
 
+  const addRankCondition = (e) => {
+    e.preventDefault();
+    
+    let newList = [];
+    for(let i = 0; i < rlist.length; ++i){
+      newList.push([rlist[i], e.target["rInfo"+(i).toString()].value]); // value값 string
+    }
+    console.log(newList);
+    props.addRankCondition(newList);
+    props.closePopUp();
+    setRlist([]);
+  }
 
   return (
     <div className="popUp">
-      <div className='popUp-inner'>
+      <form className='popUp-inner' onSubmit={e=>addRankCondition(e)}>
         <h2>조건추가하기</h2>
-        <form>
-          <input className='condition-input' name='condition-input' type="text" />
-          <span className="material-icons">search</span>
-        </form>
+        <input className='condition-input' name='condition-input' type="text" />
+        <span className="material-icons">search</span>
         <div className='condition_main'>
           <ul className='condition_main-slist'>
             {
@@ -70,10 +80,10 @@ const RankConditionPopUp = (props) => {
                     <button onClick={e => popVal(j)}>❌</button>
                     <div className='input-wrapper'>
                       <div className='updown'>
-                        <input type="radio" name={"up"+(j).toString()} id="up"/>
-                        <label htmlFor="up"></label>
-                        <input type="radio" name={"down"+(j).toString()} id="down" />
-                        <label htmlFor="down"></label>
+                        <input type="radio" name={"rInfo"+(j).toString()} id={"up"+(j).toString()} value="1" defaultChecked="checked"/>
+                        <label htmlFor={"up"+(j).toString()}>오름차순</label>
+                        <input type="radio" name={"rInfo"+(j).toString()} id={"down"+(j).toString()} value="0"/>
+                        <label htmlFor={"down"+(j).toString()}>내림차순</label>
                       </div>
                     </div>
                   </li>
@@ -84,14 +94,9 @@ const RankConditionPopUp = (props) => {
         </div>
         <div className='endBtn'>
           <button onClick={props.closePopUp}>취소</button>
-          <button onClick={e => {
-              console.log(e.target);
-              props.addCondition(rlist);
-              props.closePopUp();
-              setRlist([]);
-            }}>확인</button>
+          <button type="submit">확인</button>
         </div>
-      </div>
+      </form>
       <div className='popUp-bg' onClick={props.closePopUp}></div>
     </div>
   )
@@ -155,18 +160,18 @@ const ConditionPopUp = (props) => {
                     <button onClick={e => popVal(j)}>❌</button>
                     <div className='input-wrapper'>
                       <div className='uinput'>
-                        <input type="text" className="updown" name="updown"/>
-                        <input type="radio" id="up" name={"uInfo"+(j).toString()} className='up' value="up" defaultChecked="checked"/>
-                        <label htmlFor="up">이상</label>
-                        <input type="radio" id="down" name={"uInfo"+(j).toString()} className='down' value="down"/>
-                        <label htmlFor="down">이하</label>
+                        <input type="text" className="updown" name={"updown"+(j).toString()}/>
+                        <input type="radio" id={"up"+(j).toString()} name={"uInfo"+(j).toString()} className='up' value="up" defaultChecked="checked"/>
+                        <label htmlFor={"up"+(j).toString()}>이상</label>
+                        <input type="radio" id={"down"+(j).toString()} name={"uInfo"+(j).toString()} className='down' value="down"/>
+                        <label htmlFor={"down"+(j).toString()}>이하</label>
                       </div>
                       <div className='pinput'>
-                        <input type="text" className="percent" name="percent"/>
-                        <input type="radio" id="pUp" name={"pInfo"+(j).toString()} value="pUp" className='pUp' defaultChecked="chekced"/>
-                        <label htmlFor="pUp">상위</label>
-                        <input type="radio" id="pdown" name={"pInfo"+(j).toString()} value="pDown" className='pDown'/>
-                        <label htmlFor="pdown">하위</label>
+                        <input type="text" className="percent" name={"percent"+(j).toString()}/>
+                        <input type="radio" id={"pUp"+(j).toString()} name={"pInfo"+(j).toString()} value="pUp" className='pUp' defaultChecked="chekced"/>
+                        <label htmlFor={"pUp"+(j).toString()}>상위</label>
+                        <input type="radio" id={"pDown"+(j).toString()} name={"pInfo"+(j).toString()} value="pDown" className='pDown'/>
+                        <label htmlFor={"pDown"+(j).toString()}>하위</label>
                       </div>
                     </div>
                   </li>

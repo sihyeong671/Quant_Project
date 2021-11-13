@@ -21,7 +21,7 @@ export default function reducer(state=initState, action){
   // let newState = {...state}; // 선언부를 여기로 올리는게 맞나?
 
   switch(action.type){
-
+    // 열기
     case Constants.rank.SHOWCONDITION:{
       let newState = {...state};
       newState.conditionPopUp = true;
@@ -33,7 +33,7 @@ export default function reducer(state=initState, action){
       newState.rankConditionPopUp = true
       return newState;
     }
-
+    // 닫기
     case Constants.rank.CLOSECONDITION:{
       let newState = {...state};
       newState.conditionPopUp = false
@@ -45,7 +45,7 @@ export default function reducer(state=initState, action){
       newState.rankConditionPopUp = false
       return newState;
     }
-
+    //추가
     case Constants.rank.ADDCONDITION:{
       let newState = {...state};
       action.list.forEach(element => {
@@ -54,13 +54,13 @@ export default function reducer(state=initState, action){
       return newState;
       }
     case Constants.rank.ADDRANKCONDITION:{
-      let newState = {...state};
+      let newState = _.cloneDeep(state);
       action.list.forEach(element => {  
         newState.rankCondition.push(element)
       });
       return newState;
       }
-
+    //삭제
     case Constants.rank.DELETECONDITION:{
       let newState = _.cloneDeep(state);
       newState.condition.splice(action.index, 1);

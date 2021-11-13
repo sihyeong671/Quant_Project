@@ -31,9 +31,17 @@ function Rank(props) {
         </div>
         <div className="container-box">
           {props.rankCondition.map((rcond, idx) => {
+            let condition;
+            if(rcond[1] === "1"){
+              condition = <span>오름차순</span>
+            }
+            else if(rcond[1] === "0"){
+              condition = <span>내림차순</span>
+            }
             return(
               <div key={idx}>
-                <span>{rcond}</span>
+                <span>{rcond[0]}</span>
+                {condition}
                 <button onClick={e => props.deleteRankCondition(idx)}>❌</button>
               </div>
             )
