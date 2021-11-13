@@ -1,21 +1,22 @@
+import pandas as pd
+import json
 
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from django.shortcuts import get_object_or_404
 from django.db.models.query import Prefetch
+from django.db import transaction
 from django.db.models import Q, F
 
-from api.mixins import ApiAuthMixin, PublicApiMixin, SuperUserMixin
+from api.mixins import ApiAuthMixin, PublicApiMixin
+
 from stockmanage.models import Company, FS_Account, SUB_Account, Daily_Price,\
     CustomFS_Account, CustomSUB_Account, UserCustomBS
-from stockmanage.utils import getData
+from stockmanage.utils import getData, getCaseData
 from stockmanage.serializers import UserCustomBSSerializer
 from stockmanage.models import *
 
-from crawling.crawling import *
-from crawling.API_KEY import *
 
 
 class CompanyNameApi(PublicApiMixin, APIView):
@@ -228,23 +229,7 @@ class CustomBSApi(ApiAuthMixin, APIView):
         }, status=status.HTTP_200_OK)
             
 
-
 class DailyPriceApi(PublicApiMixin, APIView):
-    def get(self, request, *args, **kwargs):
-        """
-        주가 저장 API
-        자세한 사항은 Save_Price() 함수 참고
-        """
-        try:
-            Save_Price()
-        except:
-            return Response({
-                "message": "failed save daily price"
-            }, status=status.HTTP_409_CONFLICT)
-        return Response({
-            "message": "successed save daily price"
-        })
-        
     def post(self, request, *args, **kwargs):
         """
         'code': ['원하는 stock_code 1', '원하는 stock_code 2', ...]
@@ -271,67 +256,118 @@ class DailyPriceApi(PublicApiMixin, APIView):
             data[company.corp_name] = getData(stocks)
         
         return Response(data, status=status.HTTP_200_OK)
-        
-
-class Crawling_Dart(SuperUserMixin, APIView):
-    def get(self, request):
-        try:
-            apikey = APIKEY
-            Save_Dart_Data(apikey)
-        except:
-            return Response({
-                "message": "failed save dart data"
-            }, status=status.HTTP_409_CONFLICT)
-        
-        return Response({
-            "message": "success save dart data"
-        },status=status.HTTP_200_OK)
-    
-    def delete(self, request):
-        try:
-            Dart.objects.all().delete()
-        except:
-            return Response({
-                "message": "failed delete dart data"
-            }, status=status.HTTP_409_CONFLICT)
-        
-        return Response({
-            "message": "success delete dart data"
-        },status=status.HTTP_200_OK)
     
 
-class Crawling_Data(SuperUserMixin, APIView):
-    def get(self, request):
+class RankApi(PublicApiMixin, APIView):
+    def post(self, request, *args, **kwargs):
+        """
+        case(
+            1: 상위
+            0: 하위
+            
+            3: 이상
+            2: 이하
+        )
+        
+        rank(
+            1: 오름차순
+            0: 내림차순
+        )
+        
+        case : [["ROE", 1(상위), 20(float)], ["ROA", 3, 0.5], ]
+        rank: [["ROE", 0(오름차순):int], ["PBR", 1(내림차순):int]]
+        islink : 연결(True)/일반(False) (기본: 연결, 없으면 일반) -> boolean
+        """
+        
         try:
-            apikey = APIKEY
-            Save_FS_Data(apikey)
-            Save_Price()
-            
-            queryset = Company.objects.all().values('corp_name')
-            
-            companies = []
-            
-            for com in queryset:
-                companies.append(com.corp_name)
+            case_list = request.data.get('case', '')
+            rank_list = request.data.get('rank', '')
+            islink = request.data.get('islink', '')
+        except:
+            return Response({
+                "message": "Payload Error",
+            }, status=status.HTTP_402_PAYMENT_REQUIRED)
                 
-            data = {
-                'company': companies,
-            }
-            return Response(data, status=status.HTTP_200_OK)
-        except:
-            return Response({
-                "message": "failed save fs data"
-            },status=status.HTTP_409_CONFLICT)
-    
-    def delete(self, request):
         try:
-            Company.objects.all().delete()
+            # 최근 year 찾기
+            recent_year = Year.objects.all().order_by('-bs_year').first()
+            recent_year = recent_year.bs_year
+            
+            condition = Q(quarter__year__bs_year=recent_year)
+            
+            recent_quarter_query = Quarter.objects.filter(
+                Q(year__bs_year=recent_year)
+            )
+            
+            # 최근 quarter 찾기
+            ## 1분기:11013 2분기:11012 3분기보고서:11014 사업보고서:11011
+            recent_quarter = None
+            
+            for quarter in recent_quarter_query[:5]:
+                if quarter.qt_name == "11011":
+                    recent_quarter = quarter.qt_name
+                    break
+                elif quarter.qt_name == "11014":
+                    recent_quarter = quarter.qt_name
+                elif quarter.qt_name == "11012" and \
+                    (recent_quarter == None or recent_quarter == "11013"):
+                    recent_quarter = quarter.qt_name
+                elif quarter.qt_name == "11013" and recent_quarter == None:
+                    recent_quarter = quarter.qt_name
+                    
         except:
             return Response({
-                "message": "failed delete company"
-            }, status=status.HTTP_409_CONFLICT)
+                "message": "Cannot get recent quarter",
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-        return Response({
-            "message": "success delete company"
-        },status=status.HTTP_200_OK)
+        
+        try:
+            # 조건을 통해서 알맞은 df추출
+            condition.add(Q(quarter__qt_name=recent_quarter), Q.AND)
+            casedf = pd.DataFrame()
+            
+            if islink:
+                condition.add(Q(lob="CFS"), Q.AND)
+                for case in case_list:
+                    ndf = getCaseData(case, condition)
+                    if casedf.empty:
+                        casedf = ndf
+                    else:
+                        pd.concat([casedf, ndf])
+                casedf = casedf.drop_duplicates()
+                
+            else:
+                condition.add(Q(lob="OFS"), Q.AND)
+                for case in case_list:
+                    ndf = getCaseData(case, condition)
+                    if casedf.empty:
+                        casedf = ndf
+                    else:
+                        pd.concat([casedf, ndf])
+                casedf.drop_duplicates()
+        
+        except:
+            return Response({
+                "message": "Cannot get case Dataframe",
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        
+        try:
+            # 추출한 df를 통해서 순위 조건에 맞게 json 만들어서 반환
+            column_list = ['company_name']
+            for rank in rank_list:
+                casedf.sort_values(by=[rank[0]], ascending=rank[1], inplace=True)
+                column_list.append(rank[0])
+            
+            rankdf = casedf[column_list]
+            rankdf["rank"] = list(range(1, len(rankdf)+1))
+            rankdf = rankdf.reindex(columns=["rank"] + column_list)
+            data = rankdf.apply(lambda row: row.to_dict(), axis=1)
+            return Response(data, status=status.HTTP_200_OK)
+            
+        except:
+            return Response({
+                "message": "Cannot extract rank dataframe",
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
     
