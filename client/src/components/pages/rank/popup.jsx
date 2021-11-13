@@ -41,7 +41,7 @@ const RankConditionPopUp = (props) => {
     
     let newList = [];
     for(let i = 0; i < rlist.length; ++i){
-      newList.push([rlist[i], e.target["rInfo"+(i).toString()].value]); // value값 string
+      newList.push([rlist[i], Number(e.target["rInfo"+(i).toString()].value)]); 
     }
     console.log(newList);
     props.addRankCondition(newList);
@@ -123,11 +123,18 @@ const ConditionPopUp = (props) => {
     e.preventDefault();
 
     let newList = [];
-    
+     
     for(let i = 0; i < rlist.length; ++i){
-      let coefValue = e.target["updown"+(i).toString()].value;
-      if (coefValue === '') coefValue = 0;
-      newList.push([rlist[i], e.target["uInfo"+(i).toString()].value, coefValue])
+      let coefValue = Number(e.target["updown"+(i).toString()].value);
+      
+      let conditionValue = Number(e.target["uInfo"+(i).toString()].value);
+
+      if((conditionValue === 0 || conditionValue === 1) && coefValue < 0){
+        alert("하위, 상위 조건은 마이너스 값이 불가능합니다");
+        return;
+      }
+      
+      newList.push([rlist[i], conditionValue, coefValue])
     }
     console.log(newList);
     props.addCondition(newList);

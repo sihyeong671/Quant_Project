@@ -2,7 +2,7 @@ import Rank from '../../../components/pages/rank/rank';
 import React from 'react';
 import Constants from '../../../store/constants';
 import {connect}  from 'react-redux';
-
+import axios from 'axios';
 
 function mapStateToProps(state){
   return state.rank;
@@ -32,8 +32,12 @@ function mapDispatchToProps(dispatch){
         index: idx
       })
     },
-    getRankData: async () => {
-      // const rankData = await axios.()
+    getRankData: async (parameter) => {
+      const rankData = await axios.post('api/v1/stock/rank', parameter);
+      console.log(rankData.data);
+      // dispatch({
+
+      // })
     }
 
   }

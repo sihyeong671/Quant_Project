@@ -73,6 +73,8 @@ export default function reducer(state=initState, action){
       return newState;
     }
 
+    // 순위 데이터 가져왔을 때
+
     default:
       return state;
       

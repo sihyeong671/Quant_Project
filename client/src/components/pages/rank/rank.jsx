@@ -9,8 +9,20 @@ import RankConditionPopUp from '../../../containers/pages/rank/rankconditionpopu
 
 import './assets/css/style.scss';
 
+
+
+
 function Rank(props) {
 
+  const getParameter = () => {
+    const parameter = {
+      case: [...props.condition],
+      rank: [...props.rankCondition],
+      islink: true // 나중에 파라미터 받는걸로 고치기 ##
+    }
+    console.log(parameter);
+    return parameter;
+  }
   console.log("Rank rendering")
   return(
     <>
@@ -19,16 +31,16 @@ function Rank(props) {
           {props.condition.map((cond, idx) => {
             let element;
             switch(cond[1]){ //
-              case "0":
+              case 0:
                 element = <span>%하위</span>
                 break
-              case "1":
+              case 1:
                 element = <span>%상위</span>
                 break
-              case "2":
+              case 2:
                 element = <span>이하</span>
                 break
-              case "3":
+              case 3:
                 element = <span>이상</span>
                 break
             }
@@ -49,10 +61,10 @@ function Rank(props) {
         <div className="container-box">
           {props.rankCondition.map((rcond, idx) => {
             let rankElement;
-            if(rcond[1] === "1"){
+            if(rcond[1] === 1){
               rankElement = <span>오름차순</span>
             }
-            else if(rcond[1] === "0"){
+            else if(rcond[1] === 0){
               rankElement = <span>내림차순</span>
             }
             return(
@@ -74,7 +86,7 @@ function Rank(props) {
         <RankConditionPopUp></RankConditionPopUp>
       ) : null}
 
-      <button type="button" onClick={props.getRankData}>확인</button>
+      <button type="button" onClick={() => props.getRankData(getParameter())}>확인</button>
 
 
     </>
