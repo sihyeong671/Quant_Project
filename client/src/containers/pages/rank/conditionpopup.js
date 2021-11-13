@@ -15,10 +15,10 @@ function mapDispatchToProps(dispatch){
         type: Constants.rank.CLOSECONDITION
       })
     },
-    addCondition: (rlist) => {
+    addCondition: (list) => {
       dispatch({
         type: Constants.rank.ADDCONDITION,
-        list: rlist
+        list: list
       })
     }
   }

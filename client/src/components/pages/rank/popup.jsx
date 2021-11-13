@@ -5,10 +5,10 @@ import { Helmet } from 'react-helmet';
 import './assets/css/style.scss';
 
 // case(
-//   1: 상위
 //   0: 하위
-//   3: 이상
+//   1: 상위
 //   2: 이하
+//   3: 이상
 // )
 
 // rank(
@@ -100,7 +100,6 @@ const RankConditionPopUp = (props) => {
       <div className='popUp-bg' onClick={props.closePopUp}></div>
     </div>
   )
-
 }
 
 
@@ -124,13 +123,16 @@ const ConditionPopUp = (props) => {
     e.preventDefault();
 
     let newList = [];
+    
     for(let i = 0; i < rlist.length; ++i){
-      newList.push([rlist[i], e.target[""]])
+      let coefValue = e.target["updown"+(i).toString()].value;
+      if (coefValue === '') coefValue = 0;
+      newList.push([rlist[i], e.target["uInfo"+(i).toString()].value, coefValue])
     }
-    props.addCondition(rlist);
+    console.log(newList);
+    props.addCondition(newList);
     props.closePopUp();
     setRlist([]);
-    console.log(e);
   }
 
   return (
@@ -162,17 +164,17 @@ const ConditionPopUp = (props) => {
                 return(
                   <li key={j}>
                     <h3>{item}</h3>
-                    <button type="button" onClick={e => popVal(j)}>❌</button>
+                    <button type="button" onClick={() => popVal(j)}>❌</button>
                     <div className='input-wrapper'>
                       <div className='uinput'>
-                        <input type="text" className="updown" name={"updown"+(j).toString()}/>
-                        <input type="radio" id={"up"+(j).toString()} name={"uInfo"+(j).toString()} className='up' value="up" defaultChecked="checked"/>
+                        <input type="number" step="0.1" max="100" min="-100" className="" name={"updown"+(j).toString()}/>
+                        <input type="radio" id={"up"+(j).toString()} name={"uInfo"+(j).toString()}  value="3" className='up' defaultChecked="checked"/>
                         <label htmlFor={"up"+(j).toString()}>이상</label>
-                        <input type="radio" id={"down"+(j).toString()} name={"uInfo"+(j).toString()} className='down' value="down"/>
+                        <input type="radio" id={"down"+(j).toString()} name={"uInfo"+(j).toString()} value="2" className='down' />
                         <label htmlFor={"down"+(j).toString()}>이하</label>
-                        <input type="radio" id={"pUp"+(j).toString()} name={"uInfo"+(j).toString()} value="pUp" className='pUp' defaultChecked="chekced"/>
+                        <input type="radio" id={"pUp"+(j).toString()} name={"uInfo"+(j).toString()} value="1" className='pUp'/>
                         <label htmlFor={"pUp"+(j).toString()}>상위</label>
-                        <input type="radio" id={"pDown"+(j).toString()} name={"uInfo"+(j).toString()} value="pDown" className='pDown'/>
+                        <input type="radio" id={"pDown"+(j).toString()} name={"uInfo"+(j).toString()} value="0" className='pDown'/>
                         <label htmlFor={"pDown"+(j).toString()}>하위</label>
                       </div>
                     </div>

@@ -47,7 +47,7 @@ export default function reducer(state=initState, action){
     }
     //추가
     case Constants.rank.ADDCONDITION:{
-      let newState = {...state};
+      let newState = _.cloneDeep(state);
       action.list.forEach(element => {
         newState.condition.push(element)
       });

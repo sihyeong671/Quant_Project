@@ -17,31 +17,48 @@ function Rank(props) {
       <div className="container">
         <div className="container-box">
           {props.condition.map((cond, idx) => {
+            let element;
+            switch(cond[1]){ //
+              case "0":
+                element = <span>%하위</span>
+                break
+              case "1":
+                element = <span>%상위</span>
+                break
+              case "2":
+                element = <span>이하</span>
+                break
+              case "3":
+                element = <span>이상</span>
+                break
+            }
             return(
               <div key={idx}>
-                <span>{cond}</span>
+                <span>{cond[0]}</span>
+                <span>{cond[2]}</span>
+                {element}
                 <button onClick={e => props.deleteCondition(idx)}>❌</button>
               </div>
             )
           })}
           <button onClick={props.showCondition}>조건 추가</button>
         </div>
-        <div className="verticalLine">
 
-        </div>
+        <div className="verticalLine"></div>
+
         <div className="container-box">
           {props.rankCondition.map((rcond, idx) => {
-            let condition;
+            let rankElement;
             if(rcond[1] === "1"){
-              condition = <span>오름차순</span>
+              rankElement = <span>오름차순</span>
             }
             else if(rcond[1] === "0"){
-              condition = <span>내림차순</span>
+              rankElement = <span>내림차순</span>
             }
             return(
               <div key={idx}>
                 <span>{rcond[0]}</span>
-                {condition}
+                {rankElement}
                 <button onClick={e => props.deleteRankCondition(idx)}>❌</button>
               </div>
             )
@@ -56,6 +73,9 @@ function Rank(props) {
       {props.rankConditionPopUp ? (
         <RankConditionPopUp></RankConditionPopUp>
       ) : null}
+
+      <button type="button" onClick={props.getRankData}>확인</button>
+
 
     </>
   )

@@ -31,6 +31,9 @@ function mapDispatchToProps(dispatch){
         type: Constants.rank.DELETERANKCONDITION,
         index: idx
       })
+    },
+    getRankData: async () => {
+      // const rankData = await axios.()
     }
 
   }
