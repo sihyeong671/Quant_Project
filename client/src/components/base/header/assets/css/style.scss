@@ -125,10 +125,14 @@ $light-coral: rgba(254, 109, 115, 1);
                             }
                         }
                         .user-logout {
+                            cursor: pointer;
                             color: $base-black;
                             display: block;
                             width: fit-content;
-                            font-size: 18px;
+                            font-size: 20px;
+                            font-weight: 500;
+                            background-color: transparent;
+                            border: none;
                             transition: all 0.3s ease;
                             &::after {
                                 position: relative;

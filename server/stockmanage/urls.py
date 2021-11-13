@@ -1,20 +1,31 @@
-from django.urls import path
-# from .views import View_All_Data, Crawling_Data
+from django.urls import path, include
 
 from stockmanage.apis import CompanyNameApi, AccountSearchApi, \
-    DailyPriceApi, Crawling_Data, CustomBSApi, Crawling_Dart
+    DailyPriceApi, CustomBSApi, RankApi
+from stockmanage.crawlingapis import Crawling_FSData, Crawling_Dart, Crawling_DailyPrice
 
 app_name = "stockmanage"
 
 
+# url starts with : /api/v1/stock/...
 
-urlpatterns = [
-    # path('', View_All_Data.as_view(), name="company_list"),
-    path('crawlingdarts', Crawling_Dart.as_view(), name="crawlingdart"),
-    path('crawlingfs', Crawling_Data.as_view(), name="crawling"),
+basic_patterns = [
     path('company', CompanyNameApi.as_view(), name="company_info"),
     path('account', AccountSearchApi.as_view(), name="account_search"),
     path('daily', DailyPriceApi.as_view(), name="daily_price"),
     path('custombs', CustomBSApi.as_view(), name="make_custombs"),
+    path('rank', RankApi.as_view(), name="rank"),
+    
+]
+
+crawling_patterns = [
+    path('dart', Crawling_Dart.as_view(), name="crawlingdarts"),
+    path('fs', Crawling_FSData.as_view(), name="crawlingfs"),
+    path('daily', Crawling_DailyPrice.as_view(), name="crawlingdaily"),
+]
+
+urlpatterns = [
+    path('crawling/', include((crawling_patterns, 'crawling'))),
+    path('', include((basic_patterns, 'basic'))),
     
 ]

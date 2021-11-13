@@ -7,7 +7,7 @@ const initState = {
     dateJoined: '2021-09-11',
     email: 'test@test.com',
     lastLogin: '2021-11-11',
-    userName: 'POBSIZ',
+    userName: 'TEST',
     profile: '',
     mybstitle: [
       { title: 'test', create_date: '2021-09-11' },

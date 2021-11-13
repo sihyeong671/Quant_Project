@@ -158,7 +158,10 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         
         SCE = FS_Div(sj_div="SCE",lob=link_model)
         SCE.save()
-
+        
+        GP = 0
+        All_amount = 1
+        
         pre_money = {}
         for fs_lst in json_dict['list']: # 한 행씩 가져오기
             money = FS_Account()
@@ -207,7 +210,10 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             elif fs_lst["sj_div"] == "SCE":
                 money.fs_div = SCE
             
-            money.account_name = fs_lst["account_nm"]
+            account_name = fs_lst["account_nm"].split()
+            account_name = "".join(account_name)
+            
+            money.account_name = account_name
             money.account_detail = fs_lst["account_detail"]
             
 
@@ -215,14 +221,22 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                 money.account_amount = 0
             else:
                 money.account_amount = fs_lst["thstrm_amount"]
+                if "매출총이익" in account_name or "매출총손익" in account_name:
+                    GP = fs_lst["thstrm_amount"]
+                elif "자산총계" in account_name:
+                    A = fs_lst["thstrm_amount"]
             
             money.save()
         
-        
-        link_model.ROA = net_income / total_asset * 100 # %
-        link_model.ROE = net_income / total_capital * 100 # %
-        
-        link_model.save()
+        try:
+            link_model.GPA = GP/A
+            link_model.ROA = net_income / total_asset * 100 # %
+            link_model.ROE = net_income / total_capital * 100 # %
+            
+            link_model.save()
+            
+        except:
+            print("Link model save failed..")
         
     else:
         Print_Error(json_dict['status'])
@@ -273,9 +287,5 @@ def Save_Corp_Info(api_key, code, company):
             
             company.save()
             
-            try:
-                print(company.corp_name + " 객체 저장됨")
-            except:
-                print("저장됨")
     except:
         print('error')

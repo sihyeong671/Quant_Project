@@ -68,6 +68,10 @@ class YearAdmin(admin.ModelAdmin):
     search_fields = ('get_company', 'bs_year',)
     list_filter = ('bs_year', )
     
+    list_select_related = [
+        'company',
+    ]
+    
     inlines = ()
     
     def get_company(self, obj):
@@ -84,17 +88,19 @@ class QuarterAdmin(admin.ModelAdmin):
     ordering = ('year__company__corp_name', )
     list_display = (
         'get_company', 'get_year', 'get_quarter', 
-        # 'ROE', 'ROA',
     )
     list_display_links = (
         'get_company', 'get_year', 'get_quarter', 
-        # 'ROE', 'ROA',
     )
     search_fields = (
         'get_company', 'get_year', 'get_quarter', 
-        # 'ROE', 'ROA',
     )
     list_filter = ('qt_name', )
+    
+    list_select_related = [
+        'year',
+        'year__company',
+    ]
     
     inlines = ()
     
@@ -133,17 +139,23 @@ class FS_LoBAdmin(admin.ModelAdmin):
     ordering = ('quarter__year__company__corp_name', )
     list_display = (
         'get_company', 'get_year', 'get_quarter', 
-        'get_lob', 'unit','exist'
+        'get_lob', 'unit', 'exist', 'ROE', 'ROA', 'GPA',
     )
     list_display_links = (
         'get_company', 'get_year', 'get_quarter', 
-        'get_lob', 'unit','exist'
+        'get_lob', 'unit', 'exist', 'ROE', 'ROA', 'GPA',
     )
     search_fields = (
         'get_company', 'get_year', 'get_quarter',
-        'get_lob', 'unit','exist'
+        'get_lob', 'unit', 'exist', 'ROE', 'ROA', 'GPA',
     )
     list_filter = ('lob', 'exist', 'unit', )
+    
+    list_select_related = [
+        'quarter',
+        'quarter__year',
+        'quarter__year__company',
+    ]
     
     inlines = ()
     
@@ -199,6 +211,13 @@ class FS_DivAdmin(admin.ModelAdmin):
         'get_lob', 'get_fsdiv',
     )
     list_filter = ('sj_div', )
+    
+    list_select_related = [
+        'lob',
+        'lob__quarter',
+        'lob__quarter__year',
+        'lob__quarter__year__company',
+    ]
     
     inlines = ()
     
@@ -270,6 +289,14 @@ class FS_AccountAdmin(admin.ModelAdmin):
         'get_lob', 'get_fsdiv','account_name',
     )
     list_filter = ('account_name', )
+    
+    list_select_related = [
+        'fs_div',
+        'fs_div__lob',
+        'fs_div__lob__quarter',
+        'fs_div__lob__quarter__year',
+        'fs_div__lob__quarter__year__company',
+    ]
     
     inlines = ()
     
@@ -348,6 +375,15 @@ class SUB_AccountAdmin(admin.ModelAdmin):
 
     )
     list_filter = ('account_name', )
+    
+    list_select_related = [
+        'pre_account',
+        'pre_account__fs_div',
+        'pre_account__fs_div__lob',
+        'pre_account__fs_div__lob__quarter',
+        'pre_account__fs_div__lob__quarter__year',
+        'pre_account__fs_div__lob__quarter__year__company',
+    ]
     
     inlines = ()
     

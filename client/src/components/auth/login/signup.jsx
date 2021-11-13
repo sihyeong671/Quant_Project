@@ -46,28 +46,28 @@ const SignUp = (props) => {
 
   return(
     <div className='login'>
-      <h1>Sign Up</h1>
+      <h1>회원가입</h1>
       
       <div className='login-form'>
         <form onSubmit={onSubmit}>
           <div className="input-area">
             <input id="username" name='username' type="text" onChange={onChangeId} value={id} required='required'/>
-            <label htmlFor="username">USERNAME</label>
+            <label htmlFor="username">아이디</label>
           </div>
           <div className="input-area">
             <input id='pwd1' name='pwd1' type="password" onChange={onChangePwd1} value={pwd1} required='required'/>
-            <label htmlFor="pwd1">PASSWORD1</label>
+            <label htmlFor="pwd1">비밀번호</label>
           </div>
           <div className="input-area">
             <input id='pwd2' name='pwd2' type="password" onChange={onChangePwd2} value={pwd2} required='required'/>
-            <label htmlFor="pwd2">PASSWORD2</label>
+            <label htmlFor="pwd2">비밀번호 확인</label>
           </div>
           <div className="input-area">
             <input id='email' name='email' type="email" onChange={onChangeEmail} value={email} required='required'/>
-            <label htmlFor="email">EMAIL</label>
+            <label htmlFor="email">이메일</label>
           </div>
           <div>
-            <button type="submit">Sign UP</button>
+            <button type="submit">회원가입</button>
           </div>
         </form>
 

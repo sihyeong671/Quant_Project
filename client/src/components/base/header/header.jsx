@@ -76,7 +76,9 @@ function Header(props) {
 								!props.user.isAuthenticated ? (
 									<>
 										<Link to='/auth/login' className='user-login' onClick={navClose}>로그인</Link>
-										<p className='user-more'>회원가입을 하실려면 <Link to='/auth/signup'>여기</Link>를 클릭해주세요</p>
+										<p className='user-more'>
+											회원가입을 하실려면 <Link to='/auth/signup' onClick={navClose}>여기</Link>를 클릭해주세요
+										</p>
 									</>
 								) : (
 									<>
@@ -88,9 +90,9 @@ function Header(props) {
 													style={{ backgroundImage: `url(${logo})` }}
 													onClick={navClose}
 												></Link>
-												<span><strong>USER</strong> 님</span>
+												<span><strong>{props.user.userData.userName}</strong> 님</span>
 											</div>
-											<Link onClick={onClick} className='user-logout'>로그아웃</Link>
+											<button onClick={onClick} className='user-logout'>로그아웃</button>
 										</div>
 									</>
 								)

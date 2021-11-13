@@ -1,5 +1,12 @@
-$base-red: #E94F37;
-$base-blue: #0075F2;
+$base-black: rgb(30, 30, 30);
+$line-black: rgba(0, 0, 0, 0.2);
+
+/* SCSS RGB */
+$cg-blue: rgba(34, 124, 157, 1);
+$light-sea-green: rgba(23, 195, 178, 1);
+$maximum-yellow-red: rgba(255, 203, 119, 1);
+$floral-white: rgba(254, 249, 239, 1);
+$light-coral: rgba(254, 109, 115, 1);
 
 .profile-container{
     padding: 50px 0;
@@ -31,11 +38,11 @@ $base-blue: #0075F2;
             display: block;
             margin: 20px auto;
             border: none;
-            border-radius: 20px;
-            background-color: $base-blue;
+            border-radius: 0px;
+            background-color: $base-black;
             color: #fff;
             width: 100%;
-            line-height: 30px;
+            line-height: 35px;
             font-weight: 500;
             font-size: 14px;
         }

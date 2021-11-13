@@ -1,7 +1,17 @@
+$base-black: rgb(30, 30, 30);
+$line-black: rgba(0, 0, 0, 0.2);
+
+/* SCSS RGB */
+$cg-blue: rgba(34, 124, 157, 1);
+$light-sea-green: rgba(23, 195, 178, 1);
+$maximum-yellow-red: rgba(255, 203, 119, 1);
+$floral-white: rgba(254, 249, 239, 1);
+$light-coral: rgba(254, 109, 115, 1);
+
 .footer{
   border-top: 1px solid rgba(0, 0, 0, 0.1);
-  background-color: #fff;
-  color: rgba(0, 0, 0, 0.8);
+  background-color: $base-black;
+  color: #fff;
   padding: 2% 5%;
   height: 200px;
   display: flex;
@@ -24,7 +34,7 @@
       line-height: calc($line-height / 2);
       font-size: 35px;
       font-weight: 500;
-      color: #000;
+      color: #fff;
     }
   }
 
@@ -42,7 +52,7 @@
       font-size: 16px;
       a{
         vertical-align: top;
-        color: #000;
+        color: #fff;
         font-weight: 500;
       }
     }

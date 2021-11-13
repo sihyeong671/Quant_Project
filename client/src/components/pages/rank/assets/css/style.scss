@@ -1,3 +1,13 @@
+$base-black: rgb(30, 30, 30);
+$line-black: rgba(0, 0, 0, 0.2);
+
+/* SCSS RGB */
+$cg-blue: rgba(34, 124, 157, 1);
+$light-sea-green: rgba(23, 195, 178, 1);
+$maximum-yellow-red: rgba(255, 203, 119, 1);
+$floral-white: rgba(254, 249, 239, 1);
+$light-coral: rgba(254, 109, 115, 1);
+
 .container {
   border: 1px solid #000;
   display: flex;
@@ -19,117 +29,115 @@
       top: 70px;
       left: 20px;
     }
-
   }
-
 }
 
 .popUp {
   overflow: hidden;
   position: fixed;
+  z-index: 1000;
 
   left: 50%;
   transform: translateX(-50%);
   top: 0;
-  
+
   width: 100%;
   height: 100vh;
 
-  .popUp-inner{
+  .popUp-inner {
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
     top: 15vh;
     // padding: 20px;
-    border-radius: 40px;
+    border-radius: 0px;
+    z-index: 1000;
 
     width: 90vw;
     height: 70vh;
 
-    z-index: 100;
     background-color: #fff;
 
-    h2{
+    h2 {
       width: 100%;
       height: 80px;
       line-height: 80px;
       text-align: center;
-      border-radius: 40px 40px 0 0; 
-      background-color: #0075F2;
+      border-radius: 0px 0px 0 0;
+      background-color: $base-black;
       color: #fff;
       font-size: 30px;
       font-weight: bold;
     }
 
-    form{
+    form {
       width: fit-content;
       margin: auto;
       height: 80px;
-      .condition-input{
+      .condition-input {
         display: inline-block;
         vertical-align: top;
         width: 300px;
         height: 40px;
         padding: 0 40px 0 20px;
         margin: 20px auto;
-        border: 2px solid #0075F2;
+        border: 2px solid $base-black;
         border-radius: 40px;
         font-size: 18px;
         font-weight: 500;
       }
-      span{
+      span {
         display: inline-block;
         cursor: pointer;
         line-height: 80px;
         position: relative;
         right: 35px;
-        color: #0075F2;
+        color: $base-black;
       }
     }
 
-
     // MAIN
-    .condition_main{
+    .condition_main {
       display: flex;
       justify-content: center;
       padding: 0 20px;
 
-      .condition_main-slist{
+      .condition_main-slist {
         width: 45%;
         height: 45vh;
         // display: flex;
         // justify-content: space-between;
         // flex-wrap: wrap;
-      
-        li{
+
+        li {
           float: right;
           display: inline-block;
           cursor: pointer;
           width: auto;
           margin: 5px;
           padding: 0 10px;
-          border-radius: 20px;
-          border: 2px solid #0075F2;
-          color: #0075F2;
+          border-radius: 0px;
+          border: 2px solid $base-black;
+          color: $base-black;
           // background-color: #0075F2;
           box-shadow: 0px 4px 10px #6d6d6d62;
           height: 40px;
-          transition: all .3s;
+          transition: all 0.3s;
           text-align: center;
-          &:hover{
-            border: 2px solid #0075F2;
+          &:hover {
+            border: 2px solid $base-black;
             color: #ffffff;
-            background-color: #0075F2;
+            background-color: $base-black;
             box-shadow: 0px 0px 5px #6d6d6d62;
           }
-          p{
+          p {
             display: inline-block;
             vertical-align: top;
             font-size: 16px;
             font-weight: 500;
             line-height: 40px;
           }
-          span{
+          span {
             line-height: 36px;
             font-size: 22px;
             font-weight: 500;
@@ -138,27 +146,27 @@
         }
       }
 
-      .condition_main-rlist{
+      .condition_main-rlist {
         width: 45%;
         height: 45vh;
         overflow-y: scroll;
-        li{
+        li {
           // &:last-child{border-bottom: 2px solid #0075F2;}
           height: 50px;
           line-height: 50px;
           margin: 10px 0;
-          border-radius: 40px;
+          border-radius: 0px;
           padding: 0 10px 0 30px;
-          border: 2px solid #0075F2;
+          border: 2px solid $base-black;
           font-size: 20px;
           font-weight: 500;
           display: flex;
           justify-content: space-between;
-          .input-wrapper{
+          .input-wrapper {
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            .uinput, .pinput{
+            div {
               width: 40%;
               position: relative;
               right: 0;
@@ -166,34 +174,46 @@
               justify-content: flex-end;
               align-items: center;
               line-height: 50px;
-              .updown, .percent{
+              input {
                 height: 30px;
                 width: 45%;
-                border-radius: 20px 0 0 20px;
+                border-radius: 0px 0 0 0px;
                 padding-left: 10px;
                 font-weight: 500;
-                border: 2px solid #0075F2;
+                border: 2px solid $base-black;
                 border-right: none;
               }
-
-              
+              button {
+                cursor: pointer;
+                height: 30px;
+                color: #fff;
+                border: none;
+                font-weight: 500;
+                padding: 0 8px;
+                // border: 2px solid #0075F2;
+                &.up {
+                  background-color: $base-black;
+                }
+                &.down {
+                  border-radius: 0px 0px 0px 0px;
+                  background-color: #e94f37;
+                }
+              }
             }
           }
         }
       }
 
-      .condition_main-divLine{
+      .condition_main-divLine {
         height: 45vh;
         width: 1px;
-        background-color: #0075F2;
+        background-color: $base-black;
         margin: 0 20px;
       }
     }
-
-
   }
-  
-  .popUp-bg{
+
+  .popUp-bg {
     z-index: 10;
     position: fixed;
     top: 0;
@@ -201,28 +221,27 @@
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.274);
   }
-
 }
 
-.endBtn{
+.endBtn {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-  button{
+  button {
     cursor: pointer;
     border: none;
     width: 50px;
     height: 30px;
     color: #fff;
     font-weight: 500;
-    &:first-child{
-      border-radius: 20px 0px 0px 20px;
-      background-color: #E94F37;
+    &:first-child {
+      border-radius: 00px 0px 0px 00px;
+      background-color: #e94f37;
     }
-    &:last-child{
-      border-radius: 0px 20px 20px 0px;
-      background-color: #0075F2;
+    &:last-child {
+      border-radius: 0px 00px 00px 0px;
+      background-color: $base-black;
     }
   }
 }

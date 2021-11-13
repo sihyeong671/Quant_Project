@@ -28,7 +28,7 @@ export default ({searchId}) => {
     <>
       <div className="input-area">
         <input id="email" name='email' type="email" onChange={onChangeEmail} value={email} required='required'/>
-        <label htmlFor='email'>E-MAIL</label>
+        <label htmlFor='email'>이메일</label>
       </div>
       <div>
         <button type="submit">찾기</button>
@@ -50,7 +50,7 @@ export default ({searchId}) => {
 
   return(
     <>
-      <h2>아이디 찾기</h2>
+      <h1>아이디 찾기</h1>
 
       <div className='login-form'>
         <form onSubmit={onSubmit}>
