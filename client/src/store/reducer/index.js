@@ -22,7 +22,7 @@ const rootReducer =  combineReducers({
   chart,
   search,
   user,
-  calc
+  calc,
 });
 
 export default persistReducer(persistConfig, rootReducer);

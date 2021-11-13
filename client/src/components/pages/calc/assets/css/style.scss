@@ -12,7 +12,7 @@
         font-size: 20px;
         font-weight: bold;
         line-height: 40px;
-        border-bottom: 1px solid rgba(39, 39, 39, 0.8);
+        border-bottom: 2px solid rgba(39, 39, 39, 0.8);
         float: right;
     }
 
@@ -24,7 +24,7 @@
         font-size: 16px;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        border-bottom: 1px solid rgba(39, 39, 39, 0.212);
+        border-bottom: 2px solid rgba(39, 39, 39, 0.212);
 
         .subAccount_info {
             display: grid;
@@ -113,6 +113,7 @@
 
 .resVal {
     position: fixed;
+    z-index: 10;
     bottom: 0;
     border-top: 1px solid #000;
     padding: 20px 5%;
@@ -139,7 +140,7 @@
             float: right;
             span{
                 float: right;
-                border-bottom: 1px solid rgba(39, 39, 39, 0.8);
+                border-bottom: 2px solid rgba(39, 39, 39, 0.8);
             }
         }
     }

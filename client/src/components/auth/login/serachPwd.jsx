@@ -55,17 +55,17 @@ export default ({searchPwd, sendCode}) => {
 
   return(
     <>
-      <h2>비밀번호 찾기</h2>
+      <h1>비밀번호 찾기</h1>
 
       <div className='login-form'>
         <form onSubmit={onSubmit}>
           <div className="input-area">
             <input id="username" name='username' type="text" onChange={onChangeUserName} value={userName} required='required'/>
-            <label htmlFor='username'>USERNAME</label>
+            <label htmlFor='username'>아이디</label>
           </div>
           <div className="input-area">
             <input id="email" name='email' type="email" onChange={onChangeEmail} value={email} required='required'/>
-            <label htmlFor='email'>E-MAIL</label>
+            <label htmlFor='email'>이메일</label>
           </div>
           <div>
             <button type="submit">인증코드 발송</button>

@@ -35,19 +35,19 @@ function Login({basicLogin, getUserData}){
 
   return(
     <>
-      <h1>Login</h1>
+      <h1>로그인</h1>
       <div className='login-form'>
         <form onSubmit={onSubmit}>
           <div className="input-area">
             <input username="username" name='username' type="text" onChange={(e) => onChangeUserName(e)} value={username} required='required'/>
-            <label htmlFor='username'>USERNAME</label>
+            <label htmlFor='username'>아이디</label>
           </div>
           <div className="input-area">
             <input id="pwd" name='pwd' type="password" onChange={(e) => onChangePwd(e)} value={pwd} required='required'/>
-            <label htmlFor="pwd">PASSWORD</label>
+            <label htmlFor="pwd">비밀번호</label>
           </div>
           <div>
-            <button type="submit">LOG IN</button>
+            <button type="submit">로그인</button>
           </div>
         </form>
       </div>

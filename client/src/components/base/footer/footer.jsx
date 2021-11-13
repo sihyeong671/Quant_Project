@@ -1,42 +1,32 @@
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import { Link, Route, BrowserRouter as Router } from "react-router-dom";
 import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import './assets/css/style.scss';
 
-function Footer(){
+import logo from './assets/img/logo_w.png'
+
+function Footer() {
   console.log("Footer rendering")
-  return(
-    <div className="footer">
-      <div className='foot-top'>
-        <span>Quant</span>
+  return (
+    <footer className="footer">
+      <div className='footer-ico'>
+        <div className='ico-img' style={{ backgroundImage: `url(${logo})` }}></div>
+        <p>
+          <strong>Q</strong>uant <br/>
+          <strong>M</strong>anagement
+        </p>
       </div>
-      
-      <div className="foot-bottom">
-        <span>GUIDE</span>
-
+      <div className='footer-copyrights'>
+        <p>박시형 | 조현우 | 허상원</p>
+        <div className='copyrights-mail'>
+          <span className='material-icons'>mail</span>
+          <a href='mailto:projectquant@naver.com'>projectquant@naver.com</a>
+        </div>
+        <span>@Copyright 2021 QuantManagement All rights reserved</span>
       </div>
-
-      <div className="foot-bottom">
-        <div>
-          CONTACT
-        </div>
-        <div>
-          projectquant@naver.com
-        </div>
-        <div>
-          010 - 0000 - 0000
-        </div>
-      </div>
-
-      <div className="foot-bottom">
-        <div>ABOUT</div>
-        <div>
-          박시형 | 조현우 | 허상원
-        </div>
-      </div>
-    </div>
+    </footer>
   );
 }
 

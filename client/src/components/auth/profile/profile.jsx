@@ -5,6 +5,8 @@ import Constants from "../../../store/constants";
 
 import './assets/css/style.scss';
 
+import profileImg from './assets/img/1.jpg';
+
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 // import axios from 'axios';
@@ -33,14 +35,32 @@ const fsCrawling = () => {
 
 
 const Profile=(props)=>{
+
+  useEffect(()=>{
+    console.log('props: ', props.userData);
+  },[])
+
   console.log('Profile rendering');
   return(
-    <div>
-      <button onClick={deleteAllCompany}>데이터 전체 삭제</button>
-      <button onClick={dailyCrawling}>데일리 데이터 주가 크롤링</button>
-      <button onClick={dartCrawling}>다트 크롤링</button>
-      <button onClick={fsCrawling}>재무제표</button>
-    </div>
+    <article className='profile-container'>
+      <section className='profile-info'>
+        <div className='info-img' style={{backgroundImage: `url(${profileImg})`,}}></div>
+        <h1 className='info-username'>{props.userData.userName}</h1>
+        <span className='info-datejoined'>{props.userData.dateJoined}</span>
+        <button className='info-edit'>프로필 수정</button>
+      </section>
+
+      <section className='admin-btns'>
+        <h1>관리자 버튼</h1>
+        <button onClick={deleteAllCompany}>데이터 전체 삭제</button>
+        <button onClick={dailyCrawling}>데일리 데이터 주가 크롤링</button>
+        <button onClick={dartCrawling}>다트 크롤링</button>
+        <button onClick={fsCrawling}>재무제표</button>
+      </section>
+
+      <section className='saved-bstitle'></section>
+
+    </article>
   );
 }
 
