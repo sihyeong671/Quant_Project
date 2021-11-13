@@ -42,6 +42,9 @@ class UserAdmin(DjangoUserAdmin):
         'last_name', 'is_staff', 'is_superuser'
     )
     search_fields = ('email', 'username', 'first_name', 'last_name')
+    
+    list_select_related = ['profile']
+    
     inlines = (ProfileInline, )
     
     def get_profile_image(self, obj):

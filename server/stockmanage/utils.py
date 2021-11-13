@@ -26,30 +26,25 @@ def getCaseData(case, condition):
         company_name=F("quarter__year__company__corp_name")
     )
     
+    allcnt = FS_LoB.objects.all().count()
+    comp_num = int(allcnt * case[2] / 100.0)
+    
     ## =====================
     ## |  Case Field : ROE |
     ## =====================
     if case[0] == "ROE":
         if case[1] == 1:
             # 상위
-            allcnt = FS_LoB.objects.all().count()
-            comp_num = int(allcnt * case[2] / 100.0)
             queryset = queryset.filter(
                 condition
             ).order_by('-ROE')[:comp_num].values()
-            df = pd.DataFrame(list(queryset))
-            return df
+            
             
         elif case[1] == 0:
             #하위
-            allcnt = FS_LoB.objects.all().count()
-            comp_num = int(allcnt * case[2] / 100.0)
             queryset = queryset.filter(
                 condition
             ).order_by('ROE')[:comp_num].values()
-            df = pd.DataFrame(list(queryset))
-            
-            return df
             
         elif case[1] == 3:
             #이상
@@ -58,8 +53,6 @@ def getCaseData(case, condition):
                 condition
             ).values()
             
-            df = pd.DataFrame(list(queryset))
-            return df
             
         elif case[1] == 2:
             #이하
@@ -67,9 +60,6 @@ def getCaseData(case, condition):
             queryset = queryset.filter(
                 condition
             ).values()
-            df = pd.DataFrame(list(queryset))
-            
-            return df
     
     
     ## =====================
@@ -78,25 +68,15 @@ def getCaseData(case, condition):
     if case[0] == "ROA":
         if case[1] == 1:
             # 상위
-            allcnt = FS_LoB.objects.all().count()
-            comp_num = int(allcnt * case[2] / 100.0)
             queryset = queryset.filter(
                 condition
             ).order_by('-ROA')[:comp_num].values()
-            df = pd.DataFrame(list(queryset))
-            
-            return df
             
         elif case[1] == 0:
             #하위
-            allcnt = FS_LoB.objects.all().count()
-            comp_num = int(allcnt * case[2] / 100.0)
             queryset = queryset.filter(
                 condition
             ).order_by('ROA')[:comp_num].values()
-            df = pd.DataFrame(list(queryset))
-            
-            return df
             
         elif case[1] == 3:
             #이상
@@ -104,9 +84,6 @@ def getCaseData(case, condition):
             queryset = queryset.filter(
                 condition
             ).values()
-            df = pd.DataFrame(list(queryset))
-            
-            return df
             
         elif case[1] == 2:
             #이하
@@ -114,9 +91,6 @@ def getCaseData(case, condition):
             queryset = queryset.filter(
                 condition
             ).values()
-            df = pd.DataFrame(list(queryset))
-            
-            return df
     
     
     ## =====================
@@ -125,25 +99,15 @@ def getCaseData(case, condition):
     if case[0] == "GPA":
         if case[1] == 1:
             # 상위
-            allcnt = FS_LoB.objects.all().count()
-            comp_num = int(allcnt * case[2] / 100.0)
             queryset = queryset.filter(
                 condition
             ).order_by('-GPA')[:comp_num].values()
-            df = pd.DataFrame(list(queryset))
-            
-            return df
             
         elif case[1] == 0:
             #하위
-            allcnt = FS_LoB.objects.all().count()
-            comp_num = int(allcnt * case[2] / 100.0)
             queryset = queryset.filter(
                 condition
             ).order_by('GPA')[:comp_num].values()
-            df = pd.DataFrame(list(queryset))
-            
-            return df
             
         elif case[1] == 3:
             #이상
@@ -151,9 +115,6 @@ def getCaseData(case, condition):
             queryset = queryset.filter(
                 condition
             ).values()
-            df = pd.DataFrame(list(queryset))
-            
-            return df
             
         elif case[1] == 2:
             #이하
@@ -161,7 +122,6 @@ def getCaseData(case, condition):
             queryset = queryset.filter(
                 condition
             ).values()
-            df = pd.DataFrame(list(queryset))
-            
-            return df
+    
+    return pd.DataFrame(list(queryset))
     

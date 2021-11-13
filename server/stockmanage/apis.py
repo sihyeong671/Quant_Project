@@ -1,5 +1,4 @@
 import pandas as pd
-import json
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -370,4 +369,14 @@ class RankApi(PublicApiMixin, APIView):
                 "message": "Cannot extract rank dataframe",
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-    
+
+class CompanyFSAPi(PublicApiMixin, APIView):
+    def get(self, request, *args, **kwargs):
+        """
+        company : 삼성전자 -> str
+        
+        return 
+        {
+            
+        }
+        """
