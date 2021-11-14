@@ -41,7 +41,7 @@ class UserMeApi(ApiAuthMixin, APIView):
                 'profile__favorite_category',
                 'profile__favorite_category__favorite_user',
                 'profile__favorite_company',
-                'custom_bs',
+                'profile__custom_bs',
             )\
             .filter(Q(username=username))
             

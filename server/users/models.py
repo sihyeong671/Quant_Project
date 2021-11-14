@@ -103,7 +103,7 @@ class Profile(models.Model):
     introduce = models.TextField(null=True, blank=True)
     
     signup_path = models.CharField(max_length=64, default='basic')
-        
+    
     favorite_category = models.ManyToManyField(Category, blank=True, related_name='favorite_user')
     favorite_post = models.ManyToManyField(Post, blank=True, related_name='favorite_user')
     favorite_comment = models.ManyToManyField(Comment, blank=True, related_name='favorite_user')

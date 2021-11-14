@@ -239,8 +239,9 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             print("Link model save failed..")
         
     else:
+        if json_dict['status'] == "013":
+            link_model.save()
         Print_Error(json_dict['status'])
-        
 
 
 
