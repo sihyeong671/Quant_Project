@@ -291,34 +291,51 @@ class RankApi(PublicApiMixin, APIView):
             return Response({
                 "message": "Payload Error",
             }, status=status.HTTP_402_PAYMENT_REQUIRED)
-                
+            
         try:
             # 최근 year 찾기
-            recent_year = Year.objects.all().order_by('-bs_year').first()
-            recent_year = recent_year.bs_year
+            recent_lob = FS_LoB.objects.\
+                select_related(
+                    'quarter',
+                    'quarter__year',
+                ).\
+                filter(exist=1).\
+                order_by('-quarter__year__bs_year').first()
+                
+            recent_year = recent_lob.quarter.year.bs_year
+            print("recent year : ", recent_year)
             
             condition = Q(quarter__year__bs_year=recent_year)
             
-            recent_quarter_query = Quarter.objects.filter(
-                Q(year__bs_year=recent_year)
-            )
+            recent_lob = FS_LoB.objects.\
+                select_related(
+                    'quarter',
+                    'quarter__year'
+                ).\
+                filter(
+                    Q(exist=1) &
+                    Q(quarter__year__bs_year=recent_year)
+                )
+            print(recent_lob)
             
             # 최근 quarter 찾기
             ## 1분기:11013 2분기:11012 3분기보고서:11014 사업보고서:11011
             recent_quarter = None
             
-            for quarter in recent_quarter_query[:5]:
-                if quarter.qt_name == "11011":
-                    recent_quarter = quarter.qt_name
+            for lob in recent_lob[:5]:
+                if lob.quarter.qt_name == "11011":
+                    recent_quarter = lob.quarter.qt_name
                     break
-                elif quarter.qt_name == "11014":
-                    recent_quarter = quarter.qt_name
-                elif quarter.qt_name == "11012" and \
+                elif lob.quarter.qt_name == "11014":
+                    recent_quarter = lob.quarter.qt_name
+                elif lob.quarter.qt_name == "11012" and \
                     (recent_quarter == None or recent_quarter == "11013"):
-                    recent_quarter = quarter.qt_name
-                elif quarter.qt_name == "11013" and recent_quarter == None:
-                    recent_quarter = quarter.qt_name
-                    
+                    recent_quarter = lob.quarter.qt_name
+                elif lob.quarter.qt_name == "11013" and recent_quarter == None:
+                    recent_quarter = lob.quarter.qt_name
+            
+            print("recent quarter : ", recent_quarter)
+            
         except:
             return Response({
                 "message": "Cannot get recent quarter",
@@ -332,6 +349,8 @@ class RankApi(PublicApiMixin, APIView):
             
             if islink:
                 condition.add(Q(lob="CFS"), Q.AND)
+                condition.add(Q(exist=1), Q.AND)
+                print(condition)
                 for case in case_list:
                     ndf = getCaseData(case, condition)
                     if casedf.empty:
@@ -342,6 +361,7 @@ class RankApi(PublicApiMixin, APIView):
                 
             else:
                 condition.add(Q(lob="OFS"), Q.AND)
+                condition.add(Q(exist=1), Q.AND)
                 for case in case_list:
                     ndf = getCaseData(case, condition)
                     if casedf.empty:
@@ -363,6 +383,7 @@ class RankApi(PublicApiMixin, APIView):
             nan = -1000000000
             # 추출한 df를 통해서 순위 조건에 맞게 json 만들어서 반환
             column_list = ['company_name']
+            print(casedf)
             for rank in rank_list:
                 casedf.sort_values(by=[rank[0]], ascending=rank[1], inplace=True)
                 column_list.append(rank[0])
