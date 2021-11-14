@@ -20,7 +20,6 @@ function Rank(props) {
       rank: [...props.rankCondition],
       islink: true // 나중에 파라미터 받는걸로 고치기 ##
     }
-    console.log(parameter);
     return parameter;
   }
   console.log("Rank rendering")
