@@ -282,6 +282,11 @@ class RankApi(PublicApiMixin, APIView):
             case_list = request.data.get('case', '')
             rank_list = request.data.get('rank', '')
             islink = request.data.get('islink', '')
+            print("========")
+            print(case_list)
+            print(rank_list)
+            print(islink)
+            print("========")
         except:
             return Response({
                 "message": "Payload Error",
