@@ -47,7 +47,7 @@ function isVaildForm(username, pwd1, pwd2, email){
 
 //
 function mapStateToProps(state){
-  return state;
+  return state; // 수정 필요
 }
 
 
