@@ -56,14 +56,14 @@ class UserSerializer(serializers.ModelSerializer):
         ]
         
     def get_mybstitles(self, obj):
-        custombs = obj.profile.custom_bs.all()
-        if custombs.exists():
-            mybstitles = []
+        mybstitles = []
+        try:
+            custombs = obj.profile.custom_bs.all()
             for bs in custombs:
                 mybstitles.append(bs.custom_title)
-            return mybstitles
-        else:
-            return []
+        except:
+            pass
+        return mybstitles
 
 
 def validate_password12(password1, password2):
