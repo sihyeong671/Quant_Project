@@ -365,6 +365,7 @@ class RankApi(PublicApiMixin, APIView):
                 column_list.append(rank[0])
             
             rankdf = casedf[column_list]
+            print(rankdf)
             rankdf["rank"] = list(range(1, len(rankdf)+1))
             rankdf = rankdf.reindex(columns=["rank"] + column_list)
             rankdf = rankdf.fillna(nan)
