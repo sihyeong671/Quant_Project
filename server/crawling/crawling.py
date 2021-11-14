@@ -60,15 +60,28 @@ def Save_Price():
         time.sleep(0.1)
         
         for row in data.itertuples():
-            Daily_Data = Daily_Price()
-            Daily_Data.company = Company.objects.get(corp_name=corp.corp_name, stock_code=corp.stock_code)
-            Daily_Data.date = row[0].to_pydatetime().date()
-            Daily_Data.market_gap = row[1]
-            Daily_Data.open = row[2]
-            Daily_Data.high = row[3]
-            Daily_Data.low = row[4]
-            Daily_Data.close = row[5]
-            Daily_Data.volume = row[6]
+            now_date = row[0].to_pydatetime().date()
+            company = Company.objects.get(corp_name=corp.corp_name, stock_code=corp.stock_code)
+            
+            # 현재 기업의 현재 날짜에 대한 주가가 이미 있는 경우에는 continue
+            is_already_in = Daily_Price.objects.filter(
+                company=company,
+                date=now_date
+            ).exists()
+            
+            if is_already_in:
+                continue
+            
+            Daily_Data = Daily_Price(
+                company=company,
+                date=now_date,
+                market_cap=row[1],
+                open=row[2],
+                high=row[3],
+                low=row[4],
+                close=row[5],
+                volume=row[6]
+            )
             # Daily_Data.per = 
             # Daily_Data.pbr = 
             Daily_Data.save()

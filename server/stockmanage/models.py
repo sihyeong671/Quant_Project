@@ -5,12 +5,14 @@ from users.models import Profile
 
 User = settings.AUTH_USER_MODEL
 
+
 class Company(models.Model):
     corp_name = models.CharField(max_length=100, null=True, blank=True)
     corp_name_eng = models.CharField(max_length=100, null=True, blank=True)
     stock_name = models.CharField(max_length=100, null=True, blank=True)
     stock_code = models.CharField(max_length=100, null=True, blank=True)
     ceo_name = models.CharField(max_length=100, null=True, blank=True)
+    
     # 법인구분 Y:유가, K:코스닥, N:코넥스, E:기타
     corp_cls = models.CharField(max_length=100, null=True, blank=True)
     jurir_no = models.CharField(max_length=100, null=True, blank=True)
@@ -20,9 +22,11 @@ class Company(models.Model):
     ir_url = models.CharField(max_length=100, null=True, blank=True)
     phn_no = models.CharField(max_length=100, null=True, blank=True)
     fax_no = models.CharField(max_length=100, null=True, blank=True)
+    
     # 업종코드
     induty_code = models.CharField(max_length=100, null=True, blank=True)
     est_dt = models.CharField(max_length=100, null=True, blank=True)
+    
     # 결산월
     acc_mt = models.CharField(max_length=100, null=True, blank=True)
     
@@ -33,18 +37,16 @@ class Company(models.Model):
         return self.corp_name
     
     class Meta:
-        # admin 페이지에서 조회할 때, 클래스명 대신 알아보기 쉬운 단어로 지정하는 것
         verbose_name = "기업"
         verbose_name_plural = "기업"
         ordering = ["corp_name"]
 
 
 class Daily_Price(models.Model):
-    # 날짜 문자열로 저장
     date = models.DateField(null=True, blank=True)
     company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
 
-    market_gap = models.FloatField(help_text="시가총액", null=True, blank=True)
+    market_cap = models.FloatField(help_text="시가총액", null=True, blank=True)
     # per = models.FloatField(help_text="PER", null=True, blank=True)
     # pbr = models.FloatField(help_text="PBR", null=True, blank=True)
 
@@ -60,9 +62,9 @@ class Daily_Price(models.Model):
     class Meta:
         verbose_name = "주가"
         verbose_name_plural = "주가"
+        ordering = ["date"]
 
 
-# 객체 7개 (2015 ~ 2017)
 class Year(models.Model):
     bs_year = models.IntegerField(help_text="사업연도", blank=True, null=True)
     company = models.ForeignKey(
@@ -77,9 +79,12 @@ class Year(models.Model):
     class Meta:
         verbose_name = "연도별 데이터"
         verbose_name_plural = "연도별 데이터"
+        ordering = ["bs_year"]
 
 
-# 객체 4개 (1/4, 2/4, 3/4, 4/4)
+# ===========================================================
+# |  1분기:11013  2분기:11012  3분기보고서:11014  사업보고서:11011  |
+# ===========================================================
 class Quarter(models.Model):
     qt_name = models.CharField(
         help_text="1분기:11013 2분기:11012 3분기보고서:11014 사업보고서:11011",
@@ -99,8 +104,9 @@ class Quarter(models.Model):
         verbose_name_plural = "분기별 데이터"
 
 
-# 객체 2개 (linked or basic)
-# 연결/일반 재무제표 구분
+# =====================
+# | 연결(CFS)/일반(OFS) |
+# =====================
 class FS_LoB(models.Model):
     lob = models.CharField(help_text="연결(CFS)/일반(OFS)", max_length=30, blank=True, null=True)
     quarter = models.ForeignKey(Quarter, on_delete=models.CASCADE, related_name="fs_lob")
@@ -118,8 +124,6 @@ class FS_LoB(models.Model):
     # EBIT
     # EBIDTA
 
-
-
     def __str__(self):
         return self.lob
     
@@ -128,7 +132,9 @@ class FS_LoB(models.Model):
         verbose_name_plural = "연결/일반"
 
 
-# 객체 5개 (BS:재무상태표, IS:손익계산서, CIS:포괄손익계산서, CF:현금흐름표, SCE:자본변동표)
+# =====================================================================
+# | BS:재무상태표, IS:손익계산서, CIS:포괄손익계산서, CF:현금흐름표, SCE:자본변동표) |
+# =====================================================================
 class FS_Div(models.Model):
     sj_div = models.CharField(
         help_text="재무제표구분(BS:재무상태표, IS:손익계산서, CIS:포괄손익계산서, CF:현금흐름표, SCE:자본변동표)",
@@ -158,6 +164,7 @@ class FS_Account(models.Model):
     class Meta:
         verbose_name = "계정명"
         verbose_name_plural = "계정명"
+        ordering = ["account_name"]
 
 
 class SUB_Account(models.Model):

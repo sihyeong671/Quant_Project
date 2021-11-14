@@ -1,5 +1,4 @@
 import pandas as pd
-import json
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -353,6 +352,7 @@ class RankApi(PublicApiMixin, APIView):
         
         
         try:
+            nan = -1000000000
             # 추출한 df를 통해서 순위 조건에 맞게 json 만들어서 반환
             column_list = ['company_name']
             for rank in rank_list:
@@ -362,6 +362,8 @@ class RankApi(PublicApiMixin, APIView):
             rankdf = casedf[column_list]
             rankdf["rank"] = list(range(1, len(rankdf)+1))
             rankdf = rankdf.reindex(columns=["rank"] + column_list)
+            rankdf = rankdf.fillna(nan)
+            
             data = rankdf.apply(lambda row: row.to_dict(), axis=1)
             return Response(data, status=status.HTTP_200_OK)
             
@@ -370,4 +372,14 @@ class RankApi(PublicApiMixin, APIView):
                 "message": "Cannot extract rank dataframe",
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-    
+
+class CompanyFSAPi(PublicApiMixin, APIView):
+    def get(self, request, *args, **kwargs):
+        """
+        company : 삼성전자 -> str
+        
+        return 
+        {
+            
+        }
+        """
