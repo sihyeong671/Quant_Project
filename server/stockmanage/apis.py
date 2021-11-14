@@ -294,18 +294,19 @@ class RankApi(PublicApiMixin, APIView):
             
         try:
             # 최근 year 찾기
+            condition = Q(exist=1)
+            
             recent_lob = FS_LoB.objects.\
                 select_related(
                     'quarter',
                     'quarter__year',
                 ).\
-                filter(exist=1).\
+                filter(condition).\
                 order_by('-quarter__year__bs_year').first()
                 
             recent_year = recent_lob.quarter.year.bs_year
             print("recent year : ", recent_year)
-            
-            condition = Q(quarter__year__bs_year=recent_year)
+            condition.add(Q(quarter__year__bs_year=recent_year), Q.AND)
             
             recent_lob = FS_LoB.objects.\
                 select_related(
@@ -313,10 +314,8 @@ class RankApi(PublicApiMixin, APIView):
                     'quarter__year'
                 ).\
                 filter(
-                    Q(exist=1) &
-                    Q(quarter__year__bs_year=recent_year)
+                    condition
                 )
-            print(recent_lob)
             
             # 최근 quarter 찾기
             ## 1분기:11013 2분기:11012 3분기보고서:11014 사업보고서:11011
@@ -335,6 +334,7 @@ class RankApi(PublicApiMixin, APIView):
                     recent_quarter = lob.quarter.qt_name
             
             print("recent quarter : ", recent_quarter)
+            condition.add(Q(quarter__qt_name=recent_quarter), Q.AND)
             
         except:
             return Response({
@@ -344,32 +344,36 @@ class RankApi(PublicApiMixin, APIView):
         
         try:
             # 조건을 통해서 알맞은 df추출
-            condition.add(Q(quarter__qt_name=recent_quarter), Q.AND)
             casedf = pd.DataFrame()
+            
+            queryset = FS_LoB.objects.select_related(
+                'quarter__year__company'
+            ).annotate(
+                company_name=F("quarter__year__company__corp_name")
+            )
             
             if islink:
                 condition.add(Q(lob="CFS"), Q.AND)
-                condition.add(Q(exist=1), Q.AND)
-                print(condition)
-                for case in case_list:
-                    ndf = getCaseData(case, condition)
-                    if casedf.empty:
-                        casedf = ndf
-                    else:
-                        pd.concat([casedf, ndf])
-                casedf = casedf.drop_duplicates()
-                
             else:
                 condition.add(Q(lob="OFS"), Q.AND)
-                condition.add(Q(exist=1), Q.AND)
+            
+            if case_list[0] == []:
+                queryset = queryset.filter(
+                    condition
+                ).values()
+                    
+                casedf = pd.DataFrame(list(queryset))
+            
+            else:
                 for case in case_list:
-                    ndf = getCaseData(case, condition)
+                    ndf = getCaseData(case, condition, queryset)
                     if casedf.empty:
                         casedf = ndf
                     else:
                         pd.concat([casedf, ndf])
-                casedf.drop_duplicates()
-        
+                            
+                    casedf.drop_duplicates()
+            
         except:
             return Response({
                 "message": "Cannot get case Dataframe",
@@ -383,10 +387,15 @@ class RankApi(PublicApiMixin, APIView):
             nan = -1000000000
             # 추출한 df를 통해서 순위 조건에 맞게 json 만들어서 반환
             column_list = ['company_name']
-            print(casedf)
+            for c in case_list:
+                if c == []:
+                    break
+                column_list.append(c[0])
+            
             for rank in rank_list:
                 casedf.sort_values(by=[rank[0]], ascending=rank[1], inplace=True)
-                column_list.append(rank[0])
+                if rank[0] not in column_list:
+                    column_list.append(rank[0])
             
             rankdf = casedf[column_list]
             rankdf["rank"] = list(range(1, len(rankdf)+1))
