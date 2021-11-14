@@ -116,7 +116,6 @@ class FS_LoB(models.Model):
     
     ROA = models.FloatField(null=True, blank=True)
     ROE = models.FloatField(null=True, blank=True)
-    
     GPA = models.FloatField(null=True, blank=True)
     
     # 부채비율

@@ -159,8 +159,8 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         SCE = FS_Div(sj_div="SCE",lob=link_model)
         SCE.save()
         
-        GP = 0
-        All_amount = 1
+        gp = 0.0
+        all_amount = 1.0
         
         pre_money = {}
         for fs_lst in json_dict['list']: # 한 행씩 가져오기
@@ -222,14 +222,14 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             else:
                 money.account_amount = fs_lst["thstrm_amount"]
                 if "매출총이익" in account_name or "매출총손익" in account_name:
-                    GP = fs_lst["thstrm_amount"]
+                    gp = float(fs_lst["thstrm_amount"])
                 elif "자산총계" in account_name:
-                    A = fs_lst["thstrm_amount"]
+                    all_amount = float(fs_lst["thstrm_amount"])
             
             money.save()
         
         try:
-            link_model.GPA = GP/A
+            link_model.GPA = gp/all_amount
             link_model.ROA = net_income / total_asset * 100 # %
             link_model.ROE = net_income / total_capital * 100 # %
             

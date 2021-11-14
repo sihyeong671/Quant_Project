@@ -357,6 +357,9 @@ class RankApi(PublicApiMixin, APIView):
         
         
         try:
+            if casedf.empty:
+                return Response({}, status=status.HTTP_200_OK)
+                
             nan = -1000000000
             # 추출한 df를 통해서 순위 조건에 맞게 json 만들어서 반환
             column_list = ['company_name']
@@ -365,7 +368,6 @@ class RankApi(PublicApiMixin, APIView):
                 column_list.append(rank[0])
             
             rankdf = casedf[column_list]
-            print(rankdf)
             rankdf["rank"] = list(range(1, len(rankdf)+1))
             rankdf = rankdf.reindex(columns=["rank"] + column_list)
             rankdf = rankdf.fillna(nan)
