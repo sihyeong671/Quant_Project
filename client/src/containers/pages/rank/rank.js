@@ -36,7 +36,7 @@ function mapDispatchToProps(dispatch){
       try{
         console.log(parameter)
         const rankData = await axios.post('api/v1/stock/rank', parameter);
-        console.log(rankData.data);
+        console.log(rankData);
         // dispatch({
 
         // })
