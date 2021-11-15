@@ -86,7 +86,7 @@ function NavTab({ isAuthenticated, userName }) {
 						<Link to="/calc" onClick={navClose}>🧮연산</Link>
 						<Link to="/rank" onClick={navClose}>🥇순위</Link>
 						<Link to="/" onClick={navClose}>📖정보</Link>
-						<Link to="/" onClick={navClose}>📄공지</Link>
+						<Link to="/board" onClick={navClose}>📄공지</Link>
 						<Link to="/" onClick={navClose}>📫문의</Link>
 					</ul>
 				</div>

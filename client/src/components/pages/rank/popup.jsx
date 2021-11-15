@@ -182,7 +182,7 @@ const ConditionPopUp = (props) => {
                     </div>
                     <div className='input-wrapper'>
                       <div className='uinput'>
-                        <input type="number" step="0.1" max="100" min="-100" className="" name={"updown" + (j).toString()} />
+                        <input type="number" step="0.1" max="100" min="-100" className="" name={"updown" + (j).toString()} required/>
                         <div className='uninput-itm'>
                           <input type="radio" id={"up" + (j).toString()} name={"uInfo" + (j).toString()} value="3" className='up' defaultChecked="checked" />
                           <label htmlFor={"up" + (j).toString()}>이상</label>

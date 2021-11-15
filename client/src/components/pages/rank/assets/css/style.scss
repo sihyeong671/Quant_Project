@@ -9,7 +9,7 @@ $floral-white: rgba(254, 249, 239, 1);
 $light-coral: rgba(254, 109, 115, 1);
 
 .container {
-  background-color: $base-black;
+  // background-color: $base-black;
   // border: 1px solid #000;
   display: flex;
   justify-content: space-around;
@@ -20,7 +20,7 @@ $light-coral: rgba(254, 109, 115, 1);
     // height: 100%;
     // padding-bottom: 100%;
     width: 1px;
-    background-color: #fff;
+    background-color: $base-black;
   }
 
   .container-box {
@@ -30,16 +30,41 @@ $light-coral: rgba(254, 109, 115, 1);
 
     .condition-itm{
       width: 100%;
+      line-height: 40px;
+      background-color: $base-black;
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       align-items: center;
-      span{
-        cursor: pointer;
-      }
+      text-align: center;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .3s;
+      border-bottom: 1px solid #fff;
+      &:hover{opacity: 0.8;}
+    }
+
+    &:nth-child(3){
+      button {background-color: $light-coral;}
     }
 
     button {
-      position: relative;
+      cursor: pointer;
+      width: 100%;
+      // line-height: 40px;
+      margin-bottom: 5px;
+      background-color: $cg-blue;
+      color: #fff;
+      font-weight: 500;
+      font-size: 20px;
+      border: none;
+      transition: all .3s;
+      vertical-align: top;
+      span{
+        display: inline-block ;
+        vertical-align: top;
+        line-height: 40px;
+      }
+      &:hover{opacity: 0.8;}
     }
   }
 }

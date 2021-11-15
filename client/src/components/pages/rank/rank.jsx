@@ -15,7 +15,7 @@ import './assets/css/style.scss';
 function Rank(props) {
 
 
-  
+
 
   const getParameter = () => {
     const parameter = {
@@ -30,14 +30,14 @@ function Rank(props) {
   let conditionList = [];
 
 
-  props.condition.forEach( cond => {
+  props.condition.forEach(cond => {
     conditionList.push(cond[0]);
   })
 
-  props.rankCondition.forEach( rcond => {
+  props.rankCondition.forEach(rcond => {
     conditionList.push(rcond[0]);
   })
- 
+
 
 
 
@@ -50,28 +50,32 @@ function Rank(props) {
     <>
       <div className="container">
         <div className="container-box">
-          <button onClick={props.showCondition}>조건 추가</button>
+          <button onClick={props.showCondition}>
+            <span>조건 추가</span> <span className="material-icons">add_circle_outline</span>
+          </button>
           {props.condition.map((cond, idx) => {
             let element;
             switch (cond[1]) { //
               case 0:
-                element = <span>%하위</span>
+                element = <span>% 하위</span>
                 break
               case 1:
-                element = <span>%상위</span>
+                element = <span>% 상위</span>
                 break
               case 2:
-                element = <span>이하</span>
+                element = <span> 이하</span>
                 break
               case 3:
-                element = <span>이상</span>
+                element = <span> 이상</span>
                 break
             }
             return (
               <div className='condition-itm' key={idx}>
                 <span>{cond[0]}</span>
-                <span>{cond[2]}</span>
-                {element}
+                <p>
+                  <span>{cond[2]}</span>
+                  {element}
+                </p>
                 <span className="material-icons" onClick={e => props.deleteCondition(idx)}>cancel</span>
               </div>
             )
@@ -81,7 +85,9 @@ function Rank(props) {
         <div className="verticalLine"></div>
 
         <div className="container-box">
-          <button onClick={props.showRankCondition}>순위 추가</button>
+          <button onClick={props.showRankCondition}>
+            <span>순위 추가</span> <span className="material-icons">add_circle_outline</span>
+          </button>
           {props.rankCondition.map((rcond, idx) => {
             let rankElement;
             if (rcond[1] === 1) {
@@ -109,13 +115,13 @@ function Rank(props) {
       ) : null}
 
       <button type="button" onClick={() => {
-          props.getRankData(getParameter())
-        }}>확인</button>
+        props.getRankData(getParameter())
+      }}>확인</button>
 
 
       <div>
         {conditionList.map((condition, idx) => {
-          return(
+          return (
             <div key={idx}>
               {condition}
             </div>
@@ -123,25 +129,26 @@ function Rank(props) {
         })}
       </div>
       <div>
-        {props.rankData.map( (data, idx) => {
-          return(
+        {props.rankData.map((data, idx) => {
+          return (
             <div key={idx}>
               <div>
                 {data.company_name}
               </div>
               {conditionList.map((element, idx_) => {
-                return(
-                  <div key = {idx_}>
+                return (
+                  <div key={idx_}>
                     {data[element]}
                   </div>
                 );
               })}
-  
+
               <div>
                 {data.rank}
               </div>
             </div>
-          )})}
+          )
+        })}
       </div>
 
     </>
