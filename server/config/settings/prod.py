@@ -28,7 +28,7 @@ def read_secret(secret_name):
 
 
 # 실제 배포시 바꿀 예정 -> False
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['quant.or.kr', env.str("AWS_HOST")]
 
