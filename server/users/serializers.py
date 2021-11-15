@@ -56,11 +56,13 @@ class UserSerializer(serializers.ModelSerializer):
         ]
         
     def get_mybstitles(self, obj):
-        custombs = obj.custom_bs.all()
         mybstitles = []
-        for bs in custombs:
-            mybstitles.append(bs.custom_title)
-        
+        try:
+            custombs = obj.profile.custom_bs.all()
+            for bs in custombs:
+                mybstitles.append(bs.custom_title)
+        except:
+            pass
         return mybstitles
 
 

@@ -63,17 +63,9 @@ class Crawling_FSData(SuperUserMixin, APIView):
             Save_FS_Data(apikey)
             Save_Price()
             
-            queryset = Company.objects.all().values('corp_name')
-            
-            companies = []
-            
-            for com in queryset:
-                companies.append(com.corp_name)
-                
-            data = {
-                'company': companies,
-            }
-            return Response(data, status=status.HTTP_200_OK)
+            return Response({
+                'message': "Success crawling FS data",
+            }, status=status.HTTP_200_OK)
         except:
             return Response({
                 "message": "failed save fs data"

@@ -282,38 +282,60 @@ class RankApi(PublicApiMixin, APIView):
             case_list = request.data.get('case', '')
             rank_list = request.data.get('rank', '')
             islink = request.data.get('islink', '')
+            print("========")
+            print(case_list)
+            print(rank_list)
+            print(islink)
+            print("========")
         except:
             return Response({
                 "message": "Payload Error",
             }, status=status.HTTP_402_PAYMENT_REQUIRED)
-                
+            
         try:
             # 최근 year 찾기
-            recent_year = Year.objects.all().order_by('-bs_year').first()
-            recent_year = recent_year.bs_year
+            condition = Q(exist=1)
             
-            condition = Q(quarter__year__bs_year=recent_year)
+            recent_lob = FS_LoB.objects.\
+                select_related(
+                    'quarter',
+                    'quarter__year',
+                ).\
+                filter(condition).\
+                order_by('-quarter__year__bs_year').first()
+                
+            recent_year = recent_lob.quarter.year.bs_year
+            print("recent year : ", recent_year)
+            condition.add(Q(quarter__year__bs_year=recent_year), Q.AND)
             
-            recent_quarter_query = Quarter.objects.filter(
-                Q(year__bs_year=recent_year)
-            )
+            recent_lob = FS_LoB.objects.\
+                select_related(
+                    'quarter',
+                    'quarter__year'
+                ).\
+                filter(
+                    condition
+                )
             
             # 최근 quarter 찾기
             ## 1분기:11013 2분기:11012 3분기보고서:11014 사업보고서:11011
             recent_quarter = None
             
-            for quarter in recent_quarter_query[:5]:
-                if quarter.qt_name == "11011":
-                    recent_quarter = quarter.qt_name
+            for lob in recent_lob[:5]:
+                if lob.quarter.qt_name == "11011":
+                    recent_quarter = lob.quarter.qt_name
                     break
-                elif quarter.qt_name == "11014":
-                    recent_quarter = quarter.qt_name
-                elif quarter.qt_name == "11012" and \
+                elif lob.quarter.qt_name == "11014":
+                    recent_quarter = lob.quarter.qt_name
+                elif lob.quarter.qt_name == "11012" and \
                     (recent_quarter == None or recent_quarter == "11013"):
-                    recent_quarter = quarter.qt_name
-                elif quarter.qt_name == "11013" and recent_quarter == None:
-                    recent_quarter = quarter.qt_name
-                    
+                    recent_quarter = lob.quarter.qt_name
+                elif lob.quarter.qt_name == "11013" and recent_quarter == None:
+                    recent_quarter = lob.quarter.qt_name
+            
+            print("recent quarter : ", recent_quarter)
+            condition.add(Q(quarter__qt_name=recent_quarter), Q.AND)
+            
         except:
             return Response({
                 "message": "Cannot get recent quarter",
@@ -322,29 +344,36 @@ class RankApi(PublicApiMixin, APIView):
         
         try:
             # 조건을 통해서 알맞은 df추출
-            condition.add(Q(quarter__qt_name=recent_quarter), Q.AND)
             casedf = pd.DataFrame()
+            
+            queryset = FS_LoB.objects.select_related(
+                'quarter__year__company'
+            ).annotate(
+                company_name=F("quarter__year__company__corp_name")
+            )
             
             if islink:
                 condition.add(Q(lob="CFS"), Q.AND)
-                for case in case_list:
-                    ndf = getCaseData(case, condition)
-                    if casedf.empty:
-                        casedf = ndf
-                    else:
-                        pd.concat([casedf, ndf])
-                casedf = casedf.drop_duplicates()
-                
             else:
                 condition.add(Q(lob="OFS"), Q.AND)
+            
+            if case_list[0] == []:
+                queryset = queryset.filter(
+                    condition
+                ).values()
+                    
+                casedf = pd.DataFrame(list(queryset))
+            
+            else:
                 for case in case_list:
-                    ndf = getCaseData(case, condition)
+                    ndf = getCaseData(case, condition, queryset)
                     if casedf.empty:
                         casedf = ndf
                     else:
                         pd.concat([casedf, ndf])
-                casedf.drop_duplicates()
-        
+                            
+                    casedf.drop_duplicates()
+            
         except:
             return Response({
                 "message": "Cannot get case Dataframe",
@@ -352,12 +381,21 @@ class RankApi(PublicApiMixin, APIView):
         
         
         try:
+            if casedf.empty:
+                return Response({}, status=status.HTTP_200_OK)
+                
             nan = -1000000000
             # 추출한 df를 통해서 순위 조건에 맞게 json 만들어서 반환
             column_list = ['company_name']
+            for c in case_list:
+                if c == []:
+                    break
+                column_list.append(c[0])
+            
             for rank in rank_list:
                 casedf.sort_values(by=[rank[0]], ascending=rank[1], inplace=True)
-                column_list.append(rank[0])
+                if rank[0] not in column_list:
+                    column_list.append(rank[0])
             
             rankdf = casedf[column_list]
             rankdf["rank"] = list(range(1, len(rankdf)+1))
