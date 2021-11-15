@@ -199,22 +199,7 @@ function mapDispatchToProps(dispatch){
       }
 
     },
-    kakaoLogin: async () => {
-      try{
-        await axios.get('/api/v1/auth/login/kakao')
-        // dispatch
-      }catch(error){
-        console.log(error);
-      }
-    },
-    googleLogin: async () => {
-      try{
-        await axios.get('/api/v1/auth/login/google');
-        // dispatch
-      }catch(error){
-        console.log(error);
-      }
-    }
+
   }
 }
 

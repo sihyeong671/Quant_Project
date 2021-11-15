@@ -14,6 +14,9 @@ import './assets/css/style.scss';
 
 function Rank(props) {
 
+
+  
+
   const getParameter = () => {
     const parameter = {
       case: [...props.condition],
@@ -22,6 +25,26 @@ function Rank(props) {
     }
     return parameter;
   }
+
+
+  let conditionList = [];
+
+
+  props.condition.forEach( cond => {
+    conditionList.push(cond[0]);
+  })
+
+  props.rankCondition.forEach( rcond => {
+    conditionList.push(rcond[0]);
+  })
+ 
+
+
+
+
+
+
+
   console.log("Rank rendering")
   return(
     <>
@@ -85,8 +108,41 @@ function Rank(props) {
         <RankConditionPopUp></RankConditionPopUp>
       ) : null}
 
-      <button type="button" onClick={() => props.getRankData(getParameter())}>확인</button>
+      <button type="button" onClick={() => {
+          props.getRankData(getParameter())
+        }}>확인</button>
 
+
+      <div>
+        {conditionList.map((condition, idx) => {
+          return(
+            <div key={idx}>
+              {condition}
+            </div>
+          )
+        })}
+      </div>
+      <div>
+        {props.rankData.map( (data, idx) => {
+          return(
+            <div key={idx}>
+              <div>
+                {data.company_name}
+              </div>
+              {conditionList.map((element, idx_) => {
+                return(
+                  <div key = {idx_}>
+                    {data[element]}
+                  </div>
+                );
+              })}
+  
+              <div>
+                {data.rank}
+              </div>
+            </div>
+          )})}
+      </div>
 
     </>
   )
