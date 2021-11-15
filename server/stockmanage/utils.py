@@ -1,7 +1,7 @@
 from time import strptime, mktime
 import pandas as pd
 
-from django.db.models import Q, F, query
+from django.db.models import Q, F
 
 
 from stockmanage.models import FS_LoB
@@ -19,12 +19,7 @@ def getData(stocks):
 
 
 
-def getCaseData(case, condition):
-    queryset = FS_LoB.objects.select_related(
-        'quarter__year__company'
-    ).annotate(
-        company_name=F("quarter__year__company__corp_name")
-    )
+def getCaseData(case, condition, queryset):
     
     allcnt = FS_LoB.objects.all().count()
     comp_num = int(allcnt * case[2] / 100.0)
@@ -39,7 +34,6 @@ def getCaseData(case, condition):
                 condition
             ).order_by('-ROE')[:comp_num].values()
             
-            
         elif case[1] == 0:
             #하위
             queryset = queryset.filter(
@@ -52,7 +46,6 @@ def getCaseData(case, condition):
             queryset = queryset.filter(
                 condition
             ).values()
-            
             
         elif case[1] == 2:
             #이하

@@ -18,19 +18,19 @@ import axios from 'axios';
 // 재무제표 크롤링
 
 const deleteAllCompany = () => {
-  axios.delete('api/v1/stock/crawling/'); // 모든 데이터 삭제
+  axios.delete('api/v1/stock/crawling/fs'); // 모든 데이터 삭제
 }
 
 const dailyCrawling = () => {
-  axios.get('api/v1/stock/daily'); // 현재 존재하는 기업들 주가 가져오기(get)
+  axios.get('api/v1/stock/crawling/daily'); // 현재 존재하는 기업들 주가 가져오기(get)
 }
 
 const dartCrawling = () => {
-  axios.get('api/v1/crawlingdart');
+  axios.get('api/v1/stock/crawling/dart'); // 고유번호 가져오기
 }
 
 const fsCrawling = () => {
-  axios.get('api/v1/crawlingfs');
+  axios.get('api/v1/stock/crawling/fs'); // 재무제표 크롤링
 }
 
 
