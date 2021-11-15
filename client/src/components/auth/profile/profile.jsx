@@ -17,20 +17,40 @@ import axios from 'axios';
 // 다트 크롤링
 // 재무제표 크롤링
 
-const deleteAllCompany = () => {
-  axios.delete('api/v1/stock/crawling/fs'); // 모든 데이터 삭제
+const deleteAllCompany = async () => {
+  try{
+    const res = await axios.delete('api/v1/stock/crawling/fs'); // 모든 데이터 삭제
+    console.log(res);
+  }catch(error){
+    console.log(error);
+  }
 }
 
-const dailyCrawling = () => {
-  axios.get('api/v1/stock/crawling/daily'); // 현재 존재하는 기업들 주가 가져오기(get)
+const dailyCrawling = async () => {
+  try{
+    const res = await axios.get('api/v1/stock/crawling/daily'); // 현재 존재하는 기업들 주가 가져오기(get)
+    console.log(res);
+  }catch(error){
+    console.log(error);
+  }
 }
 
-const dartCrawling = () => {
-  axios.get('api/v1/stock/crawling/dart'); // 고유번호 가져오기
+const dartCrawling = async () => {
+  try{
+    const res = await axios.get('api/v1/stock/crawling/dart'); // 고유번호 가져오기
+    console.log(res);
+  }catch(error){
+    console.log(error);
+  }
 }
 
-const fsCrawling = () => {
-  axios.get('api/v1/stock/crawling/fs'); // 재무제표 크롤링
+const fsCrawling = async () => {
+  try{
+    const res = await axios.get('api/v1/stock/crawling/fs'); // 재무제표 크롤링
+    console.log(res);
+  }catch(error){
+    console.log(error);
+  }
 }
 
 

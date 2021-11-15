@@ -34,7 +34,7 @@ def find_parameter(string: str, fs_name: str) -> list:
 
 def Print_Error(status: str):
     if  status == "010":
-            print('등록되지 않은 키입니다.')
+        print('등록되지 않은 키입니다.')
     elif status == "011":
         print('사용할 수 없는 키입니다')            
     elif status == "013":
@@ -237,7 +237,8 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             
         except:
             print("Link model save failed..")
-        
+    
+
     else:
         if json_dict['status'] == "013":
             link_model.save()
