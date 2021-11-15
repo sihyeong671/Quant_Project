@@ -7,7 +7,7 @@ const List = (props) => {
   console.log('list rendering');
   console.log(props);
   return (
-    <li key={props.key+'searchList'}>
+    <li key={props.key + 'searchList'}>
       {props.name}
       <button onClick={() => props.onClick(props.code)}>❌</button>
     </li>
@@ -69,7 +69,7 @@ const Search = (props) => {
                   item.name
                 );
                 if (props.corpList.length >= props.maxLength) return;
-              }}>추가</button>
+              }}><span className="material-icons">add_circle_outline</span></button>
             </li>
           )
         })}

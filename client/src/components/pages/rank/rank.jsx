@@ -23,13 +23,14 @@ function Rank(props) {
     return parameter;
   }
   console.log("Rank rendering")
-  return(
+  return (
     <>
       <div className="container">
         <div className="container-box">
+          <button onClick={props.showCondition}>조건 추가</button>
           {props.condition.map((cond, idx) => {
             let element;
-            switch(cond[1]){ //
+            switch (cond[1]) { //
               case 0:
                 element = <span>%하위</span>
                 break
@@ -43,38 +44,37 @@ function Rank(props) {
                 element = <span>이상</span>
                 break
             }
-            return(
-              <div key={idx}>
+            return (
+              <div className='condition-itm' key={idx}>
                 <span>{cond[0]}</span>
                 <span>{cond[2]}</span>
                 {element}
-                <button onClick={e => props.deleteCondition(idx)}>❌</button>
+                <span className="material-icons" onClick={e => props.deleteCondition(idx)}>cancel</span>
               </div>
             )
           })}
-          <button onClick={props.showCondition}>조건 추가</button>
         </div>
 
         <div className="verticalLine"></div>
 
         <div className="container-box">
+          <button onClick={props.showRankCondition}>순위 추가</button>
           {props.rankCondition.map((rcond, idx) => {
             let rankElement;
-            if(rcond[1] === 1){
+            if (rcond[1] === 1) {
               rankElement = <span>오름차순</span>
             }
-            else if(rcond[1] === 0){
+            else if (rcond[1] === 0) {
               rankElement = <span>내림차순</span>
             }
-            return(
-              <div key={idx}>
+            return (
+              <div className='condition-itm' key={idx}>
                 <span>{rcond[0]}</span>
                 {rankElement}
-                <button onClick={e => props.deleteRankCondition(idx)}>❌</button>
+                <span className="material-icons" onClick={e => props.deleteRankCondition(idx)}>cancel</span>
               </div>
             )
           })}
-          <button onClick={props.showRankCondition}>순위 추가</button>
         </div>
       </div>
 
