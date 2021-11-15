@@ -38,11 +38,8 @@ function Rank(props) {
     conditionList.push(rcond[0]);
   })
 
-
-
-
-
-
+  const newSet = new Set(conditionList)
+  conditionList = [...newSet];
 
 
   console.log("Rank rendering")
@@ -142,7 +139,6 @@ function Rank(props) {
                   </div>
                 );
               })}
-
               <div>
                 {data.rank}
               </div>
