@@ -366,7 +366,7 @@ class RankApi(PublicApiMixin, APIView):
             else:
                 condition.add(Q(lob="OFS"), Q.AND)
             
-            if case_list[0] == []:
+            if not case_list:
                 queryset = queryset.filter(
                     condition
                 ).values()
