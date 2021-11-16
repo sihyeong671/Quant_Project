@@ -15,8 +15,6 @@ import './assets/css/style.scss';
 function Rank(props) {
 
 
-  
-
   const getParameter = () => {
     const parameter = {
       case: [...props.condition],
