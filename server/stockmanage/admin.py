@@ -1,27 +1,15 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-from stockmanage.apis import CustomBSApi
 
 from stockmanage.models import *
 
-
-
-# admin.site.register(Dart)
-# admin.site.register(Company)
-# admin.site.register(Year)
-# admin.site.register(Quarter)
-# admin.site.register(FS_LoB)
-# admin.site.register(FS_Div)
-# admin.site.register(FS_Account)
-# admin.site.register(SUB_Account)
 admin.site.register(CustomFS_Account)
 admin.site.register(CustomSUB_Account)
 admin.site.register(UserCustomBS)
-admin.site.register(Daily_Price)
 
 
 @admin.register(Dart)
-class CompanyAdmin(admin.ModelAdmin):
+class DartAdmin(admin.ModelAdmin):
     ordering = ('company_name_dart', )
     list_display = (
         'dart_code', 'company_name_dart', 'short_code', 
@@ -139,15 +127,15 @@ class FS_LoBAdmin(admin.ModelAdmin):
     ordering = ('quarter__year__company__corp_name', )
     list_display = (
         'get_company', 'get_year', 'get_quarter', 
-        'get_lob', 'unit', 'exist', 'ROE', 'ROA', 'GPA',
+        'get_lob', 'unit', 'exist', 'ROE', 'ROA', 'GPA', 'net_income', 'total_capital', 
     )
     list_display_links = (
         'get_company', 'get_year', 'get_quarter', 
-        'get_lob', 'unit', 'exist', 'ROE', 'ROA', 'GPA',
+        'get_lob', 'unit', 'exist', 'ROE', 'ROA', 'GPA', 'net_income', 'total_capital', 
     )
     search_fields = (
         'get_company', 'get_year', 'get_quarter',
-        'get_lob', 'unit', 'exist', 'ROE', 'ROA', 'GPA',
+        'get_lob', 'unit', 'exist', 'ROE', 'ROA', 'GPA', 'net_income', 'total_capital', 
     )
     list_filter = ('lob', 'exist', 'unit', )
     
@@ -288,7 +276,7 @@ class FS_AccountAdmin(admin.ModelAdmin):
         'get_company', 'get_year', 'get_quarter', 
         'get_lob', 'get_fsdiv','account_name',
     )
-    list_filter = ('account_name', )
+    # list_filter = ('account_name', )
     
     list_select_related = [
         'fs_div',
@@ -374,7 +362,7 @@ class SUB_AccountAdmin(admin.ModelAdmin):
         'get_unit',
 
     )
-    list_filter = ('account_name', )
+    # list_filter = ('account_name', )
     
     list_select_related = [
         'pre_account',
@@ -445,3 +433,33 @@ class SUB_AccountAdmin(admin.ModelAdmin):
             return ''
         return year
     get_year.short_description = _('Year')
+    
+    
+@admin.register(Daily_Price)
+class Daily_PriceAdmin(admin.ModelAdmin):
+    ordering = ('date', )
+    list_display = (
+        'get_company', 'date', 'open', 'close',
+        'low', 'high', 'volume', 'cfs_per', 'cfs_pbr', 'ofs_per', 'ofs_pbr'
+    )
+    list_display_links = (
+        'get_company', 'date', 'open', 'close',
+        'low', 'high', 'volume', 'cfs_per', 'cfs_pbr', 'ofs_per', 'ofs_pbr'
+    )
+    search_fields = (
+        'get_company', 'date', 'open', 'close',
+        'low', 'high', 'volume', 'cfs_per', 'cfs_pbr', 'ofs_per', 'ofs_pbr'
+    )
+    
+    inlines = ()
+    list_select_related = [
+        'company'
+    ]
+    
+    def get_company(self, obj):
+        company = obj.company.corp_name
+        
+        if not company:
+            return ''
+        return company
+    get_company.short_description = _('Company')

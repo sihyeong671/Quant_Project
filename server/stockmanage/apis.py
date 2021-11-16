@@ -1,8 +1,10 @@
+from django.core.exceptions import ValidationError
 import pandas as pd
 
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.exceptions import NotFound
 
 from django.db.models.query import Prefetch
 from django.db import transaction
@@ -74,6 +76,11 @@ class AccountSearchApi(PublicApiMixin, APIView):
                 Q(fs_div__lob__quarter__year__company__stock_code=stock_code)
             )
         
+        try:
+            unit = account_list[0].fs_div.fs_lob.unit
+        except:
+            raise NotFound
+        
         fs_account_list = []
         
         for ac in account_list:
@@ -95,7 +102,8 @@ class AccountSearchApi(PublicApiMixin, APIView):
             fs_account_list.append(fsaccount)
         
         data = {
-            'account': fs_account_list
+            'account': fs_account_list,
+            'unit': unit
         }
         
         return Response(data, status=status.HTTP_200_OK)
@@ -305,6 +313,7 @@ class RankApi(PublicApiMixin, APIView):
                 order_by('-quarter__year__bs_year').first()
                 
             recent_year = recent_lob.quarter.year.bs_year
+            
             print("recent year : ", recent_year)
             condition.add(Q(quarter__year__bs_year=recent_year), Q.AND)
             
@@ -357,7 +366,7 @@ class RankApi(PublicApiMixin, APIView):
             else:
                 condition.add(Q(lob="OFS"), Q.AND)
             
-            if case_list[0] == []:
+            if not case_list:
                 queryset = queryset.filter(
                     condition
                 ).values()
