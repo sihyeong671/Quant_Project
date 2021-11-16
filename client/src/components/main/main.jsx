@@ -15,7 +15,7 @@ import Home from '../pages/home/home';
 import Calc from '../../containers/pages/calc/calc';
 import Chart from '../../containers/pages/chart/chart';
 import Rank from '../../containers/pages/rank/rank';
-
+import Info from '../../components/pages/info/info'
 
 import NotFound from '../notfound';
 
@@ -34,7 +34,7 @@ const Main = () => {
                 <Route path="/chart" component={Chart}></Route>
                 <Route path="/calc" component={Calc}></Route>
                 <Route path="/rank" component={Rank}></Route>
-
+                <Route path="/info" component={Info}></Route>
                 <Route component={NotFound}></Route>
             </Switch>
         </main>

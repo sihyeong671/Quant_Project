@@ -104,6 +104,8 @@ function Header(props) {
 							<Link to="/rank" onClick={navClose}>🥇순위</Link>
 							<Link to="/" onClick={navClose}>📄공지</Link>
 							<Link to="/" onClick={navClose}>📫문의</Link>
+							<Link to="/" onClick={navClose}>도움말</Link>
+							<Link to="/info" onClick={navClose}>개발자 정보</Link>
 						</ul>
 					</div>
 					<div className='navTab-bg' onClick={navClose} style={navBgStyle}></div>
