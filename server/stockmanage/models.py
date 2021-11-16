@@ -47,8 +47,12 @@ class Daily_Price(models.Model):
     company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
 
     market_cap = models.FloatField(help_text="시가총액", null=True, blank=True)
-    # per = models.FloatField(help_text="PER", null=True, blank=True)
-    # pbr = models.FloatField(help_text="PBR", null=True, blank=True)
+    
+    cfs_per = models.FloatField(help_text="PER", null=True, blank=True)
+    cfs_pbr = models.FloatField(help_text="PBR", null=True, blank=True)
+    
+    ofs_per = models.FloatField(help_text="PER", null=True, blank=True)
+    ofs_pbr = models.FloatField(help_text="PBR", null=True, blank=True)
 
     open = models.FloatField(help_text="시가", null=True, blank=True)
     high = models.FloatField(help_text="고가", null=True, blank=True)
@@ -117,6 +121,10 @@ class FS_LoB(models.Model):
     ROA = models.FloatField(null=True, blank=True)
     ROE = models.FloatField(null=True, blank=True)
     GPA = models.FloatField(null=True, blank=True)
+    
+    net_income = models.FloatField(help_text="당기순이익(CIS)", default=0, null=True, blank=True)
+    total_capital = models.FloatField(help_text="자본총계(BS)", null=True, blank=True)
+    
     
     # 부채비율
     # 기업가치
