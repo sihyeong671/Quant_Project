@@ -13,11 +13,11 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         onClickGet: async () => {
-            const getList = await axios.get('api/v1/board/')
-            console.log(getList)
+            const getList = await axios.get('api/v1/board/1')
+            console.log(getList.data)
             await dispatch({
                 type: Constants.board.BOARD_CREATE,
-                catList: getList
+                catList: getList.data
             });
         },
         onClickPost: async () => {
