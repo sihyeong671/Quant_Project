@@ -8,7 +8,7 @@ const Info = () => {
   const [developerInfos, setDeveloperInfos] = useState([
     ["박시형", "bshlab671@naver.com", "https://github.com/sihyeong671", "https://blog.naver.com/bshlab671", "frontend"],
     ["조현우","hyun0404woo@naver.com", "https://github.com/hyun98", "https://hyeo-noo.tistory.com/", "backend"],
-    ["허상원", "", "https://github.com/POBSIZ", "", "design" ]
+    ["허상원", "gjehdtjr911@gmail.com", "https://github.com/POBSIZ", "https://pobsiz.tistory.com", "design" ]
   ]);
 
 

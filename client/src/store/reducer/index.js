@@ -24,7 +24,8 @@ const rootReducer =  combineReducers({
   search,
   user,
   calc,
-  rank
+  rank,
+  board,
 });
 
 export default persistReducer(persistConfig, rootReducer);

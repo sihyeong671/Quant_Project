@@ -61,6 +61,9 @@
                 font-size: 20px;
                 font-weight: 500;
             }
+            span {
+                font-weight: 500;
+            }
         }
     }
 
@@ -107,6 +110,9 @@
                 font-size: 20px;
                 font-weight: 500;
             }
+            span {
+                font-weight: 500;
+            }
         }
     }
 }
@@ -122,7 +128,7 @@
     width: 100%;
     margin-top: 20px;
     background-color: #fff;
-    
+
     .resVal-value {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -138,7 +144,7 @@
             font-weight: bold;
             line-height: 40px;
             float: right;
-            span{
+            span {
                 float: right;
                 border-bottom: 2px solid rgba(39, 39, 39, 0.8);
             }

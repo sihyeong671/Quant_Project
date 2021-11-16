@@ -17,6 +17,8 @@ import Chart from '../../containers/pages/chart/chart';
 import Rank from '../../containers/pages/rank/rank';
 import Info from '../../components/pages/info/info'
 
+import Board from '../../containers/pages/board/board';
+
 import NotFound from '../notfound';
 
 import './assets/css/style.scss'
@@ -35,6 +37,9 @@ const Main = () => {
                 <Route path="/calc" component={Calc}></Route>
                 <Route path="/rank" component={Rank}></Route>
                 <Route path="/info" component={Info}></Route>
+
+                <Route path="/board" component={Board}></Route>
+
                 <Route component={NotFound}></Route>
             </Switch>
         </main>
