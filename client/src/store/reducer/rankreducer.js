@@ -7,13 +7,12 @@ const initState = {
   fsInit:[
     "ROA",
     "ROE",
-    "EBIT",
     "부채비율"
   ],
-  condition:[
-  ],
-  rankCondition:[
-  ]
+  condition:[],
+  rankCondition:[],
+  rankData:[]
+
 }
 
 export default function reducer(state=initState, action){
@@ -70,6 +69,13 @@ export default function reducer(state=initState, action){
     case Constants.rank.DELETERANKCONDITION:{
       let newState = _.cloneDeep(state);
       newState.rankCondition.splice(action.index, 1);
+      return newState;
+    }
+
+    case Constants.rank.GET:{
+      let newState = _.cloneDeep(state);
+      newState.rankData = action.rankData;
+
       return newState;
     }
 

@@ -10,6 +10,7 @@ import SearchPwd from './serachPwd';
 import GoogleLogo from './assets/img/googlelogin.png';
 import KakaoLogo from './assets/img/kakaologin.png';
 import NaverLogo from './assets/img/naverlogin.png'
+import {BASEURL} from '../../../utils'
 
 import Test from "../../../containers/pages/rank/rank";
 
@@ -28,12 +29,14 @@ const AuthForm = (props) => (
       </Switch>
 
       <div className='social-btn'>
-        <a className="social-kakao" onClick={props.kakaoLogin}>
+        {/* <a className="social-kakao" onClick={props.kakaoLogin}> */}
+        <a className="social-kakao" href={`${BASEURL}/api/v1/auth/login/kakao`}>
           <img src={srcSet.kakao} alt="kakaologin" />
           <span>카카오로 로그인</span>
         </a>
 
-        <a className="social-google" onClick={props.googleLogin}>
+        {/* <a className="social-google" onClick={props.googleLogin}> */}
+        <a className="social-google" href={`${BASEURL}/api/v1/auth/login/google`}>
           <img src={srcSet.google} alt="googlelogin" />
           <span>구글로 로그인</span>
         </a>

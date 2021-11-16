@@ -34,6 +34,11 @@ $light-coral: rgba(254, 109, 115, 1);
 
 .material-icons{
   font-family: 'Material Icons' !important;
+  cursor: pointer;
+}
+
+input::-webkit-inner-spin-button{
+  opacity: 1;
 }
 
 html, body, div, span, applet, object, iframe,

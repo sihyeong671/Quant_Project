@@ -38,10 +38,10 @@ const RankConditionPopUp = (props) => {
 
   const addRankCondition = (e) => {
     e.preventDefault();
-    
+
     let newList = [];
-    for(let i = 0; i < rlist.length; ++i){
-      newList.push([rlist[i], Number(e.target["rInfo"+(i).toString()].value)]); 
+    for (let i = 0; i < rlist.length; ++i) {
+      newList.push([rlist[i], Number(e.target["rInfo" + (i).toString()].value)]);
     }
     console.log(newList);
     props.addRankCondition(newList);
@@ -51,15 +51,15 @@ const RankConditionPopUp = (props) => {
 
   return (
     <div className="popUp">
-      <form className='popUp-inner' onSubmit={e=>addRankCondition(e)}>
+      <form className='popUp-inner' onSubmit={e => addRankCondition(e)}>
         <h2>조건추가하기</h2>
-        <input className='condition-input' name='condition-input' type="text" />
-        <span className="material-icons">search</span>
+        {/* <input className='condition-input' name='condition-input' type="text" />
+        <span className="material-icons">search</span> */}
         <div className='condition_main'>
           <ul className='condition_main-slist'>
             {
-              props.fsInit?.map((item, i)=>{
-                return(
+              props.fsInit?.map((item, i) => {
+                return (
                   <li onClick={e => pushVal(item)} key={i}>
                     <p>{item}</p>
                     <span className="material-icons">add_circle_outline</span>
@@ -73,17 +73,23 @@ const RankConditionPopUp = (props) => {
 
           <ul className='condition_main-rlist'>
             {
-              rlist?.map((item, j)=>{
-                return(
+              rlist?.map((item, j) => {
+                return (
                   <li key={j}>
-                    <h3>{item}</h3>
-                    <button type="button" onClick={e => popVal(j)}>❌</button>
+                    <div className='input-title'>
+                      <span className="material-icons" onClick={() => popVal(j)}>cancel</span>
+                      <h3>{item}</h3>
+                    </div>
                     <div className='input-wrapper'>
-                      <div className='updown'>
-                        <input type="radio" name={"rInfo"+(j).toString()} id={"up"+(j).toString()} value="1" defaultChecked="checked"/>
-                        <label htmlFor={"up"+(j).toString()}>오름차순</label>
-                        <input type="radio" name={"rInfo"+(j).toString()} id={"down"+(j).toString()} value="0"/>
-                        <label htmlFor={"down"+(j).toString()}>내림차순</label>
+                      <div className='uinput'>
+                        <div className='uninput-itm'>
+                          <input type="radio" name={"rInfo" + (j).toString()} id={"up" + (j).toString()} value="1" defaultChecked="checked" />
+                          <label htmlFor={"up" + (j).toString()}>오름차순</label>
+                        </div>
+                        <div className='uninput-itm'>
+                          <input type="radio" name={"rInfo" + (j).toString()} id={"down" + (j).toString()} value="0" />
+                          <label htmlFor={"down" + (j).toString()}>내림차순</label>
+                        </div>
                       </div>
                     </div>
                   </li>
@@ -123,17 +129,17 @@ const ConditionPopUp = (props) => {
     e.preventDefault();
 
     let newList = [];
-     
-    for(let i = 0; i < rlist.length; ++i){
-      let coefValue = Number(e.target["updown"+(i).toString()].value);
-      
-      let conditionValue = Number(e.target["uInfo"+(i).toString()].value);
 
-      if((conditionValue === 0 || conditionValue === 1) && coefValue < 0){
+    for (let i = 0; i < rlist.length; ++i) {
+      let coefValue = Number(e.target["updown" + (i).toString()].value);
+
+      let conditionValue = Number(e.target["uInfo" + (i).toString()].value);
+
+      if ((conditionValue === 0 || conditionValue === 1) && coefValue < 0) {
         alert("하위, 상위 조건은 마이너스 값이 불가능합니다");
         return;
       }
-      
+
       newList.push([rlist[i], conditionValue, coefValue])
     }
     console.log(newList);
@@ -146,13 +152,13 @@ const ConditionPopUp = (props) => {
     <div className="popUp">
       <form className='popUp-inner' onSubmit={e => addCondition(e)}>
         <h2>조건추가하기</h2>
-          <input className='condition-input' name='condition-input' type="text" />
-          <span className="material-icons">search</span>
+        {/* <input className='condition-input' name='condition-input' type="text" />
+        <span className="material-icons">search</span> */}
         <div className='condition_main'>
           <ul className='condition_main-slist'>
             {
-              props.fsInit?.map((item, i)=>{
-                return(
+              props.fsInit?.map((item, i) => {
+                return (
                   <li onClick={() => pushVal(item)} key={i}>
                     <p>{item}</p>
                     <span className="material-icons">add_circle_outline</span>
@@ -166,23 +172,33 @@ const ConditionPopUp = (props) => {
 
           <ul className='condition_main-rlist'>
             {
-              rlist?.map((item, j)=>{
+              rlist?.map((item, j) => {
                 console.log(item, j);
-                return(
+                return (
                   <li key={j}>
-                    <h3>{item}</h3>
-                    <button type="button" onClick={() => popVal(j)}>❌</button>
+                    <div className='input-title'>
+                      <span className="material-icons" onClick={() => popVal(j)}>cancel</span>
+                      <h3>{item}</h3>
+                    </div>
                     <div className='input-wrapper'>
                       <div className='uinput'>
-                        <input type="number" step="0.1" max="100" min="-100" className="" name={"updown"+(j).toString()}/>
-                        <input type="radio" id={"up"+(j).toString()} name={"uInfo"+(j).toString()}  value="3" className='up' defaultChecked="checked"/>
-                        <label htmlFor={"up"+(j).toString()}>이상</label>
-                        <input type="radio" id={"down"+(j).toString()} name={"uInfo"+(j).toString()} value="2" className='down' />
-                        <label htmlFor={"down"+(j).toString()}>이하</label>
-                        <input type="radio" id={"pUp"+(j).toString()} name={"uInfo"+(j).toString()} value="1" className='pUp'/>
-                        <label htmlFor={"pUp"+(j).toString()}>상위</label>
-                        <input type="radio" id={"pDown"+(j).toString()} name={"uInfo"+(j).toString()} value="0" className='pDown'/>
-                        <label htmlFor={"pDown"+(j).toString()}>하위</label>
+                        <input type="number" step="0.1" max="100" min="-100" className="" name={"updown" + (j).toString()} required/>
+                        <div className='uninput-itm'>
+                          <input type="radio" id={"up" + (j).toString()} name={"uInfo" + (j).toString()} value="3" className='up' defaultChecked="checked" />
+                          <label htmlFor={"up" + (j).toString()}>이상</label>
+                        </div>
+                        <div className='uninput-itm'>
+                          <input type="radio" id={"down" + (j).toString()} name={"uInfo" + (j).toString()} value="2" className='down' />
+                          <label htmlFor={"down" + (j).toString()}>이하</label>
+                        </div>
+                        <div className='uninput-itm'>
+                          <input type="radio" id={"pUp" + (j).toString()} name={"uInfo" + (j).toString()} value="1" className='pUp' />
+                          <label htmlFor={"pUp" + (j).toString()}>상위</label>
+                        </div>
+                        <div className='uninput-itm'>
+                          <input type="radio" id={"pDown" + (j).toString()} name={"uInfo" + (j).toString()} value="0" className='pDown' />
+                          <label htmlFor={"pDown" + (j).toString()}>하위</label>
+                        </div>
                       </div>
                     </div>
                   </li>
@@ -201,4 +217,4 @@ const ConditionPopUp = (props) => {
   )
 }
 
-export {ConditionPopUp, RankConditionPopUp};
+export { ConditionPopUp, RankConditionPopUp };

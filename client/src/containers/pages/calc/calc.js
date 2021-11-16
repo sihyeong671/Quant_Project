@@ -21,10 +21,29 @@ const mapDispatchToProps=(dispatch)=>{
     getBsData: async (parameter) => {
       try{
         const res = await axios.post('api/v1/stock/account', parameter);
-        console.log(res.data);
+        const accountData = res.data.account;
+        console.log(accountData)
+        const showIndex = ["유동자산", "비유동자산", "자산총계", "유동부채", "비유동부채","부채총계", "지배기업", "비지배지분", "자본총계"];
+        let data = []; 
+        for(let idx = 0; idx < showIndex.length; idx++){
+          for(let fs_idx = 0; fs_idx < accountData.length; ++fs_idx){
+            if(idx === 6){
+              if(accountData[fs_idx].fsname.includes(showIndex[idx])) data.push(accountData[fs_idx])
+            }
+            else{
+              if(accountData[fs_idx].fsname === showIndex[idx]) data.push(accountData[fs_idx])
+            }
+            continue;
+          }
+        }      
+ 
+
+        console.log(data)
+
+
         dispatch({
           type: Constants.calc.GET,
-          data: res.data
+          data: {account: data}
         })
       }catch(error){
         console.log(error);

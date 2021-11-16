@@ -30,7 +30,7 @@ const Input = ({ index, coef, changeFunction, pre_value }) => {
     <div className='subAccount_value' key={"n" + index[0]}>
       <input type="number" step='0.1' min="-10" max='10' value={coefficient} onChange={(e) => onChange(e)}></input>
       <h3>=</h3>
-      <span>{changedValue}</span>
+      <span>{changedValue.toFixed(2)}</span>
     </div>
   );
 }
@@ -128,14 +128,14 @@ const ResultValue = ({ currentAsset, nonCurrentAsset, totalDebt }) => {
         <div className='resVal-value'>
           <h3>청산가치(Liquidation Value)</h3>
           <div>
-            <span>{currentAsset + nonCurrentAsset - totalDebt}</span>
+            <span>{(currentAsset + nonCurrentAsset - totalDebt).toFixed(2)}</span>
           </div>
         </div>
 
         <div className='resVal-value'>
           <h3>보수적 청산 가치</h3>
           <div>
-            <span>{currentAsset - totalDebt}</span>
+            <span>{(currentAsset - totalDebt).toFixed(2)}</span>
           </div>
         </div>
       </div>
