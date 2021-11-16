@@ -111,24 +111,25 @@ function Rank(props) {
         <RankConditionPopUp></RankConditionPopUp>
       ) : null}
 
-      <button type="button" onClick={() => {
+      <button className='post-condition' type="button" onClick={() => {
         props.getRankData(getParameter())
       }}>확인</button>
 
 
-      <div>
+      <div className='condition-filter'>
         {conditionList.map((condition, idx) => {
           return (
-            <div key={idx}>
+            <div className='filter-itm' key={idx}>
               {condition}
             </div>
           )
         })}
       </div>
-      <div>
+
+      <div className='condition-result'>
         {props.rankData.map((data, idx) => {
           return (
-            <div key={idx}>
+            <div className='result-itm' key={idx}>
               <div>
                 {data.company_name}
               </div>
@@ -150,6 +151,5 @@ function Rank(props) {
     </>
   )
 }
-
 
 export default hot(module)(Rank);

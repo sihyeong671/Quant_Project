@@ -14,7 +14,7 @@ $light-coral: rgba(254, 109, 115, 1);
   display: flex;
   justify-content: space-around;
   height: fit-content;
-  color: #fff;
+  // color: #fff;
 
   .verticalLine {
     // height: 100%;
@@ -31,7 +31,7 @@ $light-coral: rgba(254, 109, 115, 1);
     .condition-itm{
       width: 100%;
       line-height: 40px;
-      background-color: $base-black;
+      background-color: #fff;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       align-items: center;
@@ -39,7 +39,7 @@ $light-coral: rgba(254, 109, 115, 1);
       font-weight: 500;
       cursor: pointer;
       transition: all .3s;
-      border-bottom: 1px solid #fff;
+      border-bottom: 1px solid $base-black;
       &:hover{opacity: 0.8;}
     }
 
@@ -64,11 +64,61 @@ $light-coral: rgba(254, 109, 115, 1);
         vertical-align: top;
         line-height: 40px;
       }
-      &:hover{opacity: 0.8;}
+      &:hover{opacity: 0.5;}
     }
   }
 }
 
+
+.post-condition{
+  cursor: pointer;
+  display: block;
+  width: 20%;
+  padding: .5rem 0;
+  margin: 2rem auto;
+  background-color: $base-black;
+  color: #fff;
+  font-size: 20px;
+  border-radius: 40px;
+  font-weight: 500;
+  transition: all .3s;
+  &:hover{opacity: 0.8;}
+}
+
+.condition-filter{
+  width: 100%;
+  .filter-itm{
+    cursor: pointer;
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 20px;
+    background-color: $base-black;
+    color: #fff;
+    font-weight: 500;
+    margin: 0 5px;
+  }
+}
+
+.condition-result{
+  margin-top: 10px;
+  padding: 10px;
+  border-top: 2px solid $line-black;
+  .result-itm{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+    padding: 10px 0;
+    border-bottom: 1px solid $line-black;
+    &:first-child{
+      padding: 0 0 10px;
+    }
+    
+  }
+}
+
+
+// POPUP
 .popUp {
   overflow: hidden;
   position: fixed;
