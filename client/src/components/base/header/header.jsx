@@ -8,7 +8,7 @@ import { useHistory } from 'react-router';
 import './assets/css/style.scss'
 import logo from './assets/img/LOGO.png'
 
-function NavTab({ isAuthenticated, userName }) {
+function NavTab({ isAuthenticated, userName, onClickLogout }) {
 
 	const [navTabStyle, setNavTabStyle] = useState();
 	const [navBgStyle, setNavBgStyle] = useState();
@@ -75,7 +75,7 @@ function NavTab({ isAuthenticated, userName }) {
 											></Link>
 											<span><strong>{userName}</strong> 님</span>
 										</div>
-										<button onClick={onClick} className='user-logout'>로그아웃</button>
+										<button onClick={onClickLogout} className='user-logout'>로그아웃</button>
 									</div>
 								</>
 							)
@@ -103,7 +103,7 @@ function NavTab({ isAuthenticated, userName }) {
 function Header(props) {
 	console.log("Header rendering");
 
-	const onClick = async () => {
+	const onClickLogout = async () => {
 		await props.basicLogOut(props.user.username);
 		// 로그아웃 로직 구현
 		navClose()
@@ -121,6 +121,7 @@ function Header(props) {
 			<NavTab
 				isAuthenticated={props.user.isAuthenticated}
 				userName={props.user.userData.userName}
+				onClick={onClickLogout}
 			></NavTab>
 		</header>
 	);
