@@ -20,13 +20,14 @@ class Crawling_DailyPrice(SuperUserMixin, APIView):
         """
         try:
             Save_Price()
+            return Response({
+                "message": "successed save daily price"
+            }, status=status.HTTP_200_OK)
         except:
             return Response({
                 "message": "failed save daily price"
             }, status=status.HTTP_409_CONFLICT)
-        return Response({
-            "message": "successed save daily price"
-        })
+        
         
 
 class Crawling_Dart(SuperUserMixin, APIView):
@@ -61,7 +62,6 @@ class Crawling_FSData(SuperUserMixin, APIView):
         try:
             apikey = APIKEY
             Save_FS_Data(apikey)
-            Save_Price()
             
             return Response({
                 'message': "Success crawling FS data",

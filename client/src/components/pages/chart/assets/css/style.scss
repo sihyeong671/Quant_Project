@@ -1,0 +1,29 @@
+$base-black: rgb(30, 30, 30);
+$line-black: rgba(0, 0, 0, 0.2);
+
+/* SCSS RGB */
+$cg-blue: rgba(34, 124, 157, 1);
+$light-sea-green: rgba(23, 195, 178, 1);
+$maximum-yellow-red: rgba(255, 203, 119, 1);
+$floral-white: rgba(254, 249, 239, 1);
+$light-coral: rgba(254, 109, 115, 1);
+
+.chart-form{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .search-form{
+        width: 30%;
+        margin: 0;
+    }
+    button{
+        cursor: pointer;
+        width: 8%;
+        height: 30px;
+        border: none;
+        background-color: $base-black;
+        color: #fff;
+        font-weight: 500;
+    }
+}

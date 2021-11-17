@@ -9,6 +9,9 @@ import axios from 'axios';
 import newLst from '../../../../data';
 import Search from '../../../containers/search/search';
 
+import './assets/css/style.scss';
+
+
 function getCode(list){
   return list.map(corp => corp.code);
 }
@@ -84,7 +87,7 @@ function Chart(props){
 
   return (
     <>
-      <form onSubmit={(e) => {
+      <form className='chart-form' onSubmit={(e) => {
         e.preventDefault();
         const codeList = getCode(props.search.corpList);
         console.log(codeList);

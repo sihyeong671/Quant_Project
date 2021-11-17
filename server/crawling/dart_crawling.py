@@ -174,6 +174,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                         total_asset = int(fs_lst["thstrm_amount"])
                     elif fs_lst["account_nm"] == "자본총계":
                         total_capital = int(fs_lst["thstrm_amount"])
+                        link_model.total_capital = total_capital
                 else:
                     for child in bs_tree.values():
                         if fs_lst["account_nm"] in child:
@@ -196,9 +197,12 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
 
             elif fs_lst["sj_div"] == "CIS": # 포괄 손익 계산서
                 money.fs_div = CIS
-                if "당기순이익" in fs_lst["account_nm"]:
+                print("".join(fs_lst["account_nm"].split()))
+                if "당기순이익" in "".join(fs_lst["account_nm"].split()):
+                    print("find당기")
                     net_income = int(fs_lst["thstrm_amount"])
-
+                    link_model.net_income += net_income
+                    
                 if fs_lst["thstrm_add_amount"] == '': # 누적 금액
                     money.account_add_amount = 0
                 else:
@@ -212,7 +216,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             
             account_name = fs_lst["account_nm"].split()
             account_name = "".join(account_name)
-            
+                    
             money.account_name = account_name
             money.account_detail = fs_lst["account_detail"]
             

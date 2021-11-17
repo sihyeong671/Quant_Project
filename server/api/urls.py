@@ -10,9 +10,12 @@ v1_patterns = [
     
 ]
 
-
+def trigger_error(request):
+    division_by_zero = 1 / 0
+    
 urlpatterns = [
     path('v1/', include((v1_patterns, 'v1'))),
     path('', include('swagger.urls')),
+    path('sentry-debug/', trigger_error),
     
 ]
