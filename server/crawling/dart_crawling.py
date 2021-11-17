@@ -209,6 +209,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             elif fs_lst["sj_div"] == "CIS": # 포괄 손익 계산서
                 money.fs_div = CIS
                 if "당기순이익" in "".join(fs_lst["account_nm"].split()):
+                    print("".join(fs_lst["account_nm"].split()))
                     net_income = int(fs_lst["thstrm_amount"])
                     link_model.net_income += net_income
                     
