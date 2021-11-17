@@ -123,11 +123,12 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         bs_res = rq.get(bs_url)
         bs_soup = BeautifulSoup(bs_res.text, "lxml") # html.parser 도 가능
 
-        print(link_model.quarter.year.company.corp_name)
-        print(link_state, link_model.quarter, link_model.quarter.year)
-        fs_unit = bs_soup.find("table").find_all('p')[-1]
-        link_model.unit = fs_unit.text
-        link_model.save()
+        try:
+            fs_unit = bs_soup.find("table").find_all('p')[-1]
+            link_model.unit = fs_unit.text
+            link_model.save()
+        except Exception as ex:
+            print("Error Raised: ", ex)
         
         bs_tree = {}
         now = ''
