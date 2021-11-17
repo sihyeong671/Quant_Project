@@ -76,10 +76,7 @@ class AccountSearchApi(PublicApiMixin, APIView):
                 Q(fs_div__lob__quarter__year__company__stock_code=stock_code)
             )
         
-        try:
-            unit = account_list[0].fs_div.fs_lob.unit
-        except:
-            raise NotFound
+        unit = account_list.first().fs_div.fs_lob.unit
         
         fs_account_list = []
         
