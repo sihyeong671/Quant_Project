@@ -1,11 +1,12 @@
-import requests as rq
-import json
-import xml.etree.ElementTree as et
 import zipfile
+import json
+import re
+import requests as rq
+import xml.etree.ElementTree as et
 from datetime import datetime
 from io import BytesIO
 from bs4 import BeautifulSoup
-import re
+from fake_useragent import UserAgent
 
 from django.db import transaction
 
@@ -88,6 +89,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
     params = {
         'crtfc_key': api_key, 'corp_code': corp_code, 
         'bsns_year': year, 'reprt_code': quarter, 'fs_div': link_state}
+    
     res = rq.get(dart_url, params)
     json_dict = json.loads(res.text)
 
@@ -103,7 +105,9 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         report_number = json_dict['list'][0]['rcept_no']
 
         fs_url = f'http://dart.fss.or.kr/dsaf001/main.do?rcpNo={report_number}'
-        fs_res = rq.get(fs_url)
+        headers = {"User-Agent": {UserAgent}}
+        
+        fs_res = rq.get(fs_url, headers=headers)
 
         fs_soup = BeautifulSoup(fs_res.text, "lxml")
         script_content = str(fs_soup.find_all('script')[-2].string)
@@ -119,8 +123,8 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         f"&offset={parameter_list[4]}" \
         f"&length={parameter_list[5]}" \
         f"&dtd={parameter_list[6]}"
-
-        bs_res = rq.get(bs_url)
+        
+        bs_res = rq.get(bs_url, headers=headers)
         bs_soup = BeautifulSoup(bs_res.text, "lxml") # html.parser 도 가능
         
         print("=======")
@@ -208,7 +212,9 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
 
             elif fs_lst["sj_div"] == "CIS": # 포괄 손익 계산서
                 money.fs_div = CIS
-                if "당기순이익" in "".join(fs_lst["account_nm"].split()):
+                acnm = "".join(fs_lst["account_nm"].split())
+                if "당기순이익" in acnm or\
+                    "분기순이익" in acnm:
                     print("".join(fs_lst["account_nm"].split()))
                     print(fs_lst["thstrm_amount"])
                     try:
