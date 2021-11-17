@@ -294,6 +294,6 @@ def Save_Corp_Info(api_key, code, company):
             company.acc_mt = json_dict['acc_mt']
             
             company.save()
-            
+            print(company.corp_name, " saved")
     except:
         print('error')
