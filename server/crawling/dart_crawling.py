@@ -105,7 +105,9 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         report_number = json_dict['list'][0]['rcept_no']
 
         fs_url = f'http://dart.fss.or.kr/dsaf001/main.do?rcpNo={report_number}'
-        headers = {"User-Agent": {UserAgent}}
+        ua = UserAgent(verify_ssl=False)
+        user = ua.random
+        headers = {"User-Agent": user}
         
         fs_res = rq.get(fs_url, headers=headers)
 
@@ -124,6 +126,9 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         f"&length={parameter_list[5]}" \
         f"&dtd={parameter_list[6]}"
         
+        ua = UserAgent(verify_ssl=False)
+        user = ua.random
+        headers = {"User-Agent": user}
         bs_res = rq.get(bs_url, headers=headers)
         bs_soup = BeautifulSoup(bs_res.text, "lxml") # html.parser 도 가능
         
