@@ -211,6 +211,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                 if "당기순이익" in "".join(fs_lst["account_nm"].split()):
                     print("".join(fs_lst["account_nm"].split()))
                     print(fs_lst["thstrm_amount"])
+                    print(fs_lst)
                     net_income = float(fs_lst["thstrm_amount"])
                     link_model.net_income += net_income
                     
