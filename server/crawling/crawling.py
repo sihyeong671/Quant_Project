@@ -24,8 +24,8 @@ def Save_FS_Data(api_key):
     상장된 기업의 Dart
     """
     linklst = ["CFS", "OFS"] # link, basic
-    # years = ["2015","2016","2017","2018","2019","2020","2021"]
-    years = ["2018","2019","2020", "2021"]
+    years = ["2015","2016","2017","2018","2019","2020","2021"]
+    # years = ["2018","2019","2020", "2021"]
 
     quarters = ["11013", "11014", "11012", "11011"]
 
@@ -52,7 +52,7 @@ def Save_FS_Data(api_key):
                         time.sleep(0.1)
                         Get_Amount_Data(api_key, dart_data.dart_code, y, q, l, link)
                         count += 1
-                        if count == 100:
+                        if count == 9500:
                             return
                         # 정정공시 따로 함수 만들기
                 # ROE, ROA 계산 후 넣기

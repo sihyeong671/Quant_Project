@@ -1,10 +1,8 @@
-from django.core.exceptions import ValidationError
 import pandas as pd
 
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.exceptions import NotFound
 
 from django.db.models.query import Prefetch
 from django.db import transaction

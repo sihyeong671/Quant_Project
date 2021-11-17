@@ -85,7 +85,9 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
     재무제표 데이터 for문으로 fs_account모델에 저장
     """
     dart_url = "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json?"
-    params = {'crtfc_key': api_key, 'corp_code': corp_code, 'bsns_year': year, 'reprt_code': quarter, 'fs_div': link_state}
+    params = {
+        'crtfc_key': api_key, 'corp_code': corp_code, 
+        'bsns_year': year, 'reprt_code': quarter, 'fs_div': link_state}
     res = rq.get(dart_url, params)
     json_dict = json.loads(res.text)
 

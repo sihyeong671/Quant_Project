@@ -463,3 +463,4 @@ class Daily_PriceAdmin(admin.ModelAdmin):
             return ''
         return company
     get_company.short_description = _('Company')
+    
