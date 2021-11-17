@@ -50,6 +50,7 @@ def Save_FS_Data(api_key):
                         # link, check = FS_LoB.objects.get_or_create(lob=l, quarter=quarter)
                     if check:
                         time.sleep(0.1)
+                        print("go")
                         Get_Amount_Data(api_key, dart_data.dart_code, y, q, l, link)
                         count += 1
                         if count == 9500:
