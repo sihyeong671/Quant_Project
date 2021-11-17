@@ -111,7 +111,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         if link_state == "CFS":
             parameter_list = find_parameter(script_content, "연결재무제표")
         else:
-            parameter_list = find_parameter(script_content, "재무제표")
+            parameter_list = find_parameter(script_content, " 재무제표")
 
         bs_url = f"http://dart.fss.or.kr/report/viewer.do?rcpNo={parameter_list[1]}" \
         f"&dcmNo={parameter_list[2]}" \
@@ -123,12 +123,12 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         bs_res = rq.get(bs_url)
         bs_soup = BeautifulSoup(bs_res.text, "lxml") # html.parser 도 가능
 
-        try:
-            fs_unit = bs_soup.find("table").find_all('p')[-1]
-            link_model.unit = fs_unit.text
-            link_model.save()
-        except Exception as ex:
-            print("Error Raised: ", ex)
+        # try:
+        fs_unit = bs_soup.find("table").find_all('p')[-1]
+        link_model.unit = fs_unit.text
+        link_model.save()
+        # except Exception as ex:
+        #     print("Error Raised: ", ex)
         
         bs_tree = {}
         now = ''
