@@ -146,7 +146,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             if account == "자본과부채총계":
                 break
         
-        print("bs_tree : ", bs_tree)
+        # print("bs_tree : ", bs_tree)
         
         BS = FS_Div(sj_div="BS", lob=link_model)
         BS.save()
@@ -201,9 +201,9 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
 
             elif fs_lst["sj_div"] == "CIS": # 포괄 손익 계산서
                 money.fs_div = CIS
-                print("".join(fs_lst["account_nm"].split()))
+                # print("".join(fs_lst["account_nm"].split()))
                 if "당기순이익" in "".join(fs_lst["account_nm"].split()):
-                    print("find당기")
+                    # print("find당기")
                     net_income = int(fs_lst["thstrm_amount"])
                     link_model.net_income += net_income
                     

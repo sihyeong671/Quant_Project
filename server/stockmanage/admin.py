@@ -53,7 +53,7 @@ class YearAdmin(admin.ModelAdmin):
     list_display_links = (
         'get_company', 'bs_year',
     )
-    search_fields = ('get_company', 'bs_year',)
+    search_fields = ('company__corp_name', 'bs_year',)
     list_filter = ('bs_year', )
     
     list_select_related = [
@@ -81,7 +81,7 @@ class QuarterAdmin(admin.ModelAdmin):
         'get_company', 'get_year', 'get_quarter', 
     )
     search_fields = (
-        'get_company', 'get_year', 'get_quarter', 
+        'year__company__corp_name', 'year__bs_year', 'qt_name', 
     )
     list_filter = ('qt_name', )
     
@@ -134,8 +134,8 @@ class FS_LoBAdmin(admin.ModelAdmin):
         'get_lob', 'unit', 'exist', 'ROE', 'ROA', 'GPA', 'net_income', 'total_capital', 
     )
     search_fields = (
-        'get_company', 'get_year', 'get_quarter',
-        'get_lob', 'unit', 'exist', 'ROE', 'ROA', 'GPA', 'net_income', 'total_capital', 
+        'quarter__year__company__corp_name', 'quarter__year__bs_year', 'quarter__qt_name',
+        'lob', 'unit', 'exist', 'ROE', 'ROA', 'GPA', 'net_income', 'total_capital', 
     )
     list_filter = ('lob', 'exist', 'unit', )
     
@@ -195,10 +195,11 @@ class FS_DivAdmin(admin.ModelAdmin):
         'get_lob', 'get_fsdiv',
     )
     search_fields = (
-        'get_company', 'get_year', 'get_quarter', 
-        'get_lob', 'get_fsdiv',
+        'fs_lob__quarter__year__company__corp_name', 
+        'fs_lob__quarter__year__bs_year', 'fs_lob__quarter__qt_name', 
+        'fs_lob__lob', 'sj_div',
     )
-    list_filter = ('sj_div', )
+    list_filter = ()
     
     list_select_related = [
         'lob',
@@ -273,8 +274,10 @@ class FS_AccountAdmin(admin.ModelAdmin):
         'get_unit',
     )
     search_fields = (
-        'get_company', 'get_year', 'get_quarter', 
-        'get_lob', 'get_fsdiv','account_name',
+        'fs_div__fs_lob__quarter__year__company__corp_name', 
+        'fs_div__fs_lob__quarter__year__bs_year', 
+        'fs_div__fs_lob__quarter__qt_name', 
+        'fs_div__fs_lob__lob', 'fs_div__sj_div', 'account_name',
     )
     # list_filter = ('account_name', )
     
@@ -357,10 +360,9 @@ class SUB_AccountAdmin(admin.ModelAdmin):
         'get_unit',
     )
     search_fields = (
-        'get_company', 'get_year', 'get_quarter', 
-        'get_lob', 'get_fsdiv','get_fs_account', 'account_name', 'account_amount',
-        'get_unit',
-
+        'fs_account__fs_div__fs_lob__quarter__year__company__corp_name', 
+        'account_name',
+        'unit',
     )
     # list_filter = ('account_name', )
     
@@ -447,7 +449,7 @@ class Daily_PriceAdmin(admin.ModelAdmin):
         'low', 'high', 'volume', 'cfs_per', 'cfs_pbr', 'ofs_per', 'ofs_pbr'
     )
     search_fields = (
-        'get_company', 'date', 'open', 'close',
+        'company__corp_name', 'date', 'open', 'close',
         'low', 'high', 'volume', 'cfs_per', 'cfs_pbr', 'ofs_per', 'ofs_pbr'
     )
     
