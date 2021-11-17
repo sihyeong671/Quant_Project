@@ -122,7 +122,14 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
 
         bs_res = rq.get(bs_url)
         bs_soup = BeautifulSoup(bs_res.text, "lxml") # html.parser 도 가능
-
+        
+        print("=======")
+        print(link_model.quarter.year.company.corp_name)
+        print(link_model.quarter.year.bs_year)
+        print(link_model.quarter.qt_name)
+        print(link_state)
+        print("=======")
+        
         # try:
         fs_unit = bs_soup.find("table").find_all('p')[-1]
         link_model.unit = fs_unit.text
@@ -201,9 +208,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
 
             elif fs_lst["sj_div"] == "CIS": # 포괄 손익 계산서
                 money.fs_div = CIS
-                # print("".join(fs_lst["account_nm"].split()))
                 if "당기순이익" in "".join(fs_lst["account_nm"].split()):
-                    # print("find당기")
                     net_income = int(fs_lst["thstrm_amount"])
                     link_model.net_income += net_income
                     

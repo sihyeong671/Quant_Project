@@ -33,7 +33,6 @@ def Save_FS_Data(api_key):
     count = 0
     for dart_data in dart_codes:
         company, flag = Company.objects.get_or_create(stock_code=dart_data.short_code)
-        print("start fs")
         if flag:
             Save_Corp_Info(api_key, dart_data.dart_code, company)
         for y in years:
@@ -50,7 +49,6 @@ def Save_FS_Data(api_key):
                         # link, check = FS_LoB.objects.get_or_create(lob=l, quarter=quarter)
                     if check:
                         time.sleep(0.1)
-                        print("go")
                         Get_Amount_Data(api_key, dart_data.dart_code, y, q, l, link)
                         count += 1
                         if count == 9500:
