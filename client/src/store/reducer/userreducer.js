@@ -39,7 +39,7 @@ export default function reducer(state=initState, action){
           lastLogin: action.lastLogin,
           userName: action.userName,
           profile: action.profile,
-          mybstitle: action.mybstitle
+          mybstitles: action.mybstitles
         }
       }
   }

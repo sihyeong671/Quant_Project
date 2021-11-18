@@ -15,7 +15,7 @@ const mapDispatchToProps=(dispatch)=>{
     reload: async() => {
       try{
         const res = await axios.post('/api/v1/auth/login/refresh');
-        console.log(res);
+
         const accessToken = res.data.access_token;
         axios.defaults.headers.common['Authorization'] = `JWT ${accessToken}`;
         dispatch({
@@ -24,7 +24,7 @@ const mapDispatchToProps=(dispatch)=>{
           isAuthenticated:true
         })
         const profileRes = await axios.get('api/v1/users/me'); //authform 로직 겹침
-        console.log(profileRest.data)
+        console.log(profileRes)
         const [dateJoined, email, lastLogin, userName, profile, mybstitle] = [
           profileRes.data[0].date_joined,
           profileRes.data[0].email,

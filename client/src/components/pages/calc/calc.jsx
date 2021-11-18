@@ -155,7 +155,7 @@ function Calc(props) {
   // 부채 총계
   let totalDebt;
 
-  props.calc.account.forEach(acnt => {
+  props.calc.account?.forEach(acnt => {
     if (acnt.fsname === "유동자산") currentAsset = acnt.amount;
     else if (acnt.fsname === "비유동자산") nonCurrentAsset = acnt.amount;
     else if (acnt.fsname === "부채총계") totalDebt = acnt.amount;
@@ -199,41 +199,44 @@ function Calc(props) {
 
   return (
     <section className='calcPage'>
-      <div>
+      <div className="calc-head">
         <form onSubmit={onSubmitGet}>
 
           <Search maxLength={1} />
+          <div> 
+            <select name="year">
+              {years.map((year) => (
+                <option key={year} value={year}>{year}</option>
+              ))}
+            </select>
 
-          <select name="year">
-            {years.map((year) => (
-              <option key={year} value={year}>{year}</option>
-            ))}
-          </select>
+            <select name="quarter">
+              <option value="11013">1분기</option>
+              <option value="11012">2분기</option>
+              <option value="11014">3분기</option>
+              <option value="11011">4분기</option>
+            </select>
 
-          <select name="quarter">
-            <option value="11013">1분기</option>
-            <option value="11012">2분기</option>
-            <option value="11014">3분기</option>
-            <option value="11011">4분기</option>
-          </select>
+            <input id='CFS' type="radio" name='FS' value="CFS" defaultChecked />
+            <label htmlFor="CFS">CFS</label>
+            <input id='OFS' type="radio" name='FS' value="OFS" />
+            <label htmlFor="OFS">OFS</label>
 
-          <input id='CFS' type="radio" name='FS' value="CFS" defaultChecked />
-          <label htmlFor="CFS">CFS</label>
-          <input id='OFS' type="radio" name='FS' value="OFS" />
-          <label htmlFor="OFS">OFS</label>
+            <button type='submit'>확인</button>
 
-          <button type='submit'>확인</button>
+
+          </div>
         </form>
       </div>
 
-      <div>저장 데이터1</div>
-      <div>저장 데이터2</div>
-      <div>저장 데이터3</div>
+      {props.user.userData.mybstitles?.map((element, idx) => (<div key={idx}>{element}</div>))}
 
       <form onSubmit={onSubmitSave}>
-        <Account account={props.calc.account} changeCoef={props.changeCoef} changeSubCoef={props.changeSubCoef} />
-        <input type="text" name="title" className='calc-form' />
+        <input type="text" name="title" className='calc-save' />
         <button type='submit'>저장하기</button>
+        {props.calc.account? (
+          <Account account={props.calc.account} changeCoef={props.changeCoef} changeSubCoef={props.changeSubCoef} />
+          ): null}
       </form>
 
       <ResultValue currentAsset={currentAsset} nonCurrentAsset={nonCurrentAsset} totalDebt={totalDebt}></ResultValue>
