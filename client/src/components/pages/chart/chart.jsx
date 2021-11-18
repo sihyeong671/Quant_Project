@@ -83,8 +83,6 @@ function Chart(props){
     }
   }
 
-
-
   return (
     <>
       <form className='chart-form' onSubmit={(e) => {

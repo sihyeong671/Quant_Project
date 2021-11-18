@@ -4,6 +4,7 @@ $light-black: rgb(235, 235, 235);
 $basic-blue: rgb(68, 77, 190);
 $light-blue: rgb(85, 140, 228);
 
+$form-height: 40px;
 $form-width: 30%;
 $form-list-width: calc(30% - 3%);
 
@@ -11,6 +12,7 @@ $form-list-width: calc(30% - 3%);
     width: $form-width;
     margin: auto;
     .search-input{
+        height: $form-height;
         width: 100%;
         padding: 5px 10px;
         font-weight: 500;
@@ -29,6 +31,7 @@ $form-list-width: calc(30% - 3%);
         display: none;
 
         li{
+            cursor: pointer;
             position: relative;
             display: flex;
             justify-content: space-between;
@@ -66,10 +69,33 @@ $form-list-width: calc(30% - 3%);
         }
     }
 
+    .search-warn{
+        line-height: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        padding: 0 2%;
+        color: rgb(216, 14, 14);
+        border-bottom: 1px solid rgb(216, 14, 14);
+    }
+
     .search_list{
-        .search_list_corp{
-            background-color: black;
-            color: white;
+        li{
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2%;
+            height: $form-height;
+            border-bottom: 1px solid $basic-black;
+            font-weight: 500;
+            transition: all .3s;
+            &:hover{
+                background-color: $basic-black;
+                color: #fff;
+            }
+            .material-icons{
+                color: rgb(216, 14, 14);
+            }
         }
 
     }

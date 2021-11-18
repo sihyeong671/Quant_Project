@@ -9,7 +9,10 @@ import './assets/css/style.scss';
 
 
 function commas(x) {
-  try { return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+  try {
+    if (x == NaN) { return 0; }
+    else { return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+  }
   catch (err) { return null; }
 }
 
@@ -80,7 +83,6 @@ const Account = ({ account, changeCoef, changeSubCoef }) => {
                 <Input index={[idx_1]} coef={acnt.coef} changeFunction={changeCoef} pre_value={acnt.amount}></Input>
               </div>
             ) : (
-              console.log('type: ', typeof (amount)),
               <div key={1}>
                 <span className='account-name'>{acnt.fsname}</span>
                 <span className='account-amount'>{commas(amount)}</span>
@@ -212,40 +214,48 @@ function Calc(props) {
         <form onSubmit={onSubmitGet}>
 
           <Search maxLength={1} />
-          <div> 
-            <select name="year">
+          <div className='calc-filter'>
+            <select className='filter-year select' name="year">
               {years.map((year) => (
                 <option key={year} value={year}>{year}</option>
               ))}
             </select>
 
-            <select name="quarter">
+            <select className='filter-quarter select' name="quarter">
               <option value="11013">1분기</option>
               <option value="11012">2분기</option>
               <option value="11014">3분기</option>
               <option value="11011">4분기</option>
             </select>
 
-            <input id='CFS' type="radio" name='FS' value="CFS" defaultChecked />
-            <label htmlFor="CFS">CFS</label>
-            <input id='OFS' type="radio" name='FS' value="OFS" />
-            <label htmlFor="OFS">OFS</label>
+            <div className='filter-CFS radio'>
+              <input id='CFS' type="radio" name='FS' value="CFS" defaultChecked />
+              <label htmlFor="CFS">CFS</label>
+            </div>
 
-            <button type='submit'>확인</button>
+            <div className='filter-OFS radio'>
+              <input id='OFS' type="radio" name='FS' value="OFS" />
+              <label htmlFor="OFS">OFS</label>
+            </div>
 
+            <button className='filter-submit' type='submit'>확인</button>
 
           </div>
+
         </form>
       </div>
 
       {props.user.userData.mybstitles?.map((element, idx) => (<div key={idx}>{element}</div>))}
 
       <form onSubmit={onSubmitSave}>
-        <input type="text" name="title" className='calc-save' />
-        <button type='submit'>저장하기</button>
-        {props.calc.account? (
+        <div className='calc-save'>
+          <input type="text" name="title" />
+          <button type='submit'>저장하기</button>
+        </div>
+        {props.calc.account ? (
           <Account account={props.calc.account} changeCoef={props.changeCoef} changeSubCoef={props.changeSubCoef} />
-          ): null}
+        ) : null}
+        <hr className='calc-form' style={{ opacity: 0 }} />
       </form>
 
       <ResultValue currentAsset={currentAsset} nonCurrentAsset={nonCurrentAsset} totalDebt={totalDebt}></ResultValue>

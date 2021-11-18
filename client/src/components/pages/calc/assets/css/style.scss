@@ -1,3 +1,76 @@
+$base-black: rgb(30, 30, 30);
+$line-black: rgba(0, 0, 0, 0.2);
+
+/* SCSS RGB */
+$cg-blue: rgba(34, 124, 157, 1);
+$light-sea-green: rgba(23, 195, 178, 1);
+$maximum-yellow-red: rgba(255, 203, 119, 1);
+$floral-white: rgba(254, 249, 239, 1);
+$light-coral: rgba(254, 109, 115, 1);
+
+.calc-head {
+    form {
+
+        .search-form{
+            margin: 0;
+        }
+
+        .calc-filter {
+            margin-top: 20px;
+            display: flex;
+            line-height: 35px;
+            font-weight: 500;
+            .select {
+                margin-right: 5px;
+                cursor: pointer;
+                width: 10%;
+                font-weight: 500;
+                font-size: 14px;
+                padding: 0 1%;
+                border: 1px solid $base-black;
+                * {
+                    font-weight: 500;
+                }
+            }
+            .radio {
+                *{ cursor: pointer; }
+                margin-right: 5px;
+                padding: 0 5px;
+                border: 1px solid $base-black;
+            }
+            .filter-submit {
+                width: 100px;
+                background-color: $base-black;
+                color: #fff;
+                border: none;
+                font-weight: 500;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.calc-save {
+    display: flex;
+    // justify-content: flex-end;
+    margin-top: 10px;
+    *{ line-height: 30px; }
+    input{
+        border: 1px solid $base-black;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 0 1%;
+    }
+    button{
+        cursor: pointer;
+        border: none;
+        background-color: $base-black;
+        color: #fff;
+        font-weight: 500;
+        width: 100px;
+    }
+}
+
 .account-wrapper {
     margin: 20px 0;
 
@@ -25,7 +98,7 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         border-bottom: 2px solid rgba(39, 39, 39, 0.212);
-
+        margin: 0 !important;
         .subAccount_info {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr;
@@ -156,10 +229,10 @@
     }
 }
 
-.calc-parameter{
+.calc-parameter {
     display: flex;
     justify-content: center;
-    form{
+    form {
         width: 100%;
     }
 }

@@ -5,11 +5,10 @@ import './assets/css/style.scss';
 // 검색할 기업 보여주는 컴포넌트
 const List = (props) => {
   console.log('list rendering');
-  console.log(props);
   return (
-    <li key={props.key + 'searchList'}>
+    <li onClick={() => props.onClick(props.code)}>
       <span className="search_list_corp">{props.name}</span>
-      <span onClick={() => props.onClick(props.code)} className="material-icons">cancel</span>
+      <span className="material-icons">cancel</span>
     </li>
   )
 };
@@ -57,19 +56,18 @@ const Search = (props) => {
       <ul className="search_relative-list" style={listStyle}>
         {relList?.map((item, idx) => {
           return (
-            <li key={item.code}>
+            <li key={idx} onClick={e => {
+              // 작동안함
+              setCorpName('');
+              setRelList([]);
+              props.onClickCreate(
+                item.code,
+                item.name
+              );
+              if (props.corpList.length >= props.maxLength) return;
+            }}>
               {item.name}
-              <button onClick={e => {
-                console.log(e);
-                // 작동안함
-                setCorpName('');
-                setRelList([]);
-                props.onClickCreate(
-                  item.code,
-                  item.name
-                );
-                if (props.corpList.length >= props.maxLength) return;
-              }}><span className="material-icons">add_circle_outline</span></button>
+              <button><span className="material-icons">add_circle_outline</span></button>
             </li>
           )
         })}
@@ -83,7 +81,7 @@ const Search = (props) => {
 
   let message;
   if (props.corpList.length >= props.maxLength) {
-    message = <div>더 이상 추가 할 수 없습니다</div>
+    message = <div className='search-warn'>더 이상 추가 할 수 없습니다</div>
   }
   else {
     message = null
@@ -104,17 +102,17 @@ const Search = (props) => {
       {renderRelList()}
       {message}
 
-      <div className="search_list">
-        {props.corpList.map((data) => (
+      <ul className="search_list">
+        {props.corpList.map((data, i) => (
           <List
-            key={data.code}
+            key={i}
             onClick={props.onClickDelete}
             name={data.name}
             code={data.code}
           >
           </List>
         ))}
-      </div>
+      </ul>
     </section>
   )
 }
