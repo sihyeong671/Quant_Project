@@ -4,14 +4,14 @@ const initState = {
   isAuthenticated:false,
   accessToken:null,
   userData:{
-    dateJoined: '2021-09-11',
-    email: 'test@test.com',
-    lastLogin: '2021-11-11',
-    userName: 'TEST',
-    profile: '',
-    mybstitle: [
-      { title: 'test', create_date: '2021-09-11' },
-    ],
+    // dateJoined: '2021-09-11',
+    // email: 'test@test.com',
+    // lastLogin: '2021-11-11',
+    // userName: 'TEST',
+    // profile: '',
+    // mybstitle: [
+    //   { title: 'test', create_date: '2021-09-11' },
+    // ],
   }
 }
 
@@ -39,7 +39,7 @@ export default function reducer(state=initState, action){
           lastLogin: action.lastLogin,
           userName: action.userName,
           profile: action.profile,
-          profile: action.profile,
+          mybstitles: action.mybstitles
         }
       }
   }
