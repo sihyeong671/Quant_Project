@@ -35,7 +35,8 @@
                 // border-right: 1px solid rgba(39, 39, 39, 0.212);
             }
             .subAccount-amount {
-                padding-left: 10px;
+                padding: 0 10%;
+                text-align: right;
             }
             h3 {
                 text-align: center;
@@ -63,6 +64,7 @@
             }
             span {
                 font-weight: 500;
+                text-align: right;
             }
         }
     }
@@ -83,7 +85,8 @@
                 padding-right: 20px;
             }
             .subAccount-amount {
-                padding-left: 10px;
+                padding: 0 10%;
+                text-align: right;
             }
             h3 {
                 text-align: center;
@@ -112,6 +115,7 @@
             }
             span {
                 font-weight: 500;
+                text-align: right;
             }
         }
     }

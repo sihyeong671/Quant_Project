@@ -8,6 +8,11 @@ import Search from '../../../containers/search/search';
 import './assets/css/style.scss';
 
 
+function commas(x) {
+  try { return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+  catch (err) { return null; }
+}
+
 // 각 컴포넌트 따로 connect로 연결 해서 최적화 필요
 
 
@@ -30,7 +35,7 @@ const Input = ({ index, coef, changeFunction, pre_value }) => {
     <div className='subAccount_value' key={"n" + index[0]}>
       <input type="number" step='0.1' min="-10" max='10' value={coefficient} onChange={(e) => onChange(e)}></input>
       <h3>=</h3>
-      <span>{changedValue.toFixed(2)}</span>
+      <span>{commas(changedValue.toFixed(2))}</span>
     </div>
   );
 }
@@ -42,7 +47,7 @@ const SubAccount = ({ idx_1, subAccount, changeSubCoef }) => {
       <div className='subAccount' key={idx_2}>
         <div className='subAccount_info'>
           <span className='subAccount-name'>{subacnt.name}</span>
-          <span className='subAccount-amount'>{subacnt.amount}</span>
+          <span className='subAccount-amount'>{commas(subacnt.amount)}</span>
           <h3>x</h3>
         </div>
         <Input coef={subacnt.coef} changeFunction={changeSubCoef} index={[idx_1, idx_2]} pre_value={subacnt.amount} />
@@ -54,6 +59,9 @@ const SubAccount = ({ idx_1, subAccount, changeSubCoef }) => {
 
 // 비지배지분 input 값 넣어줘야함
 const Account = ({ account, changeCoef, changeSubCoef }) => {
+  useEffect(() => {
+    return () => { }
+  }, [])
 
   const AccountList = account.map((acnt, idx_1) => {
     let amount;
@@ -66,15 +74,16 @@ const Account = ({ account, changeCoef, changeSubCoef }) => {
               <div className='account-vi' key={0}>
                 <div className='subAccount_info'>
                   <span className='subAccount-name'>{acnt.fsname}</span>
-                  <span className='subAccount-amount'>{acnt.amount}</span>
+                  <span className='subAccount-amount'>{commas(acnt.amount)}</span>
                   <h3>x</h3>
                 </div>
                 <Input index={[idx_1]} coef={acnt.coef} changeFunction={changeCoef} pre_value={acnt.amount}></Input>
               </div>
             ) : (
+              console.log('type: ', typeof (amount)),
               <div key={1}>
                 <span className='account-name'>{acnt.fsname}</span>
-                <span className='account-amount'>{amount}</span>
+                <span className='account-amount'>{commas(amount)}</span>
                 <SubAccount subAccount={acnt.sub_account} changeSubCoef={changeSubCoef} idx_1={idx_1} />
               </div>
             )
@@ -108,11 +117,11 @@ const ResultValue = ({ currentAsset, nonCurrentAsset, totalDebt }) => {
       });
     }
   };
-  
+
   useEffect(() => {
     console.log('add'),
-    window.addEventListener('scroll', scrollAnim)
-    return ()=>{
+      window.addEventListener('scroll', scrollAnim)
+    return () => {
       console.log('remove')
       window.removeEventListener('scroll', scrollAnim)
     }
@@ -128,14 +137,14 @@ const ResultValue = ({ currentAsset, nonCurrentAsset, totalDebt }) => {
         <div className='resVal-value'>
           <h3>청산가치(Liquidation Value)</h3>
           <div>
-            <span>{(currentAsset + nonCurrentAsset - totalDebt).toFixed(2)}</span>
+            <span>{commas((currentAsset + nonCurrentAsset - totalDebt).toFixed(2))}</span>
           </div>
         </div>
 
         <div className='resVal-value'>
           <h3>보수적 청산 가치</h3>
           <div>
-            <span>{(currentAsset - totalDebt).toFixed(2)}</span>
+            <span>{commas((currentAsset - totalDebt).toFixed(2))}</span>
           </div>
         </div>
       </div>

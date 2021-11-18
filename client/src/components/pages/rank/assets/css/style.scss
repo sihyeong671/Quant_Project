@@ -105,13 +105,19 @@ $light-coral: rgba(254, 109, 115, 1);
   border-top: 2px solid $line-black;
   .result-itm{
     width: 100%;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     font-weight: 500;
     padding: 10px 0;
     border-bottom: 1px solid $line-black;
+    // text-align: right;
     &:first-child{
       padding: 0 0 10px;
+    }
+    div{
+      &:last-child{
+        text-align: right;
+      }
     }
     
   }
