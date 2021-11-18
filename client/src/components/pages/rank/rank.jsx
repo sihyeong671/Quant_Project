@@ -19,26 +19,13 @@ function Rank(props) {
     const parameter = {
       case: [...props.condition],
       rank: [...props.rankCondition],
-      islink: true // 나중에 파라미터 받는걸로 고치기 ##
+      islink: props.isLink
     }
-    console.log(parameter);
     return parameter;
   }
 
 
-  let conditionList = [];
-
-
-  props.condition.forEach(cond => {
-    conditionList.push(cond[0]);
-  })
-
-  props.rankCondition.forEach(rcond => {
-    conditionList.push(rcond[0]);
-  })
-
-  const newSet = new Set(conditionList)
-  conditionList = [...newSet];
+  
 
 
   console.log("Rank rendering")
@@ -116,10 +103,10 @@ function Rank(props) {
 
 
       <div className='condition-filter'>
-        {conditionList.map((condition, idx) => {
+        {props.tableName.map((name, idx) => {
           return (
             <div className='filter-itm' key={idx}>
-              {condition}
+              {name}
             </div>
           )
         })}
@@ -132,7 +119,7 @@ function Rank(props) {
               <div>
                 {data.company_name}
               </div>
-              {conditionList.map((element, idx_) => {
+              {props.tableName.map((element, idx_) => {
                 return (
                   <div key={idx_}>
                     {data[element]}

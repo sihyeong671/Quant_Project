@@ -232,7 +232,7 @@ function Calc(props) {
       {props.user.userData.mybstitles?.map((element, idx) => (<div key={idx}>{element}</div>))}
 
       <form onSubmit={onSubmitSave}>
-        <input type="text" name="title" className='calc-save' />
+        <input type="text" name="title" className='calc-save'/>
         <button type='submit'>저장하기</button>
         {props.calc.account? (
           <Account account={props.calc.account} changeCoef={props.changeCoef} changeSubCoef={props.changeSubCoef} />

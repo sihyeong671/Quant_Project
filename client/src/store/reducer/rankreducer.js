@@ -7,10 +7,14 @@ const initState = {
   fsInit:[
     "ROA",
     "ROE",
-    "부채비율"
+    "부채비율",
+    "PER",
+    "PBR"
   ],
   condition:[],
   rankCondition:[],
+  tableName:[],
+  isLink:true,
   rankData:[]
 
 }
@@ -74,6 +78,21 @@ export default function reducer(state=initState, action){
 
     case Constants.rank.GET:{
       let newState = _.cloneDeep(state);
+
+      let conditionList = [];
+
+      newState.condition.forEach(cond => {
+        conditionList.push(cond[0]);
+      })
+
+      newState.rankCondition.forEach(rcond => {
+        conditionList.push(rcond[0]);
+      })
+
+      const newSet = new Set(conditionList)
+      conditionList = [...newSet];
+
+      newState.tableName = [...conditionList];
       newState.rankData = action.rankData;
 
       return newState;
