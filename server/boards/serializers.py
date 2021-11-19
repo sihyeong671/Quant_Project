@@ -76,7 +76,10 @@ class ReplySerializer(serializers.ModelSerializer):
             return obj.creator.profile.nickname
     
     def get_favorite_count(self, obj):
-        return obj.favorite.all().count()
+        try:
+            return obj.favorite.all().count()
+        except:
+            return 0
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -99,13 +102,16 @@ class CommentSerializer(serializers.ModelSerializer):
             return obj.creator.profile.nickname
     
     def get_favorite_count(self, obj):
-        return obj.favorite.all().count()
+        try:
+            return obj.favorite.all().count()
+        except:
+            return 0
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
     comment = CommentSerializer(many=True, read_only=True)
-    thumbnail = serializers.SerializerMethodField(read_only=True)
-    creator = serializers.SerializerMethodField(read_only=True)
+    thumbnail = serializers.SerializerMethodField()
+    creator = serializers.SerializerMethodField()
     favorite_count = serializers.SerializerMethodField(read_only=True)
     
     class Meta:
@@ -129,5 +135,8 @@ class PostDetailSerializer(serializers.ModelSerializer):
             return ''
     
     def get_favorite_count(self, obj):
-        return obj.favorite.all().count()
+        try:
+            return obj.favorite.all().count()
+        except:
+            return 0
     

@@ -48,6 +48,9 @@ class Daily_Price(models.Model):
 
     market_cap = models.FloatField(help_text="시가총액", null=True, blank=True)
     
+    # PER = 시가총액 / 당기순이익
+    # PBR = 시가총액 / 자본총계
+    
     cfs_per = models.FloatField(help_text="PER", null=True, blank=True)
     cfs_pbr = models.FloatField(help_text="PBR", null=True, blank=True)
     
