@@ -212,7 +212,7 @@ function Calc(props) {
   return (
     
     <section className='calcPage'>
-      <Loading/>
+      
       <div className="calc-head">
         <form onSubmit={onSubmitGet}>
 
@@ -249,7 +249,13 @@ function Calc(props) {
       </div>
 
       <div className='saved-list'>
-        {props.user.userData.mybstitles?.map((element, idx) => (<div key={idx}>{element}</div>))}
+        {props.user.userData.mybstitles?.map((element, idx) => (
+          <div key={idx}>
+            <span>{element}</span>
+            <button type="button" onClick={() => props.bsLoad()}>불러오기</button>
+            <button type="button" onClick={() => props.bsDelete()}>삭제하기</button>
+          </div>
+        ))}
       </div>
 
       <form onSubmit={onSubmitSave}>

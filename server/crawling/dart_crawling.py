@@ -130,7 +130,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         user = ua.random
         headers = {"User-Agent": user}
         bs_res = rq.get(bs_url, headers=headers)
-        bs_soup = BeautifulSoup(bs_res.text, "lxml") # html.parser 도 가능
+        bs_soup = BeautifulSoup(bs_res.text, "lxml") # html.parser 도 가능  
         
         print("=======")
         print(link_model.quarter.year.company.corp_name)

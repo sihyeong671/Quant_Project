@@ -61,6 +61,7 @@ const mapDispatchToProps=(dispatch)=>{
         console.log(error);
       }
     },
+
     changeSubCoef: (idx, coef) => { // idx는 리스트
         dispatch({
           type: Constants.calc.CHANGESUB,
@@ -68,12 +69,24 @@ const mapDispatchToProps=(dispatch)=>{
           index: idx
         });
       },
+
     changeCoef: (idx, coef) => { // idx 는 number
       dispatch({
         type: Constants.calc.CHANGE,
         coef: coef,
         index: idx
       })
+    },
+
+    // 저장된 데이터 불러오기
+    bsLoad: async (customTitle) => {
+      const res = await axios.get('api/v1/stock/custombs',{title: customTitle});
+      console.log(res);
+    },
+
+    bsDelete: async () => {
+      const res = await axios.delete('api/v1/stock/custombs');
+      console.log(res);
     }
   }
 }
