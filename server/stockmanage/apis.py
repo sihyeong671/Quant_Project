@@ -74,7 +74,8 @@ class AccountSearchApi(PublicApiMixin, APIView):
                 Q(fs_div__lob__quarter__year__company__stock_code=stock_code)
             )
         
-        unit = account_list.first().fs_div.lob.unit
+        if account_list.exists():
+            unit = account_list.first().fs_div.lob.unit
         
         fs_account_list = []
         
