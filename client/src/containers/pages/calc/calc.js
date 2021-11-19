@@ -5,6 +5,44 @@ import Constants from '../../../store/constants';
 import axios from 'axios';
 import { offset } from 'highcharts';
 
+const reArrange_ = (accountData) => {
+  const showIndex = ["유동자산", "비유동자산", "자산총계", "유동부채", "비유동부채","부채총계", "지배기업", "비지배지분", "자본총계"];
+  let data = []; 
+  for(let idx = 0; idx < showIndex.length; idx++){
+    for(let fs_idx = 0; fs_idx < accountData.length; ++fs_idx){
+      if(idx === 6){
+        if(accountData[fs_idx].account_name.includes(showIndex[idx])) data.push(accountData[fs_idx])
+      }
+      else{
+        if(accountData[fs_idx].account_name === showIndex[idx]) data.push(accountData[fs_idx])
+      }
+      continue;
+    }
+  }      
+
+  return data
+}
+
+const reArrange = (accountData) => {
+
+  const showIndex = ["유동자산", "비유동자산", "자산총계", "유동부채", "비유동부채","부채총계", "지배기업", "비지배지분", "자본총계"];
+  let data = []; 
+  for(let idx = 0; idx < showIndex.length; idx++){
+    for(let fs_idx = 0; fs_idx < accountData.length; ++fs_idx){
+      if(idx === 6){
+        if(accountData[fs_idx].fsname.includes(showIndex[idx])) data.push(accountData[fs_idx])
+      }
+      else{
+        if(accountData[fs_idx].fsname === showIndex[idx]) data.push(accountData[fs_idx])
+      }
+      continue;
+    }
+  }      
+
+  return data
+}
+
+
 const mapStateToProps=(state)=>{
 
   const newState = {
@@ -22,24 +60,8 @@ const mapDispatchToProps=(dispatch)=>{
       try{
         const res = await axios.post('api/v1/stock/account', parameter);
         const accountData = res.data.account;
-        console.log(accountData)
-        const showIndex = ["유동자산", "비유동자산", "자산총계", "유동부채", "비유동부채","부채총계", "지배기업", "비지배지분", "자본총계"];
-        let data = []; 
-        for(let idx = 0; idx < showIndex.length; idx++){
-          for(let fs_idx = 0; fs_idx < accountData.length; ++fs_idx){
-            if(idx === 6){
-              if(accountData[fs_idx].fsname.includes(showIndex[idx])) data.push(accountData[fs_idx])
-            }
-            else{
-              if(accountData[fs_idx].fsname === showIndex[idx]) data.push(accountData[fs_idx])
-            }
-            continue;
-          }
-        }      
- 
-
-        console.log(data)
-
+        
+        const data = reArrange(accountData);
 
         dispatch({
           type: Constants.calc.GET,
@@ -80,12 +102,17 @@ const mapDispatchToProps=(dispatch)=>{
 
     // 저장된 데이터 불러오기
     bsLoad: async (customTitle) => {
-      const res = await axios.get('api/v1/stock/custombs',{title: customTitle});
-      console.log(res);
+      const res = await axios.get('api/v1/stock/custombs', {params: {title: customTitle}});
+      console.log(res.data[0].fs_account)
+      const data = reArrange_(res.data[0].fs_account);
+      dispatch({
+        type: Constants.calc.GET,
+        data: {account: data}
+      })
     },
 
-    bsDelete: async () => {
-      const res = await axios.delete('api/v1/stock/custombs');
+    bsDelete: async (customTitle) => {
+      const res = await axios.delete('api/v1/stock/custombs',{params: {title: customTitle}});
       console.log(res);
     }
   }

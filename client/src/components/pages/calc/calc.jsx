@@ -46,6 +46,8 @@ const Input = ({ index, coef, changeFunction, pre_value }) => {
 
 const SubAccount = ({ idx_1, subAccount, changeSubCoef }) => {
   console.log('SubAccount rendering');
+
+
   const subAccountList = subAccount.map((subacnt, idx_2) => {
     return (
       <div className='subAccount' key={idx_2}>
@@ -63,18 +65,17 @@ const SubAccount = ({ idx_1, subAccount, changeSubCoef }) => {
 
 // 비지배지분 input 값 넣어줘야함
 const Account = ({ account, changeCoef, changeSubCoef }) => {
-  useEffect(() => {
-    return () => { }
-  }, [])
 
   const AccountList = account.map((acnt, idx_1) => {
+
     let amount;
+    let _name;
+
     if (acnt.sub_account.length == 0) { amount = acnt.amount }
-    const acntForm = () => {
       return (
         <div className='account-wrapper' key={idx_1 + "acntForm"}>
           {
-            acnt.fsname == "비지배지분" ? (
+            (acnt.fsname == "비지배지분") ? (
               <div className='account-vi' key={0}>
                 <div className='subAccount_info'>
                   <span className='subAccount-name'>{acnt.fsname}</span>
@@ -93,8 +94,6 @@ const Account = ({ account, changeCoef, changeSubCoef }) => {
           }
         </div>
       )
-    }
-    return (<>{acntForm()}</>)
   })
   return (<>{AccountList}</>)
 }
@@ -252,8 +251,9 @@ function Calc(props) {
         {props.user.userData.mybstitles?.map((element, idx) => (
           <div key={idx}>
             <span>{element}</span>
-            <button type="button" onClick={() => props.bsLoad()}>불러오기</button>
-            <button type="button" onClick={() => props.bsDelete()}>삭제하기</button>
+            {/* 변경하기 */}
+            <button type="button" onClick={() => props.bsLoad(element)}>불러오기</button>
+            <button type="button" onClick={() => props.bsDelete(element)}>삭제하기</button>
           </div>
         ))}
       </div>
