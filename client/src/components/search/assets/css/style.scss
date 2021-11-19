@@ -18,6 +18,10 @@ $form-list-width: calc(30% - 3%);
         font-weight: 500;
         border-radius: 0;
         border: 1px solid $basic-black;
+        &:disabled{
+            cursor: not-allowed;
+            background-color: rgb(233, 233, 233);
+        }
     }
 
     .search_relative-list{

@@ -18,17 +18,18 @@ const mapDispatchToProps = (dispatch) => {
       try {
         // api만들면 수정
         const res = await axios.get('api/v1/stock/company');
-        console.log(res);
+        // console.log(res);
         return res.data.company;
       } catch (error) {
         console.log(error);
       }
     },
-    onClickCreate: function (code, name) {
+    onClickCreate: function (code, name, max) {
       dispatch({
         type: Constants.search.CREATE,
         corpName: name,
-        code: code
+        code: code,
+        max: max
       })
     },
     onClickDelete: function (code) {

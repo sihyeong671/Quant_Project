@@ -62,9 +62,9 @@ const Search = (props) => {
               setRelList([]);
               props.onClickCreate(
                 item.code,
-                item.name
+                item.name,
+                props.maxLength
               );
-              if (props.corpList.length >= props.maxLength) return;
             }}>
               {item.name}
               <button><span className="material-icons">add_circle_outline</span></button>
@@ -79,17 +79,20 @@ const Search = (props) => {
     setCorpName(e.target.value);
   }
 
+  let inputState = false;
   let message;
   if (props.corpList.length >= props.maxLength) {
     message = <div className='search-warn'>더 이상 추가 할 수 없습니다</div>
-  }
-  else {
+    inputState = true;
+  } else {
     message = null
-  }
+    inputState = false;
+  };
 
   return (
     <section className="search-form">
       <input
+        disabled={inputState}
         className="search-input"
         type="text"
         placeholder="기업명"

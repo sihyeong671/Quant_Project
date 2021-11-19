@@ -16,7 +16,7 @@ $light-coral: rgba(254, 109, 115, 1);
         }
 
         .calc-filter {
-            margin-top: 20px;
+            margin-top: 10px;
             display: flex;
             line-height: 35px;
             font-weight: 500;
@@ -33,10 +33,14 @@ $light-coral: rgba(254, 109, 115, 1);
                 }
             }
             .radio {
-                *{ cursor: pointer; }
                 margin-right: 5px;
                 padding: 0 5px;
                 border: 1px solid $base-black;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                *{ cursor: pointer; }
+                input{ margin: 0 5px; }
             }
             .filter-submit {
                 width: 100px;
@@ -46,6 +50,24 @@ $light-coral: rgba(254, 109, 115, 1);
                 font-weight: 500;
                 cursor: pointer;
             }
+        }
+    }
+}
+
+.saved-list{
+    display: flex;
+    line-height: 35px;
+    div{
+        cursor: pointer;
+        font-weight: 500;
+        margin: 0 5px;
+        margin-top: 10px;
+        padding: 0 20px;
+        // border-radius: 20px;
+        background-color: $base-black;
+        color: #fff;
+        &:first-child{
+            margin: 10px 5px 0 0;
         }
     }
 }
@@ -146,6 +168,7 @@ $light-coral: rgba(254, 109, 115, 1);
         display: grid;
         grid-template-columns: 1fr 1fr;
         padding-left: 20px;
+        border-bottom: 1px solid $line-black;
         .subAccount_info {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr;

@@ -245,7 +245,9 @@ function Calc(props) {
         </form>
       </div>
 
-      {props.user.userData.mybstitles?.map((element, idx) => (<div key={idx}>{element}</div>))}
+      <div className='saved-list'>
+        {props.user.userData.mybstitles?.map((element, idx) => (<div key={idx}>{element}</div>))}
+      </div>
 
       <form onSubmit={onSubmitSave}>
         <div className='calc-save'>

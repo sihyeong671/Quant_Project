@@ -13,20 +13,24 @@ export default function reducer(state = initState, action) {
         corpArr.push(item.name)
       })
 
-      if (!corpArr.includes(action.corpName)) {
+      if (!corpArr.includes(action.corpName) && !(state.corpList.length > action.max)) {
         result = {
           corpList: [
             ...state.corpList,
             {
               code: action.code,
-              name: action.corpName
+              name: action.corpName,
             }
           ]
         }
         return result;
       } else {
-
-        alert('이미 추가된 기업입니다.')
+        if(!corpArr.includes(action.corpName) && state.corpList.length >= action.max){
+          alert('더 이상 추가 할 수 없습니다.')
+        }else{
+          alert('이미 추가된 기업입니다.')
+        }
+        return state;
       }
 
 
