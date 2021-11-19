@@ -121,7 +121,7 @@ function Header(props) {
 			<NavTab
 				isAuthenticated={props.user.isAuthenticated}
 				userName={props.user.userData.userName}
-				onClick={onClickLogout}
+				onClickLogout={onClickLogout}
 			></NavTab>
 		</header>
 	);

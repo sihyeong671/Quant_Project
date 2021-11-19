@@ -8,8 +8,8 @@ const List = (props) => {
   console.log(props);
   return (
     <li key={props.key + 'searchList'}>
-      {props.name}
-      <button onClick={() => props.onClick(props.code)}>❌</button>
+      <span className="search_list_corp">{props.name}</span>
+      <span onClick={() => props.onClick(props.code)} className="material-icons">cancel</span>
     </li>
   )
 };

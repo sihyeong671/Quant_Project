@@ -15,7 +15,7 @@ const mapDispatchToProps=(dispatch)=>{
     reload: async() => {
       try{
         const res = await axios.post('/api/v1/auth/login/refresh');
-        console.log(res);
+
         const accessToken = res.data.access_token;
         axios.defaults.headers.common['Authorization'] = `JWT ${accessToken}`;
         dispatch({
@@ -23,21 +23,24 @@ const mapDispatchToProps=(dispatch)=>{
           accessToken:res.data.access_token,
           isAuthenticated:true
         })
-        const profileRes = await axios.get('api/v1/users/me');
-        // Logic 겹치는 데 분할해서 합칠 수 있나? 미들웨어 써야하나?
-        const [dateJoined, email, lastLogin, userName] = [
-          profileRes.data.date_joined,
-          profileRes.data.email,
-          profileRes.data.last_login,
-          profileRes.data.username
-          //profile 추가 필요
+        const profileRes = await axios.get('api/v1/users/me'); //authform 로직 겹침
+        console.log(profileRes)
+        const [dateJoined, email, lastLogin, userName, profile, mybstitle] = [
+          profileRes.data[0].date_joined,
+          profileRes.data[0].email,
+          profileRes.data[0].last_login,
+          profileRes.data[0].username,
+          profileRes.data[0].profile,
+          profileRes.data[0].mybstitle
         ];
         dispatch({
           type:Constants.user.GETALL_SUCCESS,
           dateJoined: dateJoined,
           email: email,
           lastLogin: lastLogin,
-          userName: userName
+          userName: userName,
+          profile: profile,
+          mybstitle: mybstitle,
           // 유저 데이터 전달
         })
       }catch(error){
