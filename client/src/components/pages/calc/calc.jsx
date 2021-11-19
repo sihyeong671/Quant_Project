@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import Search from '../../../containers/search/search';
 
+import {Loading} from '../../../utils/utils'
 import './assets/css/style.scss';
 
 
@@ -209,7 +210,9 @@ function Calc(props) {
   }
 
   return (
+    
     <section className='calcPage'>
+      <Loading/>
       <div className="calc-head">
         <form onSubmit={onSubmitGet}>
 

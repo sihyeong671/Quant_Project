@@ -10,7 +10,7 @@ import SearchPwd from './serachPwd';
 import GoogleLogo from './assets/img/googlelogin.png';
 import KakaoLogo from './assets/img/kakaologin.png';
 import NaverLogo from './assets/img/naverlogin.png'
-import {BASEURL} from '../../../utils'
+import {BASEURL} from '../../../utils/utils'
 
 import Test from "../../../containers/pages/rank/rank";
 
