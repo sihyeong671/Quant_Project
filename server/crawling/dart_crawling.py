@@ -1,11 +1,12 @@
-import requests as rq
-import json
-import xml.etree.ElementTree as et
 import zipfile
+import json
+import re
+import requests as rq
+import xml.etree.ElementTree as et
 from datetime import datetime
 from io import BytesIO
 from bs4 import BeautifulSoup
-import re
+from fake_useragent import UserAgent
 
 from django.db import transaction
 
@@ -85,7 +86,10 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
     재무제표 데이터 for문으로 fs_account모델에 저장
     """
     dart_url = "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json?"
-    params = {'crtfc_key': api_key, 'corp_code': corp_code, 'bsns_year': year, 'reprt_code': quarter, 'fs_div': link_state}
+    params = {
+        'crtfc_key': api_key, 'corp_code': corp_code, 
+        'bsns_year': year, 'reprt_code': quarter, 'fs_div': link_state}
+    
     res = rq.get(dart_url, params)
     json_dict = json.loads(res.text)
 
@@ -101,7 +105,11 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         report_number = json_dict['list'][0]['rcept_no']
 
         fs_url = f'http://dart.fss.or.kr/dsaf001/main.do?rcpNo={report_number}'
-        fs_res = rq.get(fs_url)
+        ua = UserAgent(verify_ssl=False)
+        user = ua.random
+        headers = {"User-Agent": user}
+        
+        fs_res = rq.get(fs_url, headers=headers)
 
         fs_soup = BeautifulSoup(fs_res.text, "lxml")
         script_content = str(fs_soup.find_all('script')[-2].string)
@@ -109,7 +117,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         if link_state == "CFS":
             parameter_list = find_parameter(script_content, "연결재무제표")
         else:
-            parameter_list = find_parameter(script_content, "재무제표")
+            parameter_list = find_parameter(script_content, " 재무제표")
 
         bs_url = f"http://dart.fss.or.kr/report/viewer.do?rcpNo={parameter_list[1]}" \
         f"&dcmNo={parameter_list[2]}" \
@@ -117,14 +125,26 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         f"&offset={parameter_list[4]}" \
         f"&length={parameter_list[5]}" \
         f"&dtd={parameter_list[6]}"
-
-        bs_res = rq.get(bs_url)
+        
+        ua = UserAgent(verify_ssl=False)
+        user = ua.random
+        headers = {"User-Agent": user}
+        bs_res = rq.get(bs_url, headers=headers)
         bs_soup = BeautifulSoup(bs_res.text, "lxml") # html.parser 도 가능
-
-
+        
+        print("=======")
+        print(link_model.quarter.year.company.corp_name)
+        print(link_model.quarter.year.bs_year)
+        print(link_model.quarter.qt_name)
+        print(link_state)
+        print("=======")
+        
+        # try:
         fs_unit = bs_soup.find("table").find_all('p')[-1]
         link_model.unit = fs_unit.text
         link_model.save()
+        # except Exception as ex:
+        #     print("Error Raised: ", ex)
         
         bs_tree = {}
         now = ''
@@ -142,7 +162,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             if account == "자본과부채총계":
                 break
         
-        print("bs_tree : ", bs_tree)
+        # print("bs_tree : ", bs_tree)
         
         BS = FS_Div(sj_div="BS", lob=link_model)
         BS.save()
@@ -197,11 +217,16 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
 
             elif fs_lst["sj_div"] == "CIS": # 포괄 손익 계산서
                 money.fs_div = CIS
-                print("".join(fs_lst["account_nm"].split()))
-                if "당기순이익" in "".join(fs_lst["account_nm"].split()):
-                    print("find당기")
-                    net_income = int(fs_lst["thstrm_amount"])
-                    link_model.net_income += net_income
+                acnm = "".join(fs_lst["account_nm"].split())
+                if "당기순이익" in acnm or\
+                    "분기순이익" in acnm:
+                    print("".join(fs_lst["account_nm"].split()))
+                    print(fs_lst["thstrm_amount"])
+                    try:
+                        net_income = float(fs_lst["thstrm_amount"])
+                        link_model.net_income += net_income
+                    except:
+                        pass
                     
                 if fs_lst["thstrm_add_amount"] == '': # 누적 금액
                     money.account_add_amount = 0
@@ -292,6 +317,6 @@ def Save_Corp_Info(api_key, code, company):
             company.acc_mt = json_dict['acc_mt']
             
             company.save()
-            
+            print(company.corp_name, " saved")
     except:
         print('error')

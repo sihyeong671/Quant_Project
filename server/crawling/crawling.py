@@ -24,8 +24,8 @@ def Save_FS_Data(api_key):
     상장된 기업의 Dart
     """
     linklst = ["CFS", "OFS"] # link, basic
-    # years = ["2015","2016","2017","2018","2019","2020","2021"]
-    years = ["2018","2019","2020", "2021"]
+    years = ["2015","2016","2017","2018","2019","2020","2021"]
+    # years = ["2018","2019","2020", "2021"]
 
     quarters = ["11013", "11014", "11012", "11011"]
 
@@ -33,7 +33,6 @@ def Save_FS_Data(api_key):
     count = 0
     for dart_data in dart_codes:
         company, flag = Company.objects.get_or_create(stock_code=dart_data.short_code)
-        
         if flag:
             Save_Corp_Info(api_key, dart_data.dart_code, company)
         for y in years:
@@ -49,10 +48,10 @@ def Save_FS_Data(api_key):
                         check = True
                         # link, check = FS_LoB.objects.get_or_create(lob=l, quarter=quarter)
                     if check:
-                        time.sleep(0.1)
+                        time.sleep(1)
                         Get_Amount_Data(api_key, dart_data.dart_code, y, q, l, link)
                         count += 1
-                        if count == 100:
+                        if count == 1000:
                             return
                         # 정정공시 따로 함수 만들기
                 # ROE, ROA 계산 후 넣기

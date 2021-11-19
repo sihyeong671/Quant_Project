@@ -59,17 +59,17 @@ class Crawling_Dart(SuperUserMixin, APIView):
 
 class Crawling_FSData(SuperUserMixin, APIView):
     def get(self, request):
-        try:
-            apikey = APIKEY
-            Save_FS_Data(apikey)
-            
-            return Response({
-                'message': "Success crawling FS data",
-            }, status=status.HTTP_200_OK)
-        except:
-            return Response({
-                "message": "failed save fs data"
-            },status=status.HTTP_409_CONFLICT)
+        # try:
+        apikey = APIKEY
+        Save_FS_Data(apikey)
+        
+        return Response({
+            'message': "Success crawling FS data",
+        }, status=status.HTTP_200_OK)
+        # except:
+        #     return Response({
+        #         "message": "failed save fs data"
+        #     },status=status.HTTP_409_CONFLICT)
     
     def delete(self, request):
         try:
