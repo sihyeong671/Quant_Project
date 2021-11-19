@@ -1,10 +1,8 @@
-from django.core.exceptions import ValidationError
 import pandas as pd
 
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.exceptions import NotFound
 
 from django.db.models.query import Prefetch
 from django.db import transaction
@@ -76,7 +74,8 @@ class AccountSearchApi(PublicApiMixin, APIView):
                 Q(fs_div__lob__quarter__year__company__stock_code=stock_code)
             )
         
-        unit = account_list.first().fs_div.fs_lob.unit
+        if account_list.exists():
+            unit = account_list.first().fs_div.lob.unit
         
         fs_account_list = []
         
