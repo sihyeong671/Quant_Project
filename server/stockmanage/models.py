@@ -50,12 +50,20 @@ class Daily_Price(models.Model):
     
     # PER = 시가총액 / 당기순이익
     # PBR = 시가총액 / 자본총계
+    # PCR = 시가총액 / 매출액
+    # PSR = 시가총액 / 
     
-    cfs_per = models.FloatField(help_text="PER", null=True, blank=True)
-    cfs_pbr = models.FloatField(help_text="PBR", null=True, blank=True)
+    cfs_per = models.FloatField(help_text="CFS_PER", null=True, blank=True)
+    cfs_pbr = models.FloatField(help_text="CFS_PBR", null=True, blank=True)
     
-    ofs_per = models.FloatField(help_text="PER", null=True, blank=True)
-    ofs_pbr = models.FloatField(help_text="PBR", null=True, blank=True)
+    ofs_per = models.FloatField(help_text="OFS_PER", null=True, blank=True)
+    ofs_pbr = models.FloatField(help_text="OFS_PBR", null=True, blank=True)
+    
+    cfs_pcr = models.FloatField(help_text="CFS_PCR", null=True, blank=True)
+    ofs_pcr = models.FloatField(help_text="OFS_PCR", null=True, blank=True)
+    
+    cfs_psr = models.FloatField(help_text="CFS_PSR", null=True, blank=True)
+    ofs_psr = models.FloatField(help_text="OFS_PSR", null=True, blank=True)
 
     open = models.FloatField(help_text="시가", null=True, blank=True)
     high = models.FloatField(help_text="고가", null=True, blank=True)

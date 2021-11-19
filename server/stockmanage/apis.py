@@ -28,7 +28,7 @@ class CompanyNameApi(PublicApiMixin, APIView):
         
         for com in company_list:
             company = {
-                'name': com.corp_name,
+                'name': com.stock_name,
                 'code': com.stock_code,
             }
             data_list.append(company)
@@ -256,7 +256,7 @@ class DailyPriceApi(PublicApiMixin, APIView):
             
             stocks = Daily_Price.objects.filter(company__id=company.id).order_by('date')
             
-            data[company.corp_name] = getData(stocks)
+            data[company.stock_name] = getData(stocks)
         
         return Response(data, status=status.HTTP_200_OK)
     
@@ -354,7 +354,7 @@ class RankApi(PublicApiMixin, APIView):
             queryset = FS_LoB.objects.select_related(
                 'quarter__year__company'
             ).annotate(
-                company_name=F("quarter__year__company__corp_name")
+                company_name=F("quarter__year__company__stock_name")
             )
             
             if islink:
