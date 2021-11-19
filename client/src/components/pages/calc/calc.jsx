@@ -10,7 +10,7 @@ import './assets/css/style.scss';
 
 function commas(x) {
   try {
-    if (x == NaN) { return 0; }
+    if (x == NaN || x == 'NaN') { return 0; }
     else { return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
   }
   catch (err) { return null; }
@@ -71,10 +71,10 @@ const Account = ({ account, changeCoef, changeSubCoef }) => {
     if (acnt.sub_account.length == 0) { amount = acnt.amount }
     const acntForm = () => {
       return (
-        <div className='account-wrapper' key={idx_1 + "acntForm"}>
+        <>
           {
             acnt.fsname == "비지배지분" ? (
-              <div className='account-vi' key={0}>
+              <div className='account-vi'>
                 <div className='subAccount_info'>
                   <span className='subAccount-name'>{acnt.fsname}</span>
                   <span className='subAccount-amount'>{commas(acnt.amount)}</span>
@@ -83,17 +83,17 @@ const Account = ({ account, changeCoef, changeSubCoef }) => {
                 <Input index={[idx_1]} coef={acnt.coef} changeFunction={changeCoef} pre_value={acnt.amount}></Input>
               </div>
             ) : (
-              <div key={1}>
+              <div className='account-base'>
                 <span className='account-name'>{acnt.fsname}</span>
                 <span className='account-amount'>{commas(amount)}</span>
                 <SubAccount subAccount={acnt.sub_account} changeSubCoef={changeSubCoef} idx_1={idx_1} />
               </div>
             )
           }
-        </div>
+        </>
       )
     }
-    return (<>{acntForm()}</>)
+    return (<div className='account-wrapper' key={idx_1}>{acntForm()}</div>)
   })
   return (<>{AccountList}</>)
 }
