@@ -11,7 +11,7 @@ import './assets/css/style.scss';
 
 function commas(x) {
   try {
-    if (x == NaN) { return 0; }
+    if (x == NaN || x == 'NaN') { return 0; }
     else { return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
   }
   catch (err) { return null; }
@@ -49,14 +49,26 @@ const SubAccount = ({ idx_1, subAccount, changeSubCoef }) => {
 
 
   const subAccountList = subAccount.map((subacnt, idx_2) => {
+    let _name, _amount, _coef;
+
+    if(subacnt.name) _name = subacnt.name;
+    else if(subacnt.account_name) _name = subacnt.account_name;
+
+    if(subacnt.amount) _amount = subacnt.amount;
+    else if(subacnt.account_amount) _amount = subacnt.account_amount;
+
+    if(subacnt.custombs) _coef = subacnt.custombs;
+    else if(subacnt.coef) _coef = subacnt.coef;
+
+
     return (
       <div className='subAccount' key={idx_2}>
         <div className='subAccount_info'>
-          <span className='subAccount-name'>{subacnt.name}</span>
-          <span className='subAccount-amount'>{commas(subacnt.amount)}</span>
+          <span className='subAccount-name'>{_name}</span>
+          <span className='subAccount-amount'>{commas(_amount)}</span>
           <h3>x</h3>
         </div>
-        <Input coef={subacnt.coef} changeFunction={changeSubCoef} index={[idx_1, idx_2]} pre_value={subacnt.amount} />
+        <Input coef={_coef} changeFunction={changeSubCoef} index={[idx_1, idx_2]} pre_value={_amount} />
       </div>
     )
   });
@@ -73,9 +85,6 @@ const Account = ({ account, changeCoef, changeSubCoef }) => {
 
     if(acnt.fsname) _name = acnt.fsname;
     else if(acnt.account_name) _name = acnt.account_name;
-
-
-    
 
     if (acnt.sub_account.length == 0){
       if(acnt.amount) _amount = acnt.amount;
@@ -96,7 +105,7 @@ const Account = ({ account, changeCoef, changeSubCoef }) => {
             </div>
           ) : (
             <div key={1}>
-              <span className='account-name'>{_amount}</span>
+              <span className='account-name'>{_name}</span>
               <span className='account-amount'>{commas(_amount)}</span>
               <SubAccount subAccount={acnt.sub_account} changeSubCoef={changeSubCoef} idx_1={idx_1} />
             </div>
