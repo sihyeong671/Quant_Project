@@ -18,15 +18,11 @@ class Crawling_DailyPrice(SuperUserMixin, APIView):
         주가 저장 API
         자세한 사항은 Save_Price() 함수 참고
         """
-        try:
-            Save_Price()
-            return Response({
-                "message": "successed save daily price"
-            }, status=status.HTTP_200_OK)
-        except:
-            return Response({
-                "message": "failed save daily price"
-            }, status=status.HTTP_409_CONFLICT)
+        Save_Price()
+        
+        return Response({
+            "message": "successed save daily price"
+        }, status=status.HTTP_200_OK)
         
         
 
