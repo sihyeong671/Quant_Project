@@ -10,6 +10,7 @@ server.Dockerfile
 superuser.py
 codechecker.py
 crwalingtest.py
+staticroot
 
 ### Django ###
 *.log

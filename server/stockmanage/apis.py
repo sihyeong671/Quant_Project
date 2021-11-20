@@ -110,12 +110,16 @@ class CustomBSApi(ApiAuthMixin, APIView):
         """[retreive UserCustomBS]
         현재 유저의 Custom BS중에서 GET 방식으로 요청받은 title값을 통해 
         저장된 Custom BS 정보를 불러옴
-        
         Args:
             URL query : ...?title=입력받은title값
         """
         
         custom_title = request.GET["title"]
+        if not custom_title:
+            return Response({
+                'message': "Recieve failed",
+            }, status=status.HTTP_402_PAYMENT_REQUIRED)
+            
         user = request.user.profile
         bs_queryset = UserCustomBS.objects\
             .prefetch_related(
@@ -134,7 +138,6 @@ class CustomBSApi(ApiAuthMixin, APIView):
     def post(self, request, *args, **kwargs):
         """[Create Custom BS]
         계수를 임의로 설정한 BS값을 개인 저장소에 저장한다.
-        
         Args:
             request (
                 'code',
@@ -156,6 +159,10 @@ class CustomBSApi(ApiAuthMixin, APIView):
         account_list = request.data.get('account')
         
         profile = request.user.profile
+        
+        is_duplicated_title = UserCustomBS.objects.filter(title=custom_title).exists()
+        if not custom_title or is_duplicated_title:
+            return Response(status=status.HTTP_4)
         
         try:
             userbs = UserCustomBS(
@@ -267,16 +274,13 @@ class RankApi(PublicApiMixin, APIView):
         case(
             1: 상위
             0: 하위
-            
             3: 이상
             2: 이하
         )
-        
         rank(
             1: 오름차순
             0: 내림차순
         )
-        
         case : [["ROE", 1(상위), 20(float)], ["ROA", 3, 0.5], ]
         rank: [["ROE", 0(오름차순):int], ["PBR", 1(내림차순):int]]
         islink : 연결(True)/일반(False) (기본: 연결, 없으면 일반) -> boolean
@@ -415,14 +419,3 @@ class RankApi(PublicApiMixin, APIView):
                 "message": "Cannot extract rank dataframe",
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-
-class CompanyFSAPi(PublicApiMixin, APIView):
-    def get(self, request, *args, **kwargs):
-        """
-        company : 삼성전자 -> str
-        
-        return 
-        {
-            
-        }
-        """

@@ -1,3 +1,4 @@
+from django.db.models.query import Prefetch
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -51,7 +52,17 @@ class PostManageApi(ApiAuthMixin, APIView):
         """
         pk = kwargs['post_id']
         post = get_object_or_404(Post, pk=pk)
-        serializer = PostDetailSerializer(post, many=False)
+        queryset = Post.objects.\
+            select_related(
+                'creator'
+            ).\
+            prefetch_related(
+                'comment',
+                'comment__creator',
+                'comment__reply'
+            ).\
+            filter(pk=pk)
+        serializer = PostDetailSerializer(queryset, many=False)
         
         response = Response(serializer.data, status=status.HTTP_200_OK)
         
