@@ -120,23 +120,7 @@ def saveDailyPrice(data, corp):
         )
         
         if already.exists():
-            already = already.first()
-            already.company=company
-            already.date=now_date
-            already.market_cap=row[1]
-            already.open=row[2]
-            already.high=row[3]
-            already.low=row[4]
-            already.close=row[5]
-            already.volume=row[6]
-            already.bps=row[7]
-            already.per=row[8]
-            already.pbr=row[9]
-            already.eps=row[10]
-            already.div=row[11]
-            already.dps=row[12]
-
-            already.save()
+            pass
         else:
             Daily_Data = Daily_Price(
                 company=company,
@@ -146,14 +130,18 @@ def saveDailyPrice(data, corp):
                 high=row[3],
                 low=row[4],
                 close=row[5],
-                volume=row[6],
-                bps=row[7],
-                per=row[8],
-                pbr=row[9],
-                eps=row[10],
-                div=row[11],
-                dps=row[12]
+                volume=row[6]
             )
+            try:
+                Daily_Data.bps=row[7]
+                Daily_Data.per=row[8]
+                Daily_Data.pbr=row[9]
+                Daily_Data.eps=row[10]
+                Daily_Data.div=row[11]
+                Daily_Data.dps=row[12]
+            except:
+                pass
+            
             Daily_Data.save()
 
 

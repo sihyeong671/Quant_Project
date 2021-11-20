@@ -74,6 +74,3 @@ def Daily_Crawling(start_date:str, end_date:str, code:str):
     df = pd.concat([df_market_cap.iloc[:, 0], df_ohlcv, df_fundamental], axis=1)
     time.sleep(1)
     return df
-
-
-
