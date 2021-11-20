@@ -11,8 +11,6 @@ $light-coral: rgba(254, 109, 115, 1);
 .chart-form{
     width: 100%;
     display: flex;
-    justify-content: center;
-    align-items: center;
     .search-form{
         width: 30%;
         margin: 0;
@@ -20,7 +18,7 @@ $light-coral: rgba(254, 109, 115, 1);
     button{
         cursor: pointer;
         width: 8%;
-        height: 30px;
+        height: 40px;
         border: none;
         background-color: $base-black;
         color: #fff;

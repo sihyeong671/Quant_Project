@@ -103,6 +103,7 @@ function Rank(props) {
 
 
       <div className='condition-filter'>
+        <div className='filter-itm start'>회사명</div>
         {props.tableName.map((name, idx) => {
           return (
             <div className='filter-itm' key={idx}>
@@ -110,6 +111,7 @@ function Rank(props) {
             </div>
           )
         })}
+        <div className='filter-itm end'>종합순위</div>
       </div>
 
       <div className='condition-result'>
@@ -122,7 +124,7 @@ function Rank(props) {
               {props.tableName.map((element, idx_) => {
                 return (
                   <div key={idx_}>
-                    {data[element]}
+                    {(data[element]).toFixed(5)}
                   </div>
                 );
               })}

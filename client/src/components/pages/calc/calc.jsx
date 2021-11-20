@@ -8,6 +8,14 @@ import Search from '../../../containers/search/search';
 import './assets/css/style.scss';
 
 
+function commas(x) {
+  try {
+    if (x == NaN || x == 'NaN') { return 0; }
+    else { return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+  }
+  catch (err) { return null; }
+}
+
 // 각 컴포넌트 따로 connect로 연결 해서 최적화 필요
 
 
@@ -30,7 +38,7 @@ const Input = ({ index, coef, changeFunction, pre_value }) => {
     <div className='subAccount_value' key={"n" + index[0]}>
       <input type="number" step='0.1' min="-10" max='10' value={coefficient} onChange={(e) => onChange(e)}></input>
       <h3>=</h3>
-      <span>{changedValue.toFixed(2)}</span>
+      <span>{commas(changedValue.toFixed(2))}</span>
     </div>
   );
 }
@@ -42,7 +50,7 @@ const SubAccount = ({ idx_1, subAccount, changeSubCoef }) => {
       <div className='subAccount' key={idx_2}>
         <div className='subAccount_info'>
           <span className='subAccount-name'>{subacnt.name}</span>
-          <span className='subAccount-amount'>{subacnt.amount}</span>
+          <span className='subAccount-amount'>{commas(subacnt.amount)}</span>
           <h3>x</h3>
         </div>
         <Input coef={subacnt.coef} changeFunction={changeSubCoef} index={[idx_1, idx_2]} pre_value={subacnt.amount} />
@@ -54,35 +62,38 @@ const SubAccount = ({ idx_1, subAccount, changeSubCoef }) => {
 
 // 비지배지분 input 값 넣어줘야함
 const Account = ({ account, changeCoef, changeSubCoef }) => {
+  useEffect(() => {
+    return () => { }
+  }, [])
 
   const AccountList = account.map((acnt, idx_1) => {
     let amount;
     if (acnt.sub_account.length == 0) { amount = acnt.amount }
     const acntForm = () => {
       return (
-        <div className='account-wrapper' key={idx_1 + "acntForm"}>
+        <>
           {
             acnt.fsname == "비지배지분" ? (
-              <div className='account-vi' key={0}>
+              <div className='account-vi'>
                 <div className='subAccount_info'>
                   <span className='subAccount-name'>{acnt.fsname}</span>
-                  <span className='subAccount-amount'>{acnt.amount}</span>
+                  <span className='subAccount-amount'>{commas(acnt.amount)}</span>
                   <h3>x</h3>
                 </div>
                 <Input index={[idx_1]} coef={acnt.coef} changeFunction={changeCoef} pre_value={acnt.amount}></Input>
               </div>
             ) : (
-              <div key={1}>
+              <div className='account-base'>
                 <span className='account-name'>{acnt.fsname}</span>
-                <span className='account-amount'>{amount}</span>
+                <span className='account-amount'>{commas(amount)}</span>
                 <SubAccount subAccount={acnt.sub_account} changeSubCoef={changeSubCoef} idx_1={idx_1} />
               </div>
             )
           }
-        </div>
+        </>
       )
     }
-    return (<>{acntForm()}</>)
+    return (<div className='account-wrapper' key={idx_1}>{acntForm()}</div>)
   })
   return (<>{AccountList}</>)
 }
@@ -108,11 +119,11 @@ const ResultValue = ({ currentAsset, nonCurrentAsset, totalDebt }) => {
       });
     }
   };
-  
+
   useEffect(() => {
     console.log('add'),
-    window.addEventListener('scroll', scrollAnim)
-    return ()=>{
+      window.addEventListener('scroll', scrollAnim)
+    return () => {
       console.log('remove')
       window.removeEventListener('scroll', scrollAnim)
     }
@@ -128,14 +139,14 @@ const ResultValue = ({ currentAsset, nonCurrentAsset, totalDebt }) => {
         <div className='resVal-value'>
           <h3>청산가치(Liquidation Value)</h3>
           <div>
-            <span>{(currentAsset + nonCurrentAsset - totalDebt).toFixed(2)}</span>
+            <span>{commas((currentAsset + nonCurrentAsset - totalDebt).toFixed(2))}</span>
           </div>
         </div>
 
         <div className='resVal-value'>
           <h3>보수적 청산 가치</h3>
           <div>
-            <span>{(currentAsset - totalDebt).toFixed(2)}</span>
+            <span>{commas((currentAsset - totalDebt).toFixed(2))}</span>
           </div>
         </div>
       </div>
@@ -203,40 +214,50 @@ function Calc(props) {
         <form onSubmit={onSubmitGet}>
 
           <Search maxLength={1} />
-          <div> 
-            <select name="year">
+          <div className='calc-filter'>
+            <select className='filter-year select' name="year">
               {years.map((year) => (
                 <option key={year} value={year}>{year}</option>
               ))}
             </select>
 
-            <select name="quarter">
+            <select className='filter-quarter select' name="quarter">
               <option value="11013">1분기</option>
               <option value="11012">2분기</option>
               <option value="11014">3분기</option>
               <option value="11011">4분기</option>
             </select>
 
-            <input id='CFS' type="radio" name='FS' value="CFS" defaultChecked />
-            <label htmlFor="CFS">CFS</label>
-            <input id='OFS' type="radio" name='FS' value="OFS" />
-            <label htmlFor="OFS">OFS</label>
+            <div className='filter-CFS radio'>
+              <input id='CFS' type="radio" name='FS' value="CFS" defaultChecked />
+              <label htmlFor="CFS">CFS</label>
+            </div>
 
-            <button type='submit'>확인</button>
+            <div className='filter-OFS radio'>
+              <input id='OFS' type="radio" name='FS' value="OFS" />
+              <label htmlFor="OFS">OFS</label>
+            </div>
 
+            <button className='filter-submit' type='submit'>확인</button>
 
           </div>
+
         </form>
       </div>
 
-      {props.user.userData.mybstitles?.map((element, idx) => (<div key={idx}>{element}</div>))}
+      <div className='saved-list'>
+        {props.user.userData.mybstitles?.map((element, idx) => (<div key={idx}>{element}</div>))}
+      </div>
 
       <form onSubmit={onSubmitSave}>
-        <input type="text" name="title" className='calc-save'/>
-        <button type='submit'>저장하기</button>
-        {props.calc.account? (
+        <div className='calc-save'>
+          <input type="text" name="title" />
+          <button type='submit'>저장하기</button>
+        </div>
+        {props.calc.account ? (
           <Account account={props.calc.account} changeCoef={props.changeCoef} changeSubCoef={props.changeSubCoef} />
-          ): null}
+        ) : null}
+        <hr className='calc-form' style={{ opacity: 0 }} />
       </form>
 
       <ResultValue currentAsset={currentAsset} nonCurrentAsset={nonCurrentAsset} totalDebt={totalDebt}></ResultValue>

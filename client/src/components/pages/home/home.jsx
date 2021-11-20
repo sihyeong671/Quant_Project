@@ -17,7 +17,7 @@ const Home = () => {
       <div className="main-box-container">
         <Link className="main-box" to='/chart'>
           <div className='main-text'>
-            <span className="text-title">📈차트</span>
+            <span className="text-title">📈<strong>차트</strong></span>
             <p className="text-info">
               기업 다양한 주가 및 지표 차트 비교
             </p>
@@ -27,7 +27,7 @@ const Home = () => {
 
         <Link className="main-box" to='/calc'>
           <div className='main-text'>
-            <span className="text-title">🧮연산</span>
+            <span className="text-title">🧮<strong>연산</strong></span>
             <p className="text-info">
               재무제표 지표의 연산
             </p>
@@ -37,7 +37,7 @@ const Home = () => {
 
         <Link className="main-box" to='/rank'>
           <div className='main-text'>
-            <span className="text-title">🥇순위</span>
+            <span className="text-title">🥇<strong>순위</strong></span>
             <p className="text-info">
               주가의 조건에 따른 순위
             </p>
