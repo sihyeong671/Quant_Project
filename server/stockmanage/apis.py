@@ -304,7 +304,7 @@ class FSChartApi(PublicApiMixin, APIView):
             indicator_list = []
 
             for stock in stocks:
-                date = stock.quater.year.bs_year * 100
+                date = stock.quarter.year.bs_year * 100
                 if stock.quarter.qt_name == "11013":
                     date += 1
                 elif stock.quarter.qt_name == "11012":
