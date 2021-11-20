@@ -102,7 +102,7 @@ $light-coral: rgba(254, 109, 115, 1);
     .condition-filter {
       width: 100%;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(calc(100% / 5), 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       .filter-itm {
         display: inline-block;
         padding: 10px;
@@ -122,7 +122,7 @@ $light-coral: rgba(254, 109, 115, 1);
         width: 100%;
         display: grid;
         // justify-content: space-between;
-        grid-template-columns: repeat(auto-fill, minmax(calc(100% / 5), 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         font-weight: 500;
         padding: 10px 0;
         border-bottom: 1px solid $line-black;
@@ -164,7 +164,7 @@ $light-coral: rgba(254, 109, 115, 1);
     z-index: 1000;
 
     width: 90vw;
-    height: 70vh;
+    // height: 70vh;
 
     background-color: #fff;
 
@@ -346,7 +346,7 @@ $light-coral: rgba(254, 109, 115, 1);
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin: 20px 0;
   button {
     cursor: pointer;
     border: none;
