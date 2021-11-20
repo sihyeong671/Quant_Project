@@ -7,9 +7,11 @@ const initState = {
   fsInit:[
     "ROA",
     "ROE",
-    "부채비율",
     "PER",
-    "PBR"
+    "PBR",
+    "부채비율",
+    "PCR",
+    "PSR"
   ],
   condition:[],
   rankCondition:[],

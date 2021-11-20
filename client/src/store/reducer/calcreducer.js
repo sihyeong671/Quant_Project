@@ -34,9 +34,11 @@ export default function reducer(state = initState, action) {
             changed_account.sub_account[action.index[1]].coef = action.coef;
     
             let account_sum = 0;
+            
             changed_account.sub_account.forEach(element => {
                 account_sum += (element.amount * element.coef);
             });
+
             changed_account.amount = account_sum;
 
             newState.account[2].amount = newState.account[0].amount + newState.account[1].amount;
