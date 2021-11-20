@@ -75,7 +75,10 @@ function NavTab({ isAuthenticated, userName, onClickLogout }) {
 											></Link>
 											<span><strong>{userName}</strong> 님</span>
 										</div>
-										<button onClick={onClickLogout} className='user-logout'>로그아웃</button>
+										<button onClick={()=>{
+											onClickLogout();
+											navClose();
+										}} className='user-logout'>로그아웃</button>
 									</div>
 								</>
 							)
@@ -105,8 +108,6 @@ function Header(props) {
 
 	const onClickLogout = async () => {
 		await props.basicLogOut(props.user.username);
-		// 로그아웃 로직 구현
-		navClose()
 	};
 
 	return (

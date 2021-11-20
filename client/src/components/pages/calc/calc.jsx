@@ -71,6 +71,7 @@ const Account = ({ account, changeCoef, changeSubCoef }) => {
   
 
   const [subAccountStyle, setSubAccountStyle] = useState(0);
+
   const setSubListStyle = (e) => {
     let fP = e.target.parentNode;
     let sP = fP.parentNode
@@ -89,41 +90,51 @@ const Account = ({ account, changeCoef, changeSubCoef }) => {
   }
 
   const AccountList = account.map((acnt, idx_1) => {
-    let amount;
-    if (acnt.sub_account.length == 0) { amount = acnt.amount }
 
-    const acntForm = () => {
-      return (
-        <>
-          {
-            acnt.fsname == "비지배지분" ? (
-              <div className='account-vi'>
-                <div className='subAccount_info'>
-                  <span className='subAccount-name'>{acnt.fsname}</span>
-                  <span className='subAccount-amount'>{commas(acnt.amount)}</span>
-                  <h3>x</h3>
-                </div>
-                <Input index={[idx_1]} coef={acnt.coef} changeFunction={changeCoef} pre_value={acnt.amount}></Input>
+    let _amount, _name, _coef;
+
+    if(acnt.fsname) _name = acnt.fsname;
+    else if(acnt.account_name) _name = acnt.account_name;
+
+    if(acnt.sub_account.length == 0){
+      if(acnt.amount) _amount = acnt.amount;
+      else if(acnt.account_amount) _amount = acnt.account_amount;
+    }
+
+    if(acnt.custombs) _coef = acnt.custombs;
+    else if(acnt.coef) _coef = acnt.coef;
+
+    return (
+      <div className='account-wrapper' key={idx_1 + "acntForm"}>
+        {
+          (acnt.fsname == "비지배지분") ? (
+            <div className='account-vi'>
+              <div className='subAccount_info'>
+                <span className='subAccount-name'>{_name}</span>
+                <span className='subAccount-amount'>{commas(_amount)}</span>
+                <h3>x</h3>
               </div>
-            ) : (
+              <Input index={[idx_1]} coef={_coef} changeFunction={changeCoef} pre_value={_amount}></Input>
+            </div>
+          ) : (
+            <div>
               <div className='account-base'>
                 <div className='account-header'>
                   <div className='account-name-wrapper'>
-                    <span className='account-name'>{acnt.fsname}</span>
+                    <span className='account-name'>{_name}</span>
                     <span className="material-icons" onClick={e => setSubListStyle(e)}>expand_more</span>
                   </div>
-                  <span className='account-amount'>{commas(amount)}</span>
+                  <span className='account-amount'>{commas(_amount)}</span>
                 </div>
-                <div className='subaccount-wrapper' ref={subAccountRef}>
+                <div className='subaccount-wrapper'>
                   <SubAccount subAccount={acnt.sub_account} changeSubCoef={changeSubCoef} idx_1={idx_1} />
                 </div>
               </div>
-            )
-          }
-        </>
-      )
-    }
-    return (<div className='account-wrapper' key={idx_1}>{acntForm()}</div>)
+            </div>
+          )
+        }
+      </div>
+    )
   })
   return (<>{AccountList}</>)
 }
@@ -136,7 +147,6 @@ const ResultValue = ({ currentAsset, nonCurrentAsset, totalDebt }) => {
 
   const scrollAnim = () => {
     let target = cirState.current.getBoundingClientRect().top - window.scrollY;
-    // console.log(target);
     if (target < 0) {
       setBotFix({
         position: "relative",
@@ -152,10 +162,10 @@ const ResultValue = ({ currentAsset, nonCurrentAsset, totalDebt }) => {
   };
 
   useEffect(() => {
-    console.log('add'),
+
       window.addEventListener('scroll', scrollAnim)
     return () => {
-      console.log('remove')
+
       window.removeEventListener('scroll', scrollAnim)
     }
   }, []);
@@ -226,13 +236,6 @@ function Calc(props) {
   const onSubmitSave = (e) => {
     e.preventDefault();
 
-    console.log({
-      ...parameter,
-      account: props.calc.account,
-      title: e.target.title.value
-    });
-
-
     props.sendCustom({ // 커스텀 변수 보내서 사용자 정보에 저장
       ...parameter,
       account: props.calc.account,
@@ -286,6 +289,9 @@ function Calc(props) {
           <input type="text" name="title" />
           <button type='submit'>저장하기</button>
         </div>
+        
+        <div className="calc-unit">{props.calc.unit}</div>
+
         {props.calc.account ? (
           <Account account={props.calc.account} changeCoef={props.changeCoef} changeSubCoef={props.changeSubCoef} />
         ) : null}
