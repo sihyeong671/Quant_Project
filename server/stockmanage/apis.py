@@ -355,71 +355,60 @@ class RankApi(PublicApiMixin, APIView):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         
-        try:
-            # 조건을 통해서 알맞은 df추출
-            casedf = pd.DataFrame()
-            
-            queryset = FS_LoB.objects.select_related(
-                'quarter__year__company'
-            ).annotate(
-                company_name=F("quarter__year__company__stock_name")
-            )
-            
-            if islink:
-                condition.add(Q(lob="CFS"), Q.AND)
-            else:
-                condition.add(Q(lob="OFS"), Q.AND)
-            
-            if not case_list:
-                queryset = queryset.filter(
-                    condition
-                ).values()
-                    
-                casedf = pd.DataFrame(list(queryset))
-            
-            else:
-                for case in case_list:
-                    ndf = getCaseData(case, condition, queryset)
-                    if casedf.empty:
-                        casedf = ndf
-                    else:
-                        pd.concat([casedf, ndf])
-                    
-                    casedf = casedf.duplicated()
-            
-        except:
-            return Response({
-                "message": "Cannot get case Dataframe",
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
+        # 조건을 통해서 알맞은 df추출
+        casedf = pd.DataFrame()
         
-        try:
-            if casedf.empty:
-                return Response({}, status=status.HTTP_200_OK)
+        queryset = FS_LoB.objects.select_related(
+            'quarter__year__company'
+        ).annotate(
+            company_name=F("quarter__year__company__stock_name")
+        )
+        
+        if islink:
+            condition.add(Q(lob="CFS"), Q.AND)
+        else:
+            condition.add(Q(lob="OFS"), Q.AND)
+        
+        if not case_list:
+            queryset = queryset.filter(
+                condition
+            ).values()
                 
-            nan = -1000000000
-            # 추출한 df를 통해서 순위 조건에 맞게 json 만들어서 반환
-            column_list = ['company_name']
-            for c in case_list:
-                if c == []:
-                    break
-                column_list.append(c[0])
+            casedf = pd.DataFrame(list(queryset))
+        
+        else:
+            for case in case_list:
+                ndf = getCaseData(case, condition, queryset)
+                if casedf.empty:
+                    casedf = ndf
+                else:
+                    pd.concat([casedf, ndf])
+                
+                casedf = casedf.duplicated()
+
+        
+        if casedf.empty:
+            return Response({}, status=status.HTTP_200_OK)
             
-            for rank in rank_list:
-                casedf.sort_values(by=[rank[0]], ascending=rank[1], inplace=True)
-                if rank[0] not in column_list:
-                    column_list.append(rank[0])
-            
-            rankdf = casedf[column_list]
-            rankdf["rank"] = list(range(1, len(rankdf)+1))
-            rankdf = rankdf.reindex(columns=["rank"] + column_list)
-            rankdf = rankdf.fillna(nan)
-            
-            data = rankdf.apply(lambda row: row.to_dict(), axis=1)
-            return Response(data, status=status.HTTP_200_OK)
-            
-        except:
-            return Response({
-                "message": "Cannot extract rank dataframe",
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        nan = -1000000000
+        # 추출한 df를 통해서 순위 조건에 맞게 json 만들어서 반환
+        column_list = ['company_name']
+        for c in case_list:
+            if c == []:
+                break
+            column_list.append(c[0])
+        
+        for rank in rank_list:
+            casedf.sort_values(by=[rank[0]], ascending=rank[1], inplace=True)
+            if rank[0] not in column_list:
+                column_list.append(rank[0])
+        
+        rankdf = casedf[column_list]
+        rankdf["rank"] = list(range(1, len(rankdf)+1))
+        rankdf = rankdf.reindex(columns=["rank"] + column_list)
+        rankdf = rankdf.fillna(nan)
+        
+        data = rankdf.apply(lambda row: row.to_dict(), axis=1)
+        return Response(data, status=status.HTTP_200_OK)
     
