@@ -4,17 +4,15 @@ import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import NoneRegRoute from '../router/NoneRegRoute';
-import NeedRegRoute from '../router/NeedRegRoute';
-
 import AuthForm from '../../containers/auth/authForm';
 import Profile from '../../containers/profile/profile';
-
-import Home from '../pages/home/home';
-
 import Calc from '../../containers/pages/calc/calc';
 import Chart from '../../containers/pages/chart/chart';
 import Rank from '../../containers/pages/rank/rank';
+import Board from '../../containers/pages/board/board';
+
+import Home from '../pages/home/home';
+
 import Info from '../../components/pages/info/info'
 
 import Board from '../../containers/pages/board/board';
@@ -45,6 +43,7 @@ const Main = () => {
 
                 <Route component={NotFound}></Route>
             </Switch>
+
         </main>
     );
 }

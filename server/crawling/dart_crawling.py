@@ -1,6 +1,7 @@
 import zipfile
 import json
 import re
+import time
 import requests as rq
 import xml.etree.ElementTree as et
 from datetime import datetime
@@ -78,6 +79,19 @@ def Dart_Unique_Key(api_key):
                 data[-1].append(child.find(item).text)
     return data
 
+def BS_accountnm_check(bs_tree, an):
+    # an = fs_lst["account_nm"]
+    flag = False
+    if an in bs_tree.keys():
+        flag = True
+        return flag
+    for key in bs_tree.keys():
+        if an in key:
+            flag = True
+            return flag
+        
+    return flag
+
 @transaction.atomic
 def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
     """
@@ -129,8 +143,10 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         ua = UserAgent(verify_ssl=False)
         user = ua.random
         headers = {"User-Agent": user}
+        
+        time.sleep(0.5)
         bs_res = rq.get(bs_url, headers=headers)
-        bs_soup = BeautifulSoup(bs_res.text, "lxml") # html.parser 도 가능
+        bs_soup = BeautifulSoup(bs_res.text, "lxml") # html.parser 도 가능  
         
         print("=======")
         print(link_model.quarter.year.company.corp_name)
@@ -139,12 +155,17 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         print(link_state)
         print("=======")
         
-        # try:
-        fs_unit = bs_soup.find("table").find_all('p')[-1]
-        link_model.unit = fs_unit.text
-        link_model.save()
-        # except Exception as ex:
-        #     print("Error Raised: ", ex)
+        try:
+            fs_unit = bs_soup.find("table").find_all('p')[-1]
+            link_model.unit = fs_unit.text
+            link_model.save()
+        except:
+            try:
+                fs_unit = bs_soup.find_all("table")[1].find_all('p')[-1]
+                link_model.unit = fs_unit.text
+                link_model.save()
+            except Exception as ex:
+                print("Error Raised: ", ex)
         
         bs_tree = {}
         now = ''
@@ -161,6 +182,9 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                         bs_tree[now] = []
             if account == "자본과부채총계":
                 break
+        
+        print("===bs_tree===")
+        print(bs_tree)
         
         # print("bs_tree : ", bs_tree)
         
@@ -186,7 +210,12 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         for fs_lst in json_dict['list']: # 한 행씩 가져오기
             money = FS_Account()
             if fs_lst["sj_div"] == "BS":
-                if fs_lst["account_nm"] in bs_tree.keys():
+                print(fs_lst["account_nm"])
+                
+                is_accountnm_in_bstreekey = \
+                    BS_accountnm_check(bs_tree=bs_tree, an=fs_lst["account_nm"])
+                    
+                if is_accountnm_in_bstreekey:
                     money.fs_div = BS
                     pre_money = money
 

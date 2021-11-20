@@ -5,11 +5,12 @@
 ### Deploy ###
 nginx.conf
 docker-compose.yml
-server.Dockerfile
+# server.Dockerfile
 # logs
 superuser.py
 codechecker.py
-ctest.py
+crwalingtest.py
+staticroot
 
 ### Django ###
 *.log

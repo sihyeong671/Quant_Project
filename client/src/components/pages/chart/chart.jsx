@@ -5,9 +5,11 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import HighchartsReact from 'highcharts-react-official';
 import HighStock from 'highcharts/highstock';
-import axios from 'axios';
-import newLst from '../../../../data';
+
+
 import Search from '../../../containers/search/search';
+
+import {Loading} from '../../../utils/utils'
 
 import './assets/css/style.scss';
 
@@ -20,6 +22,7 @@ function Chart(props){
 
   console.log("Chart rendering");
   
+  const [isLoading, setIsLoading] = useState(false);
 
   let stockData = [];
   for(const [key, value] of Object.entries(props.chart)){
@@ -87,9 +90,12 @@ function Chart(props){
     <>
       <form className='chart-form' onSubmit={(e) => {
         e.preventDefault();
+        setIsLoading(true);
         const codeList = getCode(props.search.corpList);
-        console.log(codeList);
-        props.getStockData(codeList)}}>
+        props.getStockData(codeList).then(res => {
+          // setIsLoading(false);
+        })
+        }}>
         <Search maxLength={4}></Search>
         <button type="submit">확인</button>
       </form>
@@ -99,6 +105,11 @@ function Chart(props){
         constructorType={"stockChart"}
         options={options}
       />
+
+      <div>
+        준비중
+        {isLoading? (<Loading/>):null}
+      </div>
     </>
   );
 }

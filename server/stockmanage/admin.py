@@ -274,10 +274,10 @@ class FS_AccountAdmin(admin.ModelAdmin):
         'get_unit',
     )
     search_fields = (
-        'fs_div__fs_lob__quarter__year__company__corp_name', 
-        'fs_div__fs_lob__quarter__year__bs_year', 
-        'fs_div__fs_lob__quarter__qt_name', 
-        'fs_div__fs_lob__lob', 'fs_div__sj_div', 'account_name',
+        'fs_div__lob__quarter__year__company__corp_name', 
+        'fs_div__lob__quarter__year__bs_year', 
+        'fs_div__lob__quarter__qt_name', 
+        'fs_div__lob__lob', 'fs_div__sj_div', 'account_name',
     )
     # list_filter = ('account_name', )
     

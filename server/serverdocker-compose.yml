@@ -1,0 +1,193 @@
+version: "3.3"
+services:
+  quantnginx:
+    image: nginx:1.21.1
+    networks:
+      - quant
+    volumes:
+      - /home/ubuntu/quant_config/nginx.conf:/etc/nginx/nginx.conf
+      - /etc/letsencrypt/live/quant.or.kr/fullchain.pem:/etc/letsencrypt/live/quant.or.kr/fullchain.pem
+      - /etc/letsencrypt/live/quant.or.kr/privkey.pem:/etc/letsencrypt/live/quant.or.kr/privkey.pem
+      - static-volume-quant:/data/static
+      - media-volume-quant:/data/media
+      - /home/ubuntu/quant_front:/data/build
+    ports:
+      - 80:80
+      - 443:443
+    depends_on: 
+      - quant_home1
+      - quant_home2
+      - quant_home3
+      - quant_backup
+      - quant_crawling1
+      - quant_crawling2
+  
+  quantpostgres:
+    image: postgres:9.6.23
+    networks:
+      - quant
+    volumes:
+      - /home/ubuntu/quant_database:/var/lib/postgresql/data
+    secrets:
+      - QUANT_POSTGRES_ROOT_PASSWORD
+      - QUANT_POSTGRES_PASSWORD
+    environment:
+      POSTGRES_DB: quantdb
+      POSTGRES_USER: quant
+      POSTGRES_PASSWORD_FILE: /run/secrets/QUANT_POSTGRES_PASSWORD
+      POSTGRES_ROOT_PASSWORD_FILE: /run/secrets/QUANT_POSTGRES_ROOT_PASSWORD
+    
+    
+## ====== Django WAS Server ======
+  quant_home1:
+    image: quant_home:1.0
+    secrets:
+      - QUANT_POSTGRES_ROOT_PASSWORD
+      - QUANT_POSTGRES_PASSWORD
+    networks:
+      - quant
+    volumes:
+      - /home/ubuntu/Quant_Project/server:/home/ubuntu/quant_server
+      - static-volume-quant:/home/ubuntu/quant_server/staticroot
+      - media-volume-quant:/home/ubuntu/quant_server/media
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on: 
+      - quantpostgres
+    entrypoint: ["bash", "-c"]
+    command: 
+      - |
+        python manage.py collectstatic --noinput --settings=config.settings.prod
+        python manage.py makemigrations --settings=config.settings.local
+        python manage.py migrate --settings=config.settings.local
+        python manage.py runserver 0.0.0.0:8000 --settings=config.settings.local
+  
+  quant_home2:
+    image: quant_home:1.0
+    secrets:
+      - QUANT_POSTGRES_ROOT_PASSWORD
+      - QUANT_POSTGRES_PASSWORD
+    networks:
+      - quant
+    volumes:
+      - /home/ubuntu/Quant_Project/server:/home/ubuntu/quant_server
+      - static-volume-quant:/home/ubuntu/quant_server/staticroot
+      - media-volume-quant:/home/ubuntu/quant_server/media
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on: 
+      - quantpostgres
+    entrypoint: ["bash", "-c"]
+    command: 
+      - |
+        python manage.py collectstatic --noinput --settings=config.settings.prod
+        python manage.py makemigrations --settings=config.settings.local
+        python manage.py migrate --settings=config.settings.local
+        python manage.py runserver 0.0.0.0:8001 --settings=config.settings.local
+  
+  quant_home3:
+    image: quant_home:1.0
+    secrets:
+      - QUANT_POSTGRES_ROOT_PASSWORD
+      - QUANT_POSTGRES_PASSWORD
+    networks:
+      - quant
+    volumes:
+      - /home/ubuntu/Quant_Project/server:/home/ubuntu/quant_server
+      - static-volume-quant:/home/ubuntu/quant_server/staticroot
+      - media-volume-quant:/home/ubuntu/quant_server/media
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on: 
+      - quantpostgres
+    entrypoint: ["bash", "-c"]
+    command: 
+      - |
+        python manage.py collectstatic --noinput --settings=config.settings.prod
+        python manage.py makemigrations --settings=config.settings.local
+        python manage.py migrate --settings=config.settings.local
+        python manage.py runserver 0.0.0.0:8002 --settings=config.settings.local
+  
+  quant_backup:
+    image: quant_home:1.0
+    secrets:
+      - QUANT_POSTGRES_ROOT_PASSWORD
+      - QUANT_POSTGRES_PASSWORD
+    networks:
+      - quant
+    volumes:
+      - /home/ubuntu/Quant_Project/server:/home/ubuntu/quant_server
+      - static-volume-quant:/home/ubuntu/quant_server/staticroot
+      - media-volume-quant:/home/ubuntu/quant_server/media
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on: 
+      - quantpostgres
+    entrypoint: ["bash", "-c"]
+    command: 
+      - |
+        python manage.py collectstatic --noinput --settings=config.settings.prod
+        python manage.py makemigrations --settings=config.settings.local
+        python manage.py migrate --settings=config.settings.local
+        python manage.py runserver 0.0.0.0:8003 --settings=config.settings.local
+  
+  
+## ====== Django FS Crawling Server ======
+  quant_crawling1:
+    image: quant_home:1.0
+    secrets:
+      - QUANT_POSTGRES_ROOT_PASSWORD
+      - QUANT_POSTGRES_PASSWORD
+    networks:
+      - quant
+    volumes:
+      - /home/ubuntu/Quant_Project/server:/home/ubuntu/quant_server
+      - static-volume-quant:/home/ubuntu/quant_server/staticroot
+      - media-volume-quant:/home/ubuntu/quant_server/media
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on: 
+      - quantpostgres
+    entrypoint: ["bash", "-c"]
+    command: 
+      - |
+        python manage.py collectstatic --noinput --settings=config.settings.prod
+        python manage.py makemigrations --settings=config.settings.local
+        python manage.py migrate --settings=config.settings.local
+        python manage.py runserver 0.0.0.0:8080 --settings=config.settings.local
+        
+  quant_crawling2:
+    image: quant_home:1.0
+    secrets:
+      - QUANT_POSTGRES_ROOT_PASSWORD
+      - QUANT_POSTGRES_PASSWORD
+    networks:
+      - quant
+    volumes:
+      - /home/ubuntu/Quant_Project/server:/home/ubuntu/quant_server
+      - static-volume-quant:/home/ubuntu/quant_server/staticroot
+      - media-volume-quant:/home/ubuntu/quant_server/media
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on: 
+      - quantpostgres
+    entrypoint: ["bash", "-c"]
+    command: 
+      - |
+        python manage.py collectstatic --noinput --settings=config.settings.prod
+        python manage.py makemigrations --settings=config.settings.local
+        python manage.py migrate --settings=config.settings.local
+        python manage.py runserver 0.0.0.0:8081 --settings=config.settings.local
+  
+networks:
+  quant:
+
+volumes:
+  static-volume-quant:
+  media-volume-quant:
+
+secrets:
+  QUANT_POSTGRES_PASSWORD:
+    external: true
+  QUANT_POSTGRES_ROOT_PASSWORD:
+    external: true
