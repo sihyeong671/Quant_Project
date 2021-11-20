@@ -86,12 +86,12 @@ function NavTab({ isAuthenticated, userName, onClickLogout }) {
 					</div>
 					<ul className='navTab-link'>
 						<Link to="/chart" onClick={navClose}>📈차트</Link>
-						<Link to="/calc" onClick={navClose}>🧮연산</Link>
+						<Link to="/calc" onClick={navClose}>💻연산</Link>
 						<Link to="/rank" onClick={navClose}>🥇순위</Link>
-						<Link to="/" onClick={navClose}>📖정보</Link>
 						<Link to="/board" onClick={navClose}>📄공지</Link>
+						{/* <Link to="/" onClick={navClose}>📖정보</Link>
 						<Link to="/" onClick={navClose}>📫문의</Link>
-						<Link to="/" onClick={navClose}>도움말</Link>
+						<Link to="/" onClick={navClose}>도움말</Link> */}
 						<Link to="/info" onClick={navClose}>개발자 정보</Link>
 					</ul>
 				</div>

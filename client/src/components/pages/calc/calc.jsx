@@ -78,6 +78,23 @@ const SubAccount = ({ idx_1, subAccount, changeSubCoef }) => {
 // 비지배지분 input 값 넣어줘야함
 const Account = ({ account, changeCoef, changeSubCoef }) => {
 
+  const [subAccountStyle, setSubAccountStyle] = useState(0);
+  const setSubListStyle = (e) => {
+    let fP = e.target.parentNode;
+    let sP = fP.parentNode
+    let tP = sP.parentNode
+    let subList = tP.childNodes[1];
+    if (subList.style.maxHeight == 'fit-content') {
+      subList.style.maxHeight = 0;
+      e.target.style.transform = 'rotateZ(90deg)';
+      setSubAccountStyle(1);
+    } else {
+      subList.style.maxHeight = 'fit-content';
+      e.target.style.transform = 'rotateZ(0deg)';
+      setSubAccountStyle(0);
+    }
+  }
+
   const AccountList = account.map((acnt, idx_1) => {
 
     let _amount;
@@ -120,11 +137,12 @@ const Account = ({ account, changeCoef, changeSubCoef }) => {
 const ResultValue = ({ currentAsset, nonCurrentAsset, totalDebt }) => {
 
   const [botFix, setBotFix] = useState();
-
+  const cirState = useRef();
+  const [cirConState, setCirConState] = useState();
+  
   const scrollAnim = () => {
-    let cir = document.querySelector('.calc-form');
-    let target = cir.getBoundingClientRect().top - window.scrollY;
-    // console.log(target);
+    let target = cirState.current.getBoundingClientRect().top - window.scrollY;
+    console.log(target);
     if (target < 0) {
       setBotFix({
         position: "relative",
@@ -154,6 +172,7 @@ const ResultValue = ({ currentAsset, nonCurrentAsset, totalDebt }) => {
       청산가치 = 유동자산 + 비유동 자산 - 부채 총계
       보수적 계산법(벤자민 그레이엄) = 유동자산 - 부채총계 
     */}
+      <hr className='calc-form' style={{ opacity: 0 }} ref={cirState}/>
       <div className='resVal' style={botFix}>
         <div className='resVal-value'>
           <h3>청산가치(Liquidation Value)</h3>
@@ -281,7 +300,6 @@ function Calc(props) {
         {props.calc.account ? (
           <Account account={props.calc.account} changeCoef={props.changeCoef} changeSubCoef={props.changeSubCoef} />
         ) : null}
-        <hr className='calc-form' style={{ opacity: 0 }} />
       </form>
 
       <ResultValue currentAsset={currentAsset} nonCurrentAsset={nonCurrentAsset} totalDebt={totalDebt}></ResultValue>

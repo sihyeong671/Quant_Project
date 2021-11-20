@@ -1,14 +1,22 @@
 .info{
   .info-head{
-    display: flex;
-    justify-content: space-around;
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat( auto-fit, minmax( calc(100% / 5), 1fr) );
   }
   .info-body{
     .person{
-
-      display: flex;
-      justify-content: space-around;
-
+      width: 100%;
+      display: grid;
+      align-items: center;
+      // grid-template-columns: repeat(auto-fit, minmax(1fr, auto));
+      // grid-auto-columns: minmax(1fr, auto);
+      grid-template-columns: repeat( auto-fit, minmax( calc(100% / 5), 1fr) );
+      div{
+        &:last-child{
+          text-align: right;
+        }
+      }
     }
   }
 }

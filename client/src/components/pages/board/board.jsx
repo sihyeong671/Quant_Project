@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Link } from "react-router-dom";
 import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
 
-import './assets/css/style.scss';
+import './assets/css/board.scss';
 
 const Board = (props) => {
 
@@ -13,11 +13,9 @@ const Board = (props) => {
 
     useEffect(async () => {
         const getList = await axios.get('api/v1/board/1');
-        console.log(getList.data);
         setContentList(getList.data);
         return () => { }
     }, []);
-    console.log(contentList);
 
     return (
         <>
@@ -32,12 +30,12 @@ const Board = (props) => {
                 {
                     contentList?.map((item, i) => {
                         return (
-                            <div className='content-itm' key={i}>
+                            <Link className='content-itm' to={`article/${item.id}`} key={i}>
                                 <span className='itm-id'>{item.id}</span>
                                 <h3 className='itm-title'>{item.title}</h3>
                                 <p className='itm-content'>{item.content}</p>
                                 <span className='itm-creator'>{item.creator}</span>
-                            </div>
+                            </Link>
                         )
                     })
                 }
