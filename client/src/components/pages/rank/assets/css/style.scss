@@ -95,8 +95,8 @@ $light-coral: rgba(254, 109, 115, 1);
 
 .result-wrapper {
   width: 100%;
-  overflow: hidden;
-  overflow-x: scroll;
+  height: 60vh;
+  overflow: scroll;
   .result-inner {
 
     .condition-filter {
@@ -109,7 +109,7 @@ $light-coral: rgba(254, 109, 115, 1);
         border-radius: 20px;
         font-weight: 500;
         &:last-child {
-          text-align: center;
+          text-align: left;
         }
       }
     }
@@ -131,7 +131,8 @@ $light-coral: rgba(254, 109, 115, 1);
         }
         div {
           &:last-child {
-            text-align: center;
+            text-align: left;
+            padding-left: 10%;
           }
         }
       }

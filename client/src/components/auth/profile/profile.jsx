@@ -30,7 +30,7 @@ const deleteAllCompany = async () => {
 const dailyCrawling = async () => {
   try{
     const res = await axios.get('api/v1/stock/crawling/daily'); // 현재 존재하는 기업들 주가 가져오기(get)
-    console.log(res);
+    console.log(res); 
   }catch(error){
     console.log(error);
   }
@@ -60,7 +60,7 @@ const Profile=(props)=>{
   const history = useHistory();
   
   useEffect(()=>{
-    console.log('props: ', props.isAuthenticated);
+    // console.log('props: ', props.isAuthenticated);
     if(props.accessToken == null){
       history.push('/');
     }
