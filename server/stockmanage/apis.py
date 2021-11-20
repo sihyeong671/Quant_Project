@@ -304,56 +304,49 @@ class RankApi(PublicApiMixin, APIView):
                 "message": "Payload Error",
             }, status=status.HTTP_402_PAYMENT_REQUIRED)
             
-        try:
-            # 최근 year 찾기
-            condition = Q(exist=1)
-            
-            recent_lob = FS_LoB.objects.\
-                select_related(
-                    'quarter',
-                    'quarter__year',
-                ).\
-                filter(condition).\
-                order_by('-quarter__year__bs_year').first()
-                
-            recent_year = recent_lob.quarter.year.bs_year
-            
-            print("recent year : ", recent_year)
-            condition.add(Q(quarter__year__bs_year=recent_year), Q.AND)
-            
-            recent_lob = FS_LoB.objects.\
-                select_related(
-                    'quarter',
-                    'quarter__year'
-                ).\
-                filter(
-                    condition
-                )
-            
-            # 최근 quarter 찾기
-            ## 1분기:11013 2분기:11012 3분기보고서:11014 사업보고서:11011
-            recent_quarter = None
-            
-            for lob in recent_lob[:5]:
-                if lob.quarter.qt_name == "11011":
-                    recent_quarter = lob.quarter.qt_name
-                    break
-                elif lob.quarter.qt_name == "11014":
-                    recent_quarter = lob.quarter.qt_name
-                elif lob.quarter.qt_name == "11012" and \
-                    (recent_quarter == None or recent_quarter == "11013"):
-                    recent_quarter = lob.quarter.qt_name
-                elif lob.quarter.qt_name == "11013" and recent_quarter == None:
-                    recent_quarter = lob.quarter.qt_name
-            
-            print("recent quarter : ", recent_quarter)
-            condition.add(Q(quarter__qt_name=recent_quarter), Q.AND)
-            
-        except:
-            return Response({
-                "message": "Cannot get recent quarter",
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        # 최근 year 찾기
+        condition = Q(exist=1)
         
+        recent_lob = FS_LoB.objects.\
+            select_related(
+                'quarter',
+                'quarter__year',
+            ).\
+            filter(condition).\
+            order_by('-quarter__year__bs_year').first()
+            
+        recent_year = recent_lob.quarter.year.bs_year
+        
+        print("recent year : ", recent_year)
+        condition.add(Q(quarter__year__bs_year=recent_year), Q.AND)
+        
+        recent_lob = FS_LoB.objects.\
+            select_related(
+                'quarter',
+                'quarter__year'
+            ).\
+            filter(
+                condition
+            )
+        
+        # 최근 quarter 찾기
+        ## 1분기:11013 2분기:11012 3분기보고서:11014 사업보고서:11011
+        recent_quarter = None
+        
+        for lob in recent_lob[:5]:
+            if lob.quarter.qt_name == "11011":
+                recent_quarter = lob.quarter.qt_name
+                break
+            elif lob.quarter.qt_name == "11014":
+                recent_quarter = lob.quarter.qt_name
+            elif lob.quarter.qt_name == "11012" and \
+                (recent_quarter == None or recent_quarter == "11013"):
+                recent_quarter = lob.quarter.qt_name
+            elif lob.quarter.qt_name == "11013" and recent_quarter == None:
+                recent_quarter = lob.quarter.qt_name
+        
+        print("recent quarter : ", recent_quarter)
+        condition.add(Q(quarter__qt_name=recent_quarter), Q.AND)
         
         
         # 조건을 통해서 알맞은 df추출
@@ -386,7 +379,6 @@ class RankApi(PublicApiMixin, APIView):
                     pd.concat([casedf, ndf])
                 
                 casedf = casedf.duplicated()
-
         
         if casedf.empty:
             return Response({}, status=status.HTTP_200_OK)
