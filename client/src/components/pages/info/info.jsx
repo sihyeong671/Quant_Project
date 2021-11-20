@@ -16,24 +16,22 @@ const Info = () => {
   return (
     <article className="info">
 
-      <div className="info-body">
-        <div className="person">
-          <div>이름</div>
-          <div>이메일</div>
-          <div>깃허브</div>
-          <div>블로그</div>
-          <div>역할</div>
+      <div className='info-data'>
+        <div className='data-img'></div>
+        <div className='data-name'></div>
+        <div className='data-sns'>
+          <span className='sns-itm'>
+            <i className="fab fa-github"></i>
+            깃허브
+          </span> <br />
+          <span className='sns-itm'>
+            <i class="fab fa-blog"></i>
+            <i class="fab fa-bold"></i>
+            <i class="fas fa-book-open"></i>
+            블로그
+          </span>
         </div>
-        {developerInfos.map((person, idx) => {
-          console.log(person);
-          return (
-            <div key={idx} className="person">
-              {person.map((info, _idx) => (<div key={_idx}>{info}</div>))}
-            </div>
-          )
-        })}
       </div>
-
 
     </article>
   )

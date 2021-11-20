@@ -102,7 +102,8 @@ function Rank(props) {
       }}>확인</button>
 
       <div className='result-wrapper'>
-        <div className='result-inner' style={{ width: `calc((100% * (${props.tableName.length} + 1)) / 2)` }}>
+        <div className='result-inner' style={{ width: `calc((100% * (${props.tableName.length} + 2)) / 2)` }}>
+        {/* <div className='result-inner'> */}
 
           <div className='condition-filter'>
             <div className='filter-itm start'>회사명</div>

@@ -52,7 +52,7 @@ const RankConditionPopUp = (props) => {
   return (
     <div className="popUp">
       <form className='popUp-inner' onSubmit={e => addRankCondition(e)}>
-        <h2>조건추가하기</h2>
+        <h2 style={{backgroundColor: 'rgba(254, 109, 115, 1)'}}>순위 추가하기</h2>
         {/* <input className='condition-input' name='condition-input' type="text" />
         <span className="material-icons">search</span> */}
         <div className='condition_main'>
@@ -151,7 +151,7 @@ const ConditionPopUp = (props) => {
   return (
     <div className="popUp">
       <form className='popUp-inner' onSubmit={e => addCondition(e)}>
-        <h2>조건추가하기</h2>
+        <h2 style={{backgroundColor: 'rgba(34, 124, 157, 1)'}}>조건 추가하기</h2>
         {/* <input className='condition-input' name='condition-input' type="text" />
         <span className="material-icons">search</span> */}
         <div className='condition_main'>
