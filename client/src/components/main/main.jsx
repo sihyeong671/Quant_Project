@@ -18,6 +18,8 @@ import Rank from '../../containers/pages/rank/rank';
 import Info from '../../components/pages/info/info'
 
 import Board from '../../containers/pages/board/board';
+import Article from '../pages/board/article';
+
 
 import NotFound from '../notfound';
 
@@ -39,6 +41,7 @@ const Main = () => {
                 <Route path="/info" component={Info}></Route>
 
                 <Route path="/board" component={Board}></Route>
+                <Route path="/article/:id" component={Article}></Route>
 
                 <Route component={NotFound}></Route>
             </Switch>
