@@ -384,8 +384,8 @@ class RankApi(PublicApiMixin, APIView):
                         casedf = ndf
                     else:
                         pd.concat([casedf, ndf])
-                            
-                    casedf.drop_duplicates()
+                    
+                    casedf = casedf.duplicated()
             
         except:
             return Response({
