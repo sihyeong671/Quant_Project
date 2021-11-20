@@ -57,7 +57,7 @@ class Crawling_Dart(SuperUserMixin, APIView):
         },status=status.HTTP_200_OK)
     
 
-class Crawling_FSData(PublicApiMixin, APIView):
+class Crawling_FSData(SuperUserMixin, APIView):
     def get(self, request):
         # try:
         apikey = APIKEY
