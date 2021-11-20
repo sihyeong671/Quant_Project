@@ -275,6 +275,9 @@ function Calc(props) {
           <input type="text" name="title" />
           <button type='submit'>저장하기</button>
         </div>
+        
+        <div className="calc-unit">{props.calc.unit}</div>
+
         {props.calc.account ? (
           <Account account={props.calc.account} changeCoef={props.changeCoef} changeSubCoef={props.changeSubCoef} />
         ) : null}

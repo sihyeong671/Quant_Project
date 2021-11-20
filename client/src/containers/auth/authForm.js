@@ -131,7 +131,7 @@ function mapDispatchToProps(dispatch){
     getUserData: async () => {
       try{
         const profileRes = await axios.get('api/v1/users/me');
-        console.log(profileRes.data);
+        console.log(profileRes);
         const [dateJoined, email, lastLogin, userName, profile, mybstitles] = [
           profileRes.data[0].date_joined,
           profileRes.data[0].email,

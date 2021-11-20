@@ -59,14 +59,17 @@ const mapDispatchToProps=(dispatch)=>{
     getBsData: async (parameter) => {
       try{
         const res = await axios.post('api/v1/stock/account', parameter);
+        console.log(res)
         const accountData = res.data.account;
         
         const data = reArrange(accountData);
 
         dispatch({
           type: Constants.calc.GET,
-          data: {account: data}
+          data: data,
+          unit: res.data.unit
         })
+
       }catch(error){
         console.log(error);
       }
