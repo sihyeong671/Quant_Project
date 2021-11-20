@@ -15,7 +15,13 @@ class CategoryCreateReadApi(SuperUserMixin, APIView):
         """
         현재 생성되어있는 카테고리(게시판 종류)를 모두 보여준다.
         """
-        serializer = CategorySerializer(Category.objects.all(), many=True)
+        queryset = Category.objects.\
+            select_related(
+                'creator',
+                'creator__profile'
+            ).\
+            all()
+        serializer = CategorySerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def post(self, request, *args, **kwargs):

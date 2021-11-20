@@ -1,0 +1,52 @@
+version: "3.3"
+services:
+  nginx:
+    image: nginx:1.21.1
+    networks:
+      - lq
+    volumes:
+      - ./localnginx.conf:/etc/nginx/nginx.conf
+      - static-volume-quant:/data/static
+    ports:
+      - 80:80
+    depends_on:
+      - quant_home
+      - quant_crawling
+  
+  quant_home:
+    image: quant_8000:0.1
+    networks:
+      - lq
+    volumes:
+      - .:/home/ubuntu/quant_server
+      - static-volume-quant:/home/ubuntu/quant_server/staticroot
+    environment:
+      - PYTHONUNBUFFERED=1
+    entrypoint: ["bash", "-c"]
+    command: 
+      - |
+        python manage.py makemigrations --settings=config.settings.local
+        python manage.py migrate --settings=config.settings.local
+        python manage.py runserver 0.0.0.0:8000 --settings=config.settings.local
+      
+  quant_crawling:
+    image: quant_8080:0.1
+    networks:
+      - lq
+    volumes:
+      - .:/home/ubuntu/quant_server
+      - static-volume-quant:/home/ubuntu/quant_server/staticroot
+    environment:
+      - PYTHONUNBUFFERED=1
+    entrypoint: ["bash", "-c"]
+    command: 
+      - |
+        python manage.py makemigrations --settings=config.settings.local
+        python manage.py migrate --settings=config.settings.local
+        python manage.py runserver 0.0.0.0:8080 --settings=config.settings.local
+
+networks:
+  lq:
+
+volumes:
+  static-volume-quant:

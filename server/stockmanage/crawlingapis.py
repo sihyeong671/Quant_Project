@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 
-from api.mixins import SuperUserMixin
+from api.mixins import SuperUserMixin, PublicApiMixin
 from stockmanage.models import Company
 from stockmanage.models import *
 
@@ -57,7 +57,7 @@ class Crawling_Dart(SuperUserMixin, APIView):
         },status=status.HTTP_200_OK)
     
 
-class Crawling_FSData(SuperUserMixin, APIView):
+class Crawling_FSData(PublicApiMixin, APIView):
     def get(self, request):
         # try:
         apikey = APIKEY
