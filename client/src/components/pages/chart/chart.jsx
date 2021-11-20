@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import HighchartsReact from 'highcharts-react-official';
 import HighStock from 'highcharts/highstock';
+import HighChart from 'highcharts';
 
 
 import Search from '../../../containers/search/search';
@@ -35,7 +36,7 @@ function Chart(props){
     stockData.push(tmp);
   }
 
-  const options = {
+  const options1 = {
     rangeSelector: {
       selected: 1
     },
@@ -86,6 +87,40 @@ function Chart(props){
     }
   }
 
+  const options2 = {
+      chart: {
+          type: 'column'
+      },
+      title: {
+          text: 'Chart'
+      },
+      xAxis: {
+          categories: ["2015", "2016", "2017", "2018", "2019"]
+      },
+      yAxis: {
+          min: 0,
+          title: {
+              text: 'ROE'
+          }
+      },
+      tooltip: {
+          headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+          pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+              '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+          footerFormat: '</table>',
+          shared: true,
+          useHTML: true
+      },
+      plotOptions: {
+          column: {
+              pointPadding: 0.2,
+              borderWidth: 0
+          }
+      },
+      series: []
+  }
+
+
   return (
     <>
       <form className='chart-form' onSubmit={(e) => {
@@ -103,8 +138,16 @@ function Chart(props){
       <HighchartsReact
         highcharts={HighStock}
         constructorType={"stockChart"}
-        options={options}
+        options={options1}
       />
+
+      <HighchartsReact
+        highcharts={HighStock}
+        constructorType={"stockChart"}
+        options={options2}
+      >
+
+      </HighchartsReact>
 
       <div>
         준비중

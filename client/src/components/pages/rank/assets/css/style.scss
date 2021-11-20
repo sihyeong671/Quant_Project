@@ -28,7 +28,7 @@ $light-coral: rgba(254, 109, 115, 1);
     padding: 20px;
     // background-color: aqua;
 
-    .condition-itm{
+    .condition-itm {
       width: 100%;
       line-height: 40px;
       background-color: #fff;
@@ -38,13 +38,17 @@ $light-coral: rgba(254, 109, 115, 1);
       text-align: center;
       font-weight: 500;
       cursor: pointer;
-      transition: all .3s;
+      transition: all 0.3s;
       border-bottom: 1px solid $base-black;
-      &:hover{opacity: 0.8;}
+      &:hover {
+        opacity: 0.8;
+      }
     }
 
-    &:nth-child(3){
-      button {background-color: $light-coral;}
+    &:nth-child(3) {
+      button {
+        background-color: $light-coral;
+      }
     }
 
     button {
@@ -57,77 +61,85 @@ $light-coral: rgba(254, 109, 115, 1);
       font-weight: 500;
       font-size: 20px;
       border: none;
-      transition: all .3s;
+      transition: all 0.3s;
       vertical-align: top;
-      span{
-        display: inline-block ;
+      span {
+        display: inline-block;
         vertical-align: top;
         line-height: 40px;
       }
-      &:hover{opacity: 0.5;}
+      &:hover {
+        opacity: 0.5;
+      }
     }
   }
 }
 
-
-.post-condition{
+.post-condition {
   cursor: pointer;
   display: block;
-  width: 20%;
-  padding: .5rem 0;
+  width: 10%;
+  padding: 0.5rem 0;
   margin: 2rem auto;
   background-color: $base-black;
   color: #fff;
   font-size: 20px;
   border-radius: 40px;
   font-weight: 500;
-  transition: all .3s;
-  &:hover{opacity: 0.8;}
-}
-
-.condition-filter{
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-auto-columns: 1fr;
-  // justify-content: space-between;
-  .filter-itm{
-    display: inline-block;
-    padding: 10px;
-    border-radius: 20px;
-    font-weight: 500;
-    &:last-child{
-      text-align: right;
-    }
+  border: none;
+  transition: all 0.3s;
+  &:hover {
+    opacity: 0.8;
   }
 }
 
-.condition-result{
-  margin-top: 10px;
-  padding: 10px;
-  border-top: 2px solid $line-black;
-  .result-itm{
-    width: 100%;
-    display: grid;
-    // justify-content: space-between;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-auto-columns: 1fr;
-    font-weight: 500;
-    padding: 10px 0;
-    border-bottom: 1px solid $line-black;
-    // text-align: right;
-    &:first-child{
-      padding: 0 0 10px;
-    }
-    div{
-      &:last-child{
-        text-align: right;
+.result-wrapper {
+  width: 100%;
+  height: 60vh;
+  overflow: scroll;
+  .result-inner {
+    width: fit-content;
+    .condition-filter {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(calc(100% / 5), 1fr));
+      .filter-itm {
+        display: inline-block;
+        padding: 10px;
+        border-radius: 20px;
+        font-weight: 500;
+        &:last-child {
+          text-align: left;
+        }
       }
     }
-    
+
+    .condition-result {
+      margin-top: 10px;
+      padding: 10px;
+      border-top: 2px solid $line-black;
+      .result-itm {
+        width: 100%;
+        display: grid;
+        // justify-content: space-between;
+        grid-template-columns: repeat(auto-fill, minmax(calc(100% / 5), 1fr));
+        font-weight: 500;
+        padding: 10px 0;
+        border-bottom: 1px solid $line-black;
+        &:first-child {
+          padding: 0 0 10px;
+        }
+        div {
+          &:last-child {
+            text-align: left;
+            padding-left: 10%;
+          }
+        }
+      }
+    }
+
   }
 }
-
 
 // POPUP
 .popUp {
@@ -261,12 +273,12 @@ $light-coral: rgba(254, 109, 115, 1);
           display: flex;
           justify-content: space-between;
 
-          .input-title{
-            span{
+          .input-title {
+            span {
               cursor: pointer;
               line-height: 46px;
             }
-            h3{
+            h3 {
               vertical-align: top;
               display: inline-block;
               margin-left: 10px;
@@ -282,8 +294,8 @@ $light-coral: rgba(254, 109, 115, 1);
               right: 0;
               display: flex;
               justify-content: flex-end;
-              align-items: center;  
-              input[type=number] {
+              align-items: center;
+              input[type="number"] {
                 height: 30px;
                 font-size: 16px;
                 border-radius: 0px 0 0 0px;
@@ -292,12 +304,12 @@ $light-coral: rgba(254, 109, 115, 1);
                 border: 1px solid $base-black;
                 // border: none;
               }
-              .uninput-itm{
+              .uninput-itm {
                 // padding: 0 5px;
-                input[type=radio] {
+                input[type="radio"] {
                   // display: none;
                 }
-                label{
+                label {
                   height: 30px;
                   font-size: 18px;
                   padding: 5px;

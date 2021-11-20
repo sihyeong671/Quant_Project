@@ -24,8 +24,11 @@ export default function reducer(state = initState, action) {
     switch (action.type) {
 
         case Constants.calc.GET:
-
-            return action.data;
+            let newState = {
+                account : action.data,
+                unit : action.unit
+            }
+            return newState;
 
         case Constants.calc.CHANGESUB: {
             let newState = _.cloneDeep(state);

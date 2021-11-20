@@ -27,7 +27,7 @@ const Home = () => {
 
         <Link className="main-box" to='/calc'>
           <div className='main-text'>
-            <span className="text-title">🧮<strong>연산</strong></span>
+            <span className="text-title">💻<strong>연산</strong></span>
             <p className="text-info">
               재무제표 지표의 연산
             </p>

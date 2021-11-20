@@ -25,7 +25,7 @@ function Rank(props) {
   }
 
 
-  
+
 
 
   console.log("Rank rendering")
@@ -101,39 +101,45 @@ function Rank(props) {
         props.getRankData(getParameter())
       }}>확인</button>
 
+      <div className='result-wrapper'>
+        <div className='result-inner' style={{ width: `calc((100% * (${props.tableName.length} + 2)) / 2)` }}>
+        {/* <div className='result-inner'> */}
 
-      <div className='condition-filter'>
-        <div className='filter-itm start'>회사명</div>
-        {props.tableName.map((name, idx) => {
-          return (
-            <div className='filter-itm' key={idx}>
-              {name}
-            </div>
-          )
-        })}
-        <div className='filter-itm end'>종합순위</div>
-      </div>
+          <div className='condition-filter'>
+            <div className='filter-itm start'>회사명</div>
+            {props.tableName.map((name, idx) => {
+              return (
+                <div className='filter-itm' key={idx}>
+                  {name}
+                </div>
+              )
+            })}
+            <div className='filter-itm end'>종합순위</div>
+          </div>
 
-      <div className='condition-result'>
-        {props.rankData.map((data, idx) => {
-          return (
-            <div className='result-itm' key={idx}>
-              <div>
-                {data.company_name}
-              </div>
-              {props.tableName.map((element, idx_) => {
-                return (
-                  <div key={idx_}>
-                    {(data[element]).toFixed(5)}
+          <div className='condition-result'>
+            {props.rankData.map((data, idx) => {
+              return (
+                <div className='result-itm' key={idx}>
+                  <div>
+                    {data.company_name}
                   </div>
-                );
-              })}
-              <div>
-                {data.rank}
-              </div>
-            </div>
-          )
-        })}
+                  {props.tableName.map((element, idx_) => {
+                    return (
+                      <div key={idx_}>
+                        {(data[element]).toFixed(5)}
+                      </div>
+                    );
+                  })}
+                  <div>
+                    {data.rank}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+        </div>
       </div>
 
     </>

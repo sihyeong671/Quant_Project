@@ -37,6 +37,10 @@ $light-coral: rgba(254, 109, 115, 1);
   cursor: pointer;
 }
 
+.fa, .fab, .fas, .far{
+  font-family: "Font Awesome 5 Brands" !important;
+}
+
 input::-webkit-inner-spin-button{
   opacity: 1;
 }

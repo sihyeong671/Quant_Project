@@ -8,6 +8,9 @@ $maximum-yellow-red: rgba(255, 203, 119, 1);
 $floral-white: rgba(254, 249, 239, 1);
 $light-coral: rgba(254, 109, 115, 1);
 
+$head-width: 30%;
+
+// HEAD
 .calc-head {
     form {
 
@@ -16,6 +19,7 @@ $light-coral: rgba(254, 109, 115, 1);
         }
 
         .calc-filter {
+            width: $head-width;
             margin-top: 10px;
             display: flex;
             line-height: 35px;
@@ -23,7 +27,7 @@ $light-coral: rgba(254, 109, 115, 1);
             .select {
                 margin-right: 5px;
                 cursor: pointer;
-                width: 10%;
+                // width: 10%;
                 font-weight: 500;
                 font-size: 14px;
                 padding: 0 1%;
@@ -57,6 +61,8 @@ $light-coral: rgba(254, 109, 115, 1);
 .saved-list{
     display: flex;
     line-height: 35px;
+    // justify-items: stretch;
+    justify-content: stretch;
     div{
         cursor: pointer;
         font-weight: 500;
@@ -72,103 +78,135 @@ $light-coral: rgba(254, 109, 115, 1);
     }
 }
 
+.calc-unit{
+    text-align: right;
+    font-weight: 500;
+}
+
 .calc-save {
+    width: $head-width;
     display: flex;
     // justify-content: flex-end;
     margin-top: 10px;
     *{ line-height: 30px; }
     input{
+        width: 70%;
         border: 1px solid $base-black;
         font-size: 14px;
         font-weight: 500;
         padding: 0 1%;
     }
     button{
+        width: 30%;
         cursor: pointer;
         border: none;
         background-color: $base-black;
         color: #fff;
         font-weight: 500;
-        width: 100px;
     }
 }
 
 .account-wrapper {
     margin: 20px 0;
 
-    .account-name {
-        font-size: 20px;
-        font-weight: bold;
-        line-height: 40px;
-        // border-bottom: 1px solid rgba(39, 39, 39, 0.8);
-    }
-    .account-amount {
-        margin-left: 20px;
-        font-size: 20px;
-        font-weight: bold;
-        line-height: 40px;
-        border-bottom: 2px solid rgba(39, 39, 39, 0.8);
-        float: right;
-    }
-
-    // SUB ACCOUNT
-    .subAccount {
-        padding-left: 20px;
-        line-height: 40px;
-        padding: 0 0 0 20px;
-        font-size: 16px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        border-bottom: 2px solid rgba(39, 39, 39, 0.212);
-        margin: 0 !important;
-        .subAccount_info {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            .subAccount-name {
-                font-weight: 500;
-                padding-right: 20px;
-                // border-right: 1px solid rgba(39, 39, 39, 0.212);
-            }
-            .subAccount-amount {
-                padding: 0 10%;
-                text-align: right;
-            }
-            h3 {
-                text-align: center;
+    .account-header{
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid $line-black;
+        .account-name-wrapper{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .account-name {
                 font-size: 20px;
-                font-weight: 500;
+                font-weight: bold;
+                line-height: 40px;
+                // border-bottom: 1px solid rgba(39, 39, 39, 0.8);
             }
         }
-
-        .subAccount_value {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-
-            input {
-                margin: auto;
-                width: 60px;
-                padding: 0 5px;
-                text-align: center;
-                height: 30px;
-                font-weight: 500;
-            }
-            h3 {
-                text-align: center;
-                font-size: 20px;
-                font-weight: 500;
-            }
-            span {
-                font-weight: 500;
-                text-align: right;
-            }
+        .account-amount {
+            margin-left: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            line-height: 40px;
+            border-bottom: 2px solid rgba(39, 39, 39, 0.8);
+            float: right;
         }
     }
 
+    .subaccount-wrapper{
+        max-height: fit-content;
+        overflow: hidden;
+        transition: max-height .4s ease-in-out;
+
+        .account-base{}
+
+        // SUB ACCOUNT
+        .subAccount {
+            padding-left: 20px;
+            line-height: 40px;
+            padding: 0 0 0 20px;
+            font-size: 16px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 2px solid rgba(39, 39, 39, 0.212);
+            margin: 0 !important;
+            *{
+                transition: all .3s ease-in-out;
+            }
+            .subAccount_info {
+                display: grid;
+                grid-template-columns: 2fr 1fr 1fr;
+                .subAccount-name {
+                    font-weight: 500;
+                    padding-right: 20px;
+                    // border-right: 1px solid rgba(39, 39, 39, 0.212);
+                }
+                .subAccount-amount {
+                    padding: 0 10%;
+                    text-align: right;
+                }
+                h3 {
+                    text-align: center;
+                    font-size: 20px;
+                    font-weight: 500;
+                }
+            }
+    
+            .subAccount_value {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+    
+                input {
+                    margin: auto;
+                    width: 60px;
+                    padding: 0 5px;
+                    text-align: center;
+                    height: 30px;
+                    font-weight: 500;
+                }
+                h3 {
+                    text-align: center;
+                    font-size: 20px;
+                    font-weight: 500;
+                }
+                span {
+                    font-weight: 500;
+                    text-align: right;
+                }
+            }
+        }
+    
+        
+    }
     .account-vi {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        padding-left: 20px;
+        // padding-left: 20px;
         border-bottom: 1px solid $line-black;
+        *{
+            transition: all .3s ease-in-out;
+        }
         .subAccount_info {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr;
@@ -219,7 +257,7 @@ $light-coral: rgba(254, 109, 115, 1);
 
 .resVal {
     position: fixed;
-    z-index: 10;
+    // z-index: 10;
     bottom: 0;
     border-top: 1px solid #000;
     padding: 20px 5%;

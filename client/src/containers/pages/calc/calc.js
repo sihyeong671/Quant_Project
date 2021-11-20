@@ -59,17 +59,21 @@ const mapDispatchToProps=(dispatch)=>{
     getBsData: async (parameter) => {
       try{
         const res = await axios.post('api/v1/stock/account', parameter);
+        console.log(res)
         const accountData = res.data.account;
         
         const data = reArrange(accountData);
 
         dispatch({
           type: Constants.calc.GET,
-          data: {account: data}
+          data: data,
+          unit: res.data.unit
         })
+
       }catch(error){
         console.log(error);
       }
+      
     },
 
     // 서버로 사용자가 커스텀한 숫자 전송
@@ -79,6 +83,32 @@ const mapDispatchToProps=(dispatch)=>{
         const res = await axios.post('api/v1/stock/custombs', parameter);
         console.log(res);
 
+      }catch(error){
+        console.log(error);
+      }
+
+      // 유저 데이터 갱신
+      try{
+        const profileRes = await axios.get('api/v1/users/me');
+        console.log(profileRes.data);
+        const [dateJoined, email, lastLogin, userName, profile, mybstitles] = [
+          profileRes.data[0].date_joined,
+          profileRes.data[0].email,
+          profileRes.data[0].last_login,
+          profileRes.data[0].username,
+          profileRes.data[0].profile,
+          profileRes.data[0].mybstitles,
+        ];
+        console.log(dateJoined, email, lastLogin, userName, profile, mybstitles)
+        dispatch({
+          type:Constants.user.GETALL_SUCCESS,
+          dateJoined: dateJoined,
+          email: email,
+          lastLogin: lastLogin,
+          userName: userName,
+          profile: profile,
+          mybstitles: mybstitles,
+      })
       }catch(error){
         console.log(error);
       }
@@ -114,6 +144,32 @@ const mapDispatchToProps=(dispatch)=>{
     bsDelete: async (customTitle) => {
       const res = await axios.delete('api/v1/stock/custombs',{params: {title: customTitle}});
       console.log(res);
+
+      // 유저 데이터 갱신
+      try{
+        const profileRes = await axios.get('api/v1/users/me');
+        console.log(profileRes.data);
+        const [dateJoined, email, lastLogin, userName, profile, mybstitles] = [
+          profileRes.data[0].date_joined,
+          profileRes.data[0].email,
+          profileRes.data[0].last_login,
+          profileRes.data[0].username,
+          profileRes.data[0].profile,
+          profileRes.data[0].mybstitles,
+        ];
+        console.log(dateJoined, email, lastLogin, userName, profile, mybstitles)
+        dispatch({
+          type:Constants.user.GETALL_SUCCESS,
+          dateJoined: dateJoined,
+          email: email,
+          lastLogin: lastLogin,
+          userName: userName,
+          profile: profile,
+          mybstitles: mybstitles,
+      })
+      }catch(error){
+        console.log(error);
+      }
     }
   }
 }

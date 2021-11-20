@@ -11,6 +11,7 @@ import { useCookies } from 'react-cookie';
 import axios from 'axios';
 // import axios from 'axios';
 
+import { useHistory } from 'react-router';
 
 // 데이터 전체 삭제
 // 데일리 데이터 주가 크롤링
@@ -29,7 +30,7 @@ const deleteAllCompany = async () => {
 const dailyCrawling = async () => {
   try{
     const res = await axios.get('api/v1/stock/crawling/daily'); // 현재 존재하는 기업들 주가 가져오기(get)
-    console.log(res);
+    console.log(res); 
   }catch(error){
     console.log(error);
   }
@@ -56,8 +57,13 @@ const fsCrawling = async () => {
 
 const Profile=(props)=>{
 
+  const history = useHistory();
+  
   useEffect(()=>{
-    console.log('props: ', props.userData);
+    // console.log('props: ', props.isAuthenticated);
+    if(props.accessToken == null){
+      history.push('/');
+    }
   },[])
 
   console.log('Profile rendering');
@@ -70,13 +76,18 @@ const Profile=(props)=>{
         <button className='info-edit'>프로필 수정</button>
       </section>
 
-      <section className='admin-btns'>
-        <h1>관리자 버튼</h1>
-        <button onClick={deleteAllCompany}>데이터 전체 삭제</button>
-        <button onClick={dailyCrawling}>데일리 데이터 주가 크롤링</button>
-        <button onClick={dartCrawling}>다트 크롤링</button>
-        <button onClick={fsCrawling}>재무제표</button>
-      </section>
+      {
+        props.isAuthenticated ? (
+          <section className='admin-btns'>
+            <h1>관리자 버튼</h1>
+            <button onClick={deleteAllCompany}>데이터 전체 삭제</button>
+            <button onClick={dailyCrawling}>데일리 데이터 주가 크롤링</button>
+            <button onClick={dartCrawling}>다트 크롤링</button>
+            <button onClick={fsCrawling}>재무제표</button>
+          </section>
+        ):(null)
+      }
+
 
       <section className='saved-bstitle'></section>
 

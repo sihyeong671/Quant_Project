@@ -26,7 +26,7 @@ function Login({basicLogin, getUserData}){
     
     if(check) {
       await getUserData();
-      history.push('/');
+      history.goBack();
     }
     else alert("다시")
 
