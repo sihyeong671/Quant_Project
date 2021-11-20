@@ -20,6 +20,7 @@ function mapDispatchToProps(dispatch){
         const param = {code : codeList};
         const res1 = await axios.post('api/v1/stock/chart/daily', param);
         const res2 = await axios.post('api/v1/stock/chart/lob', param);
+        console.log(res2.data);
         dispatch({
           type: Constants.chart.GET,
           data: res1.data
