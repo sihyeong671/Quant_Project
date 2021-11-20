@@ -76,7 +76,8 @@ class AccountSearchApi(PublicApiMixin, APIView):
         
         if account_list.exists():
             unit = account_list.first().fs_div.lob.unit
-        
+        else:
+            unit = ''
         fs_account_list = []
         
         for ac in account_list:
@@ -160,7 +161,7 @@ class CustomBSApi(ApiAuthMixin, APIView):
         
         profile = request.user.profile
         
-        is_duplicated_title = UserCustomBS.objects.filter(title=custom_title).exists()
+        is_duplicated_title = UserCustomBS.objects.filter(custom_title=custom_title).exists()
         if not custom_title or is_duplicated_title:
             return Response(status=status.HTTP_4)
         
@@ -267,6 +268,9 @@ class DailyPriceApi(PublicApiMixin, APIView):
         
         return Response(data, status=status.HTTP_200_OK)
     
+
+
+
 
 class RankApi(PublicApiMixin, APIView):
     def post(self, request, *args, **kwargs):
