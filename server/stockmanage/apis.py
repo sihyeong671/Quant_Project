@@ -269,8 +269,61 @@ class DailyPriceApi(PublicApiMixin, APIView):
         return Response(data, status=status.HTTP_200_OK)
     
 
+class FSChartApi(PublicApiMixin, APIView):
+    def post(self, request, *args, **kwargs):
+        """
+        'code': ['원하는 stock_code 1', '원하는 stock_code 2', ...]
+        """
+        company_code = request.data.get('code', '')
+        # indicator = request.data.get('indicator', '')
+        
+        if not isinstance(company_code, list):
+            company_code = list(company_code)
+        
+        data = {}
+        for code in company_code:
+            company = Company.objects.filter(stock_code=code)
+            
+            if not company.exists():
+                return Response({
+                    "message": "Company not exists"
+                }, status=status.HTTP_404_NOT_FOUND)
+            
+            company = company.first()
+            
+            stocks = FS_LoB.objects.\
+                select_related(
+                    'quarter',
+                    'quarter__year',
+                    'quarter__year__company'
+                ).\
+                filter(
+                    quarter__year__company__company__id=company.id,
+                )
+            
+            indicator_list = []
 
-
+            for stock in stocks:
+                date = stock.quater.year.bs_year * 100
+                if stock.quarter.qt_name == "11013":
+                    date += 1
+                elif stock.quarter.qt_name == "11012":
+                    date += 2
+                elif stock.quarter.qt_name == "11014":
+                    date += 3
+                else:
+                    date += 4
+                
+                # if indicator == "ROE":
+                indicator_list.append([date, stock.ROE])
+                # elif indicator == "ROA":
+                indicator_list.append([date, stock.ROA])
+                
+            indicator_list.sort(key=lambda x: x[0])
+            data[company.stock_name] = indicator_list
+        
+        return Response(data, status=status.HTTP_200_OK)
+        
 
 class RankApi(PublicApiMixin, APIView):
     def post(self, request, *args, **kwargs):

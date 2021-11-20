@@ -19,6 +19,7 @@ def getData(stocks):
 
 
 
+
 def getCaseData(case, condition, queryset):
     
     allcnt = FS_LoB.objects.all().count()
