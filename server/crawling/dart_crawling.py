@@ -113,6 +113,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         net_income = 0
         total_capital = 0
         total_asset = 0
+        total_pcompany = 0
 
         link_model.exist = 1
 
@@ -224,6 +225,8 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                     elif fs_lst["account_nm"] == "자본총계":
                         total_capital = int(fs_lst["thstrm_amount"])
                         link_model.total_capital = total_capital
+                    elif "지배기업" in fs_lst["account_nm"]:
+                        total_pcompany = int(fs_lst["thstrm_amount"])
                 else:
                     for child in bs_tree.values():
                         if fs_lst["account_nm"] in child:
@@ -248,7 +251,9 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                 money.fs_div = CIS
                 acnm = "".join(fs_lst["account_nm"].split())
                 if "당기순이익" in acnm or\
-                    "분기순이익" in acnm:
+                    "분기순이익" in acnm or\
+                    "분기순손익" in acnm or\
+                    "당기순손익" in acnm:
                     print("".join(fs_lst["account_nm"].split()))
                     print(fs_lst["thstrm_amount"])
                     try:
@@ -281,13 +286,18 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                 money.account_amount = fs_lst["thstrm_amount"]
                 if "매출총이익" in account_name or "매출총손익" in account_name:
                     gp = float(fs_lst["thstrm_amount"])
-                elif "자산총계" in account_name:
-                    all_amount = float(fs_lst["thstrm_amount"])
-            
+                # elif "자산총계" in account_name:
+                #     all_amount = float(fs_lst["thstrm_amount"])
+            if not total_capital and total_pcompany:
+                total_capital = total_pcompany
+                money.fs_div = BS
+                money.account_name = "자본총계"
+                money.account_amount = total_pcompany
+                
             money.save()
         
         try:
-            link_model.GPA = gp/all_amount
+            link_model.GPA = gp/total_asset
             link_model.ROA = net_income / total_asset * 100 # %
             link_model.ROE = net_income / total_capital * 100 # %
             

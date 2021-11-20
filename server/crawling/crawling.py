@@ -80,8 +80,10 @@ def get_per_pbr(queryset, condition, market_cap, now_quarter:str, prev_quarter, 
     pbr = 0
     if query.exists():
         lob = query.first()
-        per = market_cap / lob.net_income
-        pbr = market_cap / lob.total_capital
+        if lob.net_income:
+            per = market_cap / lob.net_income
+        if lob.total_capital:
+            pbr = market_cap / lob.total_capital
     
     return per, pbr
     

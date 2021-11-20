@@ -298,7 +298,7 @@ class FSChartApi(PublicApiMixin, APIView):
                     'quarter__year__company'
                 ).\
                 filter(
-                    quarter__year__company__company__id=company.id,
+                    quarter__year__company__id=company.id,
                 )
             
             indicator_list = []
