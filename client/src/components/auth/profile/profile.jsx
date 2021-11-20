@@ -6,6 +6,7 @@ import Constants from "../../../store/constants";
 import './assets/css/style.scss';
 
 import profileImg from './assets/img/1.jpg';
+import {Loading} from '../../../utils/utils';
 
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
@@ -18,46 +19,56 @@ import { useHistory } from 'react-router';
 // 다트 크롤링
 // 재무제표 크롤링
 
-const deleteAllCompany = async () => {
-  try{
-    const res = await axios.delete('api/v1/stock/crawling/fs'); // 모든 데이터 삭제
-    console.log(res);
-  }catch(error){
-    console.log(error);
-  }
-}
 
-const dailyCrawling = async () => {
-  try{
-    const res = await axios.get('api/v1/stock/crawling/daily'); // 현재 존재하는 기업들 주가 가져오기(get)
-    console.log(res);
-  }catch(error){
-    console.log(error);
-  }
-}
-
-const dartCrawling = async () => {
-  try{
-    const res = await axios.get('api/v1/stock/crawling/dart'); // 고유번호 가져오기
-    console.log(res);
-  }catch(error){
-    console.log(error);
-  }
-}
-
-const fsCrawling = async () => {
-  try{
-    const res = await axios.get('api/v1/stock/crawling/fs'); // 재무제표 크롤링
-    console.log(res);
-  }catch(error){
-    console.log(error);
-  }
-}
 
 
 const Profile=(props)=>{
 
   const history = useHistory();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const deleteAllCompany = async () => {
+    try{
+      setIsLoading(true);
+      const res = await axios.delete('api/v1/stock/crawling/fs'); // 모든 데이터 삭제
+      setIsLoading(false);
+      console.log(res);
+    }catch(error){
+      console.log(error);
+    }
+  }
+  
+  const dailyCrawling = async () => {
+    try{
+      setIsLoading(true);
+      const res = await axios.get('api/v1/stock/crawling/daily'); // 현재 존재하는 기업들 주가 가져오기(get)
+      setIsLoading(false);
+      console.log(res);
+    }catch(error){
+      console.log(error);
+    }
+  }
+  
+  const dartCrawling = async () => {
+    try{
+      setIsLoading(true);
+      const res = await axios.get('api/v1/stock/crawling/dart'); // 고유번호 가져오기
+      setIsLoading(false);
+      console.log(res);
+    }catch(error){
+      console.log(error);
+    }
+  }
+  
+  const fsCrawling = async () => {
+    try{
+      setIsLoading(true);
+      const res = await axios.get('api/v1/stock/crawling/fs'); // 재무제표 크롤링
+      console.log(res);
+    }catch(error){
+      console.log(error);
+    }
+  }
   
   useEffect(()=>{
     console.log('props: ', props.isAuthenticated);
