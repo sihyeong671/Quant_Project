@@ -135,7 +135,7 @@ class FS_LoBAdmin(admin.ModelAdmin):
     )
     search_fields = (
         'quarter__year__company__corp_name', 'quarter__year__bs_year', 'quarter__qt_name',
-        'lob', 'unit', 'exist', 'ROE', 'ROA', 'GPA', 'net_income', 'total_capital', 
+        'lob', 'unit', 'exist',
     )
     list_filter = ('lob', 'exist', 'unit', )
     
@@ -442,15 +442,14 @@ class Daily_PriceAdmin(admin.ModelAdmin):
     ordering = ('date', )
     list_display = (
         'get_company', 'date', 'open', 'close',
-        'low', 'high', 'volume', 'cfs_per', 'cfs_pbr', 'ofs_per', 'ofs_pbr'
+        'low', 'high', 'volume', 'per', 'pbr'
     )
     list_display_links = (
         'get_company', 'date', 'open', 'close',
-        'low', 'high', 'volume', 'cfs_per', 'cfs_pbr', 'ofs_per', 'ofs_pbr'
+        'low', 'high', 'volume', 'per', 'pbr'
     )
     search_fields = (
-        'company__corp_name', 'date', 'open', 'close',
-        'low', 'high', 'volume', 'cfs_per', 'cfs_pbr', 'ofs_per', 'ofs_pbr'
+        'company__corp_name',
     )
     
     inlines = ()

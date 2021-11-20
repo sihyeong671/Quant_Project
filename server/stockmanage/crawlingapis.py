@@ -12,7 +12,7 @@ from crawling.API_KEY import *
 
 
 
-class Crawling_DailyPrice(SuperUserMixin, APIView):
+class Crawling_DailyPrice(PublicApiMixin, APIView):
     def get(self, request, *args, **kwargs):
         """
         주가 저장 API
