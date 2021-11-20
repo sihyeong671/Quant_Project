@@ -77,7 +77,7 @@ const Profile=(props)=>{
       </section>
 
       {
-        props.isAuthenticated ? (
+        props.userData.isSuperUser ? (
           <section className='admin-btns'>
             <h1>관리자 버튼</h1>
             <button onClick={deleteAllCompany}>데이터 전체 삭제</button>
