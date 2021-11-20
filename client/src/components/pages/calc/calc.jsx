@@ -68,32 +68,42 @@ const Account = ({ account, changeCoef, changeSubCoef }) => {
 
   const AccountList = account.map((acnt, idx_1) => {
 
-    let amount;
+    let _amount;
     let _name;
 
-    if (acnt.sub_account.length == 0) { amount = acnt.amount }
-      return (
-        <div className='account-wrapper' key={idx_1 + "acntForm"}>
-          {
-            (acnt.fsname == "비지배지분") ? (
-              <div className='account-vi' key={0}>
-                <div className='subAccount_info'>
-                  <span className='subAccount-name'>{acnt.fsname}</span>
-                  <span className='subAccount-amount'>{commas(acnt.amount)}</span>
-                  <h3>x</h3>
-                </div>
-                <Input index={[idx_1]} coef={acnt.coef} changeFunction={changeCoef} pre_value={acnt.amount}></Input>
+    if(acnt.fsname) _name = acnt.fsname;
+    else if(acnt.account_name) _name = acnt.account_name;
+
+
+    
+
+    if (acnt.sub_account.length == 0){
+      if(acnt.amount) _amount = acnt.amount;
+      else if(acnt.account_amount) _amount = acnt.account_amount;
+    }
+
+    return (
+      <div className='account-wrapper' key={idx_1 + "acntForm"}>
+        {
+          (acnt.fsname == "비지배지분") ? (
+            <div className='account-vi' key={0}>
+              <div className='subAccount_info'>
+                <span className='subAccount-name'>{_name}</span>
+                <span className='subAccount-amount'>{commas(_amount)}</span>
+                <h3>x</h3>
               </div>
-            ) : (
-              <div key={1}>
-                <span className='account-name'>{acnt.fsname}</span>
-                <span className='account-amount'>{commas(amount)}</span>
-                <SubAccount subAccount={acnt.sub_account} changeSubCoef={changeSubCoef} idx_1={idx_1} />
-              </div>
-            )
-          }
-        </div>
-      )
+              <Input index={[idx_1]} coef={acnt.coef} changeFunction={changeCoef} pre_value={acnt.amount}></Input>
+            </div>
+          ) : (
+            <div key={1}>
+              <span className='account-name'>{_amount}</span>
+              <span className='account-amount'>{commas(_amount)}</span>
+              <SubAccount subAccount={acnt.sub_account} changeSubCoef={changeSubCoef} idx_1={idx_1} />
+            </div>
+          )
+        }
+      </div>
+    )
   })
   return (<>{AccountList}</>)
 }
