@@ -7,6 +7,7 @@ import user from './userreducer';
 import board from './boardreducer';
 import calc from './calcreducer'
 import rank from './rankreducer';
+import main from './mainreducer';
 
 import storage from "redux-persist/lib/storage";
 
@@ -26,6 +27,7 @@ const rootReducer =  combineReducers({
   calc,
   rank,
   board,
+  main,
 });
 
 export default persistReducer(persistConfig, rootReducer);

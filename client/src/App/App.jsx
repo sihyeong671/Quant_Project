@@ -7,7 +7,7 @@ import { useCookies } from 'react-cookie';
 
 import Header from '../containers/base/header/header';
 import Footer from '../components/base/footer/footer';
-import Main from '../components/main/main';
+import Main from '../containers/main/main';
 
 
 
