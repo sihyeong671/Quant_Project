@@ -213,13 +213,6 @@ function Calc(props) {
   const onSubmitSave = (e) => {
     e.preventDefault();
 
-    console.log({
-      ...parameter,
-      account: props.calc.account,
-      title: e.target.title.value
-    });
-
-
     props.sendCustom({ // 커스텀 변수 보내서 사용자 정보에 저장
       ...parameter,
       account: props.calc.account,
