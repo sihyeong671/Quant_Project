@@ -54,7 +54,8 @@ class PostManageApi(ApiAuthMixin, APIView):
         post = get_object_or_404(Post, pk=pk)
         queryset = Post.objects.\
             select_related(
-                'creator'
+                'creator',
+                'creator__profile'
             ).\
             prefetch_related(
                 'comment',
