@@ -378,7 +378,7 @@ class RankApi(PublicApiMixin, APIView):
                 else:
                     pd.concat([casedf, ndf])
                 
-                casedf = casedf.duplicated()
+                casedf = casedf[casedf.duplicated()]
                 print(casedf)
         
         if casedf.empty:
