@@ -26,7 +26,7 @@ class Category(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=128, null=True, blank=False)
-    content = models.TextField(null=True, blank=False)
+    content = models.TextField(default='', null=True, blank=False)
     thumbnail = models.ImageField(upload_to='post_thumbnail/', null=True, blank=True)
     hits = models.PositiveIntegerField(default=0)
     created_date = models.DateTimeField(default=timezone.now)

@@ -12,21 +12,17 @@ from crawling.API_KEY import *
 
 
 
-class Crawling_DailyPrice(SuperUserMixin, APIView):
+class Crawling_DailyPrice(PublicApiMixin, APIView):
     def get(self, request, *args, **kwargs):
         """
         주가 저장 API
         자세한 사항은 Save_Price() 함수 참고
         """
-        try:
-            Save_Price()
-            return Response({
-                "message": "successed save daily price"
-            }, status=status.HTTP_200_OK)
-        except:
-            return Response({
-                "message": "failed save daily price"
-            }, status=status.HTTP_409_CONFLICT)
+        Save_Price()
+        
+        return Response({
+            "message": "successed save daily price"
+        }, status=status.HTTP_200_OK)
         
         
 
@@ -57,7 +53,7 @@ class Crawling_Dart(SuperUserMixin, APIView):
         },status=status.HTTP_200_OK)
     
 
-class Crawling_FSData(PublicApiMixin, APIView):
+class Crawling_FSData(SuperUserMixin, APIView):
     def get(self, request):
         # try:
         apikey = APIKEY
