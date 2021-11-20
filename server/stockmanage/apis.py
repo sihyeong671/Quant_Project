@@ -379,6 +379,7 @@ class RankApi(PublicApiMixin, APIView):
                     pd.concat([casedf, ndf])
                 
                 casedf = casedf.duplicated()
+                print(casedf)
         
         if casedf.empty:
             return Response({}, status=status.HTTP_200_OK)
