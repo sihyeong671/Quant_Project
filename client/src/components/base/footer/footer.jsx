@@ -19,7 +19,8 @@ function Footer() {
         </p>
       </div>
       <div className='footer-copyrights'>
-        <p>박시형 | 조현우 | 허상원</p>
+        {/* <p>박시형 | 조현우 | 허상원</p> */}
+        <p>박시형 | 조현우</p>
         <div className='copyrights-mail'>
           <span className='material-icons'>mail</span>
           <a href='mailto:projectquant@naver.com'>projectquant@naver.com</a>
