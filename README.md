@@ -1,5 +1,5 @@
 # **Quant_Project**
-<img width="1346" alt="image" src="![Untitled-1](https://user-images.githubusercontent.com/65818008/142756244-0fbfb422-d8ea-442c-8c67-e80084d48db9.png)">
+<img width="1346" alt="image" src="https://user-images.githubusercontent.com/65818008/142756244-0fbfb422-d8ea-442c-8c67-e80084d48db9.png">
 
 ## 1.	프로젝트 개요
 ### 1.1.	프로젝트 배경 및 목적
