@@ -61,7 +61,9 @@ const mapDispatchToProps=(dispatch)=>{
         const res = await axios.post('api/v1/stock/account', parameter);
         console.log(res)
         const accountData = res.data.account;
-        
+        if(accountData.length == 0){
+          return alert('데이터가 없습니다')
+        }
         const data = reArrange(accountData);
 
         dispatch({
@@ -98,8 +100,8 @@ const mapDispatchToProps=(dispatch)=>{
           profileRes.data[0].username,
           profileRes.data[0].profile,
           profileRes.data[0].mybstitles,
+          profileRes.data[0].is_superuser
         ];
-        console.log(dateJoined, email, lastLogin, userName, profile, mybstitles)
         dispatch({
           type:Constants.user.GETALL_SUCCESS,
           dateJoined: dateJoined,
@@ -108,6 +110,7 @@ const mapDispatchToProps=(dispatch)=>{
           userName: userName,
           profile: profile,
           mybstitles: mybstitles,
+          isSuperUser: isSuperUser
       })
       }catch(error){
         console.log(error);

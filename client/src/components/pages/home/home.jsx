@@ -19,7 +19,7 @@ const Home = () => {
           <div className='main-text'>
             <span className="text-title">📈<strong>차트</strong></span>
             <p className="text-info">
-              기업 다양한 주가 및 지표 차트 비교
+              기업의 주가 및 지표 차트 비교
             </p>
           </div>
           <div className='box-img' style={{ backgroundImage: `url(${banner_b})` }}></div>
@@ -29,7 +29,7 @@ const Home = () => {
           <div className='main-text'>
             <span className="text-title">💻<strong>연산</strong></span>
             <p className="text-info">
-              재무제표 지표의 연산
+              재무상태표의 연산
             </p>
           </div>
           <div className='box-img' style={{ backgroundImage: `url(${banner_b})` }}></div>
@@ -39,7 +39,7 @@ const Home = () => {
           <div className='main-text'>
             <span className="text-title">🥇<strong>순위</strong></span>
             <p className="text-info">
-              주가의 조건에 따른 순위
+              재무지표 조건에 따른 순위
             </p>
           </div>
           <div className='box-img' style={{ backgroundImage: `url(${banner_b})` }}></div>

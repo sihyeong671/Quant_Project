@@ -39,7 +39,8 @@ export default function reducer(state=initState, action){
           lastLogin: action.lastLogin,
           userName: action.userName,
           profile: action.profile,
-          mybstitles: action.mybstitles
+          mybstitles: action.mybstitles,
+          isSuperUser: action.isSuperUser
         }
       }
   }
