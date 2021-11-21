@@ -40,6 +40,7 @@ const SignUp = (props) => {
     if(check){
       props.getUserData();
       history.push('/');
+      // history.goBack();
     }
     
   }
