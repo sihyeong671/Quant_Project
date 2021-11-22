@@ -221,12 +221,15 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                     pre_money = money
 
                     if fs_lst["account_nm"] == "자산총계":
-                        total_asset = int(fs_lst["thstrm_amount"])
+                        total_asset = float(fs_lst["thstrm_amount"])
                     elif fs_lst["account_nm"] == "자본총계":
-                        total_capital = int(fs_lst["thstrm_amount"])
+                        total_capital = float(fs_lst["thstrm_amount"])
                         link_model.total_capital = total_capital
                     elif "지배기업" in fs_lst["account_nm"]:
-                        total_pcompany = int(fs_lst["thstrm_amount"])
+                        if not fs_lst["thstrm_amount"]:
+                            money.account_amount = 0
+                        else:
+                            total_pcompany = float(fs_lst["thstrm_amount"])
                 else:
                     for child in bs_tree.values():
                         if fs_lst["account_nm"] in child:
@@ -254,8 +257,8 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                     "분기순이익" in acnm or\
                     "분기순손익" in acnm or\
                     "당기순손익" in acnm:
-                    print("".join(fs_lst["account_nm"].split()))
-                    print(fs_lst["thstrm_amount"])
+                    # print("".join(fs_lst["account_nm"].split()))
+                    # print(fs_lst["thstrm_amount"])
                     try:
                         net_income = float(fs_lst["thstrm_amount"])
                         link_model.net_income += net_income
