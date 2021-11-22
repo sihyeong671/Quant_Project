@@ -24,8 +24,8 @@ def Save_FS_Data(api_key):
     상장된 기업의 Dart
     """
     linklst = ["CFS", "OFS"] # link, basic
-    years = ["2015","2016","2017","2018","2019","2020","2021"]
-    # years = ["2018","2019","2020", "2021"]
+    # years = ["2015","2016","2017","2018","2019","2020","2021"]
+    years = ["2021"]
 
     quarters = ["11013", "11012", "11014", "11011"]
 
@@ -129,7 +129,7 @@ def saveDailyPrice(data, corp):
         )
         
         if already.exists():
-            pass
+            continue
         else:
             Daily_Data = Daily_Price(
                 company=company,
@@ -162,7 +162,7 @@ def Save_Price():
     corporations = Company.objects.all()
     for corp in corporations:
         # 시가총액, ohlvc, per, pbr 함수로 가져와서 저장하기
-        data = Daily_Crawling("20210101", "20210201", corp.stock_code)
+        data = Daily_Crawling("20210101", "20211119", corp.stock_code)
         print(data)
         time.sleep(1)
         
