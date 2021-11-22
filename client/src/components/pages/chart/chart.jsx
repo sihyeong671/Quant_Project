@@ -60,12 +60,6 @@ function Chart(props){
     });
     pbrData.push(tmpPbr);
   }
-  console.log(priceData);
-  console.log(perData);
-  console.log(pbrData);
-
-
-
 
   return (
     <>
@@ -91,13 +85,13 @@ function Chart(props){
         highcharts={HighStock}
         constructorType={"stockChart"}
         options={pbrOptions(pbrData)}
-      />
 
       <HighchartsReact
         highcharts={HighStock}
         constructorType={"stockChart"}
         options={perOptions(perData)}
       />
+
 
 
       <div>

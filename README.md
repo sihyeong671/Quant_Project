@@ -1,5 +1,5 @@
 # **Quant_Project**
-<img width="1346" alt="image" src="https://user-images.githubusercontent.com/68914294/142739679-b06ba393-4140-45c1-b90f-4db2ffb0d4d5.png">
+<img width="1346" alt="image" src="https://user-images.githubusercontent.com/65818008/142756244-0fbfb422-d8ea-442c-8c67-e80084d48db9.png">
 
 ## 1.	프로젝트 개요
 ### 1.1.	프로젝트 배경 및 목적
@@ -19,7 +19,7 @@
 
 > [컨테이너, 배포] : docker-compose v3.3, Docker swarm service
 
-> [프론트엔드] : React
+> [프론트엔드] : React v17.0.2, Redux v4.1.1
 
 ---
 
