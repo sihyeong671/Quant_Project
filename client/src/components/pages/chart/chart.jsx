@@ -44,21 +44,24 @@ function Chart(props){
       name: '',
       data: []
     };
-    tmpPrice.name = key;
-    tmpPrice.data = value?.map(elements => {
-      return [elements[0], elements[1]];
-    });
-    priceData.push(tmpPrice);
-    tmpPer.name = key;
-    tmpPer.data = value?.map(elements => {
-      return [elements[0], elements[2]];
-    });
-    perData.push(tmpPer);
-    tmpPbr.name = key;
-    tmpPbr.data = value?.map(elements => {
-      return [elements[0], elements[3]];
-    });
-    pbrData.push(tmpPbr);
+    if(value.length !== 0){
+      tmpPrice.name = key;
+      tmpPrice.data = value?.map(elements => {
+        return [elements[0], elements[1]];
+      });
+      priceData.push(tmpPrice);
+      tmpPer.name = key;
+      tmpPer.data = value?.map(elements => {
+        return [elements[0], elements[2]];
+      });
+      perData.push(tmpPer);
+      tmpPbr.name = key;
+      tmpPbr.data = value?.map(elements => {
+        return [elements[0], elements[3]];
+      });
+      pbrData.push(tmpPbr);
+
+    }
   }
 
   return (
@@ -85,6 +88,7 @@ function Chart(props){
         highcharts={HighStock}
         constructorType={"stockChart"}
         options={pbrOptions(pbrData)}
+      />
 
       <HighchartsReact
         highcharts={HighStock}
