@@ -161,14 +161,22 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         fs_unit = bs_soup.find_all("table")[1].find_all('p')[-1]
         print(fs_unit)
         
-        if bs_soup.find("table").find_all('p')[-1]:
-            fs_unit = bs_soup.find("table").find_all('p')[-1]
-            link_model.unit = fs_unit.text
-            link_model.save()
-        elif bs_soup.find_all("table")[1].find_all('p')[-1]:
-            fs_unit = bs_soup.find_all("table")[1].find_all('p')[-1]
-            link_model.unit = fs_unit.text
-            link_model.save()
+        fs_unitlist = bs_soup.find_all("table")
+        for fs_unit in fs_unitlist:
+            print(fs_unit.find_all('p')[-1])
+            if "단위" in fs_unit.find_all('p')[-1]:
+                link_model.unit = fs_unit.find_all('p')[-1].text
+                link_model.save()
+                break
+        
+        # if bs_soup.find("table").find_all('p')[-1]:
+        #     fs_unit = bs_soup.find("table").find_all('p')[-1]
+        #     link_model.unit = fs_unit.text
+        #     link_model.save()
+        # elif bs_soup.find_all("table")[1].find_all('p')[-1]:
+        #     fs_unit = bs_soup.find_all("table")[1].find_all('p')[-1]
+        #     link_model.unit = fs_unit.text
+        #     link_model.save()
         
         # try:
         #     fs_unit = bs_soup.find("table").find_all('p')[-1]
