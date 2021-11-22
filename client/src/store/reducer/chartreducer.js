@@ -9,9 +9,8 @@ const initState = {
 export default function reducer(state=initState, action){
   switch(action.type){
     case Constants.chart.GET:
-      const newState = {
-        price: action.price,
-      }
+      const newState = action.data
+
       return newState;
     default:
       return state;
