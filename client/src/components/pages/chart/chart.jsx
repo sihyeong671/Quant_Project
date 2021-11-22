@@ -27,16 +27,44 @@ function Chart(props){
   
   const [isLoading, setIsLoading] = useState(false);
 
-  let stockData = [];
-  for(const [key, value] of Object.entries(props.chart.price)){
-    let tmp = {
+  let priceData = [];
+  let perData = [];
+  let pbrData = [];
+
+  for(const [key, value] of Object.entries(props.chart)){
+    let tmpPrice = {
       name: '',
       data: []
     };
-    tmp.name = key;
-    tmp.data = value;
-    stockData.push(tmp);
+    let tmpPer = {
+      name: '',
+      data: []
+    };
+    let tmpPbr = {
+      name: '',
+      data: []
+    };
+    tmpPrice.name = key;
+    tmpPrice.data = value?.map(elements => {
+      return [elements[0], elements[1]];
+    });
+    priceData.push(tmpPrice);
+    tmpPer.name = key;
+    tmpPer.data = value?.map(elements => {
+      return [elements[0], elements[2]];
+    });
+    perData.push(tmpPer);
+    tmpPbr.name = key;
+    tmpPbr.data = value?.map(elements => {
+      return [elements[0], elements[3]];
+    });
+    pbrData.push(tmpPbr);
   }
+  console.log(priceData);
+  console.log(perData);
+  console.log(pbrData);
+
+
 
 
   return (
@@ -56,33 +84,21 @@ function Chart(props){
       <HighchartsReact
         highcharts={HighStock}
         constructorType={"stockChart"}
-        options={priceOptions(stockData)}
-      />
-
-      {/* <HighchartsReact
-        highcharts={HighStock}
-        constructorType={"stockChart"}
-        options={pbrOptions()}
+        options={priceOptions(priceData)}
       />
 
       <HighchartsReact
-<<<<<<< HEAD
-        highcharts={HighChart}
-        options={options2}
-      >
-=======
         highcharts={HighStock}
         constructorType={"stockChart"}
-        options={perOptions()}
-      /> */}
->>>>>>> fd14cde1a2c4cc38169b482a196923b8d26cede9
+        options={pbrOptions(pbrData)}
+      />
 
-      {/* <HighchartsReact
+      <HighchartsReact
         highcharts={HighStock}
         constructorType={"stockChart"}
-        options={roeOptions}
-      >
-      </HighchartsReact> */}
+        options={perOptions(perData)}
+      />
+
 
       <div>
         준비중

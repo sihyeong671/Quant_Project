@@ -1,6 +1,5 @@
 
-  export const priceOptions = ({data}) => {
-    
+  export const priceOptions = (props) => {
   return {
       rangeSelector: {
         selected: 1
@@ -33,7 +32,7 @@
       chart: {
         type: 'line'
       },
-      series: data,
+      series: props,
       plotOption:{
         series: {
           showInNavigator: true
@@ -54,7 +53,7 @@
 }
 
 
-export const pbrOptions = ({data}) => {
+export const pbrOptions = (props) => {
 
   return {
     rangeSelector: {
@@ -66,7 +65,7 @@ export const pbrOptions = ({data}) => {
     },
 
     title: {
-      text: 'Stock Chart'
+      text: 'PBR Chart'
     },
 
     yAxis: {
@@ -88,7 +87,7 @@ export const pbrOptions = ({data}) => {
     chart: {
       type: 'line'
     },
-    series: data,
+    series: props,
     plotOption:{
       series: {
         showInNavigator: true
@@ -108,7 +107,59 @@ export const pbrOptions = ({data}) => {
   }
 }
 
-export const perOptions = {}
+export const perOptions = (props) => {
+
+  return {
+    rangeSelector: {
+      selected: 1
+    },
+
+    legend: {
+      enabled: true
+    },
+
+    title: {
+      text: 'PER Chart'
+    },
+
+    yAxis: {
+      title: {
+        text: "stock price"
+      },
+      plotLines: [{
+        value: 0,
+        width: 2,
+        color: "silver"
+      }]
+    },
+
+    xAxis: {
+      title: {
+        text: "date"
+      }
+    },
+    chart: {
+      type: 'line'
+    },
+    series: props,
+    plotOption:{
+      series: {
+        showInNavigator: true
+      }
+    },
+
+    tooltip: {
+      split: true,
+      valueDecimals: 2
+    },
+
+    rangeSelector: {
+      verticalAlign: 'top',
+      x: 0,
+      y: 0
+    }
+  }
+}
 
 export const roeOptions = (data) => {
 
