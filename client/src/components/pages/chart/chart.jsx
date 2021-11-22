@@ -11,6 +11,8 @@ import HighChart from 'highcharts';
 import Search from '../../../containers/search/search';
 
 import {Loading} from '../../../utils/utils'
+import {priceOptions, perOptions, pbrOptions} from './options'
+
 
 import './assets/css/style.scss';
 
@@ -26,7 +28,7 @@ function Chart(props){
   const [isLoading, setIsLoading] = useState(false);
 
   let stockData = [];
-  for(const [key, value] of Object.entries(props.chart)){
+  for(const [key, value] of Object.entries(props.chart.price)){
     let tmp = {
       name: '',
       data: []
@@ -34,90 +36,6 @@ function Chart(props){
     tmp.name = key;
     tmp.data = value;
     stockData.push(tmp);
-  }
-
-  const options1 = {
-    rangeSelector: {
-      selected: 1
-    },
-
-    legend: {
-      enabled: true
-    },
-
-    title: {
-      text: 'Stock Chart'
-    },
-
-    yAxis: {
-      title: {
-        text: "stock price"
-      },
-      plotLines: [{
-        value: 0,
-        width: 2,
-        color: "silver"
-      }]
-    },
-
-    xAxis: {
-      title: {
-        text: "date"
-      }
-    },
-    chart: {
-      type: 'line'
-    },
-    series: stockData,
-    plotOption:{
-      series: {
-        showInNavigator: true
-      }
-    },
-
-    tooltip: {
-      split: true,
-      valueDecimals: 2
-    },
-
-    rangeSelector: {
-      verticalAlign: 'top',
-      x: 0,
-      y: 0
-    }
-  }
-
-  const options2 = {
-      chart: {
-          type: 'column'
-      },
-      title: {
-          text: 'Chart'
-      },
-      xAxis: {
-          categories: ["2015", "2016", "2017", "2018", "2019"]
-      },
-      yAxis: {
-          min: 0,
-          title: {
-              text: 'ROE'
-          }
-      },
-      tooltip: {
-          headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-          pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-              '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-          footerFormat: '</table>',
-          shared: true,
-          useHTML: true
-      },
-      plotOptions: {
-          column: {
-              pointPadding: 0.2,
-              borderWidth: 0
-          }
-      },
-      series: []
   }
 
 
@@ -138,15 +56,33 @@ function Chart(props){
       <HighchartsReact
         highcharts={HighStock}
         constructorType={"stockChart"}
-        options={options1}
+        options={priceOptions(stockData)}
+      />
+
+      {/* <HighchartsReact
+        highcharts={HighStock}
+        constructorType={"stockChart"}
+        options={pbrOptions()}
       />
 
       <HighchartsReact
+<<<<<<< HEAD
         highcharts={HighChart}
         options={options2}
       >
+=======
+        highcharts={HighStock}
+        constructorType={"stockChart"}
+        options={perOptions()}
+      /> */}
+>>>>>>> fd14cde1a2c4cc38169b482a196923b8d26cede9
 
-      </HighchartsReact>
+      {/* <HighchartsReact
+        highcharts={HighStock}
+        constructorType={"stockChart"}
+        options={roeOptions}
+      >
+      </HighchartsReact> */}
 
       <div>
         준비중

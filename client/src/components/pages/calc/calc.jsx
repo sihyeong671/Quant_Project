@@ -23,6 +23,10 @@ function commas(x) {
 const Input = ({ index, coef, changeFunction, pre_value }) => {
   console.log("Input rendering")
   const [coefficient, setCoefficient] = useState(coef);
+
+  if(coef != coefficient){
+    setCoefficient(coef);
+  }
   const onChange = (e) => {
     e.preventDefault();
     if (e.target.value == '') { // 빈 값을 넣으면 0이 되도록 함
@@ -45,6 +49,10 @@ const Input = ({ index, coef, changeFunction, pre_value }) => {
 
 const SubAccount = ({ idx_1, subAccount, changeSubCoef }) => {
   console.log('SubAccount rendering');
+  let _coef, _amount;
+  
+
+
   const subAccountList = subAccount.map((subacnt, idx_2) => {
     return (
       <div className='subAccount' key={idx_2}>
