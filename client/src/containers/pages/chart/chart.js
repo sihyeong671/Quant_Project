@@ -19,10 +19,11 @@ function mapDispatchToProps(dispatch){
       try{
         const param = {code : codeList};
         const res1 = await axios.post('api/v1/stock/chart/daily', param);
-        console.log(res1);
+
         dispatch({
           type: Constants.chart.GET,
           data: res1.data,
+
         })
       }catch(error){
         console.log(error);

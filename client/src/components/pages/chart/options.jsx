@@ -1,5 +1,6 @@
 
   export const priceOptions = (props) => {
+
   return {
       rangeSelector: {
         selected: 1
@@ -32,7 +33,9 @@
       chart: {
         type: 'line'
       },
+
       series: props,
+
       plotOption:{
         series: {
           showInNavigator: true
@@ -53,7 +56,9 @@
 }
 
 
+
 export const pbrOptions = (props) => {
+
 
   return {
     rangeSelector: {
@@ -65,7 +70,9 @@ export const pbrOptions = (props) => {
     },
 
     title: {
+
       text: 'PBR Chart'
+
     },
 
     yAxis: {
@@ -87,7 +94,9 @@ export const pbrOptions = (props) => {
     chart: {
       type: 'line'
     },
+
     series: props,
+
     plotOption:{
       series: {
         showInNavigator: true
@@ -160,6 +169,7 @@ export const perOptions = (props) => {
     }
   }
 }
+
 
 export const roeOptions = (data) => {
 
