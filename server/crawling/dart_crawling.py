@@ -157,17 +157,26 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         print(link_state)
         print("=======")
         
-        try:
+        if bs_soup.find("table").find_all('p')[-1]:
             fs_unit = bs_soup.find("table").find_all('p')[-1]
             link_model.unit = fs_unit.text
             link_model.save()
-        except:
-            try:
-                fs_unit = bs_soup.find_all("table")[1].find_all('p')[-1]
-                link_model.unit = fs_unit.text
-                link_model.save()
-            except Exception as ex:
-                print("Error Raised: ", ex)
+        elif bs_soup.find_all("table")[1].find_all('p')[-1]:
+            fs_unit = bs_soup.find_all("table")[1].find_all('p')[-1]
+            link_model.unit = fs_unit.text
+            link_model.save()
+        
+        # try:
+        #     fs_unit = bs_soup.find("table").find_all('p')[-1]
+        #     link_model.unit = fs_unit.text
+        #     link_model.save()
+        # except:
+        #     try:
+        #         fs_unit = bs_soup.find_all("table")[1].find_all('p')[-1]
+        #         link_model.unit = fs_unit.text
+        #         link_model.save()
+        #     except Exception as ex:
+        #         print("Error Raised: ", ex)
         
         bs_tree = {}
         now = ''
@@ -299,19 +308,13 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                 
             money.save()
         
-        try:
-            if gp is not None:
-                link_model.GPA = gp/total_asset
-            if net_income is not None:
-                link_model.ROA = net_income / total_asset * 100 # %
-                link_model.ROE = net_income / total_capital * 100 # %
-            
-            link_model.save()
-            
-        except:
-            print("Link model save failed..")
+        if gp is not None:
+            link_model.GPA = gp/total_asset
+        if net_income is not None:
+            link_model.ROA = net_income / total_asset * 100 # %
+            link_model.ROE = net_income / total_capital * 100 # %
+        link_model.save()
     
-
     else:
         if json_dict['status'] == "013":
             link_model.save()
