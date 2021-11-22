@@ -80,8 +80,10 @@ def get_per_pbr(queryset, condition, market_cap, now_quarter:str, prev_quarter, 
     pbr = 0
     if query.exists():
         lob = query.first()
-        per = market_cap / lob.net_income
-        pbr = market_cap / lob.total_capital
+        if lob.net_income:
+            per = market_cap / lob.net_income
+        if lob.total_capital:
+            pbr = market_cap / lob.total_capital
     
     return per, pbr
     
@@ -104,8 +106,46 @@ def Find_PBR_PER(now_quarter:str, prev_quarter, now_year:int, prev_year, company
     return cfs_per, cfs_pbr, ofs_per, ofs_pbr
     
 
-# day에 시가총액, ohlcv, per, pbr 정보 가져와서 저장
+
 @transaction.atomic
+def saveDailyPrice(data, corp):
+    for row in data.itertuples():
+        now_date = row[0].to_pydatetime().date()
+        company = Company.objects.get(corp_name=corp.corp_name, stock_code=corp.stock_code)
+        
+        # 현재 기업의 현재 날짜에 대한 주가가 이미 있는 경우에는 continue
+        already = Daily_Price.objects.filter(
+            company=company,
+            date=now_date
+        )
+        
+        if already.exists():
+            pass
+        else:
+            Daily_Data = Daily_Price(
+                company=company,
+                date=now_date,
+                market_cap=row[1],
+                open=row[2],
+                high=row[3],
+                low=row[4],
+                close=row[5],
+                volume=row[6]
+            )
+            try:
+                Daily_Data.bps=row[7]
+                Daily_Data.per=row[8]
+                Daily_Data.pbr=row[9]
+                Daily_Data.eps=row[10]
+                Daily_Data.div=row[11]
+                Daily_Data.dps=row[12]
+            except:
+                pass
+            
+            Daily_Data.save()
+
+
+# day에 시가총액, ohlcv, per, pbr 정보 가져와서 저장
 def Save_Price():
     """
     Daily_Price 모델에 ohlcv, per, pbr 저장
@@ -113,60 +153,8 @@ def Save_Price():
     corporations = Company.objects.all()
     for corp in corporations:
         # 시가총액, ohlvc, per, pbr 함수로 가져와서 저장하기
-        data = Daily_Crawling("20210101", "20210401", corp.stock_code)
-        time.sleep(0.1)
+        data = Daily_Crawling("20210101", "20210201", corp.stock_code)
+        print(data)
+        time.sleep(1)
         
-        for row in data.itertuples():
-            now_date = row[0].to_pydatetime().date()
-            strn_date = "".join(str(now_date).split('-'))
-            now_year = int(strn_date[0:4])
-            now_quarter = QUARTER[math.ceil(int(strn_date[4:6]) / 3.0)]
-            if math.ceil(int(strn_date[4:6]) / 3.0) == 1:
-                prev_quarter = QUARTER[4]
-                prev_year = now_year - 1
-            else:
-                prev_quarter = QUARTER[(math.ceil(int(strn_date[4:6]) / 3.0))- 1]
-                prev_year = now_year
-            company = Company.objects.get(corp_name=corp.corp_name, stock_code=corp.stock_code)
-            cfs_per, cfs_pbr, ofs_per, ofs_pbr = \
-            Find_PBR_PER(now_quarter, prev_quarter, now_year, prev_year, company, row[1])
-            
-            
-            # 현재 기업의 현재 날짜에 대한 주가가 이미 있는 경우에는 continue
-            already = Daily_Price.objects.filter(
-                company=company,
-                date=now_date
-            )
-            
-            if already.exists():
-                already.company=company
-                already.date=now_date,
-                already.market_cap=row[1],
-                already.open=row[2],
-                already.high=row[3],
-                already.low=row[4],
-                already.close=row[5],
-                already.volume=row[6],
-                already.cfs_per=cfs_per,
-                already.cfs_pbr=cfs_pbr,
-                already.ofs_per=ofs_per,
-                already.ofs_pbr=ofs_pbr
-                
-                already.save()
-            else:
-                Daily_Data = Daily_Price(
-                    company=company,
-                    date=now_date,
-                    market_cap=row[1],
-                    open=row[2],
-                    high=row[3],
-                    low=row[4],
-                    close=row[5],
-                    volume=row[6],
-                    cfs_per=cfs_per,
-                    cfs_pbr=cfs_pbr,
-                    ofs_per=ofs_per,
-                    ofs_pbr=ofs_pbr
-                )
-                Daily_Data.save()
-
+        saveDailyPrice(data, corp)

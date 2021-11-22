@@ -128,7 +128,7 @@ function Chart(props){
         setIsLoading(true);
         const codeList = getCode(props.search.corpList);
         props.getStockData(codeList).then(res => {
-          // setIsLoading(false);
+          setIsLoading(false);
         })
         }}>
         <Search maxLength={4}></Search>
@@ -142,8 +142,7 @@ function Chart(props){
       />
 
       <HighchartsReact
-        highcharts={HighStock}
-        constructorType={"stockChart"}
+        highcharts={HighChart}
         options={options2}
       >
 

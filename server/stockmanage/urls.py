@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from stockmanage.apis import CompanyNameApi, AccountSearchApi, \
-    DailyPriceApi, CustomBSApi, RankApi
+    DailyPriceApi, FSChartApi, CustomBSApi, RankApi
 from stockmanage.crawlingapis import Crawling_FSData, Crawling_Dart, Crawling_DailyPrice
 
 app_name = "stockmanage"
@@ -12,9 +12,14 @@ app_name = "stockmanage"
 basic_patterns = [
     path('company', CompanyNameApi.as_view(), name="company_info"),
     path('account', AccountSearchApi.as_view(), name="account_search"),
-    path('daily', DailyPriceApi.as_view(), name="daily_price"),
     path('custombs', CustomBSApi.as_view(), name="make_custombs"),
     path('rank', RankApi.as_view(), name="rank"),
+    
+]
+
+chart_patterns = [
+    path('daily', DailyPriceApi.as_view(), name="daily_price"),
+    path('lob', FSChartApi.as_view(), name="lob"),
     
 ]
 
@@ -26,6 +31,7 @@ crawling_patterns = [
 
 urlpatterns = [
     path('crawling/', include((crawling_patterns, 'crawling'))),
+    path('chart/', include((chart_patterns, 'chart'))),
     path('', include((basic_patterns, 'basic'))),
     
 ]

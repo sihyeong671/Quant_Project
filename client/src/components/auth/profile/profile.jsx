@@ -71,7 +71,7 @@ const Profile=(props)=>{
   }
   
   useEffect(()=>{
-    console.log('props: ', props.isAuthenticated);
+    // console.log('props: ', props.isAuthenticated);
     if(props.accessToken == null){
       history.push('/');
     }

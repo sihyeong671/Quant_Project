@@ -69,15 +69,10 @@ const Account = ({ account, changeCoef, changeSubCoef }) => {
     return () => { }
   }, [])
   
-
   const [subAccountStyle, setSubAccountStyle] = useState(0);
 
   const setSubListStyle = (e) => {
-    let fP = e.target.parentNode;
-    let sP = fP.parentNode
-    let tP = sP.parentNode
-    let subList = tP.childNodes[1];
-    console.log(subList.style.maxHeight);
+    let subList = e.target.parentNode.parentNode.parentNode.childNodes[1];
     if (subList.style.maxHeight == 'fit-content' || subList.style.maxHeight == '') {
       subList.style.maxHeight = 0;
       e.target.style.transform = 'rotateZ(90deg)';
@@ -122,7 +117,11 @@ const Account = ({ account, changeCoef, changeSubCoef }) => {
                 <div className='account-header'>
                   <div className='account-name-wrapper'>
                     <span className='account-name'>{_name}</span>
-                    <span className="material-icons" onClick={e => setSubListStyle(e)}>expand_more</span>
+                    {
+                      !acnt.sub_account.length == 0 ?(
+                        <span className="material-icons" onClick={e => setSubListStyle(e)}>expand_more</span>
+                      ):(null)
+                    }
                   </div>
                   <span className='account-amount'>{commas(_amount)}</span>
                 </div>
@@ -141,7 +140,11 @@ const Account = ({ account, changeCoef, changeSubCoef }) => {
 
 const ResultValue = ({ currentAsset, nonCurrentAsset, totalDebt }) => {
 
-  const [botFix, setBotFix] = useState();
+  const [botFix, setBotFix] = useState({
+    position: "relative",
+    bottom: 0,
+    padding: '20px 0'
+  });
   const cirState = useRef();
   const [cirConState, setCirConState] = useState();
 
@@ -162,11 +165,10 @@ const ResultValue = ({ currentAsset, nonCurrentAsset, totalDebt }) => {
   };
 
   useEffect(() => {
-
-      window.addEventListener('scroll', scrollAnim)
+      // window.addEventListener('scroll', scrollAnim)
     return () => {
 
-      window.removeEventListener('scroll', scrollAnim)
+      // window.removeEventListener('scroll', scrollAnim)
     }
   }, []);
 

@@ -1,41 +1,70 @@
 import React, { useState } from 'react';
 
+// import { faBlog, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+// import { faGithub } from "@fortawesome/free-brands-svg-icons";
+// import { } from "@fortawesome/free-regular-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import dataImg from './assets/img/Profile.png'
+import dataImgWon from './assets/img/Won.jpg'
+
+import logo from './assets/img/LOGO.png';
+
 import './assets/style.scss';
 
 
 const Info = () => {
 
   const [developerInfos, setDeveloperInfos] = useState([
-    ["박시형", "bshlab671@naver.com", "https://github.com/sihyeong671", "https://blog.naver.com/bshlab671", "frontend"],
-    ["조현우", "hyun0404woo@naver.com", "https://github.com/hyun98", "https://hyeo-noo.tistory.com/", "backend"],
-    ["허상원", "gjehdtjr911@gmail.com", "https://github.com/POBSIZ", "https://pobsiz.tistory.com", "design"]
+    [dataImg, "박시형", "Front-End", "bshlab671@naver.com", "https://github.com/sihyeong671", "https://blog.naver.com/bshlab671"],
+    [dataImg, "조현우", "Back-End", "hyun0404woo@naver.com", "https://github.com/hyun98", "https://hyeo-noo.tistory.com/"],
+    [dataImgWon, "허상원", "Design", "gjehdtjr911@gmail.com", "https://github.com/POBSIZ", "https://pobsiz.tistory.com"]
   ]);
 
 
 
   return (
-    <article className="info">
-
-      <div className="info-body">
-        <div className="person">
-          <div>이름</div>
-          <div>이메일</div>
-          <div>깃허브</div>
-          <div>블로그</div>
-          <div>역할</div>
-        </div>
-        {developerInfos.map((person, idx) => {
-          console.log(person);
-          return (
-            <div key={idx} className="person">
-              {person.map((info, _idx) => (<div key={_idx}>{info}</div>))}
-            </div>
-          )
-        })}
+    <>
+      <div className='info-title'>
+        <img src={logo}/>
+        <p>
+          <b>Q</b>uant <br />
+          <b>M</b>anagement
+        </p>
+        <span>DEVELOPER</span>
       </div>
 
+      <div className="info">
+        {
+          developerInfos?.map((item, i) => {
+            return (
+              <div className='info-data' key={i}>
+                <div className='data-img' style={{ backgroundImage: `url(${item[0]})` }}></div>
+                <div className='data-title'>
+                  <span className='title-name'>{item[1]}</span>/
+                  <span className='title-work'>{item[2]}</span>
+                </div>
+                <div className='data-sns'>
+                  <a className='sns-itm' href={`mailto:${item[3]}`} target="_blank">
+                    <FontAwesomeIcon icon={faEnvelope} />
+                    이메일
+                  </a>
+                  <a className='sns-itm' href={item[4]} target="_blank">
+                    <FontAwesomeIcon icon={faGithub} />
+                    깃허브
+                  </a>
+                  <a className='sns-itm' href={item[5]} target="_blank">
+                    <FontAwesomeIcon icon={faBlog} />
+                    블로그
+                  </a>
+                </div>
+              </div>
+            )
+          })
+        }
+      </div>
 
-    </article>
+    </>
   )
 }
 

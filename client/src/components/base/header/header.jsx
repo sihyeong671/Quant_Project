@@ -115,7 +115,7 @@ function Header(props) {
 			<div className="logo">
 				<Link to='/' className='logo-img' style={{ backgroundImage: `url(${logo})` }}></Link>
 				<Link to='/'>
-					<strong>Q</strong>uant <br />
+					<strong>Q</strong>uant <br/>
 					<strong>M</strong>anagement
 				</Link>
 			</div>

@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
+from django_summernote.admin import SummernoteModelAdminMixin
 
 from boards.models import Post, Category, Comment, Reply
 
@@ -48,7 +49,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 @admin.register(Post)
-class PostAdmin(admin.ModelAdmin):
+class PostAdmin(SummernoteModelAdminMixin, admin.ModelAdmin):
     ordering = ('-created_date', 'creator__profile__nickname')
     list_display = (
         'get_thumbnail_image', 'category', 'title', 'content', 'get_creator', 'hits',
@@ -61,6 +62,7 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ('created_date', 'creator__profile__nickname', 'title', 'category__title')
     list_filter = ('category__title', )
     
+    summernote_fields = ('content', )
     inlines = (CommentInline, )
     
     def get_thumbnail_image(self, obj):

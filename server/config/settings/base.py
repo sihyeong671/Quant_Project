@@ -191,13 +191,6 @@ NAVER_OAUTH2_CLIENT_SECRET = env.str('DJANGO_NAVER_OAUTH2_CLIENT_SECRET')
 KAKAO_REST_API_KEY = env.str('DJANGO_KAKAO_REST_API_KEY')
 
 
-# Summernote Customize
-X_FRAME_OPTIONS = 'SAMEORIGIN'
-
-SUMMERNOTE_CONFIG = {}
-SUMMERNOTE_THEME = 'bs4'
-
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -263,3 +256,9 @@ LOGGING = {
         },
     }
 }
+
+# Summernote Customize
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+SUMMERNOTE_CONFIG = {}
+SUMMERNOTE_THEME = 'bs4'

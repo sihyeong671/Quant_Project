@@ -78,7 +78,7 @@ $light-coral: rgba(254, 109, 115, 1);
 .post-condition {
   cursor: pointer;
   display: block;
-  width: 20%;
+  width: 10%;
   padding: 0.5rem 0;
   margin: 2rem auto;
   background-color: $base-black;
@@ -95,21 +95,21 @@ $light-coral: rgba(254, 109, 115, 1);
 
 .result-wrapper {
   width: 100%;
-  overflow: hidden;
-  overflow-x: scroll;
+  height: 60vh;
+  overflow: scroll;
   .result-inner {
-
+    width: fit-content;
     .condition-filter {
       width: 100%;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(calc(100% / 5), 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       .filter-itm {
         display: inline-block;
         padding: 10px;
         border-radius: 20px;
         font-weight: 500;
         &:last-child {
-          text-align: center;
+          text-align: left;
         }
       }
     }
@@ -122,7 +122,7 @@ $light-coral: rgba(254, 109, 115, 1);
         width: 100%;
         display: grid;
         // justify-content: space-between;
-        grid-template-columns: repeat(auto-fill, minmax(calc(100% / 5), 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         font-weight: 500;
         padding: 10px 0;
         border-bottom: 1px solid $line-black;
@@ -131,7 +131,8 @@ $light-coral: rgba(254, 109, 115, 1);
         }
         div {
           &:last-child {
-            text-align: center;
+            text-align: left;
+            padding-left: 10%;
           }
         }
       }
@@ -163,7 +164,7 @@ $light-coral: rgba(254, 109, 115, 1);
     z-index: 1000;
 
     width: 90vw;
-    height: 70vh;
+    // height: 70vh;
 
     background-color: #fff;
 
@@ -345,7 +346,7 @@ $light-coral: rgba(254, 109, 115, 1);
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin: 20px 0;
   button {
     cursor: pointer;
     border: none;
