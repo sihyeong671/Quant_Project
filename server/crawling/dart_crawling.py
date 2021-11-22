@@ -116,6 +116,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         total_pcompany = 0
 
         link_model.exist = 1
+        link_model.save()
 
         report_number = json_dict['list'][0]['rcept_no']
 
