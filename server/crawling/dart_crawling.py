@@ -298,7 +298,8 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             money.save()
         
         if gp is not None:
-            link_model.GPA = gp/total_asset
+            if total_asset:
+                link_model.GPA = gp/total_asset
         if net_income is not None:
             if total_asset:
                 link_model.ROA = net_income / total_asset * 100 # %

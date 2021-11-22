@@ -107,7 +107,7 @@ def Find_PBR_PER(now_quarter:str, prev_quarter, now_year:int, prev_year, company
     
 
 
-@transaction.atomic
+# @transaction.atomic
 def saveDailyPrice(data, corp):
     for row in data.itertuples():
         now_date = row[0].to_pydatetime().date()
