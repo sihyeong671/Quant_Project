@@ -111,6 +111,15 @@ def Find_PBR_PER(now_quarter:str, prev_quarter, now_year:int, prev_year, company
 def saveDailyPrice(data, corp):
     for row in data.itertuples():
         now_date = row[0].to_pydatetime().date()
+        # strn_date = "".join(str(now_date).split('-'))
+        # now_year = int(strn_date[0:4])
+        # now_quarter = QUARTER[math.ceil(int(strn_date[4:6]) / 3.0)]
+        # if math.ceil(int(strn_date[4:6]) / 3.0) == 1:
+        #     prev_quarter = QUARTER[4]
+        #     prev_year = now_year - 1
+        # else:
+        #     prev_quarter = QUARTER[(math.ceil(int(strn_date[4:6]) / 3.0))- 1]
+        #     prev_year = now_year
         company = Company.objects.get(corp_name=corp.corp_name, stock_code=corp.stock_code)
         
         # 현재 기업의 현재 날짜에 대한 주가가 이미 있는 경우에는 continue
