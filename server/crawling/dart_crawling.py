@@ -300,9 +300,9 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         if gp is not None:
             link_model.GPA = gp/total_asset
         if net_income is not None:
-            if not total_asset:
+            if total_asset:
                 link_model.ROA = net_income / total_asset * 100 # %
-            if not total_capital:
+            if total_capital:
                 link_model.ROE = net_income / total_capital * 100 # %
         link_model.save()
     
