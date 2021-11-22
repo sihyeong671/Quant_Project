@@ -9,9 +9,9 @@ const initState = {
     "ROE",
     "PER",
     "PBR",
-    "부채비율",
-    "PCR",
-    "PSR"
+    // "부채비율",
+    // "PCR",
+    // "PSR"
   ],
   condition:[],
   rankCondition:[],

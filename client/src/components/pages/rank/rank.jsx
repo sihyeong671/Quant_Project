@@ -119,15 +119,23 @@ function Rank(props) {
 
           <div className='condition-result'>
             {props.rankData.map((data, idx) => {
+
+
+
               return (
                 <div className='result-itm' key={idx}>
                   <div>
                     {data.company_name}
                   </div>
                   {props.tableName.map((element, idx_) => {
+
+                    let value;
+                    if(data[element] === -1000000000){
+                      value = "Blank"
+                    }
                     return (
                       <div key={idx_}>
-                        {(data[element]).toFixed(5)}
+                        {data[element] === -1000000000? (<span>Blank</span>):(data[element]).toFixed(5)}
                       </div>
                     );
                   })}

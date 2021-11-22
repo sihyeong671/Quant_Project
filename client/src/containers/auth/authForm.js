@@ -63,7 +63,6 @@ function mapDispatchToProps(dispatch){
       }
       try{
         const res = await axios.post('/api/v1/auth/login/', data);
-        console.log(res);
         const accessToken = res.data.access_token;
         axios.defaults.headers.common['Authorization'] = `JWT ${accessToken}`;
         // 만료시간 3분 이기 때문에 서버에서 201오류 날때 refresh토큰으로 갱신 필요
@@ -131,14 +130,15 @@ function mapDispatchToProps(dispatch){
     getUserData: async () => {
       try{
         const profileRes = await axios.get('api/v1/users/me');
-        console.log(profileRes);
-        const [dateJoined, email, lastLogin, userName, profile, mybstitles] = [
+        console.log(profileRes)
+        const [dateJoined, email, lastLogin, userName, profile, mybstitles, isSuperUser] = [
           profileRes.data[0].date_joined,
           profileRes.data[0].email,
           profileRes.data[0].last_login,
           profileRes.data[0].username,
           profileRes.data[0].profile,
           profileRes.data[0].mybstitles,
+          profileRes.data[0].is_superuser
         ];
         console.log(dateJoined, email, lastLogin, userName, profile, mybstitles)
         dispatch({
@@ -149,6 +149,7 @@ function mapDispatchToProps(dispatch){
           userName: userName,
           profile: profile,
           mybstitles: mybstitles,
+          isSuperUser: isSuperUser
       })
       }catch(error){
         console.log(error);
