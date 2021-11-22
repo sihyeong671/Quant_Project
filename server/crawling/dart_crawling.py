@@ -134,7 +134,9 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             parameter_list = find_parameter(script_content, "연결재무제표")
         else:
             parameter_list = find_parameter(script_content, " 재무제표")
-
+        
+        print("parameter list : ", parameter_list)
+        
         bs_url = f"http://dart.fss.or.kr/report/viewer.do?rcpNo={parameter_list[1]}" \
         f"&dcmNo={parameter_list[2]}" \
         f"&eleId={parameter_list[3]}" \
