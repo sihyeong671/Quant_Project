@@ -156,6 +156,10 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         print(link_model.quarter.qt_name)
         print(link_state)
         print("=======")
+        fs_unit = bs_soup.find("table").find_all('p')[-1]
+        print(fs_unit)
+        fs_unit = bs_soup.find_all("table")[1].find_all('p')[-1]
+        print(fs_unit)
         
         if bs_soup.find("table").find_all('p')[-1]:
             fs_unit = bs_soup.find("table").find_all('p')[-1]
