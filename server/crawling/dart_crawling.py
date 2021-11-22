@@ -110,7 +110,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
     if json_dict['status'] == "000": # 정상적으로 데이터 가져옴
 
         #ROE, ROA
-        net_income = 0
+        net_income = None
         total_capital = 0
         total_asset = 0
         total_pcompany = 0
@@ -204,8 +204,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         SCE = FS_Div(sj_div="SCE",lob=link_model)
         SCE.save()
         
-        gp = 0.0
-        all_amount = 1.0
+        gp = None
         
         pre_money = {}
         for fs_lst in json_dict['list']: # 한 행씩 가져오기
@@ -300,9 +299,11 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             money.save()
         
         try:
-            link_model.GPA = gp/total_asset
-            link_model.ROA = net_income / total_asset * 100 # %
-            link_model.ROE = net_income / total_capital * 100 # %
+            if gp is not None:
+                link_model.GPA = gp/total_asset
+            if net_income is not None:
+                link_model.ROA = net_income / total_asset * 100 # %
+                link_model.ROE = net_income / total_capital * 100 # %
             
             link_model.save()
             
