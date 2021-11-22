@@ -156,42 +156,16 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         print(link_model.quarter.qt_name)
         print(link_state)
         print("=======")
-        # fs_unit = bs_soup.find("table").find_all('p')[-1]
-        # print(fs_unit)
-        # fs_unit = bs_soup.find_all("table")[1].find_all('p')[-1]
-        # print(fs_unit)
+        
         
         fs_unitlist = bs_soup.find_all("table")
-        print(fs_unitlist)
         for fs_unit in fs_unitlist:
-            print(fs_unit.find_all('p'))
             if not fs_unit.find_all('p'):
                 continue
             if "단위" in fs_unit.find_all('p')[-1].text:
                 link_model.unit = fs_unit.find_all('p')[-1].text
                 link_model.save()
                 break
-        
-        # if bs_soup.find("table").find_all('p')[-1]:
-        #     fs_unit = bs_soup.find("table").find_all('p')[-1]
-        #     link_model.unit = fs_unit.text
-        #     link_model.save()
-        # elif bs_soup.find_all("table")[1].find_all('p')[-1]:
-        #     fs_unit = bs_soup.find_all("table")[1].find_all('p')[-1]
-        #     link_model.unit = fs_unit.text
-        #     link_model.save()
-        
-        # try:
-        #     fs_unit = bs_soup.find("table").find_all('p')[-1]
-        #     link_model.unit = fs_unit.text
-        #     link_model.save()
-        # except:
-        #     try:
-        #         fs_unit = bs_soup.find_all("table")[1].find_all('p')[-1]
-        #         link_model.unit = fs_unit.text
-        #         link_model.save()
-        #     except Exception as ex:
-        #         print("Error Raised: ", ex)
         
         bs_tree = {}
         now = ''
@@ -235,7 +209,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         for fs_lst in json_dict['list']: # 한 행씩 가져오기
             money = FS_Account()
             if fs_lst["sj_div"] == "BS":
-                print(fs_lst["account_nm"])
+                # print(fs_lst["account_nm"])
                 
                 is_accountnm_in_bstreekey = \
                     BS_accountnm_check(bs_tree=bs_tree, an=fs_lst["account_nm"])
@@ -326,8 +300,10 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         if gp is not None:
             link_model.GPA = gp/total_asset
         if net_income is not None:
-            link_model.ROA = net_income / total_asset * 100 # %
-            link_model.ROE = net_income / total_capital * 100 # %
+            if not total_asset:
+                link_model.ROA = net_income / total_asset * 100 # %
+            if not total_capital:
+                link_model.ROE = net_income / total_capital * 100 # %
         link_model.save()
     
     else:
