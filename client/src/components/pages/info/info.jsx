@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-// import { faBlog, faEnvelope } from "@fortawesome/free-solid-svg-icons";
-// import { faGithub } from "@fortawesome/free-brands-svg-icons";
-// import { } from "@fortawesome/free-regular-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBlog, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import { } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import dataImg from './assets/img/Profile.png'
 import dataImgWon from './assets/img/Won.jpg'
