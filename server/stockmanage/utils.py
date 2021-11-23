@@ -13,7 +13,7 @@ def getData(stocks):
         times = strptime(str(stock.date), '%Y-%m-%d')
         utc_now = mktime(times) * 1000
 
-        close_list.append([utc_now, stock.close])
+        close_list.append([utc_now, stock.close, stock.per, stock.pbr])
 
     return close_list
 

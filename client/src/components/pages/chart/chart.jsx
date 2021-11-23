@@ -27,17 +27,42 @@ function Chart(props){
   
   const [isLoading, setIsLoading] = useState(false);
 
-  let stockData = [];
-  for(const [key, value] of Object.entries(props.chart.price)){
-    let tmp = {
+  let priceData = [];
+  let perData = [];
+  let pbrData = [];
+
+  for(const [key, value] of Object.entries(props.chart)){
+    let tmpPrice = {
       name: '',
       data: []
     };
-    tmp.name = key;
-    tmp.data = value;
-    stockData.push(tmp);
-  }
+    let tmpPer = {
+      name: '',
+      data: []
+    };
+    let tmpPbr = {
+      name: '',
+      data: []
+    };
+    if(value.length !== 0){
+      tmpPrice.name = key;
+      tmpPrice.data = value?.map(elements => {
+        return [elements[0], elements[1]];
+      });
+      priceData.push(tmpPrice);
+      tmpPer.name = key;
+      tmpPer.data = value?.map(elements => {
+        return [elements[0], elements[2]];
+      });
+      perData.push(tmpPer);
+      tmpPbr.name = key;
+      tmpPbr.data = value?.map(elements => {
+        return [elements[0], elements[3]];
+      });
+      pbrData.push(tmpPbr);
 
+    }
+  }
 
   return (
     <>
@@ -56,27 +81,22 @@ function Chart(props){
       <HighchartsReact
         highcharts={HighStock}
         constructorType={"stockChart"}
-        options={priceOptions(stockData)}
-      />
-
-      {/* <HighchartsReact
-        highcharts={HighStock}
-        constructorType={"stockChart"}
-        options={pbrOptions()}
+        options={priceOptions(priceData)}
       />
 
       <HighchartsReact
         highcharts={HighStock}
         constructorType={"stockChart"}
-        options={perOptions()}
-      /> */}
+        options={pbrOptions(pbrData)}
+      />
 
-      {/* <HighchartsReact
+      <HighchartsReact
         highcharts={HighStock}
         constructorType={"stockChart"}
-        options={roeOptions}
-      >
-      </HighchartsReact> */}
+        options={perOptions(perData)}
+      />
+
+
 
       <div>
         {/* 준비중 */}

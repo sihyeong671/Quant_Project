@@ -83,11 +83,11 @@ const RankConditionPopUp = (props) => {
                     <div className='input-wrapper'>
                       <div className='uinput'>
                         <div className='uninput-itm'>
-                          <input type="radio" name={"rInfo" + (j).toString()} id={"up" + (j).toString()} value="1" defaultChecked="checked" />
+                          <input type="radio" name={"rInfo" + (j).toString()} id={"up" + (j).toString()} value="1" />
                           <label htmlFor={"up" + (j).toString()}>오름차순</label>
                         </div>
                         <div className='uninput-itm'>
-                          <input type="radio" name={"rInfo" + (j).toString()} id={"down" + (j).toString()} value="0" />
+                          <input type="radio" name={"rInfo" + (j).toString()} id={"down" + (j).toString()} value="0" defaultChecked="checked"  />
                           <label htmlFor={"down" + (j).toString()}>내림차순</label>
                         </div>
                       </div>
