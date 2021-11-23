@@ -273,14 +273,16 @@ function Calc(props) {
               <option value="11011">4분기</option>
             </select>
 
-            <div className='filter-CFS radio'>
-              <input id='CFS' type="radio" name='FS' value="CFS" defaultChecked />
-              <label htmlFor="CFS">CFS</label>
-            </div>
+            <div className='filter-FStype'>
+              <div className='filter-CFS radio'>
+                <input id='CFS' type="radio" name='FS' value="CFS" defaultChecked />
+                <label htmlFor="CFS">CFS</label>
+              </div>
 
-            <div className='filter-OFS radio'>
-              <input id='OFS' type="radio" name='FS' value="OFS" />
-              <label htmlFor="OFS">OFS</label>
+              <div className='filter-OFS radio'>
+                <input id='OFS' type="radio" name='FS' value="OFS" />
+                <label htmlFor="OFS">OFS</label>
+              </div>
             </div>
 
             <button className='filter-submit' type='submit'>확인</button>

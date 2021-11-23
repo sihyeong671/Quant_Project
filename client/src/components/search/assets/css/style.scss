@@ -32,17 +32,19 @@ $form-list-width: calc(30% - 3%);
         border: 1px solid $basic-black;
         border-top: none;
         overflow: hidden;
+        overflow-y: scroll;
         display: none;
+        max-height: calc(51px * 5);
 
         li{
+            box-sizing: border-box;
             cursor: pointer;
             position: relative;
             display: flex;
             justify-content: space-between;
+            align-items: center;
             width: 100%;
-            // height: 35px;
             padding: 5px;
-            line-height: 35px;
             transition: all .3s;
             font-weight: 500;
             border-bottom: 1px solid $basic-black;
