@@ -1,7 +1,31 @@
-img{
-  
-}
+$base-black: rgb(30, 30, 30);
+$line-black: rgba(0, 0, 0, 0.2);
 
-.loading-bg{
+/* SCSS RGB */
+$cg-blue: rgba(34, 124, 157, 1);
+$light-sea-green: rgba(23, 195, 178, 1);
+$maximum-yellow-red: rgba(255, 203, 119, 1);
+$floral-white: rgba(254, 249, 239, 1);
+$light-coral: rgba(254, 109, 115, 1);
 
+.loading{
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    img{}
+    
+    .loading-bg{
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: $line-black;
+        width: 100%;
+        height: 100vh;
+    }
 }
