@@ -116,6 +116,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         total_pcompany = 0
 
         link_model.exist = 1
+        link_model.save()
 
         report_number = json_dict['list'][0]['rcept_no']
 
@@ -133,7 +134,9 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
             parameter_list = find_parameter(script_content, "연결재무제표")
         else:
             parameter_list = find_parameter(script_content, " 재무제표")
-
+        
+        print("parameter list : ", parameter_list)
+        
         bs_url = f"http://dart.fss.or.kr/report/viewer.do?rcpNo={parameter_list[1]}" \
         f"&dcmNo={parameter_list[2]}" \
         f"&eleId={parameter_list[3]}" \
@@ -156,17 +159,15 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         print(link_state)
         print("=======")
         
-        try:
-            fs_unit = bs_soup.find("table").find_all('p')[-1]
-            link_model.unit = fs_unit.text
-            link_model.save()
-        except:
-            try:
-                fs_unit = bs_soup.find_all("table")[1].find_all('p')[-1]
-                link_model.unit = fs_unit.text
+        
+        fs_unitlist = bs_soup.find_all("table")
+        for fs_unit in fs_unitlist:
+            if not fs_unit.find_all('p'):
+                continue
+            if "단위" in fs_unit.find_all('p')[-1].text:
+                link_model.unit = fs_unit.find_all('p')[-1].text
                 link_model.save()
-            except Exception as ex:
-                print("Error Raised: ", ex)
+                break
         
         bs_tree = {}
         now = ''
@@ -210,7 +211,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         for fs_lst in json_dict['list']: # 한 행씩 가져오기
             money = FS_Account()
             if fs_lst["sj_div"] == "BS":
-                print(fs_lst["account_nm"])
+                # print(fs_lst["account_nm"])
                 
                 is_accountnm_in_bstreekey = \
                     BS_accountnm_check(bs_tree=bs_tree, an=fs_lst["account_nm"])
@@ -219,9 +220,9 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                     money.fs_div = BS
                     pre_money = money
 
-                    if fs_lst["account_nm"] == "자산총계":
+                    if fs_lst["account_nm"] == "자산총계" and fs_lst["thstrm_amount"]:
                         total_asset = float(fs_lst["thstrm_amount"])
-                    elif fs_lst["account_nm"] == "자본총계":
+                    elif fs_lst["account_nm"] == "자본총계" and fs_lst["thstrm_amount"]:
                         total_capital = float(fs_lst["thstrm_amount"])
                         link_model.total_capital = total_capital
                     elif "지배기업" in fs_lst["account_nm"]:
@@ -258,11 +259,9 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                     "당기순손익" in acnm:
                     # print("".join(fs_lst["account_nm"].split()))
                     # print(fs_lst["thstrm_amount"])
-                    try:
+                    if fs_lst["thstrm_amount"]:
                         net_income = float(fs_lst["thstrm_amount"])
                         link_model.net_income += net_income
-                    except:
-                        pass
                     
                 if fs_lst["thstrm_add_amount"] == '': # 누적 금액
                     money.account_add_amount = 0
@@ -298,19 +297,16 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
                 
             money.save()
         
-        try:
-            if gp is not None:
+        if gp is not None:
+            if total_asset:
                 link_model.GPA = gp/total_asset
-            if net_income is not None:
+        if net_income is not None:
+            if total_asset:
                 link_model.ROA = net_income / total_asset * 100 # %
+            if total_capital:
                 link_model.ROE = net_income / total_capital * 100 # %
-            
-            link_model.save()
-            
-        except:
-            print("Link model save failed..")
+        link_model.save()
     
-
     else:
         if json_dict['status'] == "013":
             link_model.save()

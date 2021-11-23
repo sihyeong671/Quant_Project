@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import dataImg from './assets/img/Profile.png'
 import dataImgWon from './assets/img/Won.jpg'
+import dataImgHyunwoo from './assets/img/hyun.jpg'
+import dataImgSihyeong from './assets/img/sihyeong.jpg'
 
 import logo from './assets/img/LOGO.png';
 
@@ -16,8 +18,8 @@ import './assets/style.scss';
 const Info = () => {
 
   const [developerInfos, setDeveloperInfos] = useState([
-    [dataImg, "박시형", "Front-End", "bshlab671@naver.com", "https://github.com/sihyeong671", "https://blog.naver.com/bshlab671"],
-    [dataImg, "조현우", "Back-End", "hyun0404woo@naver.com", "https://github.com/hyun98", "https://hyeo-noo.tistory.com/"],
+    [dataImgSihyeong, "박시형", "Front-End", "bshlab671@naver.com", "https://github.com/sihyeong671", "https://blog.naver.com/bshlab671"],
+    [dataImgHyunwoo, "조현우", "Back-End", "hyun0404woo@gmail.com", "https://github.com/hyun98", "https://hyeo-noo.tistory.com/"],
     // [dataImgWon, "허상원", "Design", "gjehdtjr911@gmail.com", "https://github.com/POBSIZ", "https://pobsiz.tistory.com"]
   ]);
 
