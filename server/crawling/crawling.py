@@ -24,8 +24,8 @@ def Save_FS_Data(api_key):
     상장된 기업의 Dart
     """
     linklst = ["CFS", "OFS"] # link, basic
-    years = ["2015","2016","2017","2018","2019","2020","2021"]
-    # years = ["2018","2019","2020", "2021"]
+    # years = ["2015","2016","2017","2018","2019","2020","2021"]
+    years = ["2021"]
 
     quarters = ["11013", "11012", "11014", "11011"]
 
@@ -107,10 +107,19 @@ def Find_PBR_PER(now_quarter:str, prev_quarter, now_year:int, prev_year, company
     
 
 
-@transaction.atomic
+# @transaction.atomic
 def saveDailyPrice(data, corp):
     for row in data.itertuples():
         now_date = row[0].to_pydatetime().date()
+        # strn_date = "".join(str(now_date).split('-'))
+        # now_year = int(strn_date[0:4])
+        # now_quarter = QUARTER[math.ceil(int(strn_date[4:6]) / 3.0)]
+        # if math.ceil(int(strn_date[4:6]) / 3.0) == 1:
+        #     prev_quarter = QUARTER[4]
+        #     prev_year = now_year - 1
+        # else:
+        #     prev_quarter = QUARTER[(math.ceil(int(strn_date[4:6]) / 3.0))- 1]
+        #     prev_year = now_year
         company = Company.objects.get(corp_name=corp.corp_name, stock_code=corp.stock_code)
         
         # 현재 기업의 현재 날짜에 대한 주가가 이미 있는 경우에는 continue
@@ -120,7 +129,7 @@ def saveDailyPrice(data, corp):
         )
         
         if already.exists():
-            pass
+            continue
         else:
             Daily_Data = Daily_Price(
                 company=company,
@@ -153,7 +162,7 @@ def Save_Price():
     corporations = Company.objects.all()
     for corp in corporations:
         # 시가총액, ohlvc, per, pbr 함수로 가져와서 저장하기
-        data = Daily_Crawling("20210101", "20210201", corp.stock_code)
+        data = Daily_Crawling("20210101", "20211119", corp.stock_code)
         print(data)
         time.sleep(1)
         
