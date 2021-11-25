@@ -111,7 +111,7 @@ class CommentSerializer(serializers.ModelSerializer):
 class PostDetailSerializer(serializers.ModelSerializer):
     comment = CommentSerializer(many=True, read_only=True)
     thumbnail = serializers.SerializerMethodField()
-    creator = serializers.SerializerMethodField()
+    # creator = serializers.SerializerMethodField()
     favorite_count = serializers.SerializerMethodField(read_only=True)
     
     class Meta:
@@ -121,12 +121,12 @@ class PostDetailSerializer(serializers.ModelSerializer):
             'modified_date', 'creator', 'favorite_count', 'comment',
         )
     
-    def get_creator(self, obj):
+    # def get_creator(self, obj):
         # is_anonymous = obj.category.is_anonymous
         # if is_anonymous:
         #     return "익명"
         # else:
-        return obj.creator.profile.nickname
+        # return obj.creator.profile.nickname
     
     def get_thumbnail(self, obj):
         try:

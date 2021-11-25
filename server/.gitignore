@@ -9,7 +9,7 @@ docker-compose.yml
 # logs
 superuser.py
 codechecker.py
-crwalingtest.py
+crawlingtest.py
 staticroot
 
 ### Django ###
