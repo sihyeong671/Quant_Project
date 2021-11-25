@@ -1,3 +1,4 @@
+from django.db.models import query
 from django.db.models.query import Prefetch
 from rest_framework import status
 from rest_framework.response import Response
@@ -62,7 +63,8 @@ class PostManageApi(ApiAuthMixin, APIView):
                 'comment__creator',
                 'comment__reply'
             ).\
-            filter(pk=pk)
+            filter(pk=pk).first()
+        
         serializer = PostDetailSerializer(queryset, many=False)
         
         response = Response(serializer.data, status=status.HTTP_200_OK)
