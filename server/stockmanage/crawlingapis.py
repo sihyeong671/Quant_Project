@@ -3,16 +3,16 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 
-from api.mixins import SuperUserMixin, PublicApiMixin
+from api.mixins import SuperUserMixin, CrawlerMixin
 from stockmanage.models import Company
 from stockmanage.models import *
 
-from crawling.crawling import *
-from crawling.API_KEY import *
+from crawling.crawling import Save_Price, Save_Dart_Data, Save_FS_Data
+from crawling.API_KEY import APIKEY
 
 
 
-class Crawling_DailyPrice(SuperUserMixin, APIView):
+class Crawling_DailyPrice(CrawlerMixin, APIView):
     def get(self, request, *args, **kwargs):
         """
         주가 저장 API
@@ -26,7 +26,7 @@ class Crawling_DailyPrice(SuperUserMixin, APIView):
         
         
 
-class Crawling_Dart(SuperUserMixin, APIView):
+class Crawling_Dart(CrawlerMixin, APIView):
     def get(self, request):
         try:
             apikey = APIKEY
@@ -38,45 +38,30 @@ class Crawling_Dart(SuperUserMixin, APIView):
         
         return Response({
             "message": "success save dart data"
-        },status=status.HTTP_200_OK)
+        },status=status.HTTP_201_CREATED)
     
     def delete(self, request):
-        try:
-            Dart.objects.all().delete()
-        except:
-            return Response({
-                "message": "failed delete dart data"
-            }, status=status.HTTP_409_CONFLICT)
+        Dart.objects.all().delete()
         
         return Response({
             "message": "success delete dart data"
-        },status=status.HTTP_200_OK)
+        },status=status.HTTP_204_NO_CONTENT)
     
 
-class Crawling_FSData(SuperUserMixin, APIView):
+class Crawling_FSData(CrawlerMixin, APIView):
     def get(self, request):
-        # try:
         apikey = APIKEY
         Save_FS_Data(apikey)
         
         return Response({
-            'message': "Success crawling FS data",
-        }, status=status.HTTP_200_OK)
-        # except:
-        #     return Response({
-        #         "message": "failed save fs data"
-        #     },status=status.HTTP_409_CONFLICT)
+            'message': "Success crawled FS data",
+        }, status=status.HTTP_201_CREATED)
     
     def delete(self, request):
-        try:
-            Company.objects.all().delete()
-        except:
-            return Response({
-                "message": "failed delete company"
-            }, status=status.HTTP_409_CONFLICT)
+        Company.objects.all().delete()
         
         return Response({
             "message": "success delete company"
-        },status=status.HTTP_200_OK)
+        },status=status.HTTP_204_NO_CONTENT)
     
     

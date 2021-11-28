@@ -27,6 +27,7 @@ def getCaseData(case, condition, queryset):
     ## |  Case Field : ROE |
     ## =====================
     if case[0] == "ROE":
+        condition.add(Q(ROE__ne=0), Q.AND)
         if case[1] == 1:
             # 상위
             queryset = queryset.filter(
@@ -58,6 +59,7 @@ def getCaseData(case, condition, queryset):
     ## |  Case Field : ROA |
     ## =====================
     if case[0] == "ROA":
+        condition.add(Q(ROA__ne=0), Q.AND)
         if case[1] == 1:
             # 상위
             queryset = queryset.filter(
@@ -89,6 +91,7 @@ def getCaseData(case, condition, queryset):
     ## |  Case Field : GPA |
     ## =====================
     if case[0] == "GPA":
+        condition.add(Q(GPA__ne=0), Q.AND)
         if case[1] == 1:
             # 상위
             queryset = queryset.filter(
