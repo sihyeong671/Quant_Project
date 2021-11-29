@@ -25,13 +25,14 @@ const mapDispatchToProps=(dispatch)=>{
         })
         const profileRes = await axios.get('api/v1/users/me'); //authform 로직 겹침
         console.log(profileRes)
-        const [dateJoined, email, lastLogin, userName, profile, mybstitle] = [
+        const [dateJoined, email, lastLogin, userName, profile, mybstitle, isSuperUser] = [
           profileRes.data[0].date_joined,
           profileRes.data[0].email,
           profileRes.data[0].last_login,
           profileRes.data[0].username,
           profileRes.data[0].profile,
-          profileRes.data[0].mybstitle
+          profileRes.data[0].mybstitle,
+          profileRes.data[0].is_superuser
         ];
         dispatch({
           type:Constants.user.GETALL_SUCCESS,
@@ -41,6 +42,7 @@ const mapDispatchToProps=(dispatch)=>{
           userName: userName,
           profile: profile,
           mybstitle: mybstitle,
+          isSuperUser: isSuperUser
           // 유저 데이터 전달
         })
       }catch(error){
