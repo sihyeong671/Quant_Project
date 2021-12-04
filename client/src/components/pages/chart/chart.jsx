@@ -99,7 +99,7 @@ function Chart(props){
 
 
       <div>
-        준비중
+        {/* 준비중 */}
         {isLoading? (<Loading/>):null}
       </div>
     </>

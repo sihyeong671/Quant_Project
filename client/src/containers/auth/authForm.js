@@ -140,7 +140,7 @@ function mapDispatchToProps(dispatch){
           profileRes.data[0].mybstitles,
           profileRes.data[0].is_superuser
         ];
-        console.log(dateJoined, email, lastLogin, userName, profile, mybstitles)
+        // console.log(dateJoined, email, lastLogin, userName, profile, mybstitles)
         dispatch({
           type:Constants.user.GETALL_SUCCESS,
           dateJoined: dateJoined,
