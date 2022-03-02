@@ -3,8 +3,8 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,django,python,visualstudiocode
 
 ### Deploy ###
-nginx.conf
-docker-compose.yml
+# nginx.conf
+# docker-compose.yml
 # server.Dockerfile
 # logs
 superuser.py
