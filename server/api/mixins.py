@@ -1,4 +1,4 @@
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
 from auth.authenticate import SafeJWTAuthentication, AdministratorAuthentication
 
@@ -14,3 +14,7 @@ class SuperUserMixin:
 class PublicApiMixin:
     authentication_classes = ()
     permission_classes = ()
+
+class CrawlerMixin:
+    authentication_classes = (AdministratorAuthentication, )
+    permission_classes = (IsAuthenticated, )

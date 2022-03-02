@@ -211,7 +211,7 @@ def Get_Amount_Data(api_key,corp_code,year,quarter,link_state, link_model):
         for fs_lst in json_dict['list']: # 한 행씩 가져오기
             money = FS_Account()
             if fs_lst["sj_div"] == "BS":
-                # print(fs_lst["account_nm"])
+                print(fs_lst["account_nm"])
                 
                 is_accountnm_in_bstreekey = \
                     BS_accountnm_check(bs_tree=bs_tree, an=fs_lst["account_nm"])

@@ -19,25 +19,28 @@ def getData(stocks):
 
 
 def getCaseData(case, condition, queryset):
-    
-    allcnt = FS_LoB.objects.all().count()
+    allcnt = FS_LoB.objects.filter(
+        condition
+    ).count()
     comp_num = int(allcnt * case[2] / 100.0)
     
     ## =====================
     ## |  Case Field : ROE |
     ## =====================
     if case[0] == "ROE":
+        condition.add(~Q(ROE=0), Q.AND)
+        condition.add(~Q(ROE=None), Q.AND)
         if case[1] == 1:
             # 상위
             queryset = queryset.filter(
                 condition
-            ).order_by('-ROE')[:comp_num].values()
+            ).order_by('-ROE').values()[:comp_num]
             
         elif case[1] == 0:
             #하위
             queryset = queryset.filter(
                 condition
-            ).order_by('ROE')[:comp_num].values()
+            ).order_by('ROE').values()[:comp_num]
             
         elif case[1] == 3:
             #이상
@@ -58,6 +61,8 @@ def getCaseData(case, condition, queryset):
     ## |  Case Field : ROA |
     ## =====================
     if case[0] == "ROA":
+        condition.add(~Q(ROA=0), Q.AND)
+        condition.add(~Q(ROA=None), Q.AND)
         if case[1] == 1:
             # 상위
             queryset = queryset.filter(
@@ -89,6 +94,8 @@ def getCaseData(case, condition, queryset):
     ## |  Case Field : GPA |
     ## =====================
     if case[0] == "GPA":
+        condition.add(~Q(GPA=0), Q.AND)
+        condition.add(~Q(GPA=None), Q.AND)
         if case[1] == 1:
             # 상위
             queryset = queryset.filter(

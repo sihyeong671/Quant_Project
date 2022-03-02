@@ -122,11 +122,11 @@ class PostDetailSerializer(serializers.ModelSerializer):
         )
     
     def get_creator(self, obj):
-        # is_anonymous = obj.category.is_anonymous
-        # if is_anonymous:
-        #     return "익명"
-        # else:
-        return obj.creator.profile.nickname
+        is_anonymous = obj.category.is_anonymous
+        if is_anonymous:
+            return "익명"
+        else:
+            return obj.creator.profile.nickname
     
     def get_thumbnail(self, obj):
         try:
